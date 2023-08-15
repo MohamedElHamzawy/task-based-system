@@ -1,0 +1,61 @@
+.signin{
+    text-align: center;
+    background-color:  #2a1255;
+    color: white;
+    min-height: 100vh;
+}
+
+#header-graphic {
+    height: 50px;
+    position: relative;
+}
+
+.creative-break {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background:   #DC3545  ;
+    height: 4px;
+    width: 350px;
+    margin: auto;
+}
+
+.diamond {
+    background: #DC3545   ;
+    height: 9px;
+    width: 9px;
+    position: absolute;
+    transform: rotate(38deg) skewY(15deg);
+    top: -3px;
+}
+
+.left-diamond {
+    right: -3px;
+}
+
+.sign-btn {
+    border: 0px;
+    background-color: #DC3545    !important;
+}
+
+.sign-btn:hover {
+    background-color:  #df192d !important;
+
+}
+.logo{
+    border-radius: 30px;
+}
+
+@media only screen and (max-width: 650px) {
+    .creative-break {
+        width: 250px;
+
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    .creative-break {
+        width: 150px;
+
+    }
+}
