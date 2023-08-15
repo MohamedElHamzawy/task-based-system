@@ -1,5 +1,16 @@
 const userModel = require("../../DB/user.model");
 
+const showAllUsers = async (req,res,next) => {
+    const allUsers = await userModel.find({});
+    res.json({users: allUsers});
+}
+
+const getUser = async (req,res,next) => {
+    const userID = req.params.id;
+    const thisUser = await userModel.findById({_id: userID});
+    res.json({user: thisUser});
+}
+
 const createUser = async (req,res,next) => {
     const {
         fullName,
@@ -28,12 +39,6 @@ const createUser = async (req,res,next) => {
         }).save();
         res.json({message: "User has been created successfully"});
     }
-}
-
-const getUser = async (req,res,next) => {
-    const userID = req.params.id;
-    const thisUser = await userModel.findById({_id: userID});
-    res.json({user: thisUser});
 }
 
 const updateUser = async (req,res,next) => {
@@ -66,9 +71,4 @@ const deleteUser = async (req,res,next) => {
     } else {
         res.json({error: "User doesn't exist on system!"});
     }
-}
-
-const showAllUsers = async (req,res,next) => {
-    const allUsers = await userModel.find({});
-    res.json({users: allUsers});
 }
