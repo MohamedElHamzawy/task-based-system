@@ -2,10 +2,22 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
+require("dotenv").config();
 app.use(express.json());
 
-const port = 5000;
+const {
+    loginRoutes,
+    userRoutes,
+    specialityRoutes,
+    clientRoutes
+} = require("./routes/allRoutes");
 
+app.use("/api", loginRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/speciality", specialityRoutes);
+app.use("/api/client", clientRoutes);
+
+const port = 5000;
 const server = app.listen(port, async () => {
     await mongoose.connect("mongodb+srv://mohamedfelhamzawy:01029505696@cluster0.zti9wu1.mongodb.net/", {
         useNewUrlParser: true,
