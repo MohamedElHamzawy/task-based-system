@@ -72,3 +72,5 @@ const deleteUser = async (req,res,next) => {
         res.json({error: "User doesn't exist on system!"});
     }
 }
+
+module.exports = {showAllUsers, getUser, createUser, updateUser, deleteUser}

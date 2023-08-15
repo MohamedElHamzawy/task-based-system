@@ -19,3 +19,5 @@ const userLogin = async (req,res,next) => {
         res.json({error: "User doesn't exist on system"});
     }
 }
+
+module.exports = userLogin;

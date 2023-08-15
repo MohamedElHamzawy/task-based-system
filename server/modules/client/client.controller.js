@@ -56,3 +56,5 @@ const deleteClient = async (req,res,next) => {
         res.json({error: "Client doesn't exist on system!"});
     }
 }
+
+module.exports = {getAllClients, getClient, createClient, updateClient, deleteClient}

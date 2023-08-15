@@ -53,3 +53,5 @@ const deleteSpeciality = async (req,res,next) => {
         res.json({error: "Speciality doesn't exist on system"});
     }
 }
+
+module.exports = {getAllSpeciality, getSpeciality, createSpeciality, updateSpeciality, deleteSpeciality}
