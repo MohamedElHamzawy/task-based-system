@@ -99,23 +99,23 @@ const emailSubmitHandler = async event =>{
   try {
     setError(null);
     const response = await axios.post(
-      "https://coral-app-35v54.ondigitalocean.app/login",
+      "https://localhost:5000/api/login",
       {
         userName : usernameState.value,
         password: passState.value  
       }
     );
    const responseData = await response;
-   console.log(responseData.data) ;
+   console.log(responseData) ;
    
-   SetCookie("Token" , responseData.data.token);
-   setIsLoading(false);
-   window.location.href = '/' ;
+  //  SetCookie("Token" , responseData.data.token);
+  //  setIsLoading(false);
+  //  window.location.href = '/' ;
   } 
   catch (err) {
     console.log(err);
     setIsLoading(false);
-    setError(err.response.data.error || "SomeThing Went Wrong , Please Try Again .");
+    // setError(err.response.data.error || "SomeThing Went Wrong , Please Try Again .");
   }
 };
 

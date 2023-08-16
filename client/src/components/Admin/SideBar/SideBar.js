@@ -4,6 +4,9 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FaUsers } from 'react-icons/fa';
 import { FaTasks } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
+import { BiSolidCategoryAlt } from 'react-icons/bi';
+import { FaHospitalUser } from 'react-icons/fa';
+
 
 
 import RemoveCookie from '../../../hooks/removeCookie';
@@ -57,6 +60,24 @@ class SideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Tasks</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/specialities'}}>
+            <NavIcon>
+                <BiSolidCategoryAlt className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Specialities</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/clients'}}>
+            <NavIcon>
+                <FaHospitalUser className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Clients</p>
             </NavText>           
           </NavItem>
 
