@@ -16,7 +16,7 @@ const Admin = () => {
     <div  className='Admin w-100'>
        <SideBar className='sidebar'/> 
        
-        <div className='Admin-body p-3'>
+        <div className='Admin-body '>
           <Routes >
             <Route path="/" element={<Users/>} className='' />
             <Route path="/user/:id" element={<UserDetails/>} className='' />

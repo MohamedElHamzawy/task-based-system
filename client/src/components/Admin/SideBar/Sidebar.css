@@ -10,24 +10,8 @@
 .sidenav---sidenav-navitem---uwIJ-{
     color: white !important;
 }
-/* .sidebar{
-    min-height: 114% !important;   
-} */
 
-@media only screen and (max-width: 991px) {
-    .sidebar{
-        min-height: 104% !important;   
-    }
+.sidebar{
+    position: relative;
+    left: -4px !important;
 }
-
-/* @media only screen and (max-width: 400px) {
-    .sidebar{
-        min-height: 114% !important;   
-    }
-}
-
-@media only screen and (max-width: 380px) {
-    .sidebar{
-        min-height: 130% !important;   
-    }
-} */

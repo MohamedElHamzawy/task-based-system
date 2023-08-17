@@ -1,5 +1,5 @@
 .users-data{
-    border-radius: 10px;
+
     box-shadow: -5px 5px 10px rgba(128, 128, 128, 0.391);
 }
 
@@ -10,9 +10,10 @@
 .table-body{
     border-bottom: 1px solid rgba(128, 128, 128, 0.616);
 }
-/* .table-body:hover{
-        background-color: gray;
-} */
+.table-body:hover{
+  background-color: rgba(186, 186, 186, 0.403);
+}
+
 
 .view-details{
     cursor: pointer;
@@ -69,4 +70,52 @@
 
 .form-control-invalid{
     border: 1px solid rgba(218, 10, 10, 0.616);
+}
+
+.edit-btn{
+    color: rgb(34, 180, 104);
+    border: 0px;
+    background-color: transparent;
+}
+.edit-btn:hover{
+    color: rgb(45, 204, 122);
+}
+
+.edit-form-lable{
+    color: #2a1255;
+    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+}
+.edit-form-p{
+    color: rgb(45, 114, 204);
+}
+
+.edit-user-btn{
+    border: 0px;
+    color: white;
+    background-color:rgb(34, 180, 104);
+    border-radius: 10px;
+}
+.edit-user-btn:hover{
+    background-color:rgb(45, 204, 122);
+}
+
+.back-btn{
+    background-color: rgb(59, 135, 233);
+    border: 0px;
+    color: white;
+    border-radius: 10px;
+}
+.back-btn:hover{
+    background-color: rgb(45, 114, 204);
+}
+.speciality{
+    font-size: 14px;
+}
+
+
+
+@media only screen and (max-width: 510px) {
+    .name-role {
+       font-size: 10px;
+    }
 }

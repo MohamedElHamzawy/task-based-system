@@ -43,7 +43,7 @@ class SideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="users" className=' my-2' onClick={()=>{window.location.href = '/'}}>
+          <NavItem eventKey="users" className=' my-3' onClick={()=>{window.location.href = '/'}}>
             <NavIcon >
                 <FaUsers className='fs-4'/>
             </NavIcon>
@@ -52,8 +52,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-
-          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/tasks'}}>
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/tasks'}}>
             <NavIcon>
                 <FaTasks className='fs-4' />
             </NavIcon>
@@ -62,7 +61,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/specialities'}}>
+          <NavItem eventKey="tasks" className='my-3' onClick={()=>{window.location.href = '/specialities'}}>
             <NavIcon>
                 <BiSolidCategoryAlt className='fs-4' />
             </NavIcon>
@@ -71,7 +70,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/clients'}}>
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/clients'}}>
             <NavIcon>
                 <FaHospitalUser className='fs-4' />
             </NavIcon>
@@ -80,7 +79,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/settings'}}>
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>
                 <AiFillSetting className='fs-4' />
             </NavIcon>
