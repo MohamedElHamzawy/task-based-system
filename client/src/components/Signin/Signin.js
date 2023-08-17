@@ -108,10 +108,10 @@ const emailSubmitHandler = async event =>{
    const responseData = await response;
    console.log(responseData) ;
    
-  //  SetCookie("Token" , responseData.data.token);
-  //  localStorage.setItem("AdminData", JSON.stringify(responseData.data.user))
-  //  setIsLoading(false);
-  //  window.location.href = '/' ;
+   SetCookie("Token" , responseData.data.token);
+   localStorage.setItem("AdminData", JSON.stringify(responseData.data.user))
+   setIsLoading(false);
+   window.location.href = '/' ;
   } 
   catch (err) {
     console.log(err);
