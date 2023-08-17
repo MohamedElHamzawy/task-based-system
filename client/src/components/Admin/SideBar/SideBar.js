@@ -6,8 +6,7 @@ import { FaTasks } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
-
-
+import { AiFillSetting } from 'react-icons/ai';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -20,7 +19,7 @@ import SideNav, {
 } from "@trendmicro/react-sidenav";
 
 function logout() {
-  localStorage.removeItem("UserData");
+  localStorage.removeItem("AdminData");
   RemoveCookie("Token");
   window.location.href = '/';
 }
@@ -36,7 +35,7 @@ class SideBar extends React.Component {
 
   render() {
     return (
-      <SideNav defaultExpanded={!this.state.isVisible} className='' >
+      <SideNav defaultExpanded={!this.state.isVisible} className='sidebar' >
         <SideNav.Toggle
           onClick={() => {
             this.setState({ isVisible: !this.state.isVisible });
@@ -78,6 +77,15 @@ class SideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Clients</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-2' onClick={()=>{window.location.href = '/settings'}}>
+            <NavIcon>
+                <AiFillSetting className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Settings</p>
             </NavText>           
           </NavItem>
 

@@ -1,0 +1,72 @@
+.users-data{
+    border-radius: 10px;
+    box-shadow: -5px 5px 10px rgba(128, 128, 128, 0.391);
+}
+
+.table-head{
+    border-bottom: 1px solid black;
+}
+
+.table-body{
+    border-bottom: 1px solid rgba(128, 128, 128, 0.616);
+}
+/* .table-body:hover{
+        background-color: gray;
+} */
+
+.view-details{
+    cursor: pointer;
+}
+.delete-btn{
+    border: 0px; 
+    background-color: rgb(226, 28, 28);
+    color: white;
+    border-radius: 10px;
+}
+.delete-btn:hover{
+    background-color: rgb(209, 19, 19);
+}
+
+.new-user{
+    border: 0px;
+    color: white;
+    background-color: rgb(59, 135, 233);
+    border-radius: 10px;
+    box-shadow: -5px 5px 10px rgba(128, 128, 128, 0.391);
+
+}
+.new-user:hover{
+    background-color: rgb(45, 114, 204);
+}
+.search{
+    border: 1px solid rgba(128, 128, 128, 0.616);
+    border-radius: 10px ;
+}
+
+.adduser-form{
+    border-radius: 10px;
+    box-shadow: -5px 5px 10px rgba(128, 128, 128, 0.391);
+}
+
+.add-user-h{
+ color: #2a1255;
+ text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+}
+.add-user-p{
+    color: rgb(45, 114, 204);
+    text-shadow: 4px 2px 5px rgba(105, 104, 104, 0.525);
+}
+.add-user-btn{
+    border: 0px;
+    color: white;
+    background-color: rgb(59, 135, 233);
+    border-radius: 10px;
+}
+
+.add-user-btn:hover{
+    background-color: rgb(45, 114, 204);
+}
+
+.form-control-invalid{
+    border: 1px solid rgba(218, 10, 10, 0.616);
+}

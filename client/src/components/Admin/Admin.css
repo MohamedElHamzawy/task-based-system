@@ -19,5 +19,6 @@
 }
 .Admin-body{
     margin-left: 60px !important;
-    min-height: 100vh;      
+    min-height: 100vh;   
+    background-color: rgba(185, 185, 185, 0.267);   
 }
