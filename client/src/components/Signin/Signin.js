@@ -106,12 +106,24 @@ const emailSubmitHandler = async event =>{
       }
     );
    const responseData = await response;
-   console.log(responseData) ;
-   
-   SetCookie("Token" , responseData.data.token);
-   localStorage.setItem("AdminData", JSON.stringify(responseData.data.user._id))
-   setIsLoading(false);
-   window.location.href = '/' ;
+
+   if(responseData.data.user.user_role == 'admin'){
+      SetCookie("AdminToken" , responseData.data.token);
+      localStorage.setItem("AdminData", JSON.stringify(responseData.data.user._id))
+      setIsLoading(false);
+      window.location.href = '/' ;
+   }else if(responseData.data.user.user_role == 'userA'){
+    SetCookie("UserA" , responseData.data.token);
+    localStorage.setItem("UserAData", JSON.stringify(responseData.data.user._id))
+    setIsLoading(false);
+    window.location.href = '/' ;
+   }else if(responseData.data.user.user_role == 'userB'){
+    SetCookie("UserB" , responseData.data.token);
+    localStorage.setItem("UserBData", JSON.stringify(responseData.data.user._id))
+    setIsLoading(false);
+    window.location.href = '/' ;
+   }
+
   } 
   catch (err) {
     console.log(err);

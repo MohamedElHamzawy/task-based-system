@@ -8,12 +8,22 @@ export function AuthProvider(Props){
 
 
     useEffect(() => {
-     const name = GetCookie('Token');
-     
+     const admin = GetCookie('AdminToken');
+     const usera = GetCookie('UserA');
+     const userb = GetCookie('UserB');
+
         //validate token with api
-        if(name){
+        if(admin){
             setAuth({
-              name 
+                admin 
+            });
+        }else if(usera){
+            setAuth({
+                usera 
+            });
+        }else if(userb){
+            setAuth({
+                userb 
             });
         }
 

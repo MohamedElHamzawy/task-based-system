@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Sidebar.css';
+import './UserBSidebar.css';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FaUsers } from 'react-icons/fa';
 import { FaTasks } from 'react-icons/fa';
@@ -19,12 +19,12 @@ import SideNav, {
 } from "@trendmicro/react-sidenav";
 
 function logout() {
-  localStorage.removeItem("AdminData");
-  RemoveCookie("AdminToken");
+  localStorage.removeItem("UserBData");
+  RemoveCookie("UserB");
   window.location.href = '/';
 }
 
-class SideBar extends React.Component {
+class UserBSideBar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -43,30 +43,12 @@ class SideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="users" className=' my-3' onClick={()=>{window.location.href = '/'}}>
-            <NavIcon >
-                <FaUsers className='fs-4'/>
-            </NavIcon>
-             <NavText >
-               <p className='fs-3'>Users </p> 
-            </NavText>           
-          </NavItem>
-
           <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/tasks'}}>
             <NavIcon>
                 <FaTasks className='fs-4' />
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Tasks</p>
-            </NavText>           
-          </NavItem>
-
-          <NavItem eventKey="tasks" className='my-3' onClick={()=>{window.location.href = '/specialities'}}>
-            <NavIcon>
-                <BiSolidCategoryAlt className='fs-4' />
-            </NavIcon>
-             <NavText>
-             <p className="fs-3 "> Specialities</p>
             </NavText>           
           </NavItem>
 
@@ -106,4 +88,4 @@ class SideBar extends React.Component {
   }
 }
 
-export default SideBar;
+export default UserBSideBar;
