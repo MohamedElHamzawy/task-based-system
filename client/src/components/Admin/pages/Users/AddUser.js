@@ -97,23 +97,23 @@ const countryReducer = (state, action) => {
 };
 
 //Speciality validation
-const specialityReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.speciality,
-        isvalid: validate(action.speciality, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
+// const specialityReducer = (state, action) => {
+//   switch (action.type) {
+//     case "CHANGE":
+//       return {
+//         ...state,
+//         value: action.speciality,
+//         isvalid: validate(action.speciality, action.validators),
+//       };
+//     case "TOUCH":
+//       return {
+//         ...state,
+//         isTouched: true,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
 const AddUser = () => {
 
@@ -218,24 +218,24 @@ const AddUser = () => {
   };
 
   //Speciality validation
-  const [specialityState, dispatch6] = useReducer(specialityReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
+  // const [specialityState, dispatch6] = useReducer(specialityReducer, {
+  //   value: "",
+  //   isvalid: false,
+  //   isTouched: false,
+  // });
 
-  const specialityChangeHandler = (event) => {
-    dispatch6({
-      type: "CHANGE",
-      speciality: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const specialitytouchHandler = () => {
-    dispatch6({
-      type: "TOUCH",
-    });
-  };
+  // const specialityChangeHandler = (event) => {
+  //   dispatch6({
+  //     type: "CHANGE",
+  //     speciality: event.target.value,
+  //     validators: [VALIDATOR_MINLENGTH(3)],
+  //   });
+  // };
+  // const specialitytouchHandler = () => {
+  //   dispatch6({
+  //     type: "TOUCH",
+  //   });
+  // };
 
   //Role value
   const [role, setRole] = useState('');
@@ -255,6 +255,7 @@ const AddUser = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+
   const newUserSubmitHandler = async (event) => {
     event.preventDefault();
     // send api request to validate data
@@ -271,7 +272,7 @@ const AddUser = () => {
           userType: userType,
           country: countryState.value,
           phone: numberState.value,
-          speciality: specialityState.value,
+          // speciality: specialityState.value,
         }
       );
 
@@ -292,7 +293,7 @@ const AddUser = () => {
     passwordState.value = ''
     countryState.value = ''
     numberState.value = ''
-    specialityState.value = ''
+    // specialityState.value = ''
     setRole('')
     setUserType('')
   };
@@ -320,7 +321,7 @@ const AddUser = () => {
             value={fullNameState.value}
             onChange={fullNameChangeHandler}
             onBlur={fullNameTouchHandler}
-            isvalid={fullNameState.isvalid}
+            isvalid={fullNameState.isvalid.toString()}
             className={`col-10 col-lg-7 search p-2 ${!fullNameState.isvalid &&
               fullNameState.isTouched &&
               "form-control-invalid"
@@ -333,7 +334,7 @@ const AddUser = () => {
             value={userNameState.value}
             onChange={userNameChangeHandler}
             onBlur={userNameTouchHandler}
-            isvalid={userNameState.isvalid}
+            isvalid={userNameState.isvalid.toString()}
             className={`col-10 col-lg-7 search p-2 ${!userNameState.isvalid &&
               userNameState.isTouched &&
               "form-control-invalid"
@@ -347,7 +348,7 @@ const AddUser = () => {
             value={passwordState.value}
             onChange={passwordChangeHandler}
             onBlur={passwordTouchHandler}
-            isvalid={passwordState.isvalid}
+            isvalid={passwordState.isvalid.toString()}
             className={`col-10 col-lg-7 search p-2 ${!passwordState.isvalid &&
               passwordState.isTouched &&
               "form-control-invalid"
@@ -383,7 +384,7 @@ const AddUser = () => {
             value={countryState.value}
             onChange={countryChangeHandler}
             onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid}
+            isvalid={countryState.isvalid.toString()}
             className={`col-10 col-lg-7 search p-2 ${!countryState.isvalid &&
               countryState.isTouched &&
               "form-control-invalid"
@@ -397,7 +398,7 @@ const AddUser = () => {
             value={numberState.value}
             onChange={numberChangeHandler}
             onBlur={numbertouchHandler}
-            isvalid={numberState.isvalid}
+            isvalid={numberState.isvalid.toString()}
             className={`col-10 col-lg-7 search p-2 ${!numberState.isvalid &&
               numberState.isTouched &&
               "form-control-invalid"
@@ -405,7 +406,7 @@ const AddUser = () => {
           />
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+        {/* <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p'>Speciality :</label>
           <input type='text' placeholder='Speciality'
             value={specialityState.value}
@@ -417,9 +418,9 @@ const AddUser = () => {
               "form-control-invalid"
               }`}
           />
-        </div>
+        </div> */}
 
-        <div className='col-8 col-lg-5 m-3 mt-5'>
+        <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
               !fullNameState.isvalid ||
@@ -427,11 +428,11 @@ const AddUser = () => {
               !passwordState.isvalid ||
               !countryState.isvalid ||
               !numberState.isvalid ||
-              !specialityState.isvalid ||
+              // !specialityState.isvalid ||
               !role ||
               !userType
             }
-            className='add-user-btn p-3 w-100 fw-bold'>
+            className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Submit
           </button>
         </div>

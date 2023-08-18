@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
@@ -11,8 +11,6 @@ import { TiArrowBack } from 'react-icons/ti';
 
 
 const UserDetails = () => {
-
-  const [form, setForm] = useState(true);
 
   const [editFull, setEditFull] = useState(false);
   const [editUser, setEditUser] = useState(false);
@@ -135,9 +133,9 @@ const deleteUserHandler=async()=>{
         <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  User Details</h2>
       </div>
 
-      <div className="row bg-white m-1 adduser-form p-1">
+      <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
 
-        <div className="col-12 row p-3 justify-content-end">
+        <div className="col-12 row p-3 justify-content-end ">
           <div className="col-4">
             <button className="delete-btn px-4 p-1 fs-3" onClick={deleteUserHandler}>
               <RiDeleteBinFill/>

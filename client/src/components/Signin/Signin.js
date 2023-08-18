@@ -109,14 +109,14 @@ const emailSubmitHandler = async event =>{
    console.log(responseData) ;
    
    SetCookie("Token" , responseData.data.token);
-   localStorage.setItem("AdminData", JSON.stringify(responseData.data.user))
+   localStorage.setItem("AdminData", JSON.stringify(responseData.data.user._id))
    setIsLoading(false);
    window.location.href = '/' ;
   } 
   catch (err) {
     console.log(err);
     setIsLoading(false);
-    setError(err.response.data.error || "SomeThing Went Wrong , Please Try Again .");
+    setError(err.responseData.data.error || "SomeThing Went Wrong , Please Try Again .");
   }
 };
 
@@ -153,7 +153,7 @@ const errorHandler =() =>{
               value={usernameState.value}
               onChange={usernameChangeHandler}
               onBlur={touchHandler}
-              isvalid={usernameState.isvalid}
+              isvalid={usernameState.isvalid.toString()}
               type='name'
               placeholder="User Name " 
               className={`p-3 ${!usernameState.isvalid && usernameState.isTouched && 'form-control-invalid' }`}/>
@@ -168,7 +168,7 @@ const errorHandler =() =>{
               value={passState.value}
               onChange={passChangeHandler}
               onBlur={passtouchHandler}
-              isvalid={passState.isvalid}
+              isvalid={passState.isvalid.toString()}
               type="password" 
               placeholder="Password" 
               className={`p-3 ${!passState.isvalid && passState.isTouched && 'form-control-invalid' }`}

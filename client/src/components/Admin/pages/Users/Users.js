@@ -26,6 +26,7 @@ const Users = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error , setError] = useState(false);
   
+
   useEffect(() => {
     let timerId;
     if (loading) {
@@ -42,16 +43,19 @@ const Users = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
+  const [searchFilterData, setSearchFilterData] = useState(true);
   const [searchRole, setSearchRole] = useState('');
+  const [RoleFilterData, setRoleFilterData] = useState(false);
+
   const searchFilter = getSearchFilter(searchName,users);
   const roleFilter = getRoleFilter(searchRole,users);
 
-  const deleteUserHandler=async()=>{
+  const deleteUserHandler=async(id)=>{
     setIsLoading(true);
     try {
     setError(null);
     const response = await axios.delete(
-     ` http://localhost:5000/api/user/${users._id}`
+     ` http://localhost:5000/api/user/${id}`
     //  ,
     //  { headers :{
     //     'Authorization':`Bearer ${token}`
@@ -85,16 +89,16 @@ const Users = () => {
 
         <div className="col-8 col-md-3 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search Usernames" 
-           onChange={(e) => { setSearchName(e.target.value) }}
+           onChange={(e) => { setSearchName(e.target.value) ;  setRoleFilterData(false) ; setSearchFilterData(true) }}
           />
         </div>
 
         <div className="col-12 col-md-5 text-secondary row p-2">
           <label htmlFor="role" className="m-2 col-5 text-end"> <FiFilter className=""/> Filter:</label>
           <select id="role" name="role" className=" search col-5"
-           onChange={(e) => {setSearchRole(e.target.value) }}
+           onChange={(e) => {setSearchRole(e.target.value) ; setSearchFilterData(false) ; setRoleFilterData(true)}}
           >
-            <option disabled>Role</option>
+            <option value="">Role</option>
             <option value="admin">Admin</option>
             <option value="userA">UserA</option>
             <option value="userB">UserB</option>
@@ -112,27 +116,36 @@ const Users = () => {
 
         </div>
 
-        { !roleFilter.length==0 ? roleFilter.map((user) => (
-        !searchFilter.length==0 ? searchFilter.map((user) => (
+        { searchFilterData ? !searchFilter.length==0 ? searchFilter.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
             <p className="col-4 col-md-5 name-role">{user.fullname}</p>
             <p className="col-3 name-role">{user.user_role}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill/></a> </p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={deleteUserHandler}> <RiDeleteBinFill/> </button></p>     
+            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteUserHandler(user._id)}> <RiDeleteBinFill/> </button></p>     
           </div>
-        )) : 
-        <div className="row  p-3 m-0 text-center" key={user._id}>
+        ))  : 
+        <div className="row  p-3 m-0 text-center" >
           <h2>
-            No One With This Name  
+           There Is No Users 
           </h2>   
-        </div>
-        )) : 
-        <div className="row  p-3 m-0 text-center">
-          <h2>
-            No One With This Role  
-          </h2>   
-        </div>
+        </div>  :'' 
         }
+
+        { RoleFilterData ? !roleFilter.length==0 ? roleFilter.map((user) => (
+          <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
+            <p className="col-4 col-md-5 name-role">{user.fullname}</p>
+            <p className="col-3 name-role">{user.user_role}</p>
+            <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill/></a> </p>
+            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteUserHandler(user._id)}> <RiDeleteBinFill/> </button></p>     
+          </div>
+        ))  : 
+        <div className="row  p-3 m-0 text-center" >
+          <h2>
+           There Is No Users 
+          </h2>   
+        </div>  : ''   
+        }
+
       </div>
     </div>
   )
