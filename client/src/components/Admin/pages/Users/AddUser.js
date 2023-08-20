@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
@@ -96,26 +96,28 @@ const countryReducer = (state, action) => {
   }
 };
 
-//Speciality validation
-// const specialityReducer = (state, action) => {
-//   switch (action.type) {
-//     case "CHANGE":
-//       return {
-//         ...state,
-//         value: action.speciality,
-//         isvalid: validate(action.speciality, action.validators),
-//       };
-//     case "TOUCH":
-//       return {
-//         ...state,
-//         isTouched: true,
-//       };
-//     default:
-//       return state;
-//   }
-// };
 
 const AddUser = () => {
+
+  const [specialities, setSpecialities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    let timerId;
+    if (loading) {
+      setIsLoading(true);
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/speciality/").then((res) => {
+          setSpecialities(res.data.specialities);
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
+    }
+    return () => clearTimeout(timerId);
+  }, [loading]);
 
   //userName validation
   const [userNameState, dispatch] = useReducer(userNameReducer, {
@@ -217,44 +219,27 @@ const AddUser = () => {
     });
   };
 
-  //Speciality validation
-  // const [specialityState, dispatch6] = useReducer(specialityReducer, {
-  //   value: "",
-  //   isvalid: false,
-  //   isTouched: false,
-  // });
-
-  // const specialityChangeHandler = (event) => {
-  //   dispatch6({
-  //     type: "CHANGE",
-  //     speciality: event.target.value,
-  //     validators: [VALIDATOR_MINLENGTH(3)],
-  //   });
-  // };
-  // const specialitytouchHandler = () => {
-  //   dispatch6({
-  //     type: "TOUCH",
-  //   });
-  // };
+  const [visable, setVisable] = useState(false);
 
   //Role value
   const [role, setRole] = useState('');
   const RoleChangeHandler = (newOne) => {
     setRole(newOne);
-
+    if (newOne == 'userB') {
+      setVisable(true)
+    } else {
+      setVisable(false)
+    }
   };
 
-  //userType value
-  const [userType, setUserType] = useState('');
-  const userTypeChangeHandler = (newOne) => {
-    setUserType(newOne);
+  //speciality value
+  const [speciality, setSpeciality] = useState('');
+
+  const specialityChangeHandler = (newOne) => {
+    setSpeciality(newOne);
   };
 
   /////////////////////////////////
-
-  const [loading, setLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
 
   const newUserSubmitHandler = async (event) => {
     event.preventDefault();
@@ -269,10 +254,9 @@ const AddUser = () => {
           userName: userNameState.value,
           password: passwordState.value,
           userRole: role,
-          userType: userType,
+          speciality: speciality,
           country: countryState.value,
           phone: numberState.value,
-          // speciality: specialityState.value,
         }
       );
 
@@ -293,9 +277,8 @@ const AddUser = () => {
     passwordState.value = ''
     countryState.value = ''
     numberState.value = ''
-    // specialityState.value = ''
     setRole('')
-    setUserType('')
+    setSpeciality('')
   };
 
   const errorHandler = () => {
@@ -357,28 +340,6 @@ const AddUser = () => {
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="role" className=" col-10 col-lg-5 fw-bold add-user-p"> Role:</label>
-          <select id="role" name="role" className="p-2 px-4 search col-10 col-lg-7" value={role}
-            onChange={(event) => RoleChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>Role</option>
-            <option value="admin">Admin</option>
-            <option value="userA">UserA</option>
-            <option value="userB">UserB</option>
-          </select>
-        </div>
-
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="usertype" className="col-10 col-lg-5 fw-bold add-user-p"> UserType:</label>
-          <select id="usertype" name="usertype" className="p-2 px-4 search col-10 col-lg-7" value={userType}
-            onChange={(event) => userTypeChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>UserType</option>
-            <option value="super admin">Super Admin</option>
-            <option value="userA">UserA</option>
-            <option value="userB">UserB</option>
-          </select>
-        </div>
-
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p'>Country:</label>
           <input type='text' placeholder='Country'
             value={countryState.value}
@@ -390,6 +351,30 @@ const AddUser = () => {
               "form-control-invalid"
               }`}
           />
+        </div>
+
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label htmlFor="role" className=" col-10 col-lg-5 fw-bold add-user-p"> Role:</label>
+          <select id="role" name="role" className="p-2 px-4 search col-10 col-lg-7" value={role}
+            onChange={(event) => RoleChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Roles</option>
+            <option value="admin">Admin</option>
+            <option value="userA">UserA</option>
+            <option value="userB">UserB</option>
+          </select>
+        </div>
+
+        <div className={visable ? 'd-block col-12 col-lg-5 m-1 py-2 p-0' : 'd-none'}>
+          <label htmlFor="speciality" className="col-10 col-lg-5 fw-bold add-user-p"> Speciality:</label>
+
+          <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={speciality}
+            onChange={(event) => specialityChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Specialities</option>
+            {specialities.map((speciality) => (
+              <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+            ))}
+          </select>
+
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
@@ -406,31 +391,24 @@ const AddUser = () => {
           />
         </div>
 
-        {/* <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Speciality :</label>
-          <input type='text' placeholder='Speciality'
-            value={specialityState.value}
-            onChange={specialityChangeHandler}
-            onBlur={specialitytouchHandler}
-            isvalid={specialityState.isvalid}
-            className={`col-10 col-lg-7 search p-2 ${!specialityState.isvalid &&
-              specialityState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
-        </div> */}
 
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
-            disabled={
+            disabled={!visable ?
               !fullNameState.isvalid ||
               !userNameState.isvalid ||
               !passwordState.isvalid ||
               !countryState.isvalid ||
               !numberState.isvalid ||
-              // !specialityState.isvalid ||
+              !role
+              :
+              !fullNameState.isvalid ||
+              !userNameState.isvalid ||
+              !passwordState.isvalid ||
+              !countryState.isvalid ||
+              !numberState.isvalid ||
               !role ||
-              !userType
+              !speciality
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Submit

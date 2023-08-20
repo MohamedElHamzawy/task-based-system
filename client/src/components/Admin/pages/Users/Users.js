@@ -77,7 +77,11 @@ const Users = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0">
+    <div className="row w-100 p-0 m-0 ">
+
+        <div className="col-12 text-center edit-form-lable p-2">
+          <h1 >System Users</h1>
+        </div>
 
       <div className="row p-0 m-0 ">
 
