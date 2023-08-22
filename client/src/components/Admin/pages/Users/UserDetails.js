@@ -92,11 +92,6 @@ const UserDetails = () => {
   const editUserHandler = async (event) => {
     event.preventDefault();
     // send api request to validate data
-    // if(userRole=='userB'){
-    //   setUserBSpeciality(userSpeciality)
-    // }else{
-    //   setUserBSpeciality()
-    // }
     setIsLoading(true);
     try {
       setError(null);
@@ -112,7 +107,6 @@ const UserDetails = () => {
         }
       );
       const responseData = await response;
-      console.log(responseData)
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -168,7 +162,7 @@ const UserDetails = () => {
       </div>
 
       <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
-        {userRole == 'admin' ?
+        {user.user_role == 'admin' ?
           ''
           :
           <div className="col-12 row p-3 justify-content-end ">
@@ -187,7 +181,7 @@ const UserDetails = () => {
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
           </div>
 
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <div className="col-1 ">
@@ -206,7 +200,7 @@ const UserDetails = () => {
           <div className={editUser ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setUserName(e.target.value) }} className="search w-100 p-2" />
           </div>
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <div className="col-1 ">
@@ -223,7 +217,7 @@ const UserDetails = () => {
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
           </div>
 
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <div className="col-1 ">
@@ -240,7 +234,7 @@ const UserDetails = () => {
           <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
           </div>
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <div className="col-1 ">
@@ -263,7 +257,7 @@ const UserDetails = () => {
               <option value="userB">UserB</option>
             </select>
           </div>
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <div className="col-1 ">
@@ -290,7 +284,7 @@ const UserDetails = () => {
               ))}
             </select>
           </div>
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <div className="col-1 ">
@@ -303,7 +297,7 @@ const UserDetails = () => {
 
 
         <div className="col-12  p-3">
-          {userRole == 'admin' ?
+          {user.user_role == 'admin' ?
             ''
             :
             <button

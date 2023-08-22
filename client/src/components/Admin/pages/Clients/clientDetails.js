@@ -15,6 +15,7 @@ const ClientDetails = () => {
     const [editEmail, setEditEmail] = useState(false);
     const [editNumber, setEditNumber] = useState(false);
     const [editCountry, setEditCountry] = useState(false);
+    const [editCity, setEditCity] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -26,27 +27,28 @@ const ClientDetails = () => {
     const [clientName, setClientName] = useState();
     const [clientEmail, setClientEmail] = useState();
     const [country, setCountry] = useState();
+    const [city, setCity] = useState();
     const [phone, setPhone] = useState();
 
-    // useEffect(() => {
-    //     let timerId;
-    //     if (loading) {
-    //         setIsLoading(true);
-    //         timerId = setTimeout(async () => {
-    //             await axios.get(`http://localhost:5000/api/client/${id}`).then((res) => {
-    //                 // setClient(res.data);
-    //                 // setClientName(res.data);
-    //                 // setClientEmail(res.data);
-    //                 // setCountry(res.data);
-    //                 // setPhone(res.data);
-    //                 console.log(res.data)
-    //             });
-    //             setLoading(false);
-    //             setIsLoading(false);
-    //         });
-    //     }
-    //     return () => clearTimeout(timerId);
-    // }, [loading]);
+    useEffect(() => {
+        let timerId;
+        if (loading) {
+            setIsLoading(true);
+            timerId = setTimeout(async () => {
+                await axios.get(`http://localhost:5000/api/client/${id}`).then((res) => {
+                    setClient(res.data.client);
+                    setClientName(res.data.client.clientname);
+                    setClientEmail(res.data.client.email);
+                    setCountry(res.data.client.country);
+                    setCity(res.data.client.city)
+                    setPhone(res.data.client.phone);
+                });
+                setLoading(false);
+                setIsLoading(false);
+            });
+        }
+        return () => clearTimeout(timerId);
+    }, [loading]);
 
     //////////////////////////////////////
     const editClientHandler = async (event) => {
@@ -58,10 +60,11 @@ const ClientDetails = () => {
             const response = await axios.post(
                 `http://localhost:5000/api/client/${client._id}`,
                 {
-                    clientname: clientName,
+                    clientName: clientName,
                     email: clientEmail,
                     country: country,
                     phone: phone,
+                    city: city
                 }
             );
             const responseData = await response;
@@ -95,7 +98,7 @@ const ClientDetails = () => {
             console.log(responseData.data)
             setError(responseData.data.message);
             setIsLoading(false);
-            window.location.href = '/specialities';
+            window.location.href = '/clients';
         } catch (err) {
             setIsLoading(false);
             setError(err.message || "SomeThing Went Wrong , Please Try Again .");
@@ -132,7 +135,7 @@ const ClientDetails = () => {
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
                     <h3 className="col-8 col-md-5  edit-form-lable text-start"> Client Name :</h3>
-                    <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {client.clientName} </p>
+                    <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {client.clientname} </p>
                     <div className={editName ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setClientName(e.target.value) }} className="search w-100 p-2" />
                     </div>
@@ -183,6 +186,19 @@ const ClientDetails = () => {
                     </div>
                 </div>
                 {/* /////////////////////// */}
+                <div className="col-12 col-xl-6 row p-2 ">
+                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> City :</h3>
+                    <p className={!editCity ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {client.city} </p>
+                    <div className={editCity ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                        <input type="text" onChange={(e) => { setCity(e.target.value) }} className="search w-100 p-2" />
+                    </div>
+                    <div className="col-1 ">
+                        <button onClick={() => { setEditCity(!editCity) }} className="edit-btn fs-2">
+                            <BiSolidEditAlt />
+                        </button>
+                    </div>
+                </div>
+                {/* /////////////////////// */}
 
                 <div className="col-12  p-3">
                     <button
@@ -190,7 +206,8 @@ const ClientDetails = () => {
                             !editName &&
                             !editNumber &&
                             !editCountry &&
-                            !editEmail
+                            !editEmail &&
+                            !editCity
                         }
                         className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editClientHandler}>
                         Edit
