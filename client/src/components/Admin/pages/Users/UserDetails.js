@@ -17,10 +17,11 @@ const UserDetails = () => {
   const [editFull, setEditFull] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [editNumber, setEditNumber] = useState(false);
+  const [editCountry, setEditCountry] = useState(false);
+
   const [editRole, setEditRole] = useState(false);
   const [editSpeciality, setEditSpeciality] = useState(false);
 
-  const [editCountry, setEditCountry] = useState(false);
 
 
   const [loading, setLoading] = useState(true);
@@ -91,11 +92,6 @@ const UserDetails = () => {
   const editUserHandler = async (event) => {
     event.preventDefault();
     // send api request to validate data
-    // if(userRole=='userB'){
-    //   setUserBSpeciality(userSpeciality)
-    // }else{
-    //   setUserBSpeciality()
-    // }
     setIsLoading(true);
     try {
       setError(null);
@@ -111,7 +107,6 @@ const UserDetails = () => {
         }
       );
       const responseData = await response;
-      console.log(responseData)
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -166,15 +161,18 @@ const UserDetails = () => {
         <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  User Details</h2>
       </div>
 
-      <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+      <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
+        {user.user_role == 'admin' ?
+          ''
+          :
+          <div className="col-12 row p-3 justify-content-end ">
+            <div className="col-4">
+              <button className="delete-btn px-4 p-1 fs-3" onClick={deleteUserHandler}>
+                <RiDeleteBinFill />
+              </button>
+            </div>
+          </div>}
 
-        <div className="col-12 row p-3 justify-content-end ">
-          <div className="col-4">
-            <button className="delete-btn px-4 p-1 fs-3" onClick={deleteUserHandler}>
-              <RiDeleteBinFill />
-            </button>
-          </div>
-        </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row ">
           <h3 className="col-8 col-md-5  edit-form-lable text-start"> Full Name :</h3>
@@ -182,11 +180,17 @@ const UserDetails = () => {
           <div className={editFull ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
           </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditFull(!editFull) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
+
+          {user.user_role == 'admin' ?
+            ''
+            :
+            <div className="col-1 ">
+              <button onClick={() => { setEditFull(!editFull) }} className="edit-btn fs-2">
+                <BiSolidEditAlt />
+              </button>
+            </div>
+          }
+
         </div>
         {/* /////////////////////// */}
 
@@ -196,11 +200,14 @@ const UserDetails = () => {
           <div className={editUser ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setUserName(e.target.value) }} className="search w-100 p-2" />
           </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditUser(!editUser) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
+          {user.user_role == 'admin' ?
+            ''
+            :
+            <div className="col-1 ">
+              <button onClick={() => { setEditUser(!editUser) }} className="edit-btn fs-2">
+                <BiSolidEditAlt />
+              </button>
+            </div>}
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row p-2 ">
@@ -209,11 +216,16 @@ const UserDetails = () => {
           <div className={editNumber ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
           </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditNumber(!editNumber) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
+
+          {user.user_role == 'admin' ?
+            ''
+            :
+            <div className="col-1 ">
+              <button onClick={() => { setEditNumber(!editNumber) }} className="edit-btn fs-2">
+                <BiSolidEditAlt />
+              </button>
+            </div>}
+
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row p-2 ">
@@ -222,11 +234,15 @@ const UserDetails = () => {
           <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
           </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditCountry(!editCountry) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
+          {user.user_role == 'admin' ?
+            ''
+            :
+            <div className="col-1 ">
+              <button onClick={() => { setEditCountry(!editCountry) }} className="edit-btn fs-2">
+                <BiSolidEditAlt />
+              </button>
+            </div>
+          }
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row p-2 ">
@@ -234,58 +250,69 @@ const UserDetails = () => {
           <p className={!editRole ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
           <div className={editRole ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <select id="role" name="role" className="search w-100 p-2" value={userRole}
-              onChange={(e) => { setUserRole(e.target.value); if (e.target.value == 'userB'){ setVisable(true); setEditSpeciality(true)}else{ setVisable(false) } }} >
+              onChange={(e) => { setUserRole(e.target.value); if (e.target.value == 'userB') { setVisable(true); setEditSpeciality(true) } else { setVisable(false) } }} >
               <option value="" className='text-secondary'>Role</option>
               <option value="admin">Admin</option>
               <option value="userA">UserA</option>
               <option value="userB">UserB</option>
             </select>
           </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditRole(!editRole) ; if(user.user_role == 'userB'){setVisable(true)}else{setVisable(false)} ; setUserRole(user.user_role) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
+          {user.user_role == 'admin' ?
+            ''
+            :
+            <div className="col-1 ">
+              <button onClick={() => { setEditRole(!editRole); if (user.user_role == 'userB') { setVisable(true) } else { setVisable(false) }; setUserRole(user.user_role) }} className="edit-btn fs-2">
+                <BiSolidEditAlt />
+              </button>
+            </div>
+          }
         </div>
         {/* /////////////////////// */}
         <div className={visable ? "d-flex col-12 col-xl-6 row p-2 " : 'd-none'}>
           <h3 className="col-8 col-md-5  edit-form-lable text-start">Speciality :</h3>
-            {specialities.map((speciality) => (
-              speciality._id == specialityId ?
-                  <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
-                : ''
-            ))}
-            <div className={editSpeciality ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-              <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={userSpeciality}
-                onChange={(event) => specialityChangeHandler(event.target.value)}>
-                <option value="" className='text-secondary'>Specialities</option>
-                {specialities.map((speciality) => (
-                  <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
-                ))}
-              </select>
-            </div>
+          {specialities.map((speciality) => (
+            speciality._id == specialityId ?
+              <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
+              : ''
+          ))}
+          <div className={editSpeciality ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+            <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={userSpeciality}
+              onChange={(event) => specialityChangeHandler(event.target.value)}>
+              <option value="" className='text-secondary'>Specialities</option>
+              {specialities.map((speciality) => (
+                <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+              ))}
+            </select>
+          </div>
+          {user.user_role == 'admin' ?
+            ''
+            :
             <div className="col-1 ">
-              <button onClick={() => { if(user.speciality){setEditSpeciality(!editSpeciality)}else{setEditSpeciality(true)}  }} className="edit-btn fs-2">
+              <button onClick={() => { if (user.speciality) { setEditSpeciality(!editSpeciality) } else { setEditSpeciality(true) } }} className="edit-btn fs-2">
                 <BiSolidEditAlt />
               </button>
-            </div>
+            </div>}
         </div>
         {/* /////////////////////// */}
 
 
         <div className="col-12  p-3">
-          <button
-            disabled={
-              !editFull &&
-              !editUser &&
-              !editNumber &&
-              !editRole &&
-              !editSpeciality &&
-              !editCountry
-            }
-            className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editUserHandler}>
-            Edit
-          </button>
+          {user.user_role == 'admin' ?
+            ''
+            :
+            <button
+              disabled={
+                !editFull &&
+                !editUser &&
+                !editNumber &&
+                !editRole &&
+                !editSpeciality &&
+                !editCountry
+              }
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editUserHandler}>
+              Edit
+            </button>
+          }
         </div>
 
       </div>

@@ -26,23 +26,23 @@ const SpecialityDetails = () => {
     const [specialityName, setSpecialityName] = useState();
     const [specialityType, setSpecialityType] = useState();
 
-    // useEffect(() => {
-    //     let timerId;
-    //     if (loading) {
-    //         setIsLoading(true);
-    //         timerId = setTimeout(async () => {
-    //             await axios.get(`http://localhost:5000/api/speciality/${id}`).then((res) => {
-    //                 //   setSpeciality(res);
-    //                 //   setSpecialityName(res);
-    //                 //   setSpecialityType(res);
-    //                 console.log(res)
-    //             });
-    //             setLoading(false);
-    //             setIsLoading(false);
-    //         });
-    //     }
-    //     return () => clearTimeout(timerId);
-    // }, [loading]);
+    useEffect(() => {
+        let timerId;
+        if (loading) {
+            setIsLoading(true);
+            timerId = setTimeout(async () => {
+                await axios.get(`http://localhost:5000/api/speciality/${id}`).then((res) => {
+                      setSpeciality(res.data.speciality);
+                      setSpecialityName(res.data.speciality.specialityName);
+                      setSpecialityType(res.data.speciality.specialityType);
+                    console.log(res.data.speciality)
+                });
+                setLoading(false);
+                setIsLoading(false);
+            });
+        }
+        return () => clearTimeout(timerId);
+    }, [loading]);
 
     //////////////////////////////////////
     const editSpecialityHandler = async (event) => {
@@ -63,7 +63,7 @@ const SpecialityDetails = () => {
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.message);
             }
-            setError(responseData.data.message);
+            setError(responseData.data.error);
             setIsLoading(false);
 
         } catch (err) {
@@ -125,7 +125,7 @@ const SpecialityDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> Speciality Name :</h3>
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Speciality Name :</h3>
                     <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {speciality.specialityName} </p>
                     <div className={editName ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setSpecialityName(e.target.value) }} className="search w-100 p-2" />
@@ -139,7 +139,7 @@ const SpecialityDetails = () => {
                 {/* /////////////////////// */}
 
                <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> Speciality Type :</h3>
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Speciality Type :</h3>
                     <p className={!editType ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {speciality.specialityType} </p>
                     <div className={editType ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setSpecialityType(e.target.value) }} className="search w-100 p-2" />

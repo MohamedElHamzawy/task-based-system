@@ -112,7 +112,12 @@
     font-size: 14px;
 }
 
-
+.disabled-btn{
+    border: 0px; 
+    background-color: rgba(147, 146, 146, 0.833);
+    color: white;
+    border-radius: 10px;
+}
 
 @media only screen and (max-width: 510px) {
     .name-role {

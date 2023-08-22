@@ -92,15 +92,15 @@ const Users = () => {
         </div>
 
         <div className="col-8 col-md-3 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search Usernames" 
-           onChange={(e) => { setSearchName(e.target.value) ;  setRoleFilterData(false) ; setSearchFilterData(true) }}
+          <input type="name" className="search p-2 w-100" placeholder=" Search Usernames" value={searchName}
+           onChange={(e) => { setSearchName(e.target.value) ;  setRoleFilterData(false) ; setSearchFilterData(true);setSearchRole('') }}
           />
         </div>
 
         <div className="col-12 col-md-5 text-secondary row p-2">
           <label htmlFor="role" className="m-2 col-5 text-end"> <FiFilter className=""/> Filter:</label>
-          <select id="role" name="role" className=" search col-5"
-           onChange={(e) => {setSearchRole(e.target.value) ; setSearchFilterData(false) ; setRoleFilterData(true)}}
+          <select id="role" name="role" className=" search col-5" value={searchRole}
+           onChange={(e) => {setSearchRole(e.target.value) ; setSearchFilterData(false) ; setRoleFilterData(true) ;setSearchName('')}}
           >
             <option value="">Role</option>
             <option value="admin">Admin</option>
@@ -125,7 +125,13 @@ const Users = () => {
             <p className="col-4 col-md-5 name-role">{user.fullname}</p>
             <p className="col-3 name-role">{user.user_role}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill/></a> </p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteUserHandler(user._id)}> <RiDeleteBinFill/> </button></p>     
+            <p className="col-2">
+              {user.user_role=='admin' ? 
+               <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill/> </button>             
+               : 
+               <button className=" delete-btn p-2 px-3" onClick={()=>deleteUserHandler(user._id)}> <RiDeleteBinFill/> </button>             
+              }
+            </p>     
           </div>
         ))  : 
         <div className="row  p-3 m-0 text-center" >
@@ -140,7 +146,13 @@ const Users = () => {
             <p className="col-4 col-md-5 name-role">{user.fullname}</p>
             <p className="col-3 name-role">{user.user_role}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill/></a> </p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteUserHandler(user._id)}> <RiDeleteBinFill/> </button></p>     
+            <p className="col-2">
+              {user.user_role=='admin' ? 
+               <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill/> </button>             
+               : 
+               <button className=" delete-btn p-2 px-3" onClick={()=>deleteUserHandler(user._id)}> <RiDeleteBinFill/> </button>             
+              }
+            </p>   
           </div>
         ))  : 
         <div className="row  p-3 m-0 text-center" >
