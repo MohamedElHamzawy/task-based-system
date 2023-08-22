@@ -6,8 +6,7 @@ const taskSchema = new mongoose.Schema({
         required: true
     },
     channel: {
-        type: mongoose.Types.ObjectId,
-        ref: "channel"
+        type: String
     },
     client_id: {
         type: mongoose.Types.ObjectId,
