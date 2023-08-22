@@ -12,6 +12,8 @@ import Clients from '../Admin/pages/Clients/Clients'
 import AddUser from './pages/Users/AddUser';
 import UserDetails from './pages/Users/UserDetails';
 import Settings from './pages/Settings/Settings';
+import AddClient from './pages/Clients/addClient';
+import ClientDetails from './pages/Clients/clientDetails';
 
 const Admin = () => {
   return (
@@ -28,6 +30,8 @@ const Admin = () => {
             <Route path="/speciality/:id" element={<SpecialityDetails/>} />
             <Route path="/addspeciality" element={<AddSpeciality/>}  />
             <Route path="/clients" element={<Clients/>} />
+            <Route path="/client/:id" element={<ClientDetails/>} />
+            <Route path="/addclient" element={<AddClient/>}  />
             <Route path="/settings" element={<Settings/>} />
           </Routes> 
         </div>
