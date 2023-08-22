@@ -6,7 +6,7 @@ const getAllClients = async (req,res,next) => {
 }
 
 const getClient = async (req,res,next) => {
-    const {clientID} = req.params;
+    const clientID = req.params.id;
     const thisClient = await clientModel.findById({_id: clientID});
     res.json({client: thisClient});
 }
@@ -36,7 +36,7 @@ const updateClient = async (req,res,next) => {
         country,
         city
     } = req.body;
-    const {clientID} = req.params;
+    const clientID = req.params.id;
     const tryGetClient = await clientModel.findOne({_id: clientID});
     if (tryGetClient) {
         await clientModel.findByIdAndUpdate({_id: clientID}, {clientname: clientName, phone, email, country, city});
@@ -47,7 +47,7 @@ const updateClient = async (req,res,next) => {
 }
 
 const deleteClient = async (req,res,next) => {
-    const {clientID} = req.params;
+    const clientID = req.params.id;
     const tryGetClient = await clientModel.findOne({_id: clientID});
     if (tryGetClient) {
         await clientModel.findByIdAndDelete({_id: clientID});

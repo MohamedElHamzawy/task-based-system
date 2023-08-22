@@ -6,7 +6,7 @@ const getAllSpeciality = async (req,res,next) => {
 }
 
 const getSpeciality = async (req,res,next) => {
-    const {specialityID} = req.params;
+    const specialityID = req.params.id;
     const thisSpecality = await specialityModel.findById({_id: specialityID});
     res.json({speciality: thisSpecality});
 }
@@ -33,7 +33,7 @@ const updateSpeciality = async (req,res,next) => {
         name,
         type
     } = req.body;
-    const {specialityID} = req.params;
+    const specialityID = req.params.id;
     const tryGetSpeciality = await specialityModel.findOne({specialityName: name});
     if (tryGetSpeciality) {
         await specialityModel.findByIdAndUpdate({_id: specialityID}, {specialityName: name, specialityType: type});
@@ -44,7 +44,7 @@ const updateSpeciality = async (req,res,next) => {
 }
 
 const deleteSpeciality = async (req,res,next) => {
-    const {specialityID} = req.params;
+    const specialityID = req.params.id;
     const tryGetSpeciality = await specialityModel.findOne({_id: specialityID});
     if (tryGetSpeciality) {
         await specialityModel.deleteOne({_id: specialityID});
