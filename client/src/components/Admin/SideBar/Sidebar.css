@@ -11,3 +11,7 @@
     color: white !important;
 }
 
+.sidebar{
+    position: relative;
+    left: -4px !important;
+}

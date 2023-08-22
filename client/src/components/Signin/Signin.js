@@ -18,7 +18,7 @@ const usernameReducer =(state , action) =>{
     return {
       ...state,
       value : action.username, 
-      isValid : validate(action.username , action.validators)
+      isvalid : validate(action.username , action.validators)
     };
     case 'TOUCH':
       return {
@@ -36,7 +36,7 @@ const passReducer =(state , action) =>{
     return {
       ...state,
       value : action.pass, 
-      isValid : validate(action.pass , action.validators)
+      isvalid : validate(action.pass , action.validators)
     };
     case 'TOUCH':
       return {
@@ -55,7 +55,7 @@ const SignIn = () => {
 //EMAIL validation 
 const [usernameState , dispatch2 ]= useReducer(usernameReducer , {
   value:'' ,
-  isValid: false,
+  isvalid: false,
   isTouched :false
   });
   
@@ -72,7 +72,7 @@ const touchHandler = () =>{
 //PASS validation 
 const [passState , dispatch3 ]= useReducer(passReducer , {
   value:'' ,
-  isValid: false,
+  isvalid: false,
   isTouched :false
   });
   
@@ -106,16 +106,29 @@ const emailSubmitHandler = async event =>{
       }
     );
    const responseData = await response;
-   console.log(responseData) ;
-   
-  //  SetCookie("Token" , responseData.data.token);
-  //  setIsLoading(false);
-  //  window.location.href = '/' ;
+
+   if(responseData.data.user.user_role == 'admin'){
+      SetCookie("AdminToken" , responseData.data.token);
+      localStorage.setItem("AdminData", JSON.stringify(responseData.data.user._id))
+      setIsLoading(false);
+      window.location.href = '/' ;
+   }else if(responseData.data.user.user_role == 'userA'){
+    SetCookie("UserA" , responseData.data.token);
+    localStorage.setItem("UserAData", JSON.stringify(responseData.data.user._id))
+    setIsLoading(false);
+    window.location.href = '/' ;
+   }else if(responseData.data.user.user_role == 'userB'){
+    SetCookie("UserB" , responseData.data.token);
+    localStorage.setItem("UserBData", JSON.stringify(responseData.data.user._id))
+    setIsLoading(false);
+    window.location.href = '/' ;
+   }
+
   } 
   catch (err) {
     console.log(err);
     setIsLoading(false);
-    // setError(err.response.data.error || "SomeThing Went Wrong , Please Try Again .");
+    setError(err.responseData.data.error || "SomeThing Went Wrong , Please Try Again .");
   }
 };
 
@@ -152,11 +165,11 @@ const errorHandler =() =>{
               value={usernameState.value}
               onChange={usernameChangeHandler}
               onBlur={touchHandler}
-              isValid={usernameState.isValid}
+              isvalid={usernameState.isvalid.toString()}
               type='name'
               placeholder="User Name " 
-              className={`p-3 ${!usernameState.isValid && usernameState.isTouched && 'form-control-invalid' }`}/>
-            {!usernameState.isValid && usernameState.isTouched && <p style={{color:'red'}}>Please Enter A Vaild UserName</p>}
+              className={`p-3 ${!usernameState.isvalid && usernameState.isTouched && 'form-control-invalid' }`}/>
+            {!usernameState.isvalid && usernameState.isTouched && <p style={{color:'red'}}>Please Enter A Vaild UserName</p>}
 
             </Form.Group>
 
@@ -167,12 +180,12 @@ const errorHandler =() =>{
               value={passState.value}
               onChange={passChangeHandler}
               onBlur={passtouchHandler}
-              isValid={passState.isValid}
+              isvalid={passState.isvalid.toString()}
               type="password" 
               placeholder="Password" 
-              className={`p-3 ${!passState.isValid && passState.isTouched && 'form-control-invalid' }`}
+              className={`p-3 ${!passState.isvalid && passState.isTouched && 'form-control-invalid' }`}
               />
-            {!passState.isValid && passState.isTouched && <p style={{color:'red'}}>Please Enter A Vaild PassWord</p>}
+            {!passState.isvalid && passState.isTouched && <p style={{color:'red'}}>Please Enter A Vaild PassWord</p>}
 
             </Form.Group>
 
@@ -181,7 +194,7 @@ const errorHandler =() =>{
 
           <button     
             className='sign-btn fs-4 rounded col-md-4 col-6 fw-bold text-white p-3 my-3'
-            disabled={!usernameState.isValid || !passState.isValid}
+            disabled={!usernameState.isvalid || !passState.isvalid}
             type="submit"
             style={{ background:'#007063' ,  cursor: 'pointer' }}>
             SIGN IN                              
