@@ -13,13 +13,15 @@ const {
     loginRoutes,
     userRoutes,
     specialityRoutes,
-    clientRoutes
+    clientRoutes,
+    statusRoutes
 } = require("./routes/allRoutes");
 
 app.use("/api", loginRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/speciality", specialityRoutes);
 app.use("/api/client", clientRoutes);
+app.use("/api/status", statusRoutes);
 
 const port = 5000;
 const server = app.listen(port, async () => {
