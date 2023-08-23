@@ -7,7 +7,7 @@ import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { FiFilter } from 'react-icons/fi';
 
-//search filter
+//search filter 
 const getSearchFilter = (searchName, specialities) => {
   if (!searchName ) {
     return specialities;

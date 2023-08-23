@@ -102,7 +102,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/status'}}>
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/statuses'}}>
             <NavIcon>
                 <TbStatusChange className='fs-4' />
             </NavIcon>

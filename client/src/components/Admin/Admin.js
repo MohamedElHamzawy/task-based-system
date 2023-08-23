@@ -50,7 +50,6 @@ const Admin = () => {
             <Route path="/statuses" element={<Statuses/>} />
             <Route path="/status/:id" element={<StatusDetails/>} />
             <Route path="/addstatus" element={<AddStatus/>}  />
-
             <Route path="/settings" element={<Settings/>} />
           </Routes> 
         </div>
