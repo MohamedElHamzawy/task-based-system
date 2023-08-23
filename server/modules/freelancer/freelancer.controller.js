@@ -17,7 +17,7 @@ const getFreelancer = async (req, res, next) => {
 
 const createFreelancer = async (req,res,next) => {
     const {name, phone, speciality} = req.body;
-    new freelancerModel({freelancername: name, phone: phone, speciality: speciality});
+    new freelancerModel({freelancername: name, phone: phone, speciality: speciality}).save();
     res.json({message: "Freelancer has been created successfully"});
 }
 
