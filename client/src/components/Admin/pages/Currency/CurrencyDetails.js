@@ -10,10 +10,10 @@ import { TiArrowBack } from 'react-icons/ti';
 
 
 
-const SpecialityDetails = () => {
+const CurrencyDetails = () => {
 
     const [editName, setEditName] = useState(false);
-    const [editType, setEditType] = useState(false);
+    const [editPrice, setEditPrice] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -21,20 +21,20 @@ const SpecialityDetails = () => {
 
     let { id } = useParams();
 
-    const [speciality, setSpeciality] = useState([]);
-    const [specialityName, setSpecialityName] = useState();
-    const [specialityType, setSpecialityType] = useState();
+    const [currency, setCurrency] = useState([]);
+    const [currencyName, setCurrencyName] = useState();
+    const [currencyPrice, setCurrencyPrice] = useState();
 
     useEffect(() => {
         let timerId;
         if (loading) {
             setIsLoading(true);
             timerId = setTimeout(async () => {
-                await axios.get(`http://localhost:5000/api/speciality/${id}`).then((res) => {
-                      setSpeciality(res.data.speciality);
-                      setSpecialityName(res.data.speciality.specialityName);
-                      setSpecialityType(res.data.speciality.specialityType);
-                    console.log(res.data.speciality)
+                await axios.get(`http://localhost:5000/api/currency/${id}`).then((res) => {
+                  setCurrency(res.data.message);
+                  setCurrencyName(res.data.message.currencyname);
+                  setCurrencyPrice(res.data.message.priceToEGP);
+                  console.log(res.data.message)
                 });
                 setLoading(false);
                 setIsLoading(false);
@@ -44,17 +44,17 @@ const SpecialityDetails = () => {
     }, [loading]);
 
     //////////////////////////////////////
-    const editSpecialityHandler = async (event) => {
+    const editCurrencyHandler = async (event) => {
         event.preventDefault();
         // send api request to validate data
         setIsLoading(true);
         try {
             setError(null);
             const response = await axios.post(
-                `http://localhost:5000/api/speciality/${speciality._id}`,
+                `http://localhost:5000/api/currency/${currency._id}`,
                 {
-                    name: specialityName,
-                    type: specialityType,
+                    name: currencyName,
+                    price: currencyPrice,
                 }
             );
             const responseData = await response;
@@ -62,7 +62,7 @@ const SpecialityDetails = () => {
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.message);
             }
-            setError(responseData.data.error);
+            setError(responseData.data.message);
             setIsLoading(false);
 
         } catch (err) {
@@ -72,12 +72,12 @@ const SpecialityDetails = () => {
     };
 
     //delete user 
-    const deleteSpecialityHandler = async () => {
+    const deleteCurrencyHandler = async () => {
         setIsLoading(true);
         try {
             setError(null);
             const response = await axios.delete(
-                ` http://localhost:5000/api/speciality/${id}`
+                ` http://localhost:5000/api/currency/${id}`
                 //  ,
                 //  { headers :{
                 //     'Authorization':`Bearer ${token}`
@@ -88,7 +88,7 @@ const SpecialityDetails = () => {
             console.log(responseData.data)
             setError(responseData.data.message);
             setIsLoading(false);
-            window.location.href = '/specialities';
+            window.location.href = '/currency';
         } catch (err) {
             setIsLoading(false);
             setError(err.message || "SomeThing Went Wrong , Please Try Again .");
@@ -108,26 +108,26 @@ const SpecialityDetails = () => {
 
             <div className="row mb-4">
                 <div className="col-3 text-center">
-                    <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/specialities' }}><TiArrowBack /> </button>
+                    <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/currency' }}><TiArrowBack /> </button>
                 </div>
-                <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  Speciality Details</h2>
+                <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  Currency Details</h2>
             </div>
 
             <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
 
                 <div className="col-12 row p-3 justify-content-end ">
                     <div className="col-4">
-                        <button className="delete-btn px-4 p-1 fs-3" onClick={deleteSpecialityHandler}>
+                        <button className="delete-btn px-4 p-1 fs-3" onClick={deleteCurrencyHandler}>
                             <RiDeleteBinFill />
                         </button>
                     </div>
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Speciality Name :</h3>
-                    <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {speciality.specialityName} </p>
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Currency Name :</h3>
+                    <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {currency.currencyname} </p>
                     <div className={editName ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-                        <input type="text" onChange={(e) => { setSpecialityName(e.target.value) }} className="search w-100 p-2" />
+                        <input type="text" onChange={(e) => { setCurrencyName(e.target.value) }} className="search w-100 p-2" />
                     </div>
                     <div className="col-1 ">
                         <button onClick={() => { setEditName(!editName) }} className="edit-btn fs-2">
@@ -138,13 +138,13 @@ const SpecialityDetails = () => {
                 {/* /////////////////////// */}
 
                <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Speciality Type :</h3>
-                    <p className={!editType ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {speciality.specialityType} </p>
-                    <div className={editType ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-                        <input type="text" onChange={(e) => { setSpecialityType(e.target.value) }} className="search w-100 p-2" />
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Price In EGP :</h3>
+                    <p className={!editPrice ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {currency.priceToEGP} </p>
+                    <div className={editPrice ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                        <input type="number" onChange={(e) => { setCurrencyPrice(e.target.value) }} className="search w-100 p-2" />
                     </div>
                     <div className="col-1 ">
-                        <button onClick={() => { setEditType(!editType) }} className="edit-btn fs-2">
+                        <button onClick={() => { setEditPrice(!editPrice) }} className="edit-btn fs-2">
                             <BiSolidEditAlt />
                         </button>
                     </div>
@@ -157,9 +157,9 @@ const SpecialityDetails = () => {
                     <button
                         disabled={
                             !editName &&
-                            !editType
+                            !editPrice
                         }
-                        className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editSpecialityHandler}>
+                        className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editCurrencyHandler}>
                         Edit
                     </button>
                 </div>
@@ -170,4 +170,4 @@ const SpecialityDetails = () => {
     )
 }
 
-export default SpecialityDetails
+export default CurrencyDetails

@@ -14,6 +14,15 @@ import UserDetails from './pages/Users/UserDetails';
 import Settings from './pages/Settings/Settings';
 import AddClient from './pages/Clients/addClient';
 import ClientDetails from './pages/Clients/clientDetails';
+import Currency from './pages/Currency/Currency';
+import CurrencyDetails from './pages/Currency/CurrencyDetails';
+import AddCurrency from './pages/Currency/AddCurrency';
+import FreeLancers from './pages/FreeLancers/FreeLancers';
+import FreeLancerDetails from './pages/FreeLancers/FreeLancerDetails';
+import AddFreeLancer from './pages/FreeLancers/AddFreeLancer';
+import Statuses from './pages/Statuses/Statuses';
+import StatusDetails from './pages/Statuses/StatusDetails';
+import AddStatus from './pages/Statuses/AddStatus';
 
 const Admin = () => {
   return (
@@ -32,6 +41,16 @@ const Admin = () => {
             <Route path="/clients" element={<Clients/>} />
             <Route path="/client/:id" element={<ClientDetails/>} />
             <Route path="/addclient" element={<AddClient/>}  />
+            <Route path="/currency" element={<Currency/>} />
+            <Route path="/currency/:id" element={<CurrencyDetails/>} />
+            <Route path="/addcurrency" element={<AddCurrency/>}  />
+            <Route path="/freelancers" element={<FreeLancers/>} />
+            <Route path="/freelancer/:id" element={<FreeLancerDetails/>} />
+            <Route path="/addfreelancer" element={<AddFreeLancer/>}  />
+            <Route path="/statuses" element={<Statuses/>} />
+            <Route path="/status/:id" element={<StatusDetails/>} />
+            <Route path="/addstatus" element={<AddStatus/>}  />
+
             <Route path="/settings" element={<Settings/>} />
           </Routes> 
         </div>
