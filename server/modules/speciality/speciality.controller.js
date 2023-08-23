@@ -1,4 +1,5 @@
 const specialityModel = require("../../DB/speciality.model");
+const HttpError = require("../../common/httpError");
 
 const getAllSpeciality = async (req,res,next) => {
     const allSpeciality = await specialityModel.find({});
@@ -18,7 +19,7 @@ const createSpeciality = async (req,res,next) => {
     } = req.body;
     const tryGetSpeciality = await specialityModel.findOne({specialityName: name});
     if (tryGetSpeciality) {
-        res.json({error: "Speciality already exist!"});
+        return next(new HttpError("Speciality already exist!", 400));
     } else {
         const newSpeciality = new specialityModel({
             specialityName: name,
@@ -39,7 +40,7 @@ const updateSpeciality = async (req,res,next) => {
         await specialityModel.findByIdAndUpdate({_id: specialityID}, {specialityName: name, specialityType: type});
         res.json({error: "Speciality has been updated successfully!"});
     } else {
-        res.json({error: "Speciality doesn't exist on system"});
+        return next(new HttpError("Speciality doesn't exist on system", 400));
     }
 }
 
@@ -50,7 +51,7 @@ const deleteSpeciality = async (req,res,next) => {
         await specialityModel.deleteOne({_id: specialityID});
         res.json({error: "Speciality has been deleted successfully!"});
     } else {
-        res.json({error: "Speciality doesn't exist on system"});
+        return next(new HttpError("Speciality doesn't exist on system", 400));
     }
 }
 

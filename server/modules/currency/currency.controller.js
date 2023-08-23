@@ -1,4 +1,5 @@
 const currencyModel = require("../../DB/currency.model");
+const HttpError = require("../../common/httpError");
 
 const getAllCurrencies = async (req,res,next) => {
     const currencies = await currencyModel.find({});
@@ -11,7 +12,7 @@ const getCurrency = async (req,res,next) => {
     if (thisCurrency) {
         res.json({message: thisCurrency});
     } else {
-        res.json({error: "This currency doesn't exist"});
+        return next(new HttpError("This currency doesn't exist", 400));
     }
 }
 
@@ -19,7 +20,7 @@ const createCurrency = async (req,res,next) => {
     const {name,price} = req.body;
     const tryGetThisCurrency = await currencyModel.findOne({currencyname:name});
     if (tryGetThisCurrency) {
-        res.json({error: "This currency already exists!"});
+        return next(new HttpError("This currency already exists!", 400));
     } else {
         new currencyModel({currencyname:name, priceToEGP:price}).save();
         res.json({message:"Currency has been created successfully"});
@@ -34,7 +35,7 @@ const updateCurrency = async (req,res,next) => {
         await currencyModel.findByIdAndUpdate({_id: currencyID}, {currencyname:name, priceToEGP: price});
         res.json({message:"Currency has been updated successfully"});
     } else {
-        res.json({error: "This currency doesn't exist on system!"});
+        return next(new HttpError("This currency doesn't exist on system!", 400));
     }
 }
 
@@ -45,7 +46,7 @@ const deleteCurrency = async (req,res,next) => {
         await currencyModel.findByIdAndDelete({_id: currencyID});
         res.json({message:"Currecy has been deleted successfully"});
     } else {
-        res.json({error: "This currency doesn't exist on system!"});
+        return next(new HttpError("This currency doesn't exist on system!", 400));
     }
 }
 module.exports = {getAllCurrencies, getCurrency, createCurrency, updateCurrency, deleteCurrency}
