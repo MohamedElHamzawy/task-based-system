@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema({
+    owner: {
+        type: mongoose.Types.ObjectId
+    },
     title: {
         type: String
     },
     cost: {
-        type: Number
+        type: Number,
+        default: 0
     },
     gain: {
-        type: Number
+        type: Number,
+        default: 0
     }
 }, {timestamps: true});
 

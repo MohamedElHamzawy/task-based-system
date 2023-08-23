@@ -1,4 +1,5 @@
 const freelancerModel = require("../../DB/freelancer.model");
+const accountModel = require("../../DB/account.model");
 
 const getAllFreelancers = async (req,res,next) => {
     const freelancers = await freelancerModel.find({});
@@ -17,7 +18,8 @@ const getFreelancer = async (req, res, next) => {
 
 const createFreelancer = async (req,res,next) => {
     const {name, phone, speciality} = req.body;
-    new freelancerModel({freelancername: name, phone: phone, speciality: speciality}).save();
+    const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, speciality: speciality}).save();
+    new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername});
     res.json({message: "Freelancer has been created successfully"});
 }
 

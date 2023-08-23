@@ -16,7 +16,8 @@ const {
     clientRoutes,
     statusRoutes,
     currencyRoutes,
-    freelancerRoutes
+    freelancerRoutes,
+    accountRoutes
 } = require("./routes/allRoutes");
 
 app.use("/api", loginRoutes);
@@ -26,6 +27,7 @@ app.use("/api/client", clientRoutes);
 app.use("/api/status", statusRoutes);
 app.use("/api/currency", currencyRoutes);
 app.use("/api/freelancer", freelancerRoutes);
+app.use("/api/account", accountRoutes);
 
 const port = 5000;
 const server = app.listen(port, async () => {

@@ -1,4 +1,5 @@
 const clientModel = require("../../DB/client.model");
+const accountModel = require("../../DB/account.model");
 
 const getAllClients = async (req,res,next) => {
     const allClients = await clientModel.find({});
@@ -23,7 +24,8 @@ const createClient = async (req,res,next) => {
     if (tryGetClient) {
         res.json({error: "Client is already existed!"});
     } else {
-        const newClient = new clientModel({clientname: clientName, phone, email, country, city}).save();
+        const newClient = await new clientModel({clientname: clientName, phone, email, country, city}).save();
+        new accountModel({owner: newClient._id, title: newClient.clientname});
         res.json({message: "Client has been added successfully"});
     }
 }
