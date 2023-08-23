@@ -60,42 +60,12 @@ const FreeLancers = () => {
   }, [loading]);
   const [speciality, setSpeciality] = useState('');
 
-  // const specialityChangeHandler = (newOne) => {
-  //   setSpeciality(newOne);
-  // };
-
-
   const [searchName, setSearchName] = useState('');
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [SpecialityFilterData, setSpecialityFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, freeLancers);
   const SpecialityFilter = getSpecialityFilter(speciality, freeLancers);
-
-
-  const deleteFreeLancerHandler = async (id) => {
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.delete(
-        ` http://localhost:5000/api/freelancer/${id}`
-        //  ,
-        //  { headers :{
-        //     'Authorization':`Bearer ${token}`
-        //   }
-        // }
-      )
-      const responseData = await response;
-      console.log(responseData.data)
-      setError(responseData.data.message);
-      setIsLoading(false);
-      window.location.href = '/freeLancers';
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
-
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -135,31 +105,23 @@ const FreeLancers = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-2">
-          <p className="col-4 col-md-5">FullName</p>
-          <p className="col-2 col-md-3">Speciality</p>
-          <p className="col-3 col-md-2">Details</p>
-          <p className="col-2 ">Delete</p>
+          <p className="col-5 text-center">FullName</p>
+          <p className="col-4 ">Speciality</p>
+          <p className="col-2 text-center">Details</p>
 
         </div>
 
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((freeLancer) => (
           <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
-            <p className="col-4 col-md-5 name-Speciality">{freeLancer.freelancername}</p>
+            <p className="col-5 name-Speciality text-center">{freeLancer.freelancername}</p>
             
           {specialities.map((specialitie) => (
              freeLancer.speciality == specialitie._id ? 
-              <p className = "col-3 name-Speciality" key={ specialitie._id } > { specialitie.specialityName }</p>
+              <p className = "col-5 name-Speciality" key={ specialitie._id } > { specialitie.specialityName }</p>
             : ''        
           ))}
 
         <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/freeLancer/${freeLancer._id}`}><BsFillFolderSymlinkFill /></a> </p>
-        <p className="col-2">
-          {freeLancer.speciality == 'admin' ?
-            <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
-            :
-            <button className=" delete-btn p-2 px-3" onClick={() => deleteFreeLancerHandler(freeLancer._id)}> <RiDeleteBinFill /> </button>
-          }
-        </p>
       </div>
       ))  :
       <div className="row  p-3 m-0 text-center" >
@@ -171,22 +133,15 @@ const FreeLancers = () => {
 
       {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((freeLancer) => (
         <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
-          <p className="col-4 col-md-5 name-Speciality">{freeLancer.freelancername}</p>
+          <p className="col-5 name-Speciality">{freeLancer.freelancername}</p>
 
           {specialities.map((specialitie) => (
              freeLancer.speciality == specialitie._id ? 
-              <p className = "col-3 name-Speciality" key={ specialitie._id } > { specialitie.specialityName }</p>
+              <p className = "col-5 name-Speciality" key={ specialitie._id } > { specialitie.specialityName }</p>
             : ''        
           ))}
 
           <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/freelancer/${freeLancer._id}`}><BsFillFolderSymlinkFill /></a> </p>
-          <p className="col-2">
-            {freeLancer.speciality == 'admin' ?
-              <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
-              :
-              <button className=" delete-btn p-2 px-3" onClick={() => deleteFreeLancerHandler(freeLancer._id)}> <RiDeleteBinFill /> </button>
-            }
-          </p>
         </div>
       )) :
         <div className="row  p-3 m-0 text-center" >

@@ -81,7 +81,7 @@ const Currency = () => {
         </div>
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name" 
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Currency Name" 
            onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>
@@ -90,16 +90,16 @@ const Currency = () => {
  
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-4 speciality-table-head">CurrencyName</p>
+          <p className="col-4 speciality-table-head text-center">CurrencyName</p>
           <p className="col-3 speciality-table-head">Price in EGP</p>
           <p className="col-2  speciality-table-head">Details</p>
-          <p className="col-2 ">Delete</p>
+          <p className="col-2 speciality-table-head">Delete</p>
 
         </div>
 
         { !searchFilter.length==0 ? searchFilter.map((currency) => (
           <div className="table-body row pt-3 p-0 m-0 " key={currency._id}>
-            <p className="col-4  ">{currency.currencyname}</p>
+            <p className="col-4  text-center">{currency.currencyname}</p>
             <p className="col-3  ">{currency.priceToEGP}</p>
             <p className="col-2  fs-5 "> <a className="view-details fs-4" href={`/currency/${currency._id}`}><BsFillFolderSymlinkFill/></a> </p>
             <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteCurrencyHandler(currency._id)}> <RiDeleteBinFill/> </button></p>     

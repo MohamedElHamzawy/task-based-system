@@ -120,7 +120,7 @@ const ClientDetails = () => {
                 <div className="col-3 text-center">
                     <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/clients' }}><TiArrowBack /> </button>
                 </div>
-                <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  Client Details</h2>
+                <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  Client Details</h2>
             </div>
 
             <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
@@ -134,7 +134,7 @@ const ClientDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> Client Name :</h3>
+                    <h3 className="col-10 col-md-5  edit-form-lable text-start"> Client Name :</h3>
                     <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {client.clientname} </p>
                     <div className={editName ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setClientName(e.target.value) }} className="search w-100 p-2" />
@@ -148,7 +148,7 @@ const ClientDetails = () => {
                 {/* /////////////////////// */}
 
                 <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> Client Email :</h3>
+                    <h3 className="col-10 col-md-5  edit-form-lable text-start"> Client Email :</h3>
                     <p className={!editEmail ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {client.email} </p>
                     <div className={editEmail ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="email" onChange={(e) => { setClientEmail(e.target.value) }} className="search w-100 p-2" />
@@ -161,7 +161,7 @@ const ClientDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> Phone :</h3>
+                    <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
                     <p className={!editNumber ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {client.phone} </p>
                     <div className={editNumber ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
@@ -174,7 +174,7 @@ const ClientDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> Country :</h3>
+                    <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
                     <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {client.country} </p>
                     <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
@@ -187,7 +187,7 @@ const ClientDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-8 col-md-5  edit-form-lable text-start"> City :</h3>
+                    <h3 className="col-10 col-md-5  edit-form-lable text-start"> City :</h3>
                     <p className={!editCity ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {client.city} </p>
                     <div className={editCity ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setCity(e.target.value) }} className="search w-100 p-2" />

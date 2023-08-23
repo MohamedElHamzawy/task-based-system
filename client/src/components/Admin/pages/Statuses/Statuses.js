@@ -10,9 +10,7 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 const getSearchFilter = (searchName, statuses) => {
   if (!searchName ) {
     return statuses;
-  }  return statuses.filter(
-    (status) =>  {status.statusname.includes(searchName); }
-  )
+  }return statuses.filter((status) => status.statusname.includes(searchName))
 };
 
 
@@ -30,7 +28,6 @@ const Statuses = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/status/").then((res) => {
           setStatuses(res.data.statuses);
-          console.log(res.data.statuses)
         });
         setLoading(false);
         setIsLoading(false);
@@ -83,7 +80,7 @@ const Statuses = () => {
         </div>
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name" 
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Status Name" 
            onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>

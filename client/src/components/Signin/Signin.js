@@ -128,7 +128,7 @@ const emailSubmitHandler = async event =>{
   catch (err) {
     console.log(err);
     setIsLoading(false);
-    setError(err.responseData.data.error || "SomeThing Went Wrong , Please Try Again .");
+    setError(err.response.data.err || "SomeThing Went Wrong , Please Try Again .");
   }
 };
 

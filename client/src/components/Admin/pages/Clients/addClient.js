@@ -262,7 +262,7 @@ const cityTouchHandler = () => {
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newSpecialitySubmitHandler}>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Client Name:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Client Name:</label>
        <input type='text' placeholder='Client Name'
           value={clientNameState.value}
           onChange={clientNameChangeHandler}
@@ -275,7 +275,7 @@ const cityTouchHandler = () => {
         />
         </div>
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Client Email:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Client Email:</label>
           <input type='email' placeholder='Client Email'
             value={clientEmailState.value}
             onChange={clientEmailChangeHandler}
@@ -289,7 +289,7 @@ const cityTouchHandler = () => {
         </div>
         
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Country:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
           <input type='text' placeholder='Country'
             value={countryState.value}
             onChange={countryChangeHandler}
@@ -303,7 +303,7 @@ const cityTouchHandler = () => {
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>City:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>City:</label>
           <input type='text' placeholder='city'
             value={cityState.value}
             onChange={cityChangeHandler}
@@ -317,7 +317,7 @@ const cityTouchHandler = () => {
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Phone :</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Phone :</label>
           <input type='number' placeholder='Phone Number'
             value={numberState.value}
             onChange={numberChangeHandler}
