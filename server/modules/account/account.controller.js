@@ -1,4 +1,5 @@
 const accountModel = require("../../DB/account.model");
+const HttpError = require("../../common/httpError");
 
 const getAllAccounts = async (req,res,next) => {
     const accounts = await accountModel.find({});
@@ -11,7 +12,7 @@ const getAccount = async (req,res,next) => {
     if (thisAccount) {
         res.json({account: thisAccount});
     } else {
-        res.json({error: "This account doesn't exist on system"});
+        return next(new HttpError("This account doesn't exist on system", 400));
     }
 }
 
@@ -29,7 +30,7 @@ const updateAccount = async (req,res,next) => {
         await accountModel.findByIdAndUpdate({_id: accountID}, {title: title});
         res.json({message: "Account has been updated successfully"});
     } else {
-        res.json({error: "This Account doesn't exist on system"});
+        return next(new HttpError("This Account doesn't exist on system", 400));
     }
 }
 
@@ -40,7 +41,7 @@ const deleteAccount = async (req,res,next) => {
         await accountModel.findByIdAndDelete({_id: accountID});
         res.json({message: "Account has been deleted successfully"});
     } else {
-        res.json({error: "This Account doesn't exist on system"});
+        return next(new HttpError("This Account doesn't exist on system", 400));
     }
 }
 module.exports = {getAllAccounts, getAccount, createAccount, updateAccount, deleteAccount}

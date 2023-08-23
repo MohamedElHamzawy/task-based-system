@@ -1,5 +1,6 @@
 const freelancerModel = require("../../DB/freelancer.model");
 const accountModel = require("../../DB/account.model");
+const HttpError = require("../../common/httpError");
 
 const getAllFreelancers = async (req,res,next) => {
     const freelancers = await freelancerModel.find({});
@@ -12,7 +13,7 @@ const getFreelancer = async (req, res, next) => {
     if (thisFreelancer) {
         res.json({freelancer: thisFreelancer});
     } else {
-        res.json({error: "This freelancer doesn't exist on this system"});
+        return next(new HttpError("This freelancer doesn't exist on system", 400));
     }
 }
 
@@ -31,7 +32,7 @@ const updateFreelancer = async (req,res,next) => {
         await freelancerModel.findByIdAndUpdate({_id: freelancerID}, {freelancername: name, phone: phone, speciality: speciality});
         res.json({message: "Freelancer has been updated successfully"});
     } else {
-        res.json({error: "This freelancer doesn't exist on system"});
+        return next(new HttpError("This freelancer doesn't exist on system", 400));
     }
 }
 
@@ -42,7 +43,7 @@ const deleteFreelancer = async (req,res,next) => {
         await freelancerModel.findByIdAndDelete({_id: freelancerID});
         res.json({message: "Freelancer has been deleted successfully"});
     } else {
-        res.json({error: "This freelancer doesn't exist on system"});
+        return next(new HttpError("This freelancer doesn't exist on system", 400));
     }
 }
 module.exports = {getAllFreelancers, getFreelancer, createFreelancer, updateFreelancer, deleteFreelancer}

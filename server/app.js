@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const HttpError = require("./common/httpError");
 
 require("dotenv").config();
 const cors = require("cors");
@@ -28,7 +29,12 @@ app.use("/api/status", statusRoutes);
 app.use("/api/currency", currencyRoutes);
 app.use("/api/freelancer", freelancerRoutes);
 app.use("/api/account", accountRoutes);
-
+app.use((req,res,next) => {
+    return next(new HttpError("Route Not Found", 404));
+});
+app.use((error,req,res,next) => {
+    res.status(error.code || 500).json({err: error.message || "Something went wrong!"});
+})
 const port = 5000;
 const server = app.listen(port, async () => {
     await mongoose.connect("mongodb+srv://mohamedfelhamzawy:01029505696@cluster0.zti9wu1.mongodb.net/", {

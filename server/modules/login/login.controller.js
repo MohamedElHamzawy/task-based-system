@@ -1,5 +1,6 @@
 const userModel = require("../../DB/user.model");
 const jwt = require("jsonwebtoken");
+const HttpError = require("../../common/httpError");
 
 const userLogin = async (req,res,next) => {
     const {userName, password} = req.body;
@@ -13,10 +14,10 @@ const userLogin = async (req,res,next) => {
                 user: tryGetUser
             });
         } else {
-            res.json({error: "Password is incorrect"});
+            return next(new HttpError("Password is incorrect", 400));
         }
     } else {
-        res.json({error: "User doesn't exist on system"});
+        return next(new HttpError("User doesn't exist on system!", 400));
     }
 }
 

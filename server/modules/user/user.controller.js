@@ -1,4 +1,5 @@
 const userModel = require("../../DB/user.model");
+const HttpError = require("../../common/httpError");
 
 const showAllUsers = async (req,res,next) => {
     const allUsers = await userModel.find({});
@@ -25,7 +26,7 @@ const createUser = async (req,res,next) => {
 
     const tryGetUser = await userModel.findOne({username: userName});
     if (tryGetUser) {
-        res.json({error:"User Already Registed"});
+        return next(new HttpError("User already registered!", 400));
     } else {
         const newUser = new userModel({
             fullname: fullName,
@@ -58,7 +59,7 @@ const updateUser = async (req,res,next) => {
         await userModel.updateOne({_id: userID}, {fullname: fullName, username: userName, password: password, user_role: userRole, user_type: userType, country: country, phone: phone, speciality: speciality});
         res.json({message:"User has been updated successfully"});
     } else {
-        res.json({error: "User doesn't exist on system!"});
+        return next(new HttpError("User doesn't exist on system!", 400));
     }
 }
 
@@ -69,7 +70,7 @@ const deleteUser = async (req,res,next) => {
         await userModel.deleteOne({_id: userID});
         res.json({message:"User has been deleted successfully"});
     } else {
-        res.json({error: "User doesn't exist on system!"});
+        return next(new HttpError("User doesn't exist on system!", 400));
     }
 }
 

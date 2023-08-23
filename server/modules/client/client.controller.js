@@ -1,5 +1,6 @@
 const clientModel = require("../../DB/client.model");
 const accountModel = require("../../DB/account.model");
+const HttpError = require("../../common/httpError");
 
 const getAllClients = async (req,res,next) => {
     const allClients = await clientModel.find({});
@@ -22,7 +23,7 @@ const createClient = async (req,res,next) => {
     } = req.body;
     const tryGetClient = await clientModel.findOne({email});
     if (tryGetClient) {
-        res.json({error: "Client is already existed!"});
+        return next(new HttpError("Client is already existed!", 400));
     } else {
         const newClient = await new clientModel({clientname: clientName, phone, email, country, city}).save();
         new accountModel({owner: newClient._id, title: newClient.clientname});
@@ -44,7 +45,7 @@ const updateClient = async (req,res,next) => {
         await clientModel.findByIdAndUpdate({_id: clientID}, {clientname: clientName, phone, email, country, city});
         res.json({message: "Client has been updated successfully"});
     } else {
-        res.json({error: "Client doesn't exist on system!"});
+        return next(new HttpError("Client doesn't exist on system!", 400));
     }
 }
 
@@ -55,7 +56,7 @@ const deleteClient = async (req,res,next) => {
         await clientModel.findByIdAndDelete({_id: clientID});
         res.json({message: "Client has been deleted successfully"});
     } else {
-        res.json({error: "Client doesn't exist on system!"});
+        return next(new HttpError("Client doesn't exist on system!", 400));
     }
 }
 
