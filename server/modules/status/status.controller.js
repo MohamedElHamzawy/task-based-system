@@ -16,7 +16,8 @@ const getStatus = async (req,res,next) => {
 }
 
 const createStatus = async (req,res,next) => {
-    const {name,slug} = req.body;
+    const {name} = req.body;
+    const slug = name.replace(" ", "-");
     const tryGetThisStatus = await statusModel.findOne({slug:slug});
     if (tryGetThisStatus) {
         res.json({error: "This status already exists!"});
@@ -27,7 +28,8 @@ const createStatus = async (req,res,next) => {
 }
 
 const updateStatus = async (req,res,next) => {
-    const {name, slug} = req.body;
+    const {name} = req.body;
+    const slug = name.replace(" ", "-");
     const statusID = req.params.id;
     const tryGetThisStatus = await statusModel.findOne({slug:slug});
     if (tryGetThisStatus) {
