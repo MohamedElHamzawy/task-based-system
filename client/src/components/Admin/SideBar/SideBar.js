@@ -7,6 +7,10 @@ import { BiLogOut } from 'react-icons/bi';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
+import { BsCurrencyExchange } from 'react-icons/bs';
+import { SiFreelancer } from 'react-icons/si';
+import { TbStatusChange } from 'react-icons/tb';
+
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -61,12 +65,13 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='my-3' onClick={()=>{window.location.href = '/specialities'}}>
+
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
-                <BiSolidCategoryAlt className='fs-4' />
+                <SiFreelancer className='fs-4' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Specialities</p>
+             <p className="fs-3 "> Freelancers</p>
             </NavText>           
           </NavItem>
 
@@ -76,6 +81,33 @@ class SideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Clients</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className='my-3' onClick={()=>{window.location.href = '/specialities'}}>
+            <NavIcon>
+                <BiSolidCategoryAlt className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Specialities</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/currency'}}>
+            <NavIcon>
+                <BsCurrencyExchange className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Currency</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/status'}}>
+            <NavIcon>
+                <TbStatusChange className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Status</p>
             </NavText>           
           </NavItem>
 
