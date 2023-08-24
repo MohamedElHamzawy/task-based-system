@@ -32,7 +32,7 @@ const updateStatus = async (req,res,next) => {
     const {name} = req.body;
     const slug = name.replace(" ", "-");
     const statusID = req.params.id;
-    const tryGetThisStatus = await statusModel.findOne({slug:slug});
+    const tryGetThisStatus = await statusModel.findOne({_id:statusID});
     if (tryGetThisStatus) {
         await statusModel.findByIdAndUpdate({_id: statusID}, {statusname: name, slug: slug});
         res.json({message:"Status has been updated successfully"});
