@@ -58,7 +58,7 @@ const StatusDetails = () => {
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.message);
             }
-            setError(responseData.data.error);
+            setError(responseData.data.message);
             setIsLoading(false);
 
         } catch (err) {
