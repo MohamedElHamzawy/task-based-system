@@ -28,16 +28,28 @@ const createUser = async (req,res,next) => {
     if (tryGetUser) {
         return next(new HttpError("User already registered!", 400));
     } else {
-        const newUser = new userModel({
-            fullname: fullName,
-            username: userName,
-            password: password,
-            user_role: userRole,
-            user_type: userType,
-            country: country,
-            phone: phone,
-            speciality: speciality
-        }).save();
+        if (userRole == "userB") {
+            const newUser = new userModel({
+                fullname: fullName,
+                username: userName,
+                password: password,
+                user_role: userRole,
+                user_type: userType,
+                country: country,
+                phone: phone,
+                speciality: speciality
+            }).save();
+        } else {
+            const newUser = new userModel({
+                fullname: fullName,
+                username: userName,
+                password: password,
+                user_role: userRole,
+                user_type: userType,
+                country: country,
+                phone: phone,
+            }).save();
+        }
         res.json({message: "User has been created successfully"});
     }
 }
