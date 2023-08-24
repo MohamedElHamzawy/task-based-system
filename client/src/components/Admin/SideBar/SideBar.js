@@ -10,6 +10,7 @@ import { AiFillSetting } from 'react-icons/ai';
 import { BsCurrencyExchange } from 'react-icons/bs';
 import { SiFreelancer } from 'react-icons/si';
 import { TbStatusChange } from 'react-icons/tb';
+import { MdCalculate } from 'react-icons/md';
 
 
 import RemoveCookie from '../../../hooks/removeCookie';
@@ -65,6 +66,14 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/accounts'}}>
+            <NavIcon>
+                <MdCalculate className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Accounts</p>
+            </NavText>           
+          </NavItem>
 
           <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
