@@ -158,7 +158,7 @@ const UserDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  User Details</h2>
+        <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  User Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
@@ -175,7 +175,7 @@ const UserDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> Full Name :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Full Name :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {user.fullname} </p>
           <div className={editFull ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
@@ -195,7 +195,7 @@ const UserDetails = () => {
         {/* /////////////////////// */}
 
         <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> User Name :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> User Name :</h3>
           <p className={!editUser ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.username} </p>
           <div className={editUser ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setUserName(e.target.value) }} className="search w-100 p-2" />
@@ -211,7 +211,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> Phone :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
           <p className={!editNumber ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
           <div className={editNumber ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
@@ -229,7 +229,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> Country :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
           <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
           <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
@@ -246,7 +246,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> User Role :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> User Role :</h3>
           <p className={!editRole ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
           <div className={editRole ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <select id="role" name="role" className="search w-100 p-2" value={userRole}
@@ -269,7 +269,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className={visable ? "d-flex col-12 col-xl-6 row p-2 " : 'd-none'}>
-          <h3 className="col-8 col-md-5  edit-form-lable text-start">Speciality :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
           {specialities.map((speciality) => (
             speciality._id == specialityId ?
               <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>

@@ -92,19 +92,19 @@ const Clients = () => {
  
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-3 speciality-table-head">Name</p>
-          <p className="col-4 speciality-table-head">Email</p>
-          <p className="col-3  speciality-table-head">Details</p>
-          <p className="col-2 ">Delete</p>
+          <p className="col-4 speciality-table-head text-center">Name</p>
+          <p className="col-5 speciality-table-head">Email</p>
+          <p className="col-3  speciality-table-head text-center">Details</p>
+          {/* <p className="col-2 ">Delete</p> */}
 
         </div>
 
         { !searchFilter.length==0 ? searchFilter.map((client) => (
           <div className="table-body row pt-3 p-0 m-0 " key={client._id}>
-            <p className="col-3  name-role">{client.clientname}</p>
-            <p className="col-5 col-md-4 name-role">{client.email}</p>
-            <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/client/${client._id}`}><BsFillFolderSymlinkFill/></a> </p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>     
+            <p className="col-4 name-role text-center">{client.clientname}</p>
+            <p className="col-5 name-role">{client.email}</p>
+            <p className="col-3 fs-5 text-center"> <a className="view-details fs-4" href={`/client/${client._id}`}><BsFillFolderSymlinkFill/></a> </p>
+            {/* <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>      */}
           </div>
         ))  : 
         <div className="row  p-3 m-0 text-center" >

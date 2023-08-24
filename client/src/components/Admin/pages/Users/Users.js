@@ -113,7 +113,7 @@ const Users = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-2">
-          <p className="col-4 col-md-5">FullName</p>
+          <p className="col-4 col-md-5 text-center">FullName</p>
           <p className="col-2 col-md-3">Role</p>
           <p className="col-3 col-md-2">Details</p>
           <p className="col-2 ">Delete</p>
@@ -122,7 +122,7 @@ const Users = () => {
 
         { searchFilterData ? !searchFilter.length==0 ? searchFilter.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-            <p className="col-4 col-md-5 name-role">{user.fullname}</p>
+            <p className="col-4 col-md-5 name-role text-center">{user.fullname}</p>
             <p className="col-3 name-role">{user.user_role}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill/></a> </p>
             <p className="col-2">

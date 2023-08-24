@@ -139,7 +139,7 @@ const FreeLancerDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/freelancers' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-9 col-lg-7 text-center edit-form-lable p-2">  Freelancer Details</h2>
+        <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  Freelancer Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
@@ -153,7 +153,7 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-xl-6 row ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> Full Name :</h3>
+          <h3 className="col-9 col-md-5  edit-form-lable text-start">Full Name :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
           <div className={editFull ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />

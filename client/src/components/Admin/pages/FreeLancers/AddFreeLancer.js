@@ -162,13 +162,13 @@ const AddFreeLancer = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/freelancers' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-9 col-lg-7 text-center edit-form-lable ">  Add New FreeLancer</h2>
+        <h2 className="col-12 col-lg-7 text-center edit-form-lable py-4">  Add New FreeLancer</h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newFreeLancerSubmitHandler}>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'> Name:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'> Name:</label>
           <input type='text' placeholder='Full Name'
             value={fullNameState.value}
             onChange={fullNameChangeHandler}
@@ -182,7 +182,7 @@ const AddFreeLancer = () => {
         </div>
 
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="speciality" className="col-10 col-lg-5 fw-bold add-user-p"> Speciality:</label>
+          <label htmlFor="speciality" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Speciality:</label>
 
           <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={speciality}
             onChange={(event) => specialityChangeHandler(event.target.value)}>
@@ -195,7 +195,7 @@ const AddFreeLancer = () => {
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Phone :</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Phone :</label>
           <input type='number' placeholder='Phone Number'
             value={numberState.value}
             onChange={numberChangeHandler}

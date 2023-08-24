@@ -140,7 +140,7 @@ const AddSpeciality = () => {
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newSpecialitySubmitHandler}>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Speciality Name:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Speciality Name:</label>
        <input type='text' placeholder='Speciality Type'
           value={specialityNameState.value}
           onChange={specialityNameChangeHandler}
@@ -153,7 +153,7 @@ const AddSpeciality = () => {
         />
         </div>
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Speciality Type:</label>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Speciality Type:</label>
           <input type='text' placeholder='Speciality Name'
             value={specialitTypeState.value}
             onChange={specialitTypeChangeHandler}

@@ -91,7 +91,7 @@ const Specialities = () => {
  
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 speciality-table-head">specialityName</p>
+          <p className="col-5 speciality-table-head text-center">specialityName</p>
           <p className="col-4 speciality-table-head">specialityType</p>
           <p className="col-3  speciality-table-head">Details</p>
           {/* <p className="col-2 ">Delete</p> */}
@@ -100,7 +100,7 @@ const Specialities = () => {
 
         { !searchFilter.length==0 ? searchFilter.map((speciality) => (
           <div className="table-body row pt-3 p-0 m-0 " key={speciality._id}>
-            <p className="col-5  name-role">{speciality.specialityName}</p>
+            <p className="col-5  name-role text-center">{speciality.specialityName}</p>
             <p className="col-5 col-md-4 name-role">{speciality.specialityType}</p>
             <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/speciality/${speciality._id}`}><BsFillFolderSymlinkFill/></a> </p>
             {/* <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(speciality._id)}> <RiDeleteBinFill/> </button></p>      */}
