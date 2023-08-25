@@ -155,4 +155,74 @@ const deliverTask = async (req,res,next) => {
     }
 }
 
-module.exports = {getMyTasks, getTask, createTask, acceptTask, confirmTask, progressTask, completeTask, deliverTask}
+const updateTask = async (req,res,next) => {
+    const role = req.user.userRole;
+    const taskID = req.params.id;
+    const {
+        title,
+        channel,
+        client_id,
+        freelancer,
+        description,
+        speciality,
+        taskstatus,
+        deadline,
+        created_by,
+        accepted_by,
+        task_price,
+        task_currency,
+        demand_price,
+        demand_currency,
+        paid_by_client,
+        paid_currency,
+        cost_price,
+        cost_currency,
+        profit_percentage,
+        profit_amount,
+        profit_currency
+    } = req.body;
+    const thisTask = await taskModel.findOne({_id: taskID});
+    if (thisTask && role == "admin") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {
+            title,
+            channel,
+            client_id,
+            freelancer,
+            description,
+            speciality,
+            taskstatus,
+            deadline,
+            created_by,
+            accepted_by,
+            task_price,
+            task_currency,
+            demand_price,
+            demand_currency,
+            paid_by_client,
+            paid_currency,
+            cost_price,
+            cost_currency,
+            profit_percentage,
+            profit_amount,
+            profit_currency
+        });
+        res.json({message: "Task has been updated successfully"});
+    } else {
+        return next(new HttpError("Task doesn't exist on system or you are not authorized", 400));
+    }
+}
+
+const deleteTask = async (req,res,next) => {
+    const role = req.user.userRole;
+    const taskID = req.params.id;
+
+    const thisTask = await taskModel.findOne({_id: taskID});
+    if (thisTask && role == "admin") {
+        await taskModel.findByIdAndDelete({_id: taskID});
+        res.json({message: "Task has been deleted successfully"});
+    } else {
+        return next(new HttpError("Task doesn't exist on system or you are not authorized", 400));
+    }
+}
+
+module.exports = {getMyTasks, getTask, createTask, acceptTask, confirmTask, progressTask, completeTask, deliverTask, updateTask, deleteTask}
