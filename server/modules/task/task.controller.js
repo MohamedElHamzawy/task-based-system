@@ -18,6 +18,8 @@ const getMyTasks = async (req,res,next) => {
     } else if (role == "admin") {
         const tasks = await taskModel.find({});
         res.json({tasks: tasks});
+    } else {
+        res.json({tasks: []});
     }
 }
 

@@ -24,22 +24,22 @@ const token =  GetCookie("AdminToken")
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error , setError] = useState(false);
-  
-console.log(token)
+   
   useEffect(() => {
     let timerId;
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/task/").then((res) => {
-          setTasks(res.data);
-          console.log(res.data)
-        } ,{
-          headers: { Authorization: `Bearer ${token}`}
+        await axios.get("http://localhost:5000/api/task/",
+        { headers: { Authorization: `Bearer ${token}`} }
+        ).then((res) => {         
+          setTasks(res.data.tasks);
+          console.log(res.data.tasks)
         }
         )
         setLoading(false);
-        setIsLoading(false);
+        setIsLoading(false); 
+       
       });
     }
     return () => clearTimeout(timerId);
@@ -94,6 +94,13 @@ console.log(token)
           />
         </div>
 
+      </div>
+      <div>
+        {tasks.map((task)=>{
+          <h1>
+            {task.name}
+          </h1>
+        })}
       </div>
  
     </div>
