@@ -23,6 +23,7 @@ import AddFreeLancer from './pages/FreeLancers/AddFreeLancer';
 import Statuses from './pages/Statuses/Statuses';
 import StatusDetails from './pages/Statuses/StatusDetails';
 import AddStatus from './pages/Statuses/AddStatus';
+import Accounts from './pages/Accounts/Accounts';
 
 const Admin = () => {
   return (
@@ -50,6 +51,7 @@ const Admin = () => {
             <Route path="/statuses" element={<Statuses/>} />
             <Route path="/status/:id" element={<StatusDetails/>} />
             <Route path="/addstatus" element={<AddStatus/>}  />
+            <Route path="/accounts" element={<Accounts/>}  />
             <Route path="/settings" element={<Settings/>} />
           </Routes> 
         </div>

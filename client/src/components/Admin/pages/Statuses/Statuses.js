@@ -8,9 +8,9 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 
 //search filter 
 const getSearchFilter = (searchName, statuses) => {
-  if (!searchName ) {
+  if (!searchName) {
     return statuses;
-  }return statuses.filter((status) => status.statusname.includes(searchName))
+  } return statuses.filter((status) => status.statusname.includes(searchName))
 };
 
 
@@ -18,8 +18,8 @@ const Statuses = () => {
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [error , setError] = useState(false);
-  
+  const [error, setError] = useState(false);
+
 
   useEffect(() => {
     let timerId;
@@ -37,29 +37,29 @@ const Statuses = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
-  const searchFilter = getSearchFilter(searchName,statuses);
+  const searchFilter = getSearchFilter(searchName, statuses);
 
-  const deleteSpecialityHandler=async(id)=>{
+  const deleteSpecialityHandler = async (id) => {
     setIsLoading(true);
     try {
-    setError(null);
-    const response = await axios.delete(
-     ` http://localhost:5000/api/status/${id}`
-    //  ,
-    //  { headers :{
-    //     'Authorization':`Bearer ${token}`
-    //   }
-    // }
-    )
-    const responseData = await response;
-    console.log(responseData)
-    setError(responseData.data.message);
-    setIsLoading(false);
-    window.location.href = '/statuses' ;
-  }catch (err) {
-    setIsLoading(false);
-    setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-  };
+      setError(null);
+      const response = await axios.delete(
+        ` http://localhost:5000/api/status/${id}`
+        //  ,
+        //  { headers :{
+        //     'Authorization':`Bearer ${token}`
+        //   }
+        // }
+      )
+      const responseData = await response;
+      console.log(responseData)
+      setError(responseData.data.message);
+      setIsLoading(false);
+      window.location.href = '/statuses';
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    };
   }
 
   return isLoading ? (
@@ -67,26 +67,26 @@ const Statuses = () => {
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-        <div className="col-12 text-center edit-form-lable p-2">
-          <h1 >System Statuses</h1>
-        </div>
+      <div className="col-12 text-center edit-form-lable p-2">
+        <h1 >System Statuses</h1>
+      </div>
 
       <div className="row p-0 m-0 ">
 
         <div className="col-8 col-md-4 p-2">
           <button onClick={() => { window.location.href = '/addstatus' }} className="new-user p-2">
-          <TbStatusChange className='fs-3' />  Add New Status
+            <TbStatusChange className='fs-3' />  Add New Status
           </button>
         </div>
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Status Name" 
-           onChange={(e) => { setSearchName(e.target.value) }}
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Status Name"
+            onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>
 
       </div>
- 
+
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2 text-center">
         <div className="row fw-bold table-head p-0 m-0 py-3">
           <p className="col-5 ">Name</p>
@@ -95,18 +95,29 @@ const Statuses = () => {
 
         </div>
 
-        { !searchFilter.length==0 ? searchFilter.map((status) => (
+        {!searchFilter.length == 0 ? searchFilter.map((status) => (
           <div className="table-body row pt-3 p-0 m-0 " key={status._id}>
             <p className="col-5  ">{status.statusname}</p>
-            <p className="col-4  fs-5 "> <a className="view-details fs-4" href={`/status/${status._id}`}><BsFillFolderSymlinkFill/></a> </p>
-            <p className="col-3"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(status._id)}> <RiDeleteBinFill/> </button></p>     
+            {!status.changable ?
+              <p className="col-4  fs-5 "> <BsFillFolderSymlinkFill className='fs-4 disabled-view-details' /> </p>
+              :
+              <p className="col-4  fs-5 "> <a className="view-details fs-4" href={`/status/${status._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            }
+            <p className="col-3">
+              {!status.changable ?
+                <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
+                :
+                <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(status._id)}> <RiDeleteBinFill /> </button>
+              }
+            </p>
           </div>
-        ))  : 
-        <div className="row  p-3 m-0 text-center" >
-          <h2>
-           There Is No Statuses 
-          </h2>   
-        </div>  
+        ))
+          :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No Statuses
+            </h2>
+          </div>
         }
 
 
