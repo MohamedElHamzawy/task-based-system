@@ -6,6 +6,7 @@ import { FaTasks } from 'react-icons/fa';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { FiFilter } from 'react-icons/fi';
+import GetCookie from "../../../../hooks/getCookie";
 
 //search filter 
 const getSearchFilter = (searchName, specialities) => {
@@ -17,27 +18,32 @@ const getSearchFilter = (searchName, specialities) => {
 
 
 const Tasks = () => {
+
+const token =  GetCookie("AdminToken")
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error , setError] = useState(false);
   
-
-  // useEffect(() => {
-  //   let timerId;
-  //   if (loading) {
-  //     setIsLoading(true);
-  //     timerId = setTimeout(async () => {
-  //       await axios.get("http://localhost:5000/api/tasks/").then((res) => {
-  //         setTasks(res.data);
-  //         console.log(res.data)
-  //       });
-  //       setLoading(false);
-  //       setIsLoading(false);
-  //     });
-  //   }
-  //   return () => clearTimeout(timerId);
-  // }, [loading]);
+console.log(token)
+  useEffect(() => {
+    let timerId;
+    if (loading) {
+      setIsLoading(true);
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/task/").then((res) => {
+          setTasks(res.data);
+          console.log(res.data)
+        } ,{
+          headers: { Authorization: `Bearer ${token}`}
+        }
+        )
+        setLoading(false);
+        setIsLoading(false);
+      });
+    }
+    return () => clearTimeout(timerId);
+  }, [loading]);
 
   const [searchName, setSearchName] = useState('');
   const searchFilter = getSearchFilter(searchName,tasks);
