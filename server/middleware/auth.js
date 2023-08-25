@@ -4,7 +4,7 @@ const HttpError = require("../common/httpError");
 
 const auth = (data) => {
     return async (req,res,next) => {
-        let tokenHeader = req.headers["authorization"];
+        let tokenHeader = req.headers["Authorization"];
         if (!tokenHeader || !tokenHeader.startsWith("Bearer")) {
             return next(new HttpError("Invalid token!", 401));
         } else {
