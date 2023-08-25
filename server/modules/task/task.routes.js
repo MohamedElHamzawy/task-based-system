@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const auth = require("../../middleware/auth");
 
 const {
     getMyTasks, 
@@ -11,13 +12,13 @@ const {
     deliverTask
 } = require("./task.controller");
 
-router.get("/", getMyTasks);
-router.get("/:id", getTask);
-router.post("/", createTask);
-router.post("/accept/:id", acceptTask);
-router.post("/confirm/:id", confirmTask);
-router.post("/progress/:id", progressTask);
-router.post("/complete/:id", completeTask);
-router.post("/deliver/:id", deliverTask);
+router.get("/", auth(), getMyTasks);
+router.get("/:id", auth(), getTask);
+router.post("/", auth(), createTask);
+router.post("/accept/:id", auth(), acceptTask);
+router.post("/confirm/:id", auth(), confirmTask);
+router.post("/progress/:id", auth(), progressTask);
+router.post("/complete/:id", auth(), completeTask);
+router.post("/deliver/:id", auth(), deliverTask);
 
 module.exports = router;
