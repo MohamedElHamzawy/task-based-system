@@ -16,16 +16,4 @@ const getAccount = async (req,res,next) => {
     }
 }
 
-const updateAccount = async (req,res,next) => {
-    const {title} = req.body;
-    const accountID = req.params.id;
-    const tryGetThisAccount = await accountModel.findById({_id: accountID});
-    if (tryGetThisAccount) {
-        await accountModel.findByIdAndUpdate({_id: accountID}, {title: title});
-        res.json({message: "Account has been updated successfully"});
-    } else {
-        return next(new HttpError("This Account doesn't exist on system", 400));
-    }
-}
-
-module.exports = {getAllAccounts, getAccount, updateAccount}
+module.exports = {getAllAccounts, getAccount}

@@ -8,6 +8,5 @@ const {getAllAccounts,
 
 router.get("/", getAllAccounts);
 router.get("/:id", getAccount);
-router.post("/:id", updateAccount);
 
 module.exports = router;
