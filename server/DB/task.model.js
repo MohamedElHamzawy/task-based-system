@@ -12,6 +12,10 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "client"
     },
+    freelancer: {
+        type: mongoose.Types.ObjectId,
+        ref: "freelancer"
+    },
     description: {
         type: String
     },
@@ -26,10 +30,6 @@ const taskSchema = new mongoose.Schema({
     deadline: {
         type: Date
     },
-    specialist: {
-        type: mongoose.Types.ObjectId,
-        ref: "user"
-    },
     created_by: {
         type: mongoose.Types.ObjectId,
         ref: "user"
@@ -41,8 +41,16 @@ const taskSchema = new mongoose.Schema({
     task_price: {
         type: Number
     },
+    task_currency:{
+        type: mongoose.Types.ObjectId,
+        ref: "currency"
+    },
     demand_price: {
         type: Number
+    },
+    demand_currency:{
+        type: mongoose.Types.ObjectId,
+        ref: "currency"
     },
     paid_by_client: {
         type: Number
@@ -59,7 +67,8 @@ const taskSchema = new mongoose.Schema({
         ref: "currency"
     },
     profit_percentage: {
-        type: Number
+        type: Number,
+        default: 10
     },
     profit_amount: {
         type: Number
@@ -67,10 +76,6 @@ const taskSchema = new mongoose.Schema({
     profit_currency: {
         type: mongoose.Types.ObjectId,
         ref: "currency"
-    },
-    payment_account: {
-        type: mongoose.Types.ObjectId,
-        ref: "account"
     }
 }, {timestamps: true});
 
