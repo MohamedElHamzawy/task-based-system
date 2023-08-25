@@ -22,7 +22,7 @@ router.post("/confirm/:id", auth(), confirmTask);
 router.post("/progress/:id", auth(), progressTask);
 router.post("/complete/:id", auth(), completeTask);
 router.post("/deliver/:id", auth(), deliverTask);
-router.post("/:id", updateTask);
-router.delete("/:id", deleteTask);
+router.post("/:id", auth(), updateTask);
+router.delete("/:id", auth(), deleteTask);
 
 module.exports = router;
