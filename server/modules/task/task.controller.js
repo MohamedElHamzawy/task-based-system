@@ -26,15 +26,17 @@ const getMyTasks = async (req,res,next) => {
 const getTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const thisTask = await taskModel.findOne({_id: taskID});
+    const thisTask = await taskModel.findOne({_id: taskID}).populate("client_id", "freelancer", "speciality", "taskstatus", "created_by", "accepted_by", "task_currency", "demand_currency", "paid_currency", "cost_currency", "profit_currency");
     if (thisTask) {
         const thisTaskStatus = statusModel.findOne({_id: thisTask.taskstatus}).select("slug");
         if (role == "admin") {
             res.json({task: thisTask});
         } else if (role == "userA" && userA_status.includes(thisTaskStatus)) {
-            res.json({task: thisTask});
+            const thisTaskA = await taskModel.findOne({_id: taskID}).select("title channel client_id description speciality taskstatus deadline task_price task_currency demand_price demand_currency profit_percentage").populate("client_id", "speciality", "taskstatus", "task_currency", "demand_currency");
+            res.json({task: thisTaskA});
         } else if (role == "userB" && userB_status.includes(thisTaskStatus) && thisTask.accepted_by == req.user._id) {
-            res.json({task: thisTask});
+            const thisTaskB = await taskModel.findOne({_id: taskID}).select("title channel description speciality taskstatus deadline freelancer demand_price demand_currency").populate("speciality", "taskstatus", "freelancer", "demand_currency");
+            res.json({task: thisTaskB});
         } else {
             return next(new HttpError("You are not authorized to open this task!", 401));
         }
