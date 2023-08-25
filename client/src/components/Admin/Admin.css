@@ -14,6 +14,10 @@
 } */
 .sidenav---sidenav---_2tBP{
     background-color: #2a1255 !important;
+    z-index: 1000 !important;
+}
+.sidenav---sidenav-nav---3tvij{
+    background-color: #2a1255 !important;   
 }
 
 .Admin{
@@ -21,6 +25,6 @@
 }
 .Admin-body{
     margin-left: 60px !important;
-    min-height: 100vh;   
+    min-height: 122vh;   
     background-color: rgba(239, 239, 239, 0.999) !important;   
 }

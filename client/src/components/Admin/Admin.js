@@ -24,6 +24,8 @@ import Statuses from './pages/Statuses/Statuses';
 import StatusDetails from './pages/Statuses/StatusDetails';
 import AddStatus from './pages/Statuses/AddStatus';
 import Accounts from './pages/Accounts/Accounts';
+import TaskDetails from './pages/Tasks/TaskDetails';
+import AddTask from './pages/Tasks/AddTask';
 
 const Admin = () => {
   return (
@@ -36,6 +38,8 @@ const Admin = () => {
             <Route path="/user/:id" element={<UserDetails/>}  />
             <Route path="/adduser" element={<AddUser/>}  />
             <Route path="/tasks" element={<Tasks/>} />
+            <Route path="/addtask" element={<AddTask/>} />
+            <Route path="/taskdetails" element={<TaskDetails/>} />
             <Route path="/specialities" element={<Specialities/>} />
             <Route path="/speciality/:id" element={<SpecialityDetails/>} />
             <Route path="/addspeciality" element={<AddSpeciality/>}  />

@@ -12,7 +12,7 @@ const getSearchFilter = (searchName, clients) => {
   if (!searchName ) {
     return clients;
   }  return clients.filter(
-    (clients) =>  clients.clientname.includes(searchName) )
+    (clients) =>  clients.clientname.toLowerCase().includes(searchName.toLowerCase()) )
     // || clients.specialityType.includes(searchName) );
 };
 

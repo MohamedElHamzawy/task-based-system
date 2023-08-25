@@ -10,7 +10,7 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 const getSearchFilter = (searchName, statuses) => {
   if (!searchName) {
     return statuses;
-  } return statuses.filter((status) => status.statusname.includes(searchName))
+  } return statuses.filter((status) => status.statusname.toLowerCase().includes(searchName.toLowerCase()))
 };
 
 

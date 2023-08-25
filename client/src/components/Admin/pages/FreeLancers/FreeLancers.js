@@ -11,7 +11,7 @@ import { FiFilter } from 'react-icons/fi';
 const getSearchFilter = (searchName, freeLancers) => {
   if (!searchName) {
     return freeLancers;
-  } return freeLancers.filter((freeLancer) => freeLancer.freelancername.includes(searchName));
+  } return freeLancers.filter((freeLancer) => freeLancer.freelancername.toLowerCase().includes(searchName.toLowerCase()));
 };
 
 // Speciality filter
