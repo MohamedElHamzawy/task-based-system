@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 
-const spendingSchema = new mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
     title: {
         type: String
     },
-    spendingtype: {
+    transactiontype: {
         type: String
+    },
+    task: {
+        type: mongoose.Types.ObjectId,
+        ref: "task"
     },
     amount: {
         type: Number
@@ -16,5 +20,5 @@ const spendingSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-const spendingModel = mongoose.model("spending", spendingSchema);
-module.exports = spendingModel;
+const transactionModel = mongoose.model("transaction", transactionSchema);
+module.exports = transactionModel;
