@@ -11,7 +11,7 @@ import { FiFilter } from 'react-icons/fi';
 const getSearchFilter = (searchName, users) => {
   if (!searchName ) {
     return users;
-  }  return users.filter((user) => user.fullname.includes(searchName));
+  }  return users.filter((user) => user.fullname.toLowerCase().includes(searchName.toLowerCase()));
 };
 // Role filter
 const getRoleFilter = (searchRole, users) => {

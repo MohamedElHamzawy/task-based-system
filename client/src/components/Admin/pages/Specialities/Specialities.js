@@ -12,7 +12,7 @@ const getSearchFilter = (searchName, specialities) => {
   if (!searchName ) {
     return specialities;
   }  return specialities.filter(
-    (specialities) =>  specialities.specialityName.includes(searchName) || specialities.specialityType.includes(searchName) );
+    (specialities) =>  specialities.specialityName.toLowerCase().includes(searchName.toLowerCase()) || specialities.specialityType.toLowerCase().includes(searchName.toLowerCase()) );
 };
 
 

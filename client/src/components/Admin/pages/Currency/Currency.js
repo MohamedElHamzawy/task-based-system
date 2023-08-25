@@ -11,7 +11,7 @@ const getSearchFilter = (searchName, currencies) => {
   if (!searchName ) {
     return currencies;
   }  return currencies.filter(
-    (currencies) =>  currencies.currencyname.includes(searchName))
+    (currencies) =>  currencies.currencyname.toLowerCase().includes(searchName.toLowerCase()))
 };
 
 
