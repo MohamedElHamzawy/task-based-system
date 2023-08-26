@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react'
-import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
+import { validate, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
@@ -43,7 +43,60 @@ const numberReducer = (state, action) => {
       return state;
   }
 };
-
+//email validation
+const emailReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.email,
+        isvalid: validate(action.email, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//country validation
+const countryReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.country,
+        isvalid: validate(action.country, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//city validation
+const cityReducer = (state, action) => {
+switch (action.type) {
+  case "CHANGE":
+    return {
+      ...state,
+      value: action.city,
+      isvalid: validate(action.city, action.validators),
+    };
+  case "TOUCH":
+    return {
+      ...state,
+      isTouched: true,
+    };
+  default:
+    return state;
+}
+};
 
 const AddFreeLancer = () => {
 
@@ -108,7 +161,65 @@ const AddFreeLancer = () => {
     });
   };
 
+//email validation
+const [emailState, dispatch7] = useReducer(emailReducer, {
+  value: "",
+  isvalid: false,
+  isTouched: false,
+});
 
+const emailChangeHandler = (event) => {
+  dispatch7({
+    type: "CHANGE",
+    email: event.target.value,
+    validators: [VALIDATOR_EMAIL()],
+  });
+};
+const emailTouchHandler = () => {
+  dispatch7({
+    type: "TOUCH",
+  });
+};
+
+//country validation
+const [countryState, dispatch4] = useReducer(countryReducer, {
+  value: "",
+  isvalid: false,
+  isTouched: false,
+});
+
+const countryChangeHandler = (event) => {
+  dispatch4({
+    type: "CHANGE",
+    country: event.target.value,
+    validators: [VALIDATOR_MINLENGTH(3)],
+  });
+};
+const countryTouchHandler = () => {
+  dispatch4({
+    type: "TOUCH",
+  });
+};
+
+ //city validation
+const [cityState, dispatch6] = useReducer(cityReducer, {
+value: "",
+isvalid: false,
+isTouched: false,
+});
+
+const cityChangeHandler = (event) => {
+dispatch6({
+  type: "CHANGE",
+  city: event.target.value,
+  validators: [VALIDATOR_MINLENGTH(3)],
+});
+};
+const cityTouchHandler = () => {
+dispatch6({
+  type: "TOUCH",
+});
+};
   //speciality value
   const [speciality, setSpeciality] = useState('');
 
@@ -130,6 +241,9 @@ const AddFreeLancer = () => {
           name: fullNameState.value,
           speciality: speciality,
           phone: numberState.value,
+          email: emailState.value,
+          country: countryState.value,
+          city: cityState.value,
         }
       );
 
@@ -147,6 +261,9 @@ const AddFreeLancer = () => {
     }
     fullNameState.value = ''
     numberState.value = ''
+    emailState.value = ''
+    countryState.value = ''
+    cityState.value = ''
     setSpeciality('')
   };
 
@@ -208,12 +325,56 @@ const AddFreeLancer = () => {
           />
         </div>
 
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Email:</label>
+          <input type='email' placeholder='Email'
+            value={emailState.value}
+            onChange={emailChangeHandler}
+            onBlur={emailTouchHandler}
+            isvalid={emailState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!emailState.isvalid &&
+              emailState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />  
+        </div>
+        
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
+          <input type='text' placeholder='Country'
+            value={countryState.value}
+            onChange={countryChangeHandler}
+            onBlur={countryTouchHandler}
+            isvalid={countryState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!countryState.isvalid &&
+              countryState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
+        </div>
+
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>City:</label>
+          <input type='text' placeholder='city'
+            value={cityState.value}
+            onChange={cityChangeHandler}
+            onBlur={cityTouchHandler}
+            isvalid={cityState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!cityState.isvalid &&
+              cityState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
+        </div>
 
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
               !fullNameState.isvalid ||
               !numberState.isvalid ||
+              !emailState.isvalid ||
+              !countryState.isvalid ||
+              !cityState.isvalid ||
               !speciality 
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>

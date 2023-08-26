@@ -113,11 +113,11 @@ const FreeLancers = () => {
 
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((freeLancer) => (
           <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
-            <p className="col-5 name-Speciality text-center">{freeLancer.freelancername}</p>
+            <p className="col-5 name-Speciality text-center name-role">{freeLancer.freelancername}</p>
             
           {specialities.map((specialitie) => (
              freeLancer.speciality == specialitie._id ? 
-              <p className = "col-5 name-Speciality" key={ specialitie._id } > { specialitie.specialityName }</p>
+              <p className = "col-5 name-Speciality name-role " key={ specialitie._id } > { specialitie.specialityName }</p>
             : ''        
           ))}
 
@@ -133,11 +133,11 @@ const FreeLancers = () => {
 
       {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((freeLancer) => (
         <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
-          <p className="col-5 name-Speciality">{freeLancer.freelancername}</p>
+          <p className="col-5 name-Speciality name-role text-center">{freeLancer.freelancername}</p>
 
           {specialities.map((specialitie) => (
              freeLancer.speciality == specialitie._id ? 
-              <p className = "col-5 name-Speciality" key={ specialitie._id } > { specialitie.specialityName }</p>
+              <p className = "col-5 name-Speciality name-role" key={ specialitie._id } > { specialitie.specialityName }</p>
             : ''        
           ))}
 

@@ -26,6 +26,7 @@ import AddStatus from './pages/Statuses/AddStatus';
 import Accounts from './pages/Accounts/Accounts';
 import TaskDetails from './pages/Tasks/TaskDetails';
 import AddTask from './pages/Tasks/AddTask';
+import AccountDetails from './pages/Accounts/AccountDetails';
 
 const Admin = () => {
   return (
@@ -56,6 +57,7 @@ const Admin = () => {
             <Route path="/status/:id" element={<StatusDetails/>} />
             <Route path="/addstatus" element={<AddStatus/>}  />
             <Route path="/accounts" element={<Accounts/>}  />
+            <Route path="/account/:id" element={<AccountDetails/>}  />
             <Route path="/settings" element={<Settings/>} />
           </Routes> 
         </div>

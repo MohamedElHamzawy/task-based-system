@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import './UserASidebar.css';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-import { FaUsers } from 'react-icons/fa';
+
+
 import { FaTasks } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
+import { BsCurrencyExchange } from 'react-icons/bs';
+
+
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -43,7 +47,7 @@ class UserASideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/tasks'}}>
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/'}}>
             <NavIcon>
                 <FaTasks className='fs-4' />
             </NavIcon>
@@ -58,6 +62,24 @@ class UserASideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Clients</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className='my-3' onClick={()=>{window.location.href = '/specialities'}}>
+            <NavIcon>
+                <BiSolidCategoryAlt className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Specialities</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/currency'}}>
+            <NavIcon>
+                <BsCurrencyExchange className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Currency</p>
             </NavText>           
           </NavItem>
 
