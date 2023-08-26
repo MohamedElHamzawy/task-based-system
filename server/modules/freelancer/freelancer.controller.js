@@ -18,18 +18,18 @@ const getFreelancer = async (req, res, next) => {
 }
 
 const createFreelancer = async (req,res,next) => {
-    const {name, phone, speciality} = req.body;
-    const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, speciality: speciality}).save();
+    const {name, phone, email, country, city, speciality} = req.body;
+    const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, email: email, country: country, city: city, speciality: speciality}).save();
     new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername}).save();
     res.json({message: "Freelancer has been created successfully"});
 }
 
 const updateFreelancer = async (req,res,next) => {
-    const {name, phone, speciality} = req.body;
+    const {name, phone, email, country, city, speciality} = req.body;
     const freelancerID = req.params.id;
     const tryGetThisFreelancer = await freelancerModel.findById({_id: freelancerID});
     if (tryGetThisFreelancer) {
-        await freelancerModel.findByIdAndUpdate({_id: freelancerID}, {freelancername: name, phone: phone, speciality: speciality});
+        await freelancerModel.findByIdAndUpdate({_id: freelancerID}, {freelancername: name, phone: phone, email: email, country: country, city: city, speciality: speciality});
         res.json({message: "Freelancer has been updated successfully"});
     } else {
         return next(new HttpError("This freelancer doesn't exist on system", 400));
