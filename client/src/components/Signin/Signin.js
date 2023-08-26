@@ -140,11 +140,11 @@ const errorHandler =() =>{
     <div className='signin p-4 m-0 row justify-content-center w-100'>
       <div>
         <div className=''>
-            <h1 className='logo text-white bg-danger col-12 col-lg-4 p-3 '>
+            <h1 className='logo text-white bg-danger col-12 col-xl-5 col-md-7 p-3 '>
               <SiFreelancer/> FreeLancing System 
             </h1>
         </div>
-      <div className='col-12 p-5'>
+      <div className='col-12 p-3'>
         <h1 className='col-12 text-center text-white m-0 p-0'> Sign In </h1> 
           <div id="header-graphic" className="d-flex justify-content-center ">
               <div className="creative-break ">
