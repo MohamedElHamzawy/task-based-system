@@ -8,12 +8,12 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 import { FiFilter } from 'react-icons/fi';
 
 //search filter 
-// const getSearchFilter = (searchName, accounts) => {
-//   if (!searchName ) {
-//     return accounts;
-//   }  return accounts.filter(
-//     (specialities) =>  specialities.specialityName.toLowerCase().includes(searchName.toLowerCase()) || specialities.specialityType.toLowerCase().includes(searchName.toLowerCase()) );
-// };
+const getSearchFilter = (searchName, accounts) => {
+  if (!searchName ) {
+    return accounts;
+  }  return accounts.filter(
+    (account) =>  account.title.toLowerCase().includes(searchName.toLowerCase()));
+};
 
 
 const Accounts = () => {
@@ -40,7 +40,7 @@ const Accounts = () => {
 
   console.log(accounts)
   const [searchName, setSearchName] = useState('');
-  // const searchFilter = getSearchFilter(searchName,accounts);
+  const searchFilter = getSearchFilter(searchName,accounts);
 
 
   return isLoading ? (
@@ -64,10 +64,9 @@ const Accounts = () => {
 {/*  
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 speciality-table-head text-center">specialityName</p>
-          <p className="col-4 speciality-table-head">specialityType</p>
+          <p className="col-5 speciality-table-head text-center">UserName</p>
+          <p className="col-4 speciality-table-head">Type</p>
           <p className="col-3  speciality-table-head">Details</p>
-
         </div>
 
         { !searchFilter.length==0 ? searchFilter.map((speciality) => (
@@ -75,7 +74,6 @@ const Accounts = () => {
             <p className="col-5  name-role text-center">{speciality.specialityName}</p>
             <p className="col-5 col-md-4 name-role">{speciality.specialityType}</p>
             <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/speciality/${speciality._id}`}><BsFillFolderSymlinkFill/></a> </p>
-    
           </div>
         ))  : 
         <div className="row  p-3 m-0 text-center" >
@@ -83,10 +81,8 @@ const Accounts = () => {
            There Is No Specialities 
           </h2>   
         </div>  
-        } */}
-
-
-      {/* </div> */}
+        } 
+      </div> */}
     </div>
   )
 }
