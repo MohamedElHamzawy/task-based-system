@@ -7,11 +7,7 @@ const accountSchema = new mongoose.Schema({
     title: {
         type: String
     },
-    cost: {
-        type: Number,
-        default: 0
-    },
-    gain: {
+    balance: {
         type: Number,
         default: 0
     }

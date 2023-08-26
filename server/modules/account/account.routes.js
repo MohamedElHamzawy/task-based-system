@@ -8,8 +8,5 @@ const {getAllAccounts,
 
 router.get("/", getAllAccounts);
 router.get("/:id", getAccount);
-router.post("/", createAccount);
-router.post("/:id", updateAccount);
-router.delete("/:id", deleteAccount);
 
 module.exports = router;
