@@ -7,6 +7,9 @@ const accountSchema = new mongoose.Schema({
     title: {
         type: String
     },
+    type: {
+        type: String
+    },
     balance: {
         type: Number,
         default: 0
