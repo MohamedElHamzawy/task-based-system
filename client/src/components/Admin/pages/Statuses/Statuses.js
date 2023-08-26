@@ -102,13 +102,13 @@ const Statuses = () => {
               <p className="col-4  fs-5 "> <BsFillFolderSymlinkFill className='fs-4 disabled-view-details' /> </p>
               :
               <p className="col-4  fs-5 "> <a className="view-details fs-4" href={`/status/${status._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            }
+             } 
             <p className="col-3">
               {!status.changable ?
                 <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
                 :
                 <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(status._id)}> <RiDeleteBinFill /> </button>
-              }
+              } 
             </p>
           </div>
         ))
