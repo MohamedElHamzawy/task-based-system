@@ -10,6 +10,15 @@ const freelancerSchema = new mongoose.Schema({
     speciality: {
         type: mongoose.Types.ObjectId,
         ref: "speciality"
+    },
+    email: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
+    city: {
+        type: String,
     }
 });
 

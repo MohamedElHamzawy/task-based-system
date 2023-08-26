@@ -26,7 +26,7 @@ const createClient = async (req,res,next) => {
         return next(new HttpError("Client is already existed!", 400));
     } else {
         const newClient = await new clientModel({clientname: clientName, phone, email, country, city}).save();
-        new accountModel({owner: newClient._id, title: newClient.clientname}).save();
+        new accountModel({owner: newClient._id, title: newClient.clientname, type: "client"}).save();
         res.json({message: "Client has been added successfully"});
     }
 }
