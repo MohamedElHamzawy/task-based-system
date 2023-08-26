@@ -1,9 +1,7 @@
 const router = require("express").Router();
-const {getAllAccounts, 
-    getAccount, 
-    createAccount, 
-    updateAccount, 
-    deleteAccount
+const {
+    getAllAccounts, 
+    getAccount
 } = require("./account.controller");
 
 router.get("/", getAllAccounts);
