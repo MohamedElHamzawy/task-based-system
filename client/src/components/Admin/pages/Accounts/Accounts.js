@@ -8,20 +8,25 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 import { FiFilter } from 'react-icons/fi';
 
 //search filter 
-// const getSearchFilter = (searchName, accounts) => {
-//   if (!searchName ) {
-//     return accounts;
-//   }  return accounts.filter(
-//     (specialities) =>  specialities.specialityName.toLowerCase().includes(searchName.toLowerCase()) || specialities.specialityType.toLowerCase().includes(searchName.toLowerCase()) );
-// };
-
+const getSearchFilter = (searchName, accounts) => {
+  if (!searchName) {
+    return accounts;
+  } return accounts.filter(
+    (account) => account.title.toLowerCase().includes(searchName.toLowerCase()));
+};
+// Account Type filter
+const getAccountTypeFilter = (accountType, accounts) => {
+  if (!accounts) {
+    return accounts;
+  } return accounts.filter((account) => account.type.includes(accountType));
+};
 
 const Accounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [error , setError] = useState(false);
-  
+  const [error, setError] = useState(false);
+
 
   useEffect(() => {
     let timerId;
@@ -38,55 +43,86 @@ const Accounts = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  console.log(accounts)
   const [searchName, setSearchName] = useState('');
-  // const searchFilter = getSearchFilter(searchName,accounts);
 
+
+  const [accountType, setAccountType] = useState('');
+  const [searchFilterData, setSearchFilterData] = useState(true);
+  const [accountTypeFilterData, setAccountTypeFilterData] = useState(false);
+
+  const searchFilter = getSearchFilter(searchName, accounts);
+  const accountTypeFilter = getAccountTypeFilter(accountType, accounts);
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-        <div className="col-12 text-center edit-form-lable p-2">
-          <h1 >System Accounts</h1>
-        </div>
 
-      <div className="row p-0 m-0 ">
+      <div className="col-12 row text-center edit-form-lable p-2">
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+        </div>
+        <h1 className="col-12 col-md-6 text-center ">System Accounts</h1>
+      </div>
+
+      <div className="row p-0 m-0 justify-content-center">
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By UserName" 
-           onChange={(e) => { setSearchName(e.target.value) }}
+          <input type="name" className="search p-2 w-100" placeholder=" Search By UserName" value={searchName}
+            onChange={(e) => { setSearchName(e.target.value); setAccountTypeFilterData(false); setSearchFilterData(true); setAccountType('') }}
           />
         </div>
 
-      </div>
-{/*  
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 speciality-table-head text-center">specialityName</p>
-          <p className="col-4 speciality-table-head">specialityType</p>
-          <p className="col-3  speciality-table-head">Details</p>
-
+        <div className="col-12 col-md-5 text-secondary row p-2">
+          <label htmlFor="accountType" className="m-2 col-5 text-end"> <FiFilter className="" /> Filter:</label>
+          <select id="accountType" name="accountType" className="search col-5" value={accountType}
+            onChange={(e) => { setAccountType(e.target.value); setAccountTypeFilterData(true); setSearchFilterData(false); setSearchName('') }}>
+            <option value="" className='text-secondary'>AccountType</option>
+            <option value="freelancer" className=''>FreeLancer</option>
+            <option value="client" className=''>Client</option>
+            {/* {accounts.map((account) => (
+              <option value={account.type} key={account._id}>{account.type}</option>
+            ))} */}
+          </select>
         </div>
 
-        { !searchFilter.length==0 ? searchFilter.map((speciality) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={speciality._id}>
-            <p className="col-5  name-role text-center">{speciality.specialityName}</p>
-            <p className="col-5 col-md-4 name-role">{speciality.specialityType}</p>
-            <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/speciality/${speciality._id}`}><BsFillFolderSymlinkFill/></a> </p>
-    
+      </div>
+
+      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
+        <div className="row fw-bold table-head p-0 m-0 py-3">
+          <p className="col-5 accountType-table-head text-center">UserName</p>
+          <p className="col-4 accountType-table-head">Type</p>
+          <p className="col-3  accountType-table-head">Details</p>
+        </div>
+
+        {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((account) => (
+          <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
+            <p className="col-5  name-role text-center">{account.title}</p>
+            <p className="col-5 col-md-4 name-role">{account.type}</p>
+            <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/account/${account._id}`}><BsFillFolderSymlinkFill /></a> </p>
           </div>
-        ))  : 
-        <div className="row  p-3 m-0 text-center" >
-          <h2>
-           There Is No Specialities 
-          </h2>   
-        </div>  
-        } */}
-
-
-      {/* </div> */}
+        )) :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No Accounts
+            </h2>
+          </div> : ''
+        }
+        {accountTypeFilterData ? !accountTypeFilter.length == 0 ? accountTypeFilter.map((account) => (
+          <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
+            <p className="col-5  name-role text-center">{account.title}</p>
+            <p className="col-5 col-md-4 name-role">{account.type}</p>
+            <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/account/${account._id}`}><BsFillFolderSymlinkFill /></a> </p>
+          </div>
+        )) :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No Accounts
+            </h2>
+          </div> : ''
+        }
+      </div>
     </div>
   )
 }

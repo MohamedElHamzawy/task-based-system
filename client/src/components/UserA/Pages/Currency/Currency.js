@@ -1,24 +1,22 @@
+import './Currency.css'
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import './Clients.css'
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-import { FaHospitalUser } from 'react-icons/fa';
+import { BsCurrencyExchange } from 'react-icons/bs';
 import { RiDeleteBinFill } from 'react-icons/ri';
-import { FiFilter } from 'react-icons/fi';
 
 //search filter
-const getSearchFilter = (searchName, clients) => {
+const getSearchFilter = (searchName, currencies) => {
   if (!searchName) {
-    return clients;
-  } return clients.filter(
-    (clients) => clients.clientname.toLowerCase().includes(searchName.toLowerCase()))
-  // || clients.specialityType.includes(searchName) );
+    return currencies;
+  } return currencies.filter(
+    (currencies) => currencies.currencyname.toLowerCase().includes(searchName.toLowerCase()))
 };
 
 
-const Clients = () => {
-  const [clients, setClients] = useState([]);
+const Currency = () => {
+  const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -29,8 +27,8 @@ const Clients = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/client/").then((res) => {
-          setClients(res.data.clients);
+        await axios.get("http://localhost:5000/api/currency/").then((res) => {
+          setCurrencies(res.data.currencies);
         });
         setLoading(false);
         setIsLoading(false);
@@ -40,14 +38,14 @@ const Clients = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
-  const searchFilter = getSearchFilter(searchName, clients);
+  const searchFilter = getSearchFilter(searchName, currencies);
 
-  const deleteSpecialityHandler = async (id) => {
+  const deleteCurrencyHandler = async (id) => {
     setIsLoading(true);
     try {
       setError(null);
       const response = await axios.delete(
-        ` http://localhost:5000/api/client/${id}`
+        ` http://localhost:5000/api/currency/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`
@@ -58,7 +56,7 @@ const Clients = () => {
       console.log(responseData)
       setError(responseData.data.message);
       setIsLoading(false);
-      window.location.href = '/clients';
+      window.location.href = '/currency';
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
@@ -70,24 +68,23 @@ const Clients = () => {
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-
       <div className="col-12 row text-center edit-form-lable p-2">
         <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+          <h1 className='logo text-white bg-danger p-2'>User A </h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">System Clients</h1>
+        <h1 className="col-12 col-md-6 text-center ">System Currencies</h1>
       </div>
 
       <div className="row p-0 m-0 ">
 
         <div className="col-8 col-md-4 p-2">
-          <button onClick={() => { window.location.href = '/addclient' }} className="new-user p-2">
-            <FaHospitalUser className='fs-3' /> Add New Client
+          <button onClick={() => { window.location.href = '/addcurrency' }} className="new-user p-2">
+            <BsCurrencyExchange className='fs-3' />  Add New Currency
           </button>
         </div>
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name"
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Currency Name"
             onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>
@@ -96,24 +93,24 @@ const Clients = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-4 speciality-table-head text-center">Name</p>
-          <p className="col-5 speciality-table-head">Email</p>
-          <p className="col-3  speciality-table-head text-center">Details</p>
-          {/* <p className="col-2 ">Delete</p> */}
+          <p className="col-4 speciality-table-head text-center">CurrencyName</p>
+          <p className="col-3 speciality-table-head">Price in EGP</p>
+          <p className="col-2  speciality-table-head">Details</p>
+          <p className="col-2 speciality-table-head">Delete</p>
 
         </div>
 
-        {!searchFilter.length == 0 ? searchFilter.map((client) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={client._id}>
-            <p className="col-4 name-role text-center">{client.clientname}</p>
-            <p className="col-5 name-role">{client.email}</p>
-            <p className="col-3 fs-5 text-center"> <a className="view-details fs-4" href={`/client/${client._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            {/* <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>      */}
+        {!searchFilter.length == 0 ? searchFilter.map((currency) => (
+          <div className="table-body row pt-3 p-0 m-0 " key={currency._id}>
+            <p className="col-4  text-center">{currency.currencyname}</p>
+            <p className="col-3  ">{currency.priceToEGP}</p>
+            <p className="col-2  fs-5 "> <a className="view-details fs-4" href={`/currency/${currency._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={() => deleteCurrencyHandler(currency._id)}> <RiDeleteBinFill /> </button></p>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
             <h2>
-              There Is No Clients
+              There Is No Currencies
             </h2>
           </div>
         }
@@ -124,4 +121,4 @@ const Clients = () => {
   )
 }
 
-export default Clients
+export default Currency

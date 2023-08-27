@@ -10,43 +10,43 @@ import GetCookie from "../../../../hooks/getCookie";
 
 //search filter 
 const getSearchFilter = (searchName, specialities) => {
-  if (!searchName ) {
+  if (!searchName) {
     return specialities;
-  }  return specialities.filter(
-    (specialities) =>  specialities.specialityName.toLowerCase().includes(searchName.toLowerCase()) || specialities.specialityType.toLowerCase().includes(searchName.toLowerCase()) );
+  } return specialities.filter(
+    (specialities) => specialities.specialityName.toLowerCase().includes(searchName.toLowerCase()) || specialities.specialityType.toLowerCase().includes(searchName.toLowerCase()));
 };
 
 
 const Tasks = () => {
 
-const token =  GetCookie("AdminToken")
+  const token = GetCookie("AdminToken")
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [error , setError] = useState(false);
-   
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     let timerId;
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/task/",
-        { headers: { Authorization: `Bearer ${token}`} }
-        ).then((res) => {         
+          { headers: { Authorization: `Bearer ${token}` } }
+        ).then((res) => {
           setTasks(res.data.tasks);
           console.log(res.data.tasks)
         }
         )
         setLoading(false);
-        setIsLoading(false); 
-       
+        setIsLoading(false);
+
       });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
-  const searchFilter = getSearchFilter(searchName,tasks);
+  const searchFilter = getSearchFilter(searchName, tasks);
 
   // const deleteSpecialityHandler=async(id)=>{
   //   setIsLoading(true);
@@ -76,33 +76,36 @@ const token =  GetCookie("AdminToken")
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-        <div className="col-12 text-center edit-form-lable p-2">
-          <h1 >System Tasks</h1>
+      <div className="col-12 row text-center edit-form-lable p-2">
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
         </div>
+        <h1 className="col-12 col-md-6 text-center ">System Tasks</h1>
+      </div>
 
       <div className="row p-0 m-0 ">
 
         <div className="col-8 col-md-4 p-2">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
-          <FaTasks className='fs-3' />  Add New Task
+            <FaTasks className='fs-3' />  Add New Task
           </button>
         </div>
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name or type" 
-           onChange={(e) => { setSearchName(e.target.value) }}
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Name or type"
+            onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>
 
       </div>
       <div>
-        {tasks.map((task)=>{
+        {tasks.map((task) => {
           <h1>
             {task.name}
           </h1>
         })}
       </div>
- 
+
     </div>
   )
 }

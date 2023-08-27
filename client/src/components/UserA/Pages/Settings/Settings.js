@@ -30,7 +30,7 @@ const Settings = () => {
   const [country, setCountry] = useState();
   const [phone, setPhone] = useState();
 
-  const userID = JSON.parse(localStorage.getItem('AdminData'));
+  const userID = JSON.parse(localStorage.getItem('UserAData'));
 
 
   useEffect(() => {
@@ -99,10 +99,9 @@ const Settings = () => {
     <div className="text-center row w-100 p-4 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
 
-
       <div className="col-12 row text-center edit-form-lable p-2">
-        <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+        <div className="col-7 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>User A </h1>
         </div>
         <h1 className="col-12 col-md-6 text-center ">User Settings</h1>
       </div>

@@ -70,10 +70,9 @@ const Clients = () => {
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-
       <div className="col-12 row text-center edit-form-lable p-2">
         <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+          <h1 className='logo text-white bg-danger p-2'>User A </h1>
         </div>
         <h1 className="col-12 col-md-6 text-center ">System Clients</h1>
       </div>

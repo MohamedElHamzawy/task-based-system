@@ -129,7 +129,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="home" className='log-out mt-5' onClick={logout}>
+          <NavItem eventKey="home" className='log-out mt-4' onClick={logout}>
             <NavIcon>
                 <BiLogOut className='fs-4'/>
             </NavIcon>
