@@ -142,6 +142,15 @@ const confirmTask = async (req,res,next) => {
     const statusID = await statusModel.findOne({slug: "in-progress"}).select("_id");
     if (role != "userB") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        const thisTask = await taskModel.findById({_id: taskID});
+        const freelancerAccount = await accountModel.findOne({owner: thisTask.freelancer});
+        const transactionF = await new transactionModel({transactiontype: "cost", task: taskID, amount: thisTask.cost, account_id: freelancerAccount._id}).save();
+        const newBalanceF = parseFloat(freelancerAccount.balance) + parseFloat(transactionF.amount);
+        await accountModel.findByIdAndUpdate({_id: freelancerAccount._id}, {balance: newBalanceF});
+        const clientAccount = await accountModel.findOne({owner: thisTask.client});
+        const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: thisTask.paid, account_id: clientAccount._id}).save();
+        const newBalanceC = parseFloat(clientAccount.balance) - parseFloat(transactionC.amount);
+        await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
         res.json({message: "Task has been confirmed successfully"});
     } else {
         return next(new HttpError("You are not authorized to confirm this task!", 401));
