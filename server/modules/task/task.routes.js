@@ -5,21 +5,23 @@ const {
     getMyTasks, 
     getTask, 
     createTask, 
-    acceptTask, 
+    addOffer, 
+    addPercentage, 
+    refuseTask, 
     confirmTask, 
-    progressTask, 
     completeTask, 
-    deliverTask,
-    updateTask,
+    deliverTask, 
+    updateTask, 
     deleteTask
 } = require("./task.controller");
 
 router.get("/", auth(), getMyTasks);
 router.get("/:id", auth(), getTask);
 router.post("/", auth(), createTask);
-router.post("/accept/:id", auth(), acceptTask);
+router.post("/addOffer/:id", auth(), addOffer);
+router.post("/addPercentage/:id", auth(), addPercentage);
 router.post("/confirm/:id", auth(), confirmTask);
-router.post("/progress/:id", auth(), progressTask);
+router.post("/refuse/:id", auth(), refuseTask);
 router.post("/complete/:id", auth(), completeTask);
 router.post("/deliver/:id", auth(), deliverTask);
 router.post("/:id", auth(), updateTask);

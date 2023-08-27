@@ -5,10 +5,13 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String
+    },
     channel: {
         type: String
     },
-    client_id: {
+    client: {
         type: mongoose.Types.ObjectId,
         ref: "client"
     },
@@ -16,14 +19,11 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "freelancer"
     },
-    description: {
-        type: String
-    },
     speciality: {
         type: mongoose.Types.ObjectId,
         ref: "speciality"
     },
-    taskstatus: {
+    taskStatus: {
         type: mongoose.Types.ObjectId,
         ref: "status"
     },
@@ -38,33 +38,19 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "user"
     },
-    task_price: {
-        type: Number
+    accepted: {
+        type: Boolean,
+        default: false
     },
     task_currency:{
         type: mongoose.Types.ObjectId,
         ref: "currency"
     },
-    demand_price: {
+    paid: {
         type: Number
     },
-    demand_currency:{
-        type: mongoose.Types.ObjectId,
-        ref: "currency"
-    },
-    paid_by_client: {
+    cost: {
         type: Number
-    },
-    paid_currency:{
-        type: mongoose.Types.ObjectId,
-        ref: "currency"
-    },
-    cost_price: {
-        type: Number
-    },
-    cost_currency: {
-        type: mongoose.Types.ObjectId,
-        ref: "currency"
     },
     profit_percentage: {
         type: Number,
@@ -72,10 +58,6 @@ const taskSchema = new mongoose.Schema({
     },
     profit_amount: {
         type: Number
-    },
-    profit_currency: {
-        type: mongoose.Types.ObjectId,
-        ref: "currency"
     }
 }, {timestamps: true});
 

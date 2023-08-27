@@ -1,77 +1,106 @@
 const taskModel = require("../../DB/task.model");
 const statusModel = require("../../DB/status.model");
+const currencyModel = require("../../DB/currency.model");
 const HttpError = require("../../common/httpError");
 
-const userA_status = ["created"];
-const userB_status = ["processing"];
-
 const getMyTasks = async (req,res,next) => {
+    const mainStatuses = await statusModel.find({changable: false}).select("_id");
     const role = req.user.userRole;
-    const statusIDA = await statusModel.find({slug : {$in : userA_status}}).select("_id");
-    const statusIDB = await statusModel.find({slug : {$in : userB_status}}).select("_id");
-    if (role == "userA") {
-        const tasks = await taskModel.find({taskstatus : {$in : [statusIDA]}});
-        res.json({tasks: tasks});
-    } else if (role == "userB") {
-        const tasks = await taskModel.find({taskstatus : {$in : [statusIDB]}, speciality: req.user.speciality});
-        res.json({tasks: tasks});
-    } else if (role == "admin") {
+    if (role == "admin") {
         const tasks = await taskModel.find({});
         res.json({tasks: tasks});
+    } else if (role == "userA") {
+        const tasks = await taskModel.find({$and: [{created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]});
+        res.json({tasks: tasks});
+    } else if (role == "userB") {
+        const tasks = await taskModel.find({$and: [{$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]});
+        res.json({tasks: tasks});
     } else {
-        res.json({tasks: []});
+        return next(new HttpError("You are not authorized to show tasks!", 401));
     }
 }
 
 const getTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const thisTask = await taskModel.findOne({_id: taskID}).populate("client_id", "freelancer", "speciality", "taskstatus", "created_by", "accepted_by", "task_currency", "demand_currency", "paid_currency", "cost_currency", "profit_currency");
-    if (thisTask) {
-        const thisTaskStatus = statusModel.findOne({_id: thisTask.taskstatus}).select("slug");
-        if (role == "admin") {
-            res.json({task: thisTask});
-        } else if (role == "userA" && userA_status.includes(thisTaskStatus)) {
-            const thisTaskA = await taskModel.findOne({_id: taskID}).select("title channel client_id description speciality taskstatus deadline task_price task_currency cost_price cost_currency demand_price demand_currency paid_by_client paid_currency profit_percentage").populate("client_id", "speciality", "taskstatus", "cost_currency", "task_currency", "demand_currency");
-            res.json({task: thisTaskA});
-        } else if (role == "userB" && userB_status.includes(thisTaskStatus) && thisTask.accepted_by == req.user._id) {
-            const thisTaskB = await taskModel.findOne({_id: taskID}).select("title channel description speciality taskstatus deadline freelancer demand_price demand_currency cost_price cost_currency task_price task_currency profit_percentage").populate("speciality", "taskstatus", "freelancer", "demand_currency", "cost_currency");
-            res.json({task: thisTaskB, taskPrice: 20});
-        } else {
-            return next(new HttpError("You are not authorized to open this task!", 401));
-        }
+    if (role == "admin") {
+        const task = await taskModel
+        .findOne({_id: taskID})
+        .populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        res.json({task: task});
+    } else if (role == "userA") {
+        const task = await taskModel
+        .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
+        .select("title description channel client speciality taskStatus deadline task_currency paid cost profit_percentage")
+        .populate(["client", "speciality", "taskStatus", "task_currency"]);
+        const currencyValue = parseFloat(await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP"));
+        const cost = parseFloat(task.cost);
+        const profitPercentage = parseFloat(task.profit_percentage);
+        const offer = ((cost + (cost * (profitPercentage/100))) / currencyValue);
+        res.json({task: task, offer: offer});
+    } else if (role == "userB") {
+        const task = await taskModel
+        .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
+        .select("title description channel freelancer speciality taskStatus deadline cost")
+        .populate(["speciality", "taskStatus", "freelancer"]);
+        res.json({task: task});
     } else {
-        return next(new HttpError("This task doesn't exist on system!", 400));
+        return next(new HttpError("You are not authorized to show this task!", 401));
     }
 }
 
 const createTask = async (req,res,next) => {
     const role = req.user.userRole;
-    const statusID = await statusModel.find({slug: "created"}).select("_id");
-    if (role == "admin" || role == "userA") {
+    if (role == "admin") {
         const {
             title,
+            description,
             channel,
             client,
-            description,
             speciality,
             deadline,
-            percentage,
-            taskPrice,
-            taskCurrency
+            task_currency,
+            paid,
+            profit_percentage
         } = req.body;
+        const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
         const newTask = await new taskModel({
-            title: title,
-            channel: channel,
-            client_id: client,
-            description: description,
-            speciality: speciality,
-            taskstatus: statusID,
-            deadline: deadline,
+            title,
+            description,
+            channel,
+            client,
+            speciality,
+            deadline,
+            task_currency,
+            paid,
+            profit_percentage,
             created_by: req.user._id,
-            profit_percentage: percentage,
-            task_price: taskPrice,
-            task_currency: taskCurrency
+            taskStatus: statusID
+        }).save();
+        res.json({message: "Task has been created successfully"});
+    } else if (role == "userA") {
+        const {
+            title,
+            description,
+            channel,
+            client,
+            speciality,
+            deadline,
+            task_currency,
+            paid
+        } = req.body;
+        const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
+        const newTask = await new taskModel({
+            title,
+            description,
+            channel,
+            client,
+            speciality,
+            deadline,
+            task_currency,
+            paid,
+            created_by: req.user._id,
+            taskStatus: statusID
         }).save();
         res.json({message: "Task has been created successfully"});
     } else {
@@ -79,79 +108,77 @@ const createTask = async (req,res,next) => {
     }
 }
 
-const acceptTask = async (req,res,next) => {
+const addOffer = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const {
-        freelancer,
-        demandPrice,
-        demandCurrency
-    } = req.body;
-    const statusID = await statusModel.find({slug: "accepted"}).select("_id");
-
-    if (role == "admin" || role == "userB") {
-        const tryGetTask = await taskModel.findOne({_id: taskID});
-        if (tryGetTask) {
-            const newTask = await taskModel.findByIdAndUpdate({_id: taskID}, {freelancer: freelancer, taskstatus: statusID, accepted_by: req.user._id, demand_price: demandPrice, demand_currency: demandCurrency});
-        } else {
-            return next(new HttpError("This task doesn't exist on system!", 400));
-        }
+    const {freelancer, cost} = req.body;
+    const statusID = await statusModel.findOne({slug: "admin-review"}).select("_id");
+    if (role != "userA") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {cost: cost, freelancer: freelancer, accepted_by: req.user._id, accepted: true, taskStatus: statusID});
+        res.json({message: "Your offer has been added successfully"});
     } else {
-        return next(new HttpError("You are not authorized to accept task!", 401));
+        return next(new HttpError("You are not authorized to add freelancer offer to task!", 401));
+    }
+}
+
+const addPercentage = async (req,res,next) => {
+    const role = req.user.userRole;
+    const taskID = req.params.id;
+    const {percentage} = req.body;
+    const statusID = await statusModel.findOne({slug: "in-negotiation"}).select("_id");
+    if (role == "admin") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {profit_percentage: percentage, taskStatus: statusID});
+        res.json({message: "Your offer has been added successfully"});
+    } else {
+        return next(new HttpError("You are not authorized to add percentage to task!", 401));
     }
 }
 
 const confirmTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const {costPrice, costCurrency} = req.body;
-    const statusID = await statusModel.find({slug: "confirmed"}).select("_id");
-
-    if (role == "admin" || role == "userA") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskstatus: statusID, cost_price: costPrice, cost_currency: costCurrency});
+    const statusID = await statusModel.findOne({slug: "in-progress"}).select("_id");
+    if (role != "userB") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
         res.json({message: "Task has been confirmed successfully"});
     } else {
-        return next(new HttpError("You are not authorized to confirm task!", 401));
+        return next(new HttpError("You are not authorized to confirm this task!", 401));
     }
 }
 
-const progressTask = async (req,res,next) => {
+const refuseTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const statusID = await statusModel.find({slug: "progress"}).select("_id");
-
-    if (role == "admin", role == "userB") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskstatus: statusID});
-        res.json({message: "Task is in progress"});s
+    const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
+    if (role != "userB") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: 0, accepted_by: 0, accepted: false});
+        res.json({message: "Task has been confirmed successfully"});
     } else {
-        return next(new HttpError("You are not authorized to do this action", 401));
+        return next(new HttpError("You are not authorized to refuse this task!", 401));
     }
 }
 
 const completeTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const statusID = await statusModel.find({slug: "completed"}).select("_id");
-
-    if (role == "admin", role == "userB") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskstatus: statusID});
-        res.json({message: "Task is in progress"});s
+    const statusID = await statusModel.findOne({slug: "completed"}).select("_id");
+    if (role != "userA") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        res.json({message: "Task has been completed successfully"});
     } else {
-        return next(new HttpError("You are not authorized to do this action", 401));
+        return next(new HttpError("You are not authorized to complete this task!", 401));
     }
 }
 
 const deliverTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    const statusID = await statusModel.find({slug: "delivered"}).select("_id");
-    const {paidPrice, paidCurrency} = req.body;
-
-    if (role != "userB") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskstatus: statusID, paid_by_client: paidPrice, paid_currency: paidCurrency});
-        res.json({message: "Task has been delivered successfully"});
+    const statusID = await statusModel.findOne({slug: "delivered-to-client"}).select("_id");
+    if (role != "userA") {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        res.json({message: "Task has been completed successfully"});
     } else {
-        return next(new HttpError("You are not authorized to deliver task", 401));
+        return next(new HttpError("You are not authorized to complete this task!", 401));
     }
 }
 
@@ -160,69 +187,58 @@ const updateTask = async (req,res,next) => {
     const taskID = req.params.id;
     const {
         title,
-        channel,
-        client_id,
-        freelancer,
         description,
+        channel,
+        client,
+        freelancer,
         speciality,
-        taskstatus,
+        taskStatus,
         deadline,
         created_by,
         accepted_by,
-        task_price,
+        accepted,
         task_currency,
-        demand_price,
-        demand_currency,
-        paid_by_client,
-        paid_currency,
-        cost_price,
-        cost_currency,
+        client_offer,
+        paid,
+        cost,
         profit_percentage,
-        profit_amount,
-        profit_currency
+        profit_amount
     } = req.body;
-    const thisTask = await taskModel.findOne({_id: taskID});
-    if (thisTask && role == "admin") {
+    if (role == "admin") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {
             title,
-            channel,
-            client_id,
-            freelancer,
             description,
+            channel,
+            client,
+            freelancer,
             speciality,
-            taskstatus,
+            taskStatus,
             deadline,
             created_by,
             accepted_by,
-            task_price,
+            accepted,
             task_currency,
-            demand_price,
-            demand_currency,
-            paid_by_client,
-            paid_currency,
-            cost_price,
-            cost_currency,
+            client_offer,
+            paid,
+            cost,
             profit_percentage,
-            profit_amount,
-            profit_currency
+            profit_amount
         });
         res.json({message: "Task has been updated successfully"});
     } else {
-        return next(new HttpError("Task doesn't exist on system or you are not authorized", 400));
+        return next(new HttpError("You are not authorized to full update this task!", 401));
     }
 }
 
 const deleteTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-
-    const thisTask = await taskModel.findOne({_id: taskID});
-    if (thisTask && role == "admin") {
+    if (role == "admin") {
         await taskModel.findByIdAndDelete({_id: taskID});
-        res.json({message: "Task has been deleted successfully"});
+        res.json({message: "Task Has been deleted successfully"});
     } else {
-        return next(new HttpError("Task doesn't exist on system or you are not authorized", 400));
+        return next(new HttpError("You are not authorized to delete this task!", 401));
     }
 }
 
-module.exports = {getMyTasks, getTask, createTask, acceptTask, confirmTask, progressTask, completeTask, deliverTask, updateTask, deleteTask}
+module.exports = {getMyTasks, getTask, createTask, addOffer, addPercentage, refuseTask, confirmTask, completeTask, deliverTask, updateTask, deleteTask}
