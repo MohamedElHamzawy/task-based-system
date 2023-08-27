@@ -149,7 +149,7 @@ const confirmTask = async (req,res,next) => {
         await accountModel.findByIdAndUpdate({_id: freelancerAccount._id}, {balance: newBalanceF});
         const clientAccount = await accountModel.findOne({owner: thisTask.client});
         const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: thisTask.paid, account_id: clientAccount._id}).save();
-        const newBalanceC = parseFloat(clientAccount.balance) - parseFloat(transactionC.amount);
+        const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
         await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
         res.json({message: "Task has been confirmed successfully"});
     } else {

@@ -7,6 +7,7 @@ const currencyRoutes = require("../modules/currency/currency.routes");
 const freelancerRoutes = require("../modules/freelancer/freelancer.routes");
 const accountRoutes = require("../modules/account/account.routes");
 const taskRoutes = require("../modules/task/task.routes");
+const transactionRoutes = require("../modules/transaction/transaction.routes");
 
 module.exports = {
     loginRoutes,
@@ -17,5 +18,6 @@ module.exports = {
     currencyRoutes,
     freelancerRoutes,
     accountRoutes,
-    taskRoutes
+    taskRoutes,
+    transactionRoutes
 }
