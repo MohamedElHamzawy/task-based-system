@@ -10,7 +10,7 @@ const auth = (data) => {
         } else {
             let token = tokenHeader.split(" ")[1];
             let {id} = jwt.verify(token, "tb2023");
-            let user = userModel.findOne({_id: id}).select("-password");
+            let user = await userModel.findOne({_id: id}).select("-password");
             if (user) {
                 req.user = user;
                 next();
