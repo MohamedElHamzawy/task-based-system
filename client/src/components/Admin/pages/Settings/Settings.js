@@ -39,7 +39,7 @@ const Settings = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/user/${userID}`).then((res) => {
-          setUser(res.data.user);         
+          setUser(res.data.user);
           setFullName(res.data.user.fullname);
           setUserName(res.data.user.username);
           // setUserRole(res.data.user.user_role);
@@ -99,11 +99,15 @@ const Settings = () => {
     <div className="text-center row w-100 p-4 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
-        <h2 className="col-12 text-center edit-form-lable p-2">  User Settings</h2>
+
+      <div className="col-12 row text-center edit-form-lable p-2">
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+        </div>
+        <h1 className="col-12 col-md-6 text-center ">User Settings</h1>
       </div>
 
-       <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">
+      <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">
 
 
         <div className="col-12 col-xl-6 row ">
@@ -205,7 +209,7 @@ const Settings = () => {
           </button>
         </div>
 
-      </div> 
+      </div>
 
     </div>
   )

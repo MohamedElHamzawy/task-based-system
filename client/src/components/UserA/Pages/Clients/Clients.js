@@ -9,11 +9,11 @@ import { FiFilter } from 'react-icons/fi';
 
 //search filter
 const getSearchFilter = (searchName, clients) => {
-  if (!searchName ) {
+  if (!searchName) {
     return clients;
-  }  return clients.filter(
-    (clients) =>  clients.clientname.toLowerCase().includes(searchName.toLowerCase()) )
-    // || clients.specialityType.includes(searchName) );
+  } return clients.filter(
+    (clients) => clients.clientname.toLowerCase().includes(searchName.toLowerCase()))
+  // || clients.specialityType.includes(searchName) );
 };
 
 
@@ -21,8 +21,8 @@ const Clients = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [error , setError] = useState(false);
-  
+  const [error, setError] = useState(false);
+
 
   useEffect(() => {
     let timerId;
@@ -40,29 +40,29 @@ const Clients = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
-  const searchFilter = getSearchFilter(searchName,clients);
+  const searchFilter = getSearchFilter(searchName, clients);
 
-  const deleteSpecialityHandler=async(id)=>{
+  const deleteSpecialityHandler = async (id) => {
     setIsLoading(true);
     try {
-    setError(null);
-    const response = await axios.delete(
-     ` http://localhost:5000/api/client/${id}`
-    //  ,
-    //  { headers :{
-    //     'Authorization':`Bearer ${token}`
-    //   }
-    // }
-    )
-    const responseData = await response;
-    console.log(responseData)
-    setError(responseData.data.message);
-    setIsLoading(false);
-    window.location.href = '/clients' ;
-  }catch (err) {
-    setIsLoading(false);
-    setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-  };
+      setError(null);
+      const response = await axios.delete(
+        ` http://localhost:5000/api/client/${id}`
+        //  ,
+        //  { headers :{
+        //     'Authorization':`Bearer ${token}`
+        //   }
+        // }
+      )
+      const responseData = await response;
+      console.log(responseData)
+      setError(responseData.data.message);
+      setIsLoading(false);
+      window.location.href = '/clients';
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    };
   }
 
   return isLoading ? (
@@ -70,26 +70,29 @@ const Clients = () => {
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-        <div className="col-12 text-center edit-form-lable p-2">
-          <h1 >System Clients</h1>
+      <div className="col-12 row text-center edit-form-lable p-2">
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>User A </h1>
         </div>
+        <h1 className="col-12 col-md-6 text-center ">System Clients</h1>
+      </div>
 
       <div className="row p-0 m-0 ">
 
         <div className="col-8 col-md-4 p-2">
           <button onClick={() => { window.location.href = '/addclient' }} className="new-user p-2">
-          <FaHospitalUser className='fs-3' /> Add New Client
+            <FaHospitalUser className='fs-3' /> Add New Client
           </button>
         </div>
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name" 
-           onChange={(e) => { setSearchName(e.target.value) }}
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Name"
+            onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>
 
       </div>
- 
+
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
           <p className="col-4 speciality-table-head text-center">Name</p>
@@ -99,19 +102,19 @@ const Clients = () => {
 
         </div>
 
-        { !searchFilter.length==0 ? searchFilter.map((client) => (
+        {!searchFilter.length == 0 ? searchFilter.map((client) => (
           <div className="table-body row pt-3 p-0 m-0 " key={client._id}>
             <p className="col-4 name-role text-center">{client.clientname}</p>
             <p className="col-5 name-role">{client.email}</p>
-            <p className="col-3 fs-5 text-center"> <a className="view-details fs-4" href={`/client/${client._id}`}><BsFillFolderSymlinkFill/></a> </p>
+            <p className="col-3 fs-5 text-center"> <a className="view-details fs-4" href={`/client/${client._id}`}><BsFillFolderSymlinkFill /></a> </p>
             {/* <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>      */}
           </div>
-        ))  : 
-        <div className="row  p-3 m-0 text-center" >
-          <h2>
-           There Is No Clients 
-          </h2>   
-        </div>  
+        )) :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No Clients
+            </h2>
+          </div>
         }
 
 

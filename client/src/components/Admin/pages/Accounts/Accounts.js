@@ -58,15 +58,19 @@ const Accounts = () => {
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-      <div className="col-12 text-center edit-form-lable p-2">
-        <h1 >System Accounts</h1>
+
+      <div className="col-12 row text-center edit-form-lable p-2">
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+        </div>
+        <h1 className="col-12 col-md-6 text-center ">System Accounts</h1>
       </div>
 
       <div className="row p-0 m-0 justify-content-center">
 
         <div className="col-10 col-md-4 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search By UserName" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value) ; setAccountTypeFilterData(false); setSearchFilterData(true); setAccountType('') }}
+            onChange={(e) => { setSearchName(e.target.value); setAccountTypeFilterData(false); setSearchFilterData(true); setAccountType('') }}
           />
         </div>
 
@@ -92,7 +96,7 @@ const Accounts = () => {
           <p className="col-3  accountType-table-head">Details</p>
         </div>
 
-        { searchFilterData ?  !searchFilter.length == 0 ? searchFilter.map((account) => (
+        {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((account) => (
           <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
             <p className="col-5  name-role text-center">{account.title}</p>
             <p className="col-5 col-md-4 name-role">{account.type}</p>
@@ -103,7 +107,7 @@ const Accounts = () => {
             <h2>
               There Is No Accounts
             </h2>
-          </div> :''
+          </div> : ''
         }
         {accountTypeFilterData ? !accountTypeFilter.length == 0 ? accountTypeFilter.map((account) => (
           <div className="table-body row pt-3 p-0 m-0 " key={account._id}>

@@ -43,7 +43,7 @@ class UserBSideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/tasks'}}>
+          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/'}}>
             <NavIcon>
                 <FaTasks className='fs-4' />
             </NavIcon>
@@ -52,16 +52,16 @@ class UserBSideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/clients'}}>
+          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
                 <FaHospitalUser className='fs-4' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Clients</p>
+             <p className="fs-3 "> FreeLancers</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-3' onClick={()=>{window.location.href = '/settings'}}>
+          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>
                 <AiFillSetting className='fs-4' />
             </NavIcon>

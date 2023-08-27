@@ -67,8 +67,11 @@ const Statuses = () => {
   ) : (
     <div className="row w-100 p-0 m-0 ">
 
-      <div className="col-12 text-center edit-form-lable p-2">
-        <h1 >System Statuses</h1>
+      <div className="col-12 row text-center edit-form-lable p-2">
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+        </div>
+        <h1 className="col-12 col-md-6 text-center ">System Statuses</h1>
       </div>
 
       <div className="row p-0 m-0 ">
@@ -102,13 +105,13 @@ const Statuses = () => {
               <p className="col-4  fs-5 "> <BsFillFolderSymlinkFill className='fs-4 disabled-view-details' /> </p>
               :
               <p className="col-4  fs-5 "> <a className="view-details fs-4" href={`/status/${status._id}`}><BsFillFolderSymlinkFill /></a> </p>
-             } 
+            }
             <p className="col-3">
               {!status.changable ?
                 <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
                 :
                 <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(status._id)}> <RiDeleteBinFill /> </button>
-              } 
+              }
             </p>
           </div>
         ))
@@ -122,6 +125,11 @@ const Statuses = () => {
 
 
       </div>
+      {/* <div className='p-5'>
+        <h1>
+          status
+        </h1>
+      </div> */}
     </div>
   )
 }
