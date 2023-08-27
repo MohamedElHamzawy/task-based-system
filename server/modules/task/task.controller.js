@@ -247,7 +247,7 @@ const updateTask = async (req,res,next) => {
 const deleteTask = async (req,res,next) => {
     const role = req.user.userRole;
     const taskID = req.params.id;
-    if (role == "admin") {
+    if (role != "userB") {
         await taskModel.findByIdAndDelete({_id: taskID});
         res.json({message: "Task Has been deleted successfully"});
     } else {
