@@ -54,6 +54,7 @@ const deleteClient = async (req,res,next) => {
     const tryGetClient = await clientModel.findOne({_id: clientID});
     if (tryGetClient) {
         await clientModel.findByIdAndDelete({_id: clientID});
+        await accountModel.findOneAndDelete({owner: clientID});
         res.json({message: "Client has been deleted successfully"});
     } else {
         return next(new HttpError("Client doesn't exist on system!", 400));

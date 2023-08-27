@@ -41,6 +41,7 @@ const deleteFreelancer = async (req,res,next) => {
     const tryGetThisFreelancer = await freelancerModel.findById({_id: freelancerID});
     if (tryGetThisFreelancer) {
         await freelancerModel.findByIdAndDelete({_id: freelancerID});
+        await accountModel.findOneAndDelete({owner: freelancerID});
         res.json({message: "Freelancer has been deleted successfully"});
     } else {
         return next(new HttpError("This freelancer doesn't exist on system", 400));
