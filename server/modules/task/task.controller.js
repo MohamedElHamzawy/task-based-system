@@ -7,7 +7,7 @@ const HttpError = require("../../common/httpError");
 
 const getMyTasks = async (req,res,next) => {
     const mainStatuses = await statusModel.find({changable: false}).select("_id");
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     if (role == "admin") {
         const tasks = await taskModel.find({});
         res.json({tasks: tasks});
@@ -23,7 +23,7 @@ const getMyTasks = async (req,res,next) => {
 }
 
 const getTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     if (role == "admin") {
         const task = await taskModel
@@ -52,7 +52,7 @@ const getTask = async (req,res,next) => {
 }
 
 const createTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     if (role == "admin") {
         const {
             title,
@@ -111,7 +111,7 @@ const createTask = async (req,res,next) => {
 }
 
 const addOffer = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const {freelancer, cost} = req.body;
     const statusID = await statusModel.findOne({slug: "admin-review"}).select("_id");
@@ -124,7 +124,7 @@ const addOffer = async (req,res,next) => {
 }
 
 const addPercentage = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const {percentage} = req.body;
     const statusID = await statusModel.findOne({slug: "in-negotiation"}).select("_id");
@@ -137,7 +137,7 @@ const addPercentage = async (req,res,next) => {
 }
 
 const confirmTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "in-progress"}).select("_id");
     if (role != "userB") {
@@ -158,7 +158,7 @@ const confirmTask = async (req,res,next) => {
 }
 
 const refuseTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
     if (role != "userB") {
@@ -170,7 +170,7 @@ const refuseTask = async (req,res,next) => {
 }
 
 const completeTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "completed"}).select("_id");
     if (role != "userA") {
@@ -182,7 +182,7 @@ const completeTask = async (req,res,next) => {
 }
 
 const deliverTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "delivered-to-client"}).select("_id");
     if (role != "userA") {
@@ -197,7 +197,7 @@ const deliverTask = async (req,res,next) => {
 }
 
 const updateTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     const {
         title,
@@ -245,7 +245,7 @@ const updateTask = async (req,res,next) => {
 }
 
 const deleteTask = async (req,res,next) => {
-    const role = req.user.userRole;
+    const role = req.user.user_role;
     const taskID = req.params.id;
     if (role != "userB") {
         await taskModel.findByIdAndDelete({_id: taskID});
