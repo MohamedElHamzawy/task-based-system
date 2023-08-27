@@ -1,6 +1,8 @@
 const taskModel = require("../../DB/task.model");
 const statusModel = require("../../DB/status.model");
 const currencyModel = require("../../DB/currency.model");
+const accountModel = require("../../DB/account.model");
+const transactionModel = require("../../DB/transaction.model");
 const HttpError = require("../../common/httpError");
 
 const getMyTasks = async (req,res,next) => {
@@ -175,7 +177,10 @@ const deliverTask = async (req,res,next) => {
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "delivered-to-client"}).select("_id");
     if (role != "userA") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        const thisTask = await taskModel.findOne({_id: taskID});
+        const currencyValue = parseFloat(await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP"));
+        const profit_amount = parseFloat(parseFloat(parseFloat(thisTask.paid) * currencyValue) - parseFloat(thisTask.cost));
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: profit_amount});
         res.json({message: "Task has been completed successfully"});
     } else {
         return next(new HttpError("You are not authorized to complete this task!", 401));
