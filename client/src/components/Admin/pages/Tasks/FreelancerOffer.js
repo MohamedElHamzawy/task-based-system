@@ -135,7 +135,7 @@ const FreelancerOffer = (props) => {
                 />
             </div>
 
-            <div className="col-10 col-sm-8  p-3">
+            <div className="col-12 col-sm-8  p-3">
                 <button
                     disabled={
                         !freeLancer &&

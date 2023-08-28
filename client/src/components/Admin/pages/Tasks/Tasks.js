@@ -3,10 +3,8 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import './Tasks.css'
 import { FaTasks } from 'react-icons/fa';
-import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FiFilter } from 'react-icons/fi';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-import { RiDeleteBinFill } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { MdRateReview } from 'react-icons/md';
 import { BiSolidOffer } from 'react-icons/bi';
@@ -90,29 +88,6 @@ const Tasks = () => {
   const searchFilter = getSearchFilter(searchName, tasks);
   const SpecialityFilter = getSpecialityFilter(speciality, tasks);
   const StatusFilter = getStatusFilter(status, tasks);
-
-  // const deleteSpecialityHandler=async(id)=>{
-  //   setIsLoading(true);
-  //   try {
-  //   setError(null);
-  //   const response = await axios.delete(
-  //    ` http://localhost:5000/api/speciality/${id}`
-  //   //  ,
-  //   //  { headers :{
-  //   //     'Authorization':`Bearer ${token}`
-  //   //   }
-  //   // }
-  //   )
-  //   const responseData = await response;
-  //   console.log(responseData)
-  //   setError(responseData.data.message);
-  //   setIsLoading(false);
-  //   window.location.href = '/specialities' ;
-  // }catch (err) {
-  //   setIsLoading(false);
-  //   setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-  // };
-  // }
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -273,7 +248,7 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
           </div>
         )) :
@@ -332,6 +307,9 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

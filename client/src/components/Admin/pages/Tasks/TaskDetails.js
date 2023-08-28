@@ -13,6 +13,8 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
+import { FaCheck } from 'react-icons/fa';
+import { CgClose } from 'react-icons/cg';
 
 import GetCookie from "../../../../hooks/getCookie";
 import FreelancerOffer from "./FreelancerOffer";
@@ -21,19 +23,19 @@ import FreelancerOffer from "./FreelancerOffer";
 //percentage validation
 const percentageReducer = (state, action) => {
   switch (action.type) {
-      case "CHANGE":
-          return {
-              ...state,
-              value: action.percentage,
-              isvalid: validate(action.percentage, action.validators),
-          };
-      case "TOUCH":
-          return {
-              ...state,
-              isTouched: true,
-          };
-      default:
-          return state;
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.percentage,
+        isvalid: validate(action.percentage, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
   }
 };
 
@@ -78,23 +80,23 @@ const TaskDetails = () => {
 
   //////////////////////////////////////
   //percentage validation
-    const [percentageState, dispatch] = useReducer(percentageReducer, {
-      value: "",
-      isvalid: false,
-      isTouched: false,
+  const [percentageState, dispatch] = useReducer(percentageReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
   });
 
   const percentageChangeHandler = (event) => {
-      dispatch({
-          type: "CHANGE",
-          percentage: event.target.value,
-          validators: [VALIDATOR_MINLENGTH(1)],
-      });
+    dispatch({
+      type: "CHANGE",
+      percentage: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(1)],
+    });
   };
   const percentageTouchHandler = () => {
-      dispatch({
-          type: "TOUCH",
-      });
+    dispatch({
+      type: "TOUCH",
+    });
   };
 
   //delete user 
@@ -128,28 +130,128 @@ const TaskDetails = () => {
     // send api request to validate data
     setIsLoading(true);
     try {
-        setError(null);
-        const response = await axios.post(
-            `http://localhost:5000/api/task/addPercentage/${id}`,
-            {
-              percentage: percentageState.value,
-            },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const responseData = await response;
-        console.log(responseData)
-        if (!(response.statusText === "OK")) {
-            throw new Error(responseData.data.message);
-        }
-        setError(responseData.data.message);
-        setIsLoading(false);
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/task/addPercentage/${id}`,
+        {
+          percentage: percentageState.value,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setError(responseData.data.message);
+      setIsLoading(false);
 
     } catch (err) {
-        setIsLoading(false);
-        setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
+  };
+//accept Task Handler 
+const acceptTaskHandler = async (event) => {
+  event.preventDefault();
+  // send api request to validate data
+  setIsLoading(true);
+  try {
+    setError(null);
+    const response = await axios.post(
+      `http://localhost:5000/api/task/confirm/${id}`,
+      {},{ headers: { Authorization: `Bearer ${token}` } }
+    );
+    const responseData = await response;
+    console.log(responseData)
+    if (!(response.statusText === "OK")) {
+      throw new Error(responseData.data.message);
+    }
+    setError(responseData.data.message);
+    setIsLoading(false);
+
+  } catch (err) {
+    setIsLoading(false);
+    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  }
 };
 
+//not accept Task Handler 
+const notAcceptTaskHandler = async (event) => {
+  event.preventDefault();
+  // send api request to validate data
+  setIsLoading(true);
+  try {
+    setError(null);
+    const response = await axios.post(
+      `http://localhost:5000/api/task/refuse/${id}`,
+      {},{ headers: { Authorization: `Bearer ${token}` } }
+    );
+    const responseData = await response;
+    console.log(responseData)
+    if (!(response.statusText === "OK")) {
+      throw new Error(responseData.data.message);
+    }
+    setError(responseData.data.message);
+    setIsLoading(false);
+
+  } catch (err) {
+    setIsLoading(false);
+    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  }
+};
+
+// task completed 
+
+const taskCompleted = async (event) => {
+  event.preventDefault();
+  // send api request to validate data
+  setIsLoading(true);
+  try {
+    setError(null);
+    const response = await axios.post(
+      `http://localhost:5000/api/task/complete/${id}`,
+      {},{ headers: { Authorization: `Bearer ${token}` } }
+    );
+    const responseData = await response;
+    console.log(responseData)
+    if (!(response.statusText === "OK")) {
+      throw new Error(responseData.data.message);
+    }
+    setError(responseData.data.message);
+    setIsLoading(false);
+
+  } catch (err) {
+    setIsLoading(false);
+    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  }
+};
+
+// task delivered 
+
+const taskDelivered = async (event) => {
+  event.preventDefault();
+  // send api request to validate data
+  setIsLoading(true);
+  try {
+    setError(null);
+    const response = await axios.post(
+      `http://localhost:5000/api/task/deliver/${id}`,
+      {},{ headers: { Authorization: `Bearer ${token}` } }
+    );
+    const responseData = await response;
+    console.log(responseData)
+    if (!(response.statusText === "OK")) {
+      throw new Error(responseData.data.message);
+    }
+    setError(responseData.data.message);
+    setIsLoading(false);
+
+  } catch (err) {
+    setIsLoading(false);
+    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  }
+};
   //error message
   const errorHandler = () => {
     setError(null);
@@ -166,7 +268,7 @@ const TaskDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/tasks' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  Task Details</h2>
+        <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
@@ -178,13 +280,13 @@ const TaskDetails = () => {
               status &&
               <span
                 className={
-                  status.statusname == 'pending' ? 'bg-warning  p-2 py-3 status ' :
-                    status.statusname == 'admin review' ? 'bg-danger  p-2 py-3 status ' :
-                      status.statusname == 'in negotiation' ? 'bg-info  p-2 py-3 status ' :
-                        status.statusname == 'in progress' ? 'bg-primary  p-2 py-3 status ' :
-                          status.statusname == 'completed' ? 'bg-success  p-2 py-3 status ' :
-                            status.statusname == 'delivered to client' ? 'bg-secondary  p-2 py-3 status ' :
-                              'anystatus p-2 py-3 status '
+                  status.statusname == 'pending' ? 'bg-warning  p-1 py-3 status ' :
+                    status.statusname == 'admin review' ? 'bg-danger  p-1 py-3 status ' :
+                      status.statusname == 'in negotiation' ? 'bg-info  p-1 py-3 status ' :
+                        status.statusname == 'in progress' ? 'bg-primary  p-1 py-3 status ' :
+                          status.statusname == 'completed' ? 'bg-success  p-1 py-3 status ' :
+                            status.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-3 status ' :
+                              'anystatus p-1 py-3 status '
                 }>
                 {
                   status.statusname == 'pending' ?
@@ -289,61 +391,85 @@ const TaskDetails = () => {
       </div>
 
       {status.statusname == 'pending' &&
-        <div>
+          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
           <h2 className="text-start py-3 edit-form-lable">Task is Pending .. Waiting To Choose Freelancer : </h2>
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
             <FreelancerOffer id={id} />
-          </div>
         </div>}
-        {status.statusname == 'admin review' &&
-        <div>
-          <h2 className="text-start py-3 edit-form-lable">Task Status is Admin Review .. Waiting To Put Percentage : </h2>
+
+      {status.statusname == 'admin review' &&
           <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+          <h2 className="text-start py-3 edit-form-lable">Task Status is Admin Review .. Waiting To Put Percentage : </h2>
 
-          <div className='col-12 col-lg-5 py-3 p-0'>
+            <div className='col-12 col-lg-5 py-3 p-0'>
 
-                <label className='col-12 col-lg-5 fw-bold add-user-p py-2'>Admin Percentage :</label>
-                <input type='number' placeholder='Task Price '
-                    value={percentageState.value}
-                    onChange={percentageChangeHandler}
-                    onBlur={percentageTouchHandler}
-                    isvalid={percentageState.isvalid.toString()}
-                    className={`col-10 col-lg-4 search p-2 ${!percentageState.isvalid &&
-                      percentageState.isTouched &&
-                        "form-control-invalid"
-                        }`}
-                /> 
-                <span className='col-1 px-2'>
-                  %
-                </span>
+              <label className='col-12 col-lg-5 fw-bold add-user-p py-2'>Admin Percentage :</label>
+              <input type='number' placeholder='Task Price '
+                value={percentageState.value}
+                onChange={percentageChangeHandler}
+                onBlur={percentageTouchHandler}
+                isvalid={percentageState.isvalid.toString()}
+                className={`col-10 col-lg-4 search p-2 ${!percentageState.isvalid &&
+                  percentageState.isTouched &&
+                  "form-control-invalid"
+                  }`}
+              />
+              <span className='col-1 px-2'>
+                %
+              </span>
             </div>
 
             <div className="col-12 col-sm-7  p-3">
-                <button
-                    disabled={
-                        !percentageState.value
-                    }
-                    className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-                    onClick={putAdminPercentage}
-                >
-                    Add Percentage
-                </button>
+              <button
+                disabled={
+                  !percentageState.value
+                }
+                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                onClick={putAdminPercentage}
+              >
+                Add Percentage
+              </button>
             </div>
-          </div>
-        </div>}  
-
-        {status.statusname == 'in negotiation' &&
-        <div>
-          <h2 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept It To Start : </h2>
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-            <button>
-              Accept
-            </button>
-            <button>
-              not
-            </button>
-          </div>
         </div>}
+
+      {status.statusname == 'in negotiation' &&
+        <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
+          <h4 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept It To Start : </h4>
+          <button className='accept-btn py-2 col-3 col-md-1 mx-3' onClick={acceptTaskHandler}>
+            <FaCheck className='fs-3' />
+          </button>
+          <button className='col-3 col-md-1 py-2 cansle-btn delete-btn mx-3' onClick={notAcceptTaskHandler}>
+            <CgClose className='fs-3' />
+          </button>
+        </div>}
+
+        {status.statusname == 'in progress' &&
+          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+          <h2 className="text-start py-3 edit-form-lable">Task Is in Progress .. If It Finished Click Here : </h2>
+
+            <div className="col-12 col-sm-7  p-3">
+              <button
+                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                onClick={taskCompleted}
+              >
+                Completed
+              </button>
+            </div>
+        </div>}
+                
+      {status.statusname == 'completed' &&
+        <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
+          <h4 className="text-start py-3 edit-form-lable">Task Is Completed .. When It Delivered Click Here : </h4>
+         
+          <div className="col-12 col-sm-7  p-3">
+              <button
+                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                onClick={taskDelivered}
+              >
+                Task Delivered
+              </button>
+            </div>
+        </div>} 
+
 
     </div>
   )

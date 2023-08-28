@@ -1,6 +1,10 @@
 .task-card{
     border-radius: 20px;
 }
+.task-card:hover{
+background-color: rgba(243, 242, 242, 0.74) !important;
+}
+
 .status{
     color: white;
     border-radius: 50px;
@@ -9,7 +13,21 @@
 .anystatus{
     background-color: rgb(247, 0, 255);
 }
-
+.accept-btn{
+    background-color: rgb(9, 165, 9);
+    color: white; 
+    border: 0px ;
+    border-radius: 50px;
+}
+.accept-btn:hover{
+    background-color: rgb(8, 143, 8);
+}
+.cansle-btn{
+    background-color: red;
+    color: white; 
+    border: 0px ;
+    border-radius: 50px;
+}
 
 @media only screen and (max-width: 450px) {
    .freelanceremail{
