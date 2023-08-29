@@ -185,7 +185,7 @@ const deliverTask = async (req,res,next) => {
     const role = req.user.user_role;
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "delivered-to-client"}).select("_id");
-    if (role != "userA") {
+    if (role != "userB") {
         const thisTask = await taskModel.findOne({_id: taskID});
         const currencyValue = parseFloat(await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP"));
         const profit_amount = parseFloat(parseFloat(parseFloat(thisTask.paid) * currencyValue) - parseFloat(thisTask.cost));
