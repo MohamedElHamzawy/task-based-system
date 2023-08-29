@@ -280,10 +280,20 @@ const TaskDetails = () => {
           <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
           <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.email} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-5 row ">
+        {status.statusname == 'pending' || status.statusname == 'admin review' || status.statusname == 'in negotiation' ?
+          <div className="col-12 col-md-6 col-lg-5 row ">
           <h5 className="col-8 col-md-6 edit-form-lable text-start pt-3">  Client Price:</h5>
           <p className="d-inline col-4 col-md-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
-        </div>
+        </div> :''
+        }
+         {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
+          <div className="col-12 col-md-6 col-lg-5 row ">
+          <h4 className="col-8 col-md-6 edit-form-lable text-start pt-3">  Task Price:</h4>
+          <p className="d-inline col-4 col-md-6 pt-3 edit-form-p fw-bold text-danger"> {offer} </p>
+        </div> :''
+        }
+      
+
         <div className="col-12 col-md-6 col-lg-4 row ">
           <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Currency:</h4>
           <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
@@ -318,19 +328,6 @@ const TaskDetails = () => {
 
         </div>}
 
-      {status.statusname == 'in progress' &&
-        <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-          <h2 className="text-start py-3 edit-form-lable">Task Is in Progress .. If It Finished Click Here : </h2>
-
-          <div className="col-12 col-sm-7  p-3">
-            <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-              onClick={taskCompleted}
-            >
-              Completed
-            </button>
-          </div>
-        </div>}
 
       {status.statusname == 'completed' &&
         <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
