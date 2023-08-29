@@ -39,7 +39,7 @@ const getTask = async (req,res,next) => {
         const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
         const cost = parseFloat(task.cost);
         const profitPercentage = parseFloat(task.profit_percentage);
-        const offer = ((cost + (cost * (profitPercentage/100))) * parseFloat(currencyValue.priceToEGP));
+        const offer = ((cost + (cost * (profitPercentage/100))) / parseFloat(currencyValue.priceToEGP));
         res.json({task: task, offer: offer});
     } else if (role == "userB") {
         const task = await taskModel
