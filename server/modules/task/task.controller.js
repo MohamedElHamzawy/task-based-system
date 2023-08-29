@@ -4,6 +4,7 @@ const currencyModel = require("../../DB/currency.model");
 const accountModel = require("../../DB/account.model");
 const transactionModel = require("../../DB/transaction.model");
 const HttpError = require("../../common/httpError");
+const { default: mongoose } = require("mongoose");
 
 const getMyTasks = async (req,res,next) => {
     const mainStatuses = await statusModel.find({changable: false}).select("_id");
@@ -149,7 +150,9 @@ const confirmTask = async (req,res,next) => {
         const newBalanceF = parseFloat(freelancerAccount.balance) + parseFloat(transactionF.amount);
         await accountModel.findByIdAndUpdate({_id: freelancerAccount._id}, {balance: newBalanceF});
         const clientAccount = await accountModel.findOne({owner: thisTask.client});
-        const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: thisTask.paid, account_id: clientAccount._id}).save();
+        const currencyValue = await currencyModel.findById({_id: thisTask.task_currency}).select("priceToEGP");
+        const amount = parseFloat(parseFloat(thisTask.paid) * parseFloat(currencyValue.priceToEGP));
+        const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: amount, account_id: clientAccount._id}).save();
         const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
         await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
         res.json({message: "Task has been confirmed successfully"});
@@ -163,7 +166,7 @@ const refuseTask = async (req,res,next) => {
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
     if (role != "userB") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: NULL, accepted_by: NULL, accepted: false});
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: "0000000000000000000000ee", accepted_by: "0000000000000000000000ee", accepted: false});
         res.json({message: "Task has been confirmed successfully"});
     } else {
         return next(new HttpError("You are not authorized to refuse this task!", 401));
