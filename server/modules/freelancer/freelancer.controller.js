@@ -20,7 +20,7 @@ const getFreelancer = async (req, res, next) => {
 const createFreelancer = async (req,res,next) => {
     const {name, phone, email, country, city, speciality} = req.body;
     const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, email: email, country: country, city: city, speciality: speciality}).save();
-    new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername, type:"freelancer"}).save();
+    await new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername, type:"freelancer"}).save();
     res.json({message: "Freelancer has been created successfully"});
 }
 

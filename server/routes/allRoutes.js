@@ -8,6 +8,7 @@ const freelancerRoutes = require("../modules/freelancer/freelancer.routes");
 const accountRoutes = require("../modules/account/account.routes");
 const taskRoutes = require("../modules/task/task.routes");
 const transactionRoutes = require("../modules/transaction/transaction.routes");
+const commentRoutes = require("../modules/comment/comment.routes");
 
 module.exports = {
     loginRoutes,
@@ -19,5 +20,6 @@ module.exports = {
     freelancerRoutes,
     accountRoutes,
     taskRoutes,
-    transactionRoutes
+    transactionRoutes,
+    commentRoutes
 }

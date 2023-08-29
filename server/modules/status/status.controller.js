@@ -23,7 +23,7 @@ const createStatus = async (req,res,next) => {
     if (tryGetThisStatus) {
         return next(new HttpError("This status already exists!", 400));
     } else {
-        new statusModel({statusname:name, slug:slug}).save();
+        await new statusModel({statusname:name, slug:slug}).save();
         res.json({message:"Status has been created successfully"});
     }
 }
