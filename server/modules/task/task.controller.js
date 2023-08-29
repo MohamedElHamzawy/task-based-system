@@ -185,10 +185,10 @@ const deliverTask = async (req,res,next) => {
     const role = req.user.user_role;
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "delivered-to-client"}).select("_id");
-    if (role != "userA") {
+    if (role != "userB") {
         const thisTask = await taskModel.findOne({_id: taskID});
-        const currencyValue = parseFloat(await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP"));
-        const profit_amount = parseFloat(parseFloat(parseFloat(thisTask.paid) * currencyValue) - parseFloat(thisTask.cost));
+        const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
+        const profit_amount = parseFloat(parseFloat(parseFloat(thisTask.paid) * parseFloat(currencyValue.priceToEGP)) - parseFloat(thisTask.cost));
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: profit_amount});
         res.json({message: "Task has been completed successfully"});
     } else {
