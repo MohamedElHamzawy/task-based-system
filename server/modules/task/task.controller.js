@@ -36,10 +36,10 @@ const getTask = async (req,res,next) => {
         .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
         .select("title description channel client speciality taskStatus deadline task_currency paid cost profit_percentage")
         .populate(["client", "speciality", "taskStatus", "task_currency"]);
-        const currencyValue = parseFloat(await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP"));
+        const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
         const cost = parseFloat(task.cost);
         const profitPercentage = parseFloat(task.profit_percentage);
-        const offer = ((cost + (cost * (profitPercentage/100))) / currencyValue);
+        const offer = ((cost + (cost * (profitPercentage/100))) / parseFloat(currencyValue.priceToEGP));
         res.json({task: task, offer: offer});
     } else if (role == "userB") {
         const task = await taskModel
