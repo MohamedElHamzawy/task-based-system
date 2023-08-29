@@ -30,6 +30,7 @@ const TaskDetails = () => {
   let { id } = useParams();
 
   const [task, setTask] = useState([]);
+  const [offer, setOffer] = useState('');
   const [client, setClient] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [status, setStatus] = useState([]);
@@ -42,6 +43,7 @@ const TaskDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/task/${id}`, { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setTask(res.data.task);
+          setOffer(res.data.offer)
           setClient(res.data.task.client)
           setCurrency(res.data.task.task_currency)
           setSpeciality(res.data.task.speciality)
@@ -55,7 +57,6 @@ const TaskDetails = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  console.log(task)
 
   //////////////////////////////////////
 
@@ -86,107 +87,107 @@ const TaskDetails = () => {
   }
 
 
-//accept Task Handler 
-const acceptTaskHandler = async (event) => {
-  event.preventDefault();
-  // send api request to validate data
-  setIsLoading(true);
-  try {
-    setError(null);
-    const response = await axios.post(
-      `http://localhost:5000/api/task/confirm/${id}`,
-      {},{ headers: { Authorization: `Bearer ${token}` } }
-    );
-    const responseData = await response;
-    console.log(responseData)
-    if (!(response.statusText === "OK")) {
-      throw new Error(responseData.data.message);
+  //accept Task Handler 
+  const acceptTaskHandler = async (event) => {
+    event.preventDefault();
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/task/confirm/${id}`,
+        {}, { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setError(responseData.data.message);
+      setIsLoading(false);
+
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
-    setError(responseData.data.message);
-    setIsLoading(false);
+  };
 
-  } catch (err) {
-    setIsLoading(false);
-    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  }
-};
+  //not accept Task Handler 
+  const notAcceptTaskHandler = async (event) => {
+    event.preventDefault();
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/task/refuse/${id}`,
+        {}, { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setError(responseData.data.message);
+      setIsLoading(false);
 
-//not accept Task Handler 
-const notAcceptTaskHandler = async (event) => {
-  event.preventDefault();
-  // send api request to validate data
-  setIsLoading(true);
-  try {
-    setError(null);
-    const response = await axios.post(
-      `http://localhost:5000/api/task/refuse/${id}`,
-      {},{ headers: { Authorization: `Bearer ${token}` } }
-    );
-    const responseData = await response;
-    console.log(responseData)
-    if (!(response.statusText === "OK")) {
-      throw new Error(responseData.data.message);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
-    setError(responseData.data.message);
-    setIsLoading(false);
+  };
 
-  } catch (err) {
-    setIsLoading(false);
-    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  }
-};
+  // task completed 
 
-// task completed 
+  const taskCompleted = async (event) => {
+    event.preventDefault();
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/task/complete/${id}`,
+        {}, { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setError(responseData.data.message);
+      setIsLoading(false);
 
-const taskCompleted = async (event) => {
-  event.preventDefault();
-  // send api request to validate data
-  setIsLoading(true);
-  try {
-    setError(null);
-    const response = await axios.post(
-      `http://localhost:5000/api/task/complete/${id}`,
-      {},{ headers: { Authorization: `Bearer ${token}` } }
-    );
-    const responseData = await response;
-    console.log(responseData)
-    if (!(response.statusText === "OK")) {
-      throw new Error(responseData.data.message);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
-    setError(responseData.data.message);
-    setIsLoading(false);
+  };
 
-  } catch (err) {
-    setIsLoading(false);
-    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  }
-};
+  // task delivered 
 
-// task delivered 
+  const taskDelivered = async (event) => {
+    event.preventDefault();
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/task/deliver/${id}`,
+        {}, { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setError(responseData.data.message);
+      setIsLoading(false);
 
-const taskDelivered = async (event) => {
-  event.preventDefault();
-  // send api request to validate data
-  setIsLoading(true);
-  try {
-    setError(null);
-    const response = await axios.post(
-      `http://localhost:5000/api/task/deliver/${id}`,
-      {},{ headers: { Authorization: `Bearer ${token}` } }
-    );
-    const responseData = await response;
-    console.log(responseData)
-    if (!(response.statusText === "OK")) {
-      throw new Error(responseData.data.message);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
-    setError(responseData.data.message);
-    setIsLoading(false);
-
-  } catch (err) {
-    setIsLoading(false);
-    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  }
-};
+  };
   //error message
   const errorHandler = () => {
     setError(null);
@@ -287,17 +288,6 @@ const taskDelivered = async (event) => {
           <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Currency:</h4>
           <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
         </div>
-        {/* <div className="col-12 col-md-6 col-lg-3 row ">
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Profit :</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {task.profit_percentage} %</p>
-        </div> */}
-
-        {/* {task.cost &&
-            <div className="col-12 col-md-4 row ">
-              <h5 className="col-7 col-md-6  edit-form-lable text-start pt-3">  Cost :</h5>
-              <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold ">{task.cost} </p>
-            </div>
-        } */}
 
         <div className="col-12 row ">
           {/* <hr></hr> */}
@@ -310,42 +300,51 @@ const taskDelivered = async (event) => {
 
       {status.statusname == 'in negotiation' &&
         <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
-          <h4 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept It To Start : </h4>
-          <button className='accept-btn py-2 col-3 col-md-1 mx-3' onClick={acceptTaskHandler}>
-            <FaCheck className='fs-3' />
-          </button>
-          <button className='col-3 col-md-1 py-2 cansle-btn delete-btn mx-3' onClick={notAcceptTaskHandler}>
-            <CgClose className='fs-3' />
-          </button>
+          <h4 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept The Offer To Start : </h4>
+
+          <div className='row col-12 col-md-6 p-4'>
+            <h4 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h4>
+            <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} </p>
+          </div>
+
+          <div className='col-12 col-md-6'>
+            <button className='accept-btn p-3 mx-3' onClick={acceptTaskHandler}>
+              <FaCheck className='fs-3' />
+            </button>
+            <button className=' p-3 cansle-btn delete-btn mx-3' onClick={notAcceptTaskHandler}>
+              <CgClose className='fs-3' />
+            </button>
+          </div>
+
         </div>}
 
-        {status.statusname == 'in progress' &&
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+      {status.statusname == 'in progress' &&
+        <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
           <h2 className="text-start py-3 edit-form-lable">Task Is in Progress .. If It Finished Click Here : </h2>
 
-            <div className="col-12 col-sm-7  p-3">
-              <button
-                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-                onClick={taskCompleted}
-              >
-                Completed
-              </button>
-            </div>
+          <div className="col-12 col-sm-7  p-3">
+            <button
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+              onClick={taskCompleted}
+            >
+              Completed
+            </button>
+          </div>
         </div>}
-                
+
       {status.statusname == 'completed' &&
         <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
           <h4 className="text-start py-3 edit-form-lable">Task Is Completed .. When It Delivered Click Here : </h4>
-         
+
           <div className="col-12 col-sm-7  p-3">
-              <button
-                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-                onClick={taskDelivered}
-              >
-                Task Delivered
-              </button>
-            </div>
-        </div>} 
+            <button
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+              onClick={taskDelivered}
+            >
+              Task Delivered
+            </button>
+          </div>
+        </div>}
 
 
     </div>
