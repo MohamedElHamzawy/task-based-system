@@ -18,6 +18,7 @@ const AccountDetails = () => {
   let { id } = useParams();
 
   const [account, setAccount] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     let timerId;
@@ -26,6 +27,7 @@ const AccountDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/account/${id}`).then((res) => {
           setAccount(res.data.account);
+          setTransactions(res.data.transactions);
         });
         setLoading(false);
         setIsLoading(false);
@@ -33,7 +35,7 @@ const AccountDetails = () => {
     }
     return () => clearTimeout(timerId);
   }, [loading]);
-  console.log(account)
+  console.log(account ,transactions )
 
   //error message
   const errorHandler = () => {

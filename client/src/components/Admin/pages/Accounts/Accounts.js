@@ -43,6 +43,7 @@ const Accounts = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
+  console.log(accounts)
   const [searchName, setSearchName] = useState('');
 
 

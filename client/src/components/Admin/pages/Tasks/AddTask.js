@@ -298,7 +298,7 @@ const AddTask = () => {
     taskPriceState.value =''
     setClient('')
     setSpeciality('')
-    setDeadline('')
+    setDeadline()
     setCurrency('')
   };
 

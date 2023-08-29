@@ -26,7 +26,7 @@ const UserA = () => {
      <Routes >
             <Route path="/" element={<Tasks/>} />
             <Route path="/addtask" element={<AddTask/>} />
-            <Route path="/taskdetails" element={<TaskDetails/>} />
+            <Route path="/task/:id" element={<TaskDetails/>} />
             <Route path="/clients" element={<Clients/>} />
             <Route path="/client/:id" element={<ClientDetails/>} />
             <Route path="/addclient" element={<AddClient/>}  />
