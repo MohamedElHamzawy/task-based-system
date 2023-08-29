@@ -21,7 +21,7 @@ const createSpeciality = async (req,res,next) => {
     if (tryGetSpeciality) {
         return next(new HttpError("Speciality already exist!", 400));
     } else {
-        const newSpeciality = new specialityModel({
+        const newSpeciality = await new specialityModel({
             specialityName: name,
             specialityType: type
         }).save();

@@ -22,7 +22,7 @@ const createCurrency = async (req,res,next) => {
     if (tryGetThisCurrency) {
         return next(new HttpError("This currency already exists!", 400));
     } else {
-        new currencyModel({currencyname:name, priceToEGP:price}).save();
+        await new currencyModel({currencyname:name, priceToEGP:price}).save();
         res.json({message:"Currency has been created successfully"});
     }
 }
