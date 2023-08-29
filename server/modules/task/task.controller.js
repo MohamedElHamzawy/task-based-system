@@ -25,6 +25,7 @@ const getMyTasks = async (req,res,next) => {
 const getTask = async (req,res,next) => {
     const role = req.user.user_role;
     const taskID = req.params.id;
+    const mainStatuses = await statusModel.find({changable: false}).select("_id");
     if (role == "admin") {
         const task = await taskModel
         .findOne({_id: taskID})
