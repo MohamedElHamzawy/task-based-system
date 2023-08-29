@@ -3,13 +3,13 @@ const accountModel = require("../../DB/account.model");
 const HttpError = require("../../common/httpError");
 
 const getAllFreelancers = async (req,res,next) => {
-    const freelancers = await freelancerModel.find({});
+    const freelancers = await freelancerModel.find({}).populate("speciality");
     res.json({freelancers: freelancers});
 }
 
 const getFreelancer = async (req, res, next) => {
     const freelancerID = req.params.id;
-    const thisFreelancer = await freelancerModel.findById({_id: freelancerID});
+    const thisFreelancer = await freelancerModel.findById({_id: freelancerID}).populate("speciality");
     if (thisFreelancer) {
         res.json({freelancer: thisFreelancer});
     } else {
@@ -27,7 +27,7 @@ const createFreelancer = async (req,res,next) => {
 const updateFreelancer = async (req,res,next) => {
     const {name, phone, email, country, city, speciality} = req.body;
     const freelancerID = req.params.id;
-    const tryGetThisFreelancer = await freelancerModel.findById({_id: freelancerID});
+    const tryGetThisFreelancer = await freelancerModel.findById({_id: freelancerID}).populate("speciality");
     if (tryGetThisFreelancer) {
         await freelancerModel.findByIdAndUpdate({_id: freelancerID}, {freelancername: name, phone: phone, email: email, country: country, city: city, speciality: speciality});
         res.json({message: "Freelancer has been updated successfully"});

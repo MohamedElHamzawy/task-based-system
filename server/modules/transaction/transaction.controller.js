@@ -3,13 +3,13 @@ const accountModel = require("../../DB/account.model");
 const HttpError = require("../../common/httpError");
 
 const getAllTransactions = async (req,res,next) => {
-    const transactions = await transactionModel.find({});
+    const transactions = await transactionModel.find({}).populate(["task", "account_id"]);
     res.json({transactions: transactions});
 }
 
 const getTransaction = async (req,res,next) => {
     const transactionID = req.params.id;
-    const thisTransaction = await transactionModel.findOne({_id: transactionID});
+    const thisTransaction = await transactionModel.findOne({_id: transactionID}).populate(["task", "account_id"]);
     if (thisTransaction) {
         res.json({transaction: thisTransaction});
     } else {
