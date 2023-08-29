@@ -163,7 +163,7 @@ const refuseTask = async (req,res,next) => {
     const taskID = req.params.id;
     const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
     if (role != "userB") {
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: 0, accepted_by: 0, accepted: false});
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: NULL, accepted_by: NULL, accepted: false});
         res.json({message: "Task has been confirmed successfully"});
     } else {
         return next(new HttpError("You are not authorized to refuse this task!", 401));
