@@ -3,6 +3,7 @@ const statusModel = require("../../DB/status.model");
 const currencyModel = require("../../DB/currency.model");
 const accountModel = require("../../DB/account.model");
 const transactionModel = require("../../DB/transaction.model");
+const noteModel = require("../../DB/note.model");
 const HttpError = require("../../common/httpError");
 const { default: mongoose } = require("mongoose");
 
@@ -31,7 +32,12 @@ const getTask = async (req,res,next) => {
         const task = await taskModel
         .findOne({_id: taskID})
         .populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-        res.json({task: task});
+        const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
+        const cost = parseFloat(task.cost);
+        const profitPercentage = parseFloat(task.profit_percentage);
+        const offer = ((cost + (cost * (profitPercentage/100))) / parseFloat(currencyValue.priceToEGP));
+        const notes = await noteModel.find({task_id: taskID}).populate(["user_id", "task_id"]);
+        res.json({task: task, notes: notes, offer: offer});
     } else if (role == "userA") {
         const task = await taskModel
         .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
@@ -81,6 +87,8 @@ const createTask = async (req,res,next) => {
             created_by: req.user._id,
             taskStatus: statusID
         }).save();
+        const date = new Date();
+        new noteModel({content: `Task has been created by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: newTask._id}).save();
         res.json({message: "Task has been created successfully"});
     } else if (role == "userA") {
         const {
@@ -106,6 +114,8 @@ const createTask = async (req,res,next) => {
             created_by: req.user._id,
             taskStatus: statusID
         }).save();
+        const date = new Date();
+        new noteModel({content: `Task has been created by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: newTask._id}).save();
         res.json({message: "Task has been created successfully"});
     } else {
         return next(new HttpError("You are not authorized to create task!", 401));
@@ -119,6 +129,8 @@ const addOffer = async (req,res,next) => {
     const statusID = await statusModel.findOne({slug: "admin-review"}).select("_id");
     if (role != "userA") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {cost: cost, freelancer: freelancer, accepted_by: req.user._id, accepted: true, taskStatus: statusID});
+        const date = new Date();
+        new noteModel({content: `${req.user.fullname} has added offer to client in ${date}`, user_id: req.user._id, task_id: taskID}).save();
         res.json({message: "Your offer has been added successfully"});
     } else {
         return next(new HttpError("You are not authorized to add freelancer offer to task!", 401));
@@ -132,6 +144,8 @@ const addPercentage = async (req,res,next) => {
     const statusID = await statusModel.findOne({slug: "in-negotiation"}).select("_id");
     if (role == "admin") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {profit_percentage: percentage, taskStatus: statusID});
+        const date = new Date();
+        new noteModel({content: `${req.user.fullname} has added profit percentage to the offer in ${date}`, user_id: req.user._id, task_id: taskID}).save();
         res.json({message: "Your offer has been added successfully"});
     } else {
         return next(new HttpError("You are not authorized to add percentage to task!", 401));
@@ -155,6 +169,8 @@ const confirmTask = async (req,res,next) => {
         const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: amount, account_id: clientAccount._id}).save();
         const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
         await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
+        const date = new Date();
+        new noteModel({content: `Task has been confirmed by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: taskID}).save();
         res.json({message: "Task has been confirmed successfully"});
     } else {
         return next(new HttpError("You are not authorized to confirm this task!", 401));
@@ -167,7 +183,9 @@ const refuseTask = async (req,res,next) => {
     const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
     if (role != "userB") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: "0000000000000000000000ee", accepted_by: "0000000000000000000000ee", accepted: false});
-        res.json({message: "Task has been confirmed successfully"});
+        const date = new Date();
+        new noteModel({content: `Task's offer has been refuse by ${req.user.fullname} in ${date} and task returned to pending`, user_id: req.user._id, task_id: taskID}).save();
+        res.json({message: "Task has been returned to pending successfully"});
     } else {
         return next(new HttpError("You are not authorized to refuse this task!", 401));
     }
@@ -179,6 +197,8 @@ const completeTask = async (req,res,next) => {
     const statusID = await statusModel.findOne({slug: "completed"}).select("_id");
     if (role != "userA") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        const date = new Date();
+        new noteModel({content: `Task has been set to ready for delivery by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: taskID}).save();
         res.json({message: "Task has been completed successfully"});
     } else {
         return next(new HttpError("You are not authorized to complete this task!", 401));
@@ -194,6 +214,8 @@ const deliverTask = async (req,res,next) => {
         const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
         const profit_amount = parseFloat(parseFloat(parseFloat(thisTask.paid) * parseFloat(currencyValue.priceToEGP)) - parseFloat(thisTask.cost));
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: profit_amount});
+        const date = new Date();
+        new noteModel({content: `Task has been delivered to client by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: taskID}).save();
         res.json({message: "Task has been completed successfully"});
     } else {
         return next(new HttpError("You are not authorized to complete this task!", 401));
@@ -242,6 +264,8 @@ const updateTask = async (req,res,next) => {
             profit_percentage,
             profit_amount
         });
+        const date = new Date();
+        new noteModel({content: `Admin: ${req.user.fullname} has updated this task in ${date}`, user_id: req.user._id, task_id: taskID}).save();
         res.json({message: "Task has been updated successfully"});
     } else {
         return next(new HttpError("You are not authorized to full update this task!", 401));
