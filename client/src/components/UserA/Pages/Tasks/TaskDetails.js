@@ -32,7 +32,6 @@ const TaskDetails = () => {
   const [task, setTask] = useState([]);
   const [client, setClient] = useState([]);
   const [speciality, setSpeciality] = useState([]);
-  const [user, setUser] = useState([]);
   const [status, setStatus] = useState([]);
   const [currency, setCurrency] = useState([]);
 
@@ -47,7 +46,7 @@ const TaskDetails = () => {
           setCurrency(res.data.task.task_currency)
           setSpeciality(res.data.task.speciality)
           setStatus(res.data.task.taskStatus)
-          setUser(res.data.task.created_by)
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -292,29 +291,12 @@ const taskDelivered = async (event) => {
           <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Profit :</h4>
           <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {task.profit_percentage} %</p>
         </div> */}
-        <div className="col-12 col-md-6  row ">
-          <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  UserName :</h5>
-          <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {user.username} </p>
-        </div>
-        <div className="col-12 col-md-6  row ">
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  UserRole :</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {user.user_role} </p>
-        </div>
-        {/* {task.freelancer &&
-          <>
-            <div className="col-12 col-md-6 row ">
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Freelancer :</h5>
-              <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
-            </div>
-            <div className="col-12 col-md-8 col-lg-6 row ">
-              <h6 className="col-12 col-sm-4  edit-form-lable text-start pt-3">  Freelancer Email :</h6>
-              <p className="d-inline col-12 col-sm-8 pt-3 edit-form-p fw-bold freelanceremail"> {task.freelancer.email} </p>
-            </div>
+
+        {/* {task.cost &&
             <div className="col-12 col-md-4 row ">
               <h5 className="col-7 col-md-6  edit-form-lable text-start pt-3">  Cost :</h5>
               <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold ">{task.cost} </p>
             </div>
-          </>
         } */}
 
         <div className="col-12 row ">
