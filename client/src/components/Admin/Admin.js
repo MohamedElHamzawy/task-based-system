@@ -40,7 +40,7 @@ const Admin = () => {
           <Route path="/adduser" element={<AddUser />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/addtask" element={<AddTask />} />
-          <Route path="/taskdetails" element={<TaskDetails />} />
+          <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/specialities" element={<Specialities />} />
           <Route path="/speciality/:id" element={<SpecialityDetails />} />
           <Route path="/addspeciality" element={<AddSpeciality />} />

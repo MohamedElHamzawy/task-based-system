@@ -33,6 +33,7 @@ const AccountDetails = () => {
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+  console.log(account)
 
   //error message
   const errorHandler = () => {
