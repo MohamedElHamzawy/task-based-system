@@ -51,6 +51,16 @@ const Tasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/status/").then((res) => {
+          setStatuses(res.data.statuses);
+        });
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/speciality/").then((res) => {
+          setSpecialities(res.data.specialities);
+        });
+      });
+      timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
@@ -60,23 +70,10 @@ const Tasks = () => {
         setIsLoading(false);
         setLoading(false);
       });
-      timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/status/").then((res) => {
-          setStatuses(res.data.statuses);
-        });
-        setIsLoading(false);
-        setLoading(false);
-      });
-      timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/speciality/").then((res) => {
-          setSpecialities(res.data.specialities);
-        });
-        setIsLoading(false);
-        setLoading(false);
-      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+  
   const [speciality, setSpeciality] = useState('');
   const [status, setStatus] = useState('');
 

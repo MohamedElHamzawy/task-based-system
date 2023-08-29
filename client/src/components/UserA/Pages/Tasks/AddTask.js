@@ -4,6 +4,7 @@ import axios from "axios";
 import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from 'react-icons/ti';
+import GetCookie from '../../../../hooks/getCookie';
 
 //Title validation
 const TitleReducer = (state, action) => {
@@ -31,25 +32,6 @@ const channelReducer = (state, action) => {
         ...state,
         value: action.channel,
         isvalid: validate(action.channel, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
-
-//percentage validation
-const percentageReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.percentage,
-        isvalid: validate(action.percentage, action.validators),
       };
     case "TOUCH":
       return {
@@ -196,20 +178,6 @@ const AddTask = () => {
     });
   };
 
-  //percentage validation
-  const [percentageState, dispatch3] = useReducer(percentageReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
-
-  const percentageChangeHandler = (event) => {
-    dispatch3({
-      type: "CHANGE",
-      percentage: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(1)],
-    });
-  };
 
   //task price validation
   const [taskPriceState, dispatch4] = useReducer(taskPriceReducer, {
@@ -256,8 +224,9 @@ const AddTask = () => {
 
   /////////////////////////////////
 
+  const token = GetCookie("UserA")
 
-  const newSpecialitySubmitHandler = async (event) => {
+  const newTaskSubmitHandler = async (event) => {
     event.preventDefault();
     // send api request to validate data
     setIsLoading(true);
@@ -266,9 +235,16 @@ const AddTask = () => {
       const response = await axios.post(
         "http://localhost:5000/api/task/",
         {
-          name: titleState.value,
-          type: channelState.value,
-        }
+          title: titleState.value,
+          channel: channelState.value,
+          description : descriptionState.value,
+          client : client,
+          speciality : speciality ,
+          deadline : deadline ,
+          task_currency : currency ,
+          paid : taskPriceState.value
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       const responseData = await response;
@@ -285,6 +261,12 @@ const AddTask = () => {
     }
     channelState.value = ''
     titleState.value = ''
+    descriptionState.value =''
+    taskPriceState.value =''
+    setClient('')
+    setSpeciality('')
+    setDeadline()
+    setCurrency('')
   };
 
   const errorHandler = () => {
@@ -302,7 +284,7 @@ const AddTask = () => {
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-3">  Add New Task</h2>
       </div>
 
-      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newSpecialitySubmitHandler}>
+      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newTaskSubmitHandler}>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Title :</label>
@@ -366,20 +348,6 @@ const AddTask = () => {
           />
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Percentage :</label>
-          <input wtype='number' placeholder='Percentage '
-            value={percentageState.value}
-            onChange={percentageChangeHandler}
-            className={`col-6 col-lg-6 search p-2 ${!percentageState.isvalid &&
-              percentageState.isTouched &&
-              "form-control-invalid"
-              }`}
-          /> <span className='col-1'>
-            %
-          </span>
-        </div>
-
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
           <label htmlFor="currency" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Currency:</label>
 
@@ -425,7 +393,6 @@ const AddTask = () => {
             disabled={
               !channelState.isvalid ||
               !titleState.isvalid ||
-              !percentageState.isvalid ||
               !descriptionState.isvalid ||
               !speciality ||
               !client||
