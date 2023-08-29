@@ -79,7 +79,7 @@ const TaskDetails = () => {
       console.log(responseData.data)
       setError(responseData.data.message);
       setIsLoading(false);
-      window.location.href = '/tasks';
+      window.location.href = '/';
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
@@ -202,7 +202,7 @@ const taskDelivered = async (event) => {
 
       <div className="row mb-4">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/tasks' }}><TiArrowBack /> </button>
+          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
       </div>
