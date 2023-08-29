@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import UserBSideBar from './UserBSideBar/UserBSideBar'
 import Tasks from './Pages/Tasks/Tasks'
-import AddTask from './Pages/Tasks/AddTask'
 import TaskDetails from './Pages/Tasks/TaskDetails'
 import FreeLancers from './Pages/FreeLancers/FreeLancers'
 import FreeLancerDetails from './Pages/FreeLancers/FreeLancerDetails'
@@ -19,7 +18,6 @@ const UserB = () => {
       <div className='Admin-body '>
         <Routes >     
           <Route path="/" element={<Tasks />} />
-          <Route path="/addtask" element={<AddTask />} />
           <Route path="/task/:id" element={<TaskDetails />} />      
           <Route path="/freelancers" element={<FreeLancers />} />
           <Route path="/freelancer/:id" element={<FreeLancerDetails />} />
