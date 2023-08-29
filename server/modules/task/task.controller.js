@@ -17,7 +17,7 @@ const getMyTasks = async (req,res,next) => {
         const tasks = await taskModel.find({$and: [{created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         res.json({tasks: tasks});
     } else if (role == "userB") {
-        const tasks = await taskModel.find({$and: [{$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        const tasks = await taskModel.find({$and: [{$or: [{accepted_by: req.user._id}, {accepted: false}]}, {speciality: req.user.speciality}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         res.json({tasks: tasks});
     } else {
         return next(new HttpError("You are not authorized to show tasks!", 401));
