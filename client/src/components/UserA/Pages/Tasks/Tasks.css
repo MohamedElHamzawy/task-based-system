@@ -1,0 +1,9 @@
+/* .delivered{
+    font-size: 10px !important;
+} */
+
+@media only screen and (max-width: 400px) {
+    .delivered {
+        font-size: 13px !important;
+    }
+}

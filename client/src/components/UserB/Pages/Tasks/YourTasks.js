@@ -52,8 +52,8 @@ const YourTasks = () => {
         await axios.get("http://localhost:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
-          setTasks(res.data.tasks);
-          console.log(res.data.tasks)
+          setTasks(res.data.myTasks);
+          console.log(res.data.myTasks)
         });
         setIsLoading(false);
         setLoading(false);
@@ -111,11 +111,11 @@ const YourTasks = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
-                    task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
-                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-2 status ' :
-                        task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
+                    task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-2 status' :
+                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-1 py-2 status delivered' :
+                        task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status' :
                           task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
-                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-2 status ' :
+                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status delivered' :
                               'anystatus p-2 status '
                 }>
                 {
@@ -169,13 +169,13 @@ const YourTasks = () => {
             <div className="col-8 fw-bold ">
 
               <span className={
-                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
-                  task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
-                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-2 status ' :
-                      task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
-                        task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
-                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-2 status ' :
-                            'anystatus p-2 status '
+               task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
+               task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-2 status' :
+                 task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-1 py-2 status delivered' :
+                   task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status' :
+                     task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
+                       task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status delivered' :
+                         'anystatus p-2 status '
               }>
                 {
                   task.taskStatus.statusname == 'pending' ?

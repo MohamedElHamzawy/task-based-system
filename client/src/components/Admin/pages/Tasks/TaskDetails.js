@@ -61,8 +61,7 @@ const commentReducer = (state, action) => {
 
 const TaskDetails = () => {
   const token = GetCookie("AdminToken")
-  const UserId = localStorage.getItem('AdminData')
-  const [editName, setEditName] = useState(false);
+  const userId = JSON.parse(localStorage.getItem('AdminData'));
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -335,10 +334,11 @@ const TaskDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        ` http://localhost:5000/api/comment/`,
-        { commentID: commentId },
-        { headers: { 'Authorization': `Bearer ${token}` } }
-      )
+        ` http://localhost:5000/api/comment/`, {
+       headers: {'Authorization': `Bearer ${token}`},
+       data:{commentID: commentId}
+        
+      })
       const responseData = await response;
       setError(responseData.data.message);
       setIsLoading(false);
@@ -382,7 +382,7 @@ const TaskDetails = () => {
                         status.statusname == 'in negotiation' ? 'bg-info  p-1 py-3 status ' :
                           status.statusname == 'in progress' ? 'bg-primary  p-1 py-3 status ' :
                             status.statusname == 'completed' ? 'bg-success  p-1 py-3 status ' :
-                              status.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-3 status ' :
+                              status.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status ' :
                                 'anystatus p-1 py-3 status '
                   }>
                   {
@@ -503,9 +503,9 @@ const TaskDetails = () => {
           <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
             <h2 className="text-start py-3 edit-form-lable">Task Status is Admin Review .. Waiting To Put Percentage : </h2>
 
-            <div className='col-12 col-lg-5 py-3 p-0'>
+            <div className='col-12 col-lg-7 pt-4 p-0'>
 
-              <label className='col-12 col-lg-5 fw-bold add-user-p py-2'>Admin Percentage :</label>
+              <label className='col-12 col-lg-6 fw-bold add-user-p py-2'>Admin Percentage :</label>
               <input type='number' placeholder='Task Price '
                 value={percentageState.value}
                 onChange={percentageChangeHandler}
@@ -521,12 +521,12 @@ const TaskDetails = () => {
               </span>
             </div>
 
-            <div className="col-12 col-sm-7  p-3">
+            <div className="col-12 col-sm-5  p-3">
               <button
                 disabled={
                   !percentageState.value
                 }
-                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                className="edit-user-btn p-3 fw-bold"
                 onClick={putAdminPercentage}
               >
                 Add Percentage
@@ -538,12 +538,12 @@ const TaskDetails = () => {
           <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
             <h4 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept The Offer To Start : </h4>
 
-            <div className='row col-12 col-md-6 p-4'>
+            <div className='row col-12 col-md-7 p-4'>
               <h4 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h4>
               <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} </p>
             </div>
 
-            <div className='col-12 col-md-6'>
+            <div className='col-12 col-md-5'>
               <button className='accept-btn p-3 mx-3' onClick={acceptTaskHandler}>
                 <FaCheck className='fs-3' />
               </button>
@@ -574,7 +574,7 @@ const TaskDetails = () => {
 
             <div className="col-12 col-sm-7  p-3">
               <button
-                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                className="edit-user-btn p-3 col-10 col-lg-6 fw-bold"
                 onClick={taskDelivered}
               >
                 Task Delivered
@@ -590,11 +590,14 @@ const TaskDetails = () => {
               <div className='comment text-start row p-2 pt-3 my-1' key={comment._id}>
                 <h6 className='col-12 col-sm-4 edit-form-lable fw-bold '>{comment.user_id.fullname} : </h6>
                 <p className='col-10 col-sm-7 fw-bold text-sm-start text-center'>{comment.content} </p>
-                <div className='col-2 col-sm-1'>
+                {
+                  comment.user_id._id == userId ?
+                  <div className='col-2 col-sm-1'>
                   <button onClick={() => deleteCommentHandler(comment._id)} className='delete-comment-btn p-0'>
                     <IoMdRemoveCircle className='fs-2' />
                   </button>
-                </div>
+                </div> : ''
+                } 
 
               </div>
 

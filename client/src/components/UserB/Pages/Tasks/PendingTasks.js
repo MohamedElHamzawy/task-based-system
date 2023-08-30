@@ -34,8 +34,8 @@ const PendingTasks = () => {
         await axios.get("http://localhost:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
-          setTasks(res.data.tasks);
-          console.log(res.data.tasks)
+          setTasks(res.data.pendingTasks);
+          console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
