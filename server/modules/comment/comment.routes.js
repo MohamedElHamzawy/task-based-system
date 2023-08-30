@@ -3,6 +3,6 @@ const {createComment, deleteComment} = require("./comment.controller");
 const auth = require("../../middleware/auth");
 
 router.post("/", auth(), createComment);
-router.delete("/", deleteComment);
+router.delete("/", auth(), deleteComment);
 
 module.exports = router;
