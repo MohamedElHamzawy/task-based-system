@@ -12,7 +12,7 @@ const createComment = async (req,res,next) => {
 const deleteComment = async (req,res,next) => {
     const {commentID} = req.body;
     const user_id = req.user._id;
-    const tryGetThisComment = await commentModel.find({$and: [{_id: commentID}, {user_id: user_id}]});
+    const tryGetThisComment = await commentModel.findOne({$and: [{_id: commentID}, {user_id: user_id}]});
     if (tryGetThisComment) {
         await commentModel.findByIdAndDelete({_id: commentID});
         res.json({message: "This comment has been deleted successfully"});
