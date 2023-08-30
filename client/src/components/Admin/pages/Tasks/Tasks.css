@@ -50,6 +50,17 @@ background-color: rgba(243, 242, 242, 0.74) !important;
 .comment-btn:hover{
     background-color: rgba(197, 100, 200, 0.863);
 }
+
+.delete-comment-btn{
+    background: transparent;
+    color: rgb(226, 28, 28);
+    border: 0px;
+    border-radius: 40px;
+
+}
+.delete-comment-btn:hover{
+    color: rgb(209, 19, 19);
+}
 @media only screen and (max-width: 450px) {
    .freelanceremail{
     font-size: 13px;
