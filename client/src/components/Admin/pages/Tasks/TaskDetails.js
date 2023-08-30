@@ -38,10 +38,29 @@ const percentageReducer = (state, action) => {
       return state;
   }
 };
+//Comment validation
+const commentReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.comment,
+        isvalid: validate(action.comment, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+
 
 const TaskDetails = () => {
   const token = GetCookie("AdminToken")
-
+  const UserId = localStorage.getItem('AdminData')
   const [editName, setEditName] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +70,8 @@ const TaskDetails = () => {
 
   const [task, setTask] = useState([]);
   const [offer, setOffer] = useState('');
+  const [notes, setNotes] = useState([]);
+  const [comments, setComments] = useState([]);
   const [client, setClient] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [user, setUser] = useState([]);
@@ -70,8 +91,10 @@ const TaskDetails = () => {
           setSpeciality(res.data.task.speciality)
           setStatus(res.data.task.taskStatus)
           setUser(res.data.task.created_by)
-          console.log(res.data)
 
+          setNotes(res.data.notes)
+          setComments(res.data.comments)
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -255,6 +278,84 @@ const TaskDetails = () => {
       setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
   };
+
+  //comment validation
+  const [commentState, dispatch5] = useReducer(commentReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const commentChangeHandler = (event) => {
+    dispatch5({
+      type: "CHANGE",
+      comment: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const commentTouchHandler = () => {
+    dispatch5({
+      type: "TOUCH",
+    });
+  };
+
+//add Comment
+const addCommentHandler = async (event) => {
+  event.preventDefault();
+  // send api request to validate data
+  setIsLoading(true);
+  try {
+    setError(null);
+    const response = await axios.post(
+      `http://localhost:5000/api/comment/`,
+      {
+        content : commentState.value ,
+        user_id : UserId ,
+        task_id : task._id
+      }
+      , { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const responseData = await response;
+    console.log(responseData)
+    if (!(response.statusText === "OK")) {
+      throw new Error(responseData.data.message);
+    }
+    setError(responseData.data.message);
+    setIsLoading(false);
+
+  } catch (err) {
+    setIsLoading(false);
+    setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  }
+};
+//delete Comment
+  const deleteCommentHandler = async (commentId) => {
+    console.log(commentId)
+    // setIsLoading(true);
+    // try {
+    //   setError(null);
+    //   const response = await axios.delete(
+    //     ` http://localhost:5000/api/comment/`
+    //     , {
+    //       commentID : commentId ,
+    //       user_id : UserId ,
+    //     }
+    //     // {
+    //     //   headers: {
+    //     //     'Authorization': `Bearer ${token}`
+    //     //   }
+    //     // }
+    //   )
+    //   const responseData = await response;
+    //   console.log(responseData.data)
+    //   setError(responseData.data.message);
+    //   setIsLoading(false);
+    // } catch (err) {
+    //   setIsLoading(false);
+    //   setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    // };
+  }
+
   //error message
   const errorHandler = () => {
     setError(null);
@@ -264,17 +365,18 @@ const TaskDetails = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="text-center row w-100 m-0 justify-content-center">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
+      <div className="row mb-4 p-2">
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/tasks' }}><TiArrowBack /> </button>
         </div>
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
       </div>
-
-      <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+{/* ////////////////////////////////////////////// */}
+    <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1'>
+      <div className="row bg-white adduser-form p-0 m-0 justify-content-center ">
 
         <div className="col-12 row p-3 justify-content-center">
 
@@ -323,49 +425,49 @@ const TaskDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-lg-4 row">
-          <h4 className="col-7 col-md-4 edit-form-lable text-start pt-3">  Title :</h4>
-          <p className="d-inline col-5 col-md-8  pt-3 edit-form-p fw-bold "> {task.title} </p>
+        <div className="col-12 col-md-6  row">
+          <h4 className="col-5  edit-form-lable text-start pt-3">  Title :</h4>
+          <p className="d-inline col-7   pt-3 edit-form-p fw-bold "> {task.title} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
-          <h4 className="col-7 edit-form-lable text-start pt-3">  Speciality :</h4>
-          <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
+        <div className="col-12 col-md-6  row ">
+          <h4 className="col-6 edit-form-lable text-start pt-3">  Speciality :</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
-          <h4 className="col-12 col-sm-7 edit-form-lable text-start pt-3">  Dead Line :</h4>
-          <p className="d-inline col-12 col-sm-5  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
+        <div className="col-12 col-md-6  row ">
+          <h4 className="col-6  edit-form-lable text-start pt-3">  Dead Line :</h4>
+          <p className="d-inline col-6   pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
-          <h4 className="col-7 edit-form-lable text-start pt-3">  Channel :</h4>
-          <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {task.channel} </p>
+        <div className="col-12 col-md-6  row ">
+          <h4 className="col-6 edit-form-lable text-start pt-3">  Channel :</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {task.channel} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-3 row ">
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Client :</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
+        <div className="col-12 col-md-6  row ">
+          <h4 className="col-6 edit-form-lable text-start pt-3">  Client :</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-5 row ">
+        <div className="col-12 col-md-6  row ">
           <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
-          <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.email} </p>
+          <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold small"> {client.email} </p>
         </div>
-        <div className={status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ? "col-12 col-md-6  row " :'col-12 col-md-6 col-lg-5 row'}>
-          <h5 className="col-8 col-md-6 edit-form-lable text-start pt-3">  Client Price:</h5>
-          <p className="d-inline col-4 col-md-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
+        <div className='col-12 col-md-6  row'>
+          <h5 className="col-6 edit-form-lable text-start pt-3">  Client Price:</h5>
+          <p className="d-inline col-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
         </div>
-        <div className= {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ? "col-12 col-md-6 row " :'col-12 col-md-6 col-lg-4  row'}>
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Currency:</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
+        <div className= 'col-12 col-md-6 row'>
+          <h4 className="col-6 edit-form-lable text-start pt-3">  Currency:</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
         </div>
 
         {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
           <div className="col-12 col-md-6  row ">
-          <h5 className="col-12 col-sm-5 col-lg-6  edit-form-lable text-start pt-3">  Task Price:</h5>
-          <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger"> {offer} </p>
+          <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Task Price:</h5>
+          <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger small"> {offer} </p>
         </div> :''
         }
       
-        <div className={status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ? "col-12 col-md-6 row " :'col-12 col-md-6 col-lg-3  row'}>
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Profit :</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold text-danger"> {task.profit_percentage} %</p>
+        <div className="col-12 col-md-6 row " >
+          <h4 className="col-6  edit-form-lable text-start pt-3">  Profit :</h4>
+          <p className="d-inline col-6   pt-3 edit-form-p fw-bold text-danger"> {task.profit_percentage} %</p>
         </div> 
 
 
@@ -374,23 +476,19 @@ const TaskDetails = () => {
           <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {user.fullname} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  UserRole :</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {user.user_role} </p>
+          <h4 className="col-6 edit-form-lable text-start pt-3">  UserRole :</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {user.user_role} </p>
         </div>
         {task.freelancer &&
           <>
-            <div className="col-12 col-md-6 row ">
+            <div className="col-12 col-xl-6 row ">
               <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Freelancer :</h5>
-              <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
+              <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold small"> {task.freelancer.freelancername} </p>
             </div>
-            <div className="col-12 col-md-8 col-lg-6 row ">
-              <h6 className="col-12 col-sm-5  edit-form-lable text-start pt-3">  Freelancer Email :</h6>
-              <p className="d-inline col-12 col-sm-7 pt-3 edit-form-p fw-bold freelanceremail"> {task.freelancer.email} </p>
+            <div className="col-12 col-xl-6 row ">
+              <h6 className="col-12 col-sm-5  edit-form-lable text-start pt-3 small">  Freelancer Email :</h6>
+              <p className="d-inline col-12 col-sm-7 pt-3 edit-form-p fw-bold freelanceremail small"> {task.freelancer.email} </p>
             </div>
-            {/* <div className="col-12 col-md-4 row ">
-              <h5 className="col-7 col-md-6  edit-form-lable text-start pt-3">  Cost :</h5>
-              <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold ">{task.cost} </p>
-            </div> */}
           </>
         }
 
@@ -490,9 +588,71 @@ const TaskDetails = () => {
               Task Delivered
             </button>
           </div>
-        </div>}
+      </div>}
 
+        <div className='row bg-white adduser-form p-3 my-2 justify-content-center'>
+            <h1 className='edit-form-lable '>Comments</h1>
+            <div className='row w-100 p-0 m-0'>
+              {!comments.length ==0 ? comments.map((comment)=>(
+              <>             
+                <div className='comment text-start' key={comment._id}> 
+                  dsaiudhs
+                </div> 
+                <button onClick={()=>deleteCommentHandler(comment._id)}>
+                    delete
+                </button> 
+              </>
+              )): 
+              <div className='col-12 comment my-2 fw-bold p-3 '>
+                <p className=''>There Is No Comments </p> 
+              </div>
+              }
+            </div>
 
+            <div className='row w-100 p-0 m-0 my-3 justify-content-center'>
+              <textarea type='text' placeholder='Add Comment'  rows="2"
+                value={commentState.value}
+                onChange={commentChangeHandler}
+                onBlur={commentTouchHandler}
+                isvalid={commentState.isvalid.toString()}
+                className={`col-12 col-md-8 search p-2 ${!commentState.isvalid &&
+                commentState.isTouched &&
+                  "form-control-invalid"
+                  }`}
+              />
+              <div className='col-8 col-md-4 my-2'>
+                <button 
+                onClick={addCommentHandler}
+                disabled={
+                  !commentState.isvalid
+                }
+                className='comment-btn p-3 fw-bold'>Add Comment</button>
+              </div>
+            </div>
+
+        </div>
+
+      </div>
+
+      <div className='row col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
+        <div>
+          <h1 className='edit-form-lable p-4'>Notes</h1>  
+          <div className='row p-0 m-0'>
+            <div className='p-0 m-0'>
+              {!notes.length == 0 ? notes.map((note)=>(
+                <div className='col-12 note my-2 fw-bold p-3 text-start' key={note._id}>
+                <p className=''>{note.content.split('GMT')[0]}</p> 
+                </div>
+              )) :  
+              <div className='col-12 note my-2 fw-bold p-3 '>
+              <p className=''>There Is No Notes </p> 
+            </div>
+            }  
+            </div>    
+          </div>
+       </div>
+
+      </div>
     </div>
   )
 }
