@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import './UserBSidebar.css';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-import { FaUsers } from 'react-icons/fa';
+
 import { FaTasks } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
-import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
+import { MdPendingActions } from 'react-icons/md';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -45,10 +45,18 @@ class UserBSideBar extends React.Component {
 
           <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/'}}>
             <NavIcon>
-                <FaTasks className='fs-4' />
+                <MdPendingActions className='fs-4' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Tasks</p>
+             <p className="fs-3 "> Pending Tasks</p>
+            </NavText>           
+          </NavItem>
+          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/yourtasks'}}>
+            <NavIcon>
+             <FaTasks className='fs-4'/>
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Your Tasks</p>
             </NavText>           
           </NavItem>
 

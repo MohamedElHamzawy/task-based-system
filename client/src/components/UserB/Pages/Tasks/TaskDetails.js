@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useReducer } from 'react'
-import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
 import { useParams } from "react-router-dom";
-import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 import { MdPendingActions } from 'react-icons/md';
 import { MdRateReview } from 'react-icons/md';
@@ -13,8 +11,6 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { FaCheck } from 'react-icons/fa';
-import { CgClose } from 'react-icons/cg';
 
 import GetCookie from "../../../../hooks/getCookie";
 import FreelancerOffer from '../Tasks/FreelancerOffer';
@@ -57,83 +53,6 @@ const TaskDetails = () => {
 
   //////////////////////////////////////
 
-
-  //delete task 
-  const deleteTaskHandler = async () => {
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.delete(
-        ` http://localhost:5000/api/task/${id}`
-        ,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      )
-      const responseData = await response;
-      console.log(responseData.data)
-      setError(responseData.data.message);
-      setIsLoading(false);
-      window.location.href = '/';
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
-
-
-  //accept Task Handler 
-  const acceptTaskHandler = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/confirm/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
-
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
-
-  //not accept Task Handler 
-  const notAcceptTaskHandler = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/refuse/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
-
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
-
   // task completed 
 
   const taskCompleted = async (event) => {
@@ -160,31 +79,6 @@ const TaskDetails = () => {
     }
   };
 
-  // task delivered 
-
-  const taskDelivered = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/deliver/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
-
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
   //error message
   const errorHandler = () => {
     setError(null);
@@ -199,7 +93,7 @@ const TaskDetails = () => {
 
       <div className="row mb-4">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
+          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { status.statusname == 'pending' ? window.location.href = '/' :  window.location.href = '/yourtasks' }}><TiArrowBack /> </button>
         </div>
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
       </div>
@@ -245,11 +139,6 @@ const TaskDetails = () => {
                 {status.statusname}
               </span>
             }
-          </div>
-          <div className="col-3">
-            <button className="delete-btn px-3 p-1 fs-4" onClick={deleteTaskHandler}>
-              <RiDeleteBinFill />
-            </button>
           </div>
         </div>
         {/* /////////////////////// */}
@@ -300,7 +189,7 @@ const TaskDetails = () => {
         <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
           <h2 className="text-start py-3 edit-form-lable">Task is Pending .. Waiting To Choose Freelancer : </h2>
           <FreelancerOffer id={id} />
-        </div>}
+      </div>}
 
         {status.statusname == 'in progress' &&
         <div className="row bg-white adduser-form p-1 m-1 justify-content-center">

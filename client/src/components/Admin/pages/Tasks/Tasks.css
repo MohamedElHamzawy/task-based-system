@@ -28,10 +28,38 @@ background-color: rgba(243, 242, 242, 0.74) !important;
     border: 0px ;
     border-radius: 50px;
 }
+.note{
+    background-color: rgba(97, 169, 208, 0.297);
+    border-radius: 40px 0px;
+    color: rgba(54, 96, 152, 0.848);
+    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+}
+.comment{
+    background-color: rgba(202, 122, 205, 0.495);
+    border-radius: 20px;
+    color: white;
+    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+}
 
+.comment-btn{
+    background-color: rgba(197, 100, 200, 0.495);
+    border: 0px;
+    color: white;
+    border-radius: 20px;
+}
+.comment-btn:hover{
+    background-color: rgba(197, 100, 200, 0.863);
+}
 @media only screen and (max-width: 450px) {
    .freelanceremail{
     font-size: 13px;
 }
     
 }
+
+@media only screen and (max-width: 1250px) {
+    .small{
+     font-size: 13px !important;
+ }
+     
+ }
