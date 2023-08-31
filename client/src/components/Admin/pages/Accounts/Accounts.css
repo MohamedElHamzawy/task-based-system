@@ -1,0 +1,22 @@
+.transactions{
+    background-color: rgba(1, 251, 147, 0.375);
+}
+
+@media only screen and (max-width: 1164px) {
+    .transaction-date{
+        font-size: 17px;
+        padding-top: 10px;
+    } 
+}
+
+@media only screen and (max-width: 991px) {
+    .transaction-date{
+      font-size: 25px ;
+    }
+}
+
+@media only screen and (max-width: 368px) {
+    .FreeLancer-Details{
+      font-size: 22px ;
+    }
+}

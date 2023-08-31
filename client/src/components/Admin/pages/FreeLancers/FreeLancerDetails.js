@@ -48,6 +48,7 @@ const FreeLancerDetails = () => {
           setCity(res.data.freelancer.city)
           setPhone(res.data.freelancer.phone);
           setspecialityId(res.data.freelancer.speciality);
+          console.log(res.data.freelancer.speciality)
         });
         setLoading(false);
         setIsLoading(false);
@@ -204,11 +205,8 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-xl-6 row p-2 ">
           <h3 className="col-8 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          {specialities.map((speciality) => (
-            speciality._id == specialityId ?
-              <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
-              : ''
-          ))}
+          <p className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
+
           <div className={editSpeciality ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
