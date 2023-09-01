@@ -1,5 +1,6 @@
 const clientModel = require("../../DB/client.model");
 const accountModel = require("../../DB/account.model");
+const taskModel = require("../../DB/task.model");
 const HttpError = require("../../common/httpError");
 
 const getAllClients = async (req,res,next) => {
@@ -10,7 +11,14 @@ const getAllClients = async (req,res,next) => {
 const getClient = async (req,res,next) => {
     const clientID = req.params.id;
     const thisClient = await clientModel.findById({_id: clientID});
-    res.json({client: thisClient});
+    const clientTasks = await taskModel.find({client: clientID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+    const tasksCount = clientTasks.length;
+    let totalGain = 0;
+    clientTasks.forEach(task => {
+        totalGain += (task.paid * task.task_currency.priceToEGP);
+    });
+    const clientAccount = await accountModel.find({owner: clientID}).populate("owner");
+    res.json({client: thisClient, tasksCount: tasksCount, totalGain: totalGain, clientTasks: clientTasks, clientAccount: clientAccount});
 }
 
 const createClient = async (req,res,next) => {

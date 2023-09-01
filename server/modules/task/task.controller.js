@@ -12,7 +12,17 @@ const getMyTasks = async (req,res,next) => {
     const role = req.user.user_role;
     if (role == "admin") {
         const tasks = await taskModel.find({}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-        res.json({tasks: tasks});
+        const tasksCount = tasks.length;
+        let totalCost = 0;
+        let totalGain = 0;
+        let totalProfit = 0;
+        tasks.forEach(task => {
+            totalCost += task.cost;
+            totalGain += (task.paid * task.task_currency.priceToEGP);
+            totalProfit += task.profit_amount;
+        });
+        const totalProfitPercentage = totalProfit/totalGain*100;
+        res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
     } else if (role == "userA") {
         const tasks = await taskModel.find({$and: [{created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         res.json({tasks: tasks});
