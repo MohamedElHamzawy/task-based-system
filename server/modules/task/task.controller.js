@@ -169,7 +169,6 @@ const addPercentage = async (req,res,next) => {
 const confirmTask = async (req,res,next) => {
     const role = req.user.user_role;
     const taskID = req.params.id;
-    const {offer} = req.body;
     const statusID = await statusModel.findOne({slug: "in-progress"}).select("_id");
     if (role != "userB") {
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
@@ -182,6 +181,7 @@ const confirmTask = async (req,res,next) => {
         
         const clientAccount = await accountModel.findOne({owner: thisTask.client});
         const currencyValue = await currencyModel.findById({_id: thisTask.task_currency}).select("priceToEGP");
+        const offer = thisTask.cost + (thisTask.cost*thisTask.profit_percentage);
         const amount = parseFloat(parseFloat(offer) * parseFloat(currencyValue.priceToEGP));
         const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: amount, account_id: clientAccount._id}).save();
         const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
