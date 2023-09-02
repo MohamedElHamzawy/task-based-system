@@ -83,7 +83,7 @@ const AccountDetails = () => {
         </div>
         <div className="col-12 col-lg-6 row ">
           <h3 className="col-6 edit-form-lable text-start"> Balance:</h3>
-          <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {account.balance} </p>
+          <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {account.balance} EGP </p>
         </div>
 
       </div>
@@ -98,7 +98,7 @@ const AccountDetails = () => {
 
           <div className="col-12 col-lg-6 row ">
             <h3 className="col-6 edit-form-lable text-start"> Cost :</h3>
-            <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount} </p>
+            <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount} EGP </p>
           </div>
 
           {account && account.type == 'freelancer' &&

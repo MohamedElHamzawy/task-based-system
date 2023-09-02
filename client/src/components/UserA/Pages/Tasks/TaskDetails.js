@@ -83,29 +83,29 @@ const TaskDetails = () => {
 
 
   //delete task 
-  const deleteTaskHandler = async () => {
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.delete(
-        ` http://localhost:5000/api/task/${id}`
-        ,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      )
-      const responseData = await response;
-      console.log(responseData.data)
-      setError(responseData.data.message);
-      setIsLoading(false);
-      window.location.href = '/';
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
+  // const deleteTaskHandler = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     setError(null);
+  //     const response = await axios.delete(
+  //       ` http://localhost:5000/api/task/${id}`
+  //       ,
+  //       {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       }
+  //     )
+  //     const responseData = await response;
+  //     console.log(responseData.data)
+  //     setError(responseData.data.message);
+  //     setIsLoading(false);
+  //     window.location.href = '/';
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+  //   };
+  // }
 
 
   //accept Task Handler 
@@ -142,32 +142,6 @@ const TaskDetails = () => {
       setError(null);
       const response = await axios.post(
         `http://localhost:5000/api/task/refuse/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
-
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
-
-  // task completed 
-
-  const taskCompleted = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/complete/${id}`,
         {}, { headers: { Authorization: `Bearer ${token}` } }
       );
       const responseData = await response;
@@ -339,11 +313,6 @@ const TaskDetails = () => {
                 {status.statusname}
               </span>
             }
-          </div>
-          <div className={ status.statusname == 'delivered to client' ? "col-3":"col-3"}>
-            <button className="delete-btn px-3 p-1 fs-4" onClick={deleteTaskHandler}>
-              <RiDeleteBinFill />
-            </button>
           </div>
         </div>
         {/* /////////////////////// */}

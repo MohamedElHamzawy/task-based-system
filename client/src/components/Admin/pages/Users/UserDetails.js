@@ -7,6 +7,9 @@ import { useParams } from "react-router-dom";
 import { BiSolidEditAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
+import { FaTasks } from 'react-icons/fa';
+import { FaCoins } from 'react-icons/fa';
+import { TbListDetails } from 'react-icons/tb';
 
 
 
@@ -42,6 +45,12 @@ const UserDetails = () => {
   const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
 
+  const [tasksCount, setTasksCount] = useState();
+  const [totalCost, setTotalCost] = useState();
+  const [totalGain, setTotalGain] = useState();
+
+  const [userTasks, setUserTasks] = useState([]);
+
   useEffect(() => {
     let timerId;
     if (loading) {
@@ -49,6 +58,11 @@ const UserDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/user/${id}`).then((res) => {
           setUser(res.data.user);
+          setTasksCount(res.data.tasksCount)
+          setTotalCost(res.data.totalCost)
+          setTotalGain(res.data.totalGain)
+          setUserTasks(res.data.userTasks)
+
           setFullName(res.data.user.fullname);
           setUserName(res.data.user.username);
           setUserRole(res.data.user.user_role);
@@ -58,29 +72,20 @@ const UserDetails = () => {
             setspecialityId(res.data.user.speciality);
             setVisable(true);
           }
+          console.log(res.data)
         });
-
         setLoading(false);
         setIsLoading(false);
       });
-    }
-    return () => clearTimeout(timerId);
-  }, [loading]);
-
-  useEffect(() => {
-    let timerId;
-    if (loading) {
-      setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
-        setLoading(false);
-        setIsLoading(false);
       });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+
 
   //speciality value
   const specialityChangeHandler = (newOne) => {
@@ -151,10 +156,10 @@ const UserDetails = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="text-center row w-100 p-2 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
+      <div className="row mb-2">
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
@@ -165,7 +170,7 @@ const UserDetails = () => {
         {user.user_role == 'admin' ?
           ''
           :
-          <div className="col-12 row p-3 justify-content-end ">
+          <div className="col-12 row justify-content-end ">
             <div className="col-4">
               <button className="delete-btn px-4 p-1 fs-3" onClick={deleteUserHandler}>
                 <RiDeleteBinFill />
@@ -174,10 +179,10 @@ const UserDetails = () => {
           </div>}
 
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Full Name :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {user.fullname} </p>
-          <div className={editFull ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-md-6 col-xl-4 row ">
+          <h5 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Full Name :</h5>
+          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.fullname} </p>
+          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
           </div>
 
@@ -190,14 +195,13 @@ const UserDetails = () => {
               </button>
             </div>
           }
-
         </div>
         {/* /////////////////////// */}
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> User Name :</h3>
-          <p className={!editUser ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.username} </p>
-          <div className={editUser ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Name:</h5>
+          <p className={!editUser ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.username} </p>
+          <div className={editUser ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setUserName(e.target.value) }} className="search w-100 p-2" />
           </div>
           {user.user_role == 'admin' ?
@@ -210,10 +214,10 @@ const UserDetails = () => {
             </div>}
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
-          <p className={!editNumber ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
-          <div className={editNumber ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Phone :</h5>
+          <p className={!editNumber ? "d-inline col-10 col-md-4 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
+          <div className={editNumber ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
           </div>
 
@@ -228,10 +232,10 @@ const UserDetails = () => {
 
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
-          <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
-          <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Country :</h5>
+          <p className={!editCountry ? "d-inline col-10 col-md-4 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
+          <div className={editCountry ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
           </div>
           {user.user_role == 'admin' ?
@@ -245,10 +249,10 @@ const UserDetails = () => {
           }
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> User Role :</h3>
-          <p className={!editRole ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
-          <div className={editRole ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Role :</h5>
+          <p className={!editRole ? "d-inline col-10 col-md-4 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
+          <div className={editRole ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <select id="role" name="role" className="search w-100 p-2" value={userRole}
               onChange={(e) => { setUserRole(e.target.value); if (e.target.value == 'userB') { setVisable(true); setEditSpeciality(true) } else { setVisable(false) } }} >
               <option value="" className='text-secondary'>Role</option>
@@ -268,15 +272,15 @@ const UserDetails = () => {
           }
         </div>
         {/* /////////////////////// */}
-        <div className={visable ? "d-flex col-12 col-xl-6 row p-2 " : 'd-none'}>
-          <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
+        <div className={visable ? "d-flex col-12 col-md-6 col-xl-4 row p-2 " : 'd-none'}>
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3">Speciality :</h5>
           {specialities.map((speciality) => (
             speciality._id == specialityId ?
               <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
               : ''
           ))}
-          <div className={editSpeciality ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-            <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={userSpeciality}
+          <div className={editSpeciality ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+            <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
               {specialities.map((speciality) => (
@@ -315,6 +319,62 @@ const UserDetails = () => {
           }
         </div>
 
+      </div>
+      <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
+          <div className="bg-info col-4 icon p-3"><FaTasks className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{tasksCount ? tasksCount : '0'}</h4>
+        </div>
+        {user.user_role != 'userA'?
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
+          <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
+        </div>
+         : 
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
+          <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
+        </div>       
+        }
+
+      </div>
+
+      <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
+        {userTasks && !userTasks.length == 0 ? userTasks.map((task) => (
+          <div key={task._id} className="bg-white adduser-form p-4 row m-2 col-10">
+
+            <div className="col-12 justify-content-end row p-0 m-0">
+              <div className="bg-primary icon p-3 col-4 col-md-2 col-lg-1 ">
+                <TbListDetails className="fs-2  " />
+              </div>
+            </div>
+
+            <div className="row col-12 col-xl-5 p-2 text-start ">
+              <h3 className="col-12 col-md-5 col-xl-7 text-danger edit-form-lable ">Task Details:</h3>
+              <div className="col-12 col-md-3 col-xl-5 pt-2 text-end">
+                <a href={`/task/${task._id}`} className="text-dark fw-bold">Click Here </a>
+              </div>
+            </div>
+
+            <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
+              <h3 className="col-12 col-md-7 text-danger edit-form-lable">Task Title:</h3>
+              <p className="col-12 col-md-5 text-dark fw-bold pt-1 text-end">{task.title} </p>
+            </div>
+
+            <div className="row col-12 col-md-6 col-xl-3 p-2 text-start">
+              <h3 className="col-10 col-md-9 text-danger edit-form-lable">Task Cost:</h3>
+              <p className="col-2 col-md-3 text-dark fw-bold pt-1">{task.cost} </p>
+            </div>
+
+          </div>
+        )) : 
+        <div className="row col-12  p-2 text-center">
+          <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+        </div>
+        }
       </div>
 
     </div>
