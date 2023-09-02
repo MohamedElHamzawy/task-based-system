@@ -354,19 +354,19 @@ const UserDetails = () => {
 
             <div className="row col-12 col-xl-5 p-2 text-start ">
               <h3 className="col-12 col-md-5 col-xl-7 text-danger edit-form-lable ">Task Details:</h3>
-              <div className="col-12 col-md-3 col-xl-5 pt-2 text-end">
+              <div className="col-12 col-md-3 col-xl-5 pt-2 text-end text-md-start">
                 <a href={`/task/${task._id}`} className="text-dark fw-bold">Click Here </a>
               </div>
             </div>
 
             <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
               <h3 className="col-12 col-md-7 text-danger edit-form-lable">Task Title:</h3>
-              <p className="col-12 col-md-5 text-dark fw-bold pt-1 text-end">{task.title} </p>
+              <p className="col-12 col-md-5 text-dark fw-bold pt-1 text-end text-md-start">{task.title} </p>
             </div>
 
             <div className="row col-12 col-md-6 col-xl-3 p-2 text-start">
-              <h3 className="col-10 col-md-9 text-danger edit-form-lable">Task Cost:</h3>
-              <p className="col-2 col-md-3 text-dark fw-bold pt-1">{task.cost} </p>
+              <h3 className="col-10 col-md-9 text-danger edit-form-lable ">Task Cost:</h3>
+              <p className="col-2 col-md-3 text-dark fw-bold pt-1 text-end text-md-start">{task.cost} </p>
             </div>
 
           </div>

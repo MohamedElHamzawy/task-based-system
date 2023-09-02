@@ -35,7 +35,6 @@ const FreeLancers = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
-          console.log(res.data.freelancers)
         });
       });
       timerId = setTimeout(async () => {
