@@ -7,6 +7,10 @@ import { useParams } from "react-router-dom";
 import { BiSolidEditAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
+import { FaTasks } from 'react-icons/fa';
+import { FaCoins } from 'react-icons/fa';
+import { FaCcVisa } from 'react-icons/fa';
+import { TbListDetails } from 'react-icons/tb';
 
 
 const FreeLancerDetails = () => {
@@ -35,6 +39,11 @@ const FreeLancerDetails = () => {
   const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
 
+  const [tasksCount, setTasksCount] = useState();
+  const [freeLancerAccount, setFreeLancerAccount] = useState();
+  const [totalCost, setTotalCost] = useState();
+  const [freeLancerTasks, setFreeLancerTasks] = useState([]);
+
   useEffect(() => {
     let timerId;
     if (loading) {
@@ -42,13 +51,19 @@ const FreeLancerDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/freeLancer/${id}`).then((res) => {
           setFreeLancer(res.data.freelancer);
+
+          setTasksCount(res.data.tasksCount)
+          setTotalCost(res.data.totalCost)
+          setFreeLancerTasks(res.data.freelancerTasks)
+          setFreeLancerAccount(res.data.freelancerAccount)
+
           setFullName(res.data.freelancer.freelancername);
           setEmail(res.data.freelancer.email);
           setCountry(res.data.freelancer.country);
           setCity(res.data.freelancer.city)
           setPhone(res.data.freelancer.phone);
           setspecialityId(res.data.freelancer.speciality);
-          console.log(res.data.freelancer.speciality)
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -57,8 +72,6 @@ const FreeLancerDetails = () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
-        setLoading(false);
-        setIsLoading(false);
       });
     }
     return () => clearTimeout(timerId);
@@ -154,10 +167,10 @@ const FreeLancerDetails = () => {
         </div>
 
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row ">
-          <h3 className="col-9 col-md-5  edit-form-lable text-start">Full Name :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
-          <div className={editFull ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row ">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">Full Name :</h3>
+          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
+          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
           </div>
 
@@ -172,10 +185,10 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start">  Email :</h3>
-          <p className={!editEmail ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold email" : 'd-none'}> {freeLancer.email} </p>
-          <div className={editEmail ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2 ">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">  Email :</h3>
+          <p className={!editEmail ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold email" : 'd-none'}> {freeLancer.email} </p>
+          <div className={editEmail ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="email" onChange={(e) => { setEmail(e.target.value) }} className="search w-100 p-2" />
           </div>
           <div className="col-1 ">
@@ -186,10 +199,10 @@ const FreeLancerDetails = () => {
         </div>
 
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start"> Phone :</h3>
-          <p className={!editNumber ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
-          <div className={editNumber ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2 ">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
+          <p className={!editNumber ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
+          <div className={editNumber ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
           </div>
 
@@ -203,12 +216,12 @@ const FreeLancerDetails = () => {
         </div>
 
         {/* /////////////////////// */}
-        <div className="d-flex col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          <p className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
+        <div className="d-flex col-lg col-xl-6 row p-2 ">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
+          <p className={!editSpeciality ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
 
-          <div className={editSpeciality ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-            <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={userSpeciality}
+          <div className={editSpeciality ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+            <select id="speciality" name="speciality" className="p-2 px-4 search col-10" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
               {specialities.map((speciality) => (
@@ -224,10 +237,10 @@ const FreeLancerDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row p-2 ">
+        <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
-          <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
-          <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+          <p className={!editCountry ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
+          <div className={editCountry ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
           </div>
           <div className="col-1 ">
@@ -237,10 +250,10 @@ const FreeLancerDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row p-2 ">
+        <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> City :</h3>
-          <p className={!editCity ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.city} </p>
-          <div className={editCity ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+          <p className={!editCity ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.city} </p>
+          <div className={editCity ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCity(e.target.value) }} className="search w-100 p-2" />
           </div>
           <div className="col-1 ">
@@ -268,6 +281,66 @@ const FreeLancerDetails = () => {
         </div>
 
       </div>
+
+      <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
+                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
+                    <div className="bg-info col-4 icon p-3"><FaTasks className="fs-3" /></div>
+                    <h4 className="text-center col-4 fw-bold">{tasksCount ? tasksCount : '0'}</h4>
+                </div>
+
+                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
+                    <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
+                    <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
+                </div>
+
+                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Account Details: </h6>
+                    <div className="bg-danger col-4 icon p-3"><FaCcVisa className="fs-3 " /></div>
+                    {freeLancerAccount && freeLancerAccount.map((acc)=>(
+                        <div className="text-center col-8 fw-bold" key={acc._id}>
+                            <a  href={`/account/${acc._id}`} className="text-dark fw-bold">Click Here </a>
+                        </div>
+                    ))}
+
+                </div>
+            </div>
+
+            <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
+                {freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
+                    <div key={task._id} className="bg-white adduser-form p-4 row m-2 col-10">
+
+                        <div className="col-12 justify-content-end row p-0 m-0">
+                            <div className="bg-primary icon p-3 col-4 col-md-2 col-lg-1 ">
+                                <TbListDetails className="fs-2  " />
+                            </div>
+                        </div>
+
+                        <div className="row col-12 col-xl-4 p-2 text-start ">
+                            <h5 className="col-12 col-md-5 col-xl-7 text-danger edit-form-lable ">Task Details:</h5>
+                            <div className="col-12 col-md-3 col-xl-5 pt-1 text-end text-md-start">
+                                <a href={`/task/${task._id}`} className="text-dark fw-bold">Click Here </a>
+                            </div>
+                        </div>
+
+                        <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
+                            <h5 className="col-12 col-md-7 text-danger edit-form-lable">Task Title:</h5>
+                            <p className="col-12 col-md-5 text-dark fw-bold pt-1 text-end text-md-start">{task.title} </p>
+                        </div>
+
+                        <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
+                            <h5 className="col-12 col-md-9 text-danger edit-form-lable">Task Cost:</h5>
+                            <p className="col-12 col-md-3 text-dark fw-bold pt-1 text-end text-md-start">{task.cost} </p>
+                        </div>
+
+                    </div>
+                )) :
+                    <div className="row col-12  p-2 text-center">
+                        <h3 className=" text-danger edit-form-lable">This Client Didn't Do Any Tasks Yet</h3>
+                    </div>
+                }
+            </div>
 
     </div>
   )

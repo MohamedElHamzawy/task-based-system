@@ -12,6 +12,10 @@ import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
 
+import { FaCoins } from 'react-icons/fa';
+import { GiReceiveMoney } from 'react-icons/gi';
+
+
 import GetCookie from "../../../../hooks/getCookie";
 
 //search filter 
@@ -46,6 +50,11 @@ const Tasks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const [tasksCount, setTasksCount] = useState();
+  const [totalGain, setTotalGain] = useState();
+  const [totalCost, setTotalCost] = useState();
+
+
   useEffect(() => {
     let timerId;
     if (loading) {
@@ -65,7 +74,12 @@ const Tasks = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
           setTasks(res.data.tasks);
-          console.log(res.data.tasks)
+
+          setTasksCount(res.data.tasksCount)
+          setTotalCost(res.data.totalCost)
+          setTotalGain(res.data.totalGain)
+
+          console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -73,7 +87,7 @@ const Tasks = () => {
     }
     return () => clearTimeout(timerId);
   }, [loading]);
-  
+
   const [speciality, setSpeciality] = useState('');
   const [status, setStatus] = useState('');
 
@@ -89,7 +103,7 @@ const Tasks = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 ">
+    <div className="row w-100 p-0 m-0 justify-content-center">
 
       <div className="col-12 row text-center edit-form-lable p-2">
         <div className="col-6 col-md-3">
@@ -98,7 +112,7 @@ const Tasks = () => {
         <h1 className="col-12 col-md-6 text-center ">System Tasks</h1>
       </div>
 
-      <div className="row p-0 m-0 ">
+      <div className="row p-0 m-0 justify-content-center">
 
         <div className="col-8 col-md-3 p-2">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
@@ -134,22 +148,43 @@ const Tasks = () => {
 
 
       </div>
-      <div className="row justify-content-center ">
+
+      <div className="row analysis adduser-form p-1 justify-content-center col-11">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
+          <div className="bg-info col-4 icon p-3 text-center"><FaTasks className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{tasksCount ? tasksCount : '0'}</h4>
+        </div>
+
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
+          <div className="bg-warning col-4 icon p-3 text-center"><FaCoins className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
+        </div>
+
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
+          <div className="bg-success col-4 icon p-3 text-center"><GiReceiveMoney className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
+        </div>
+      </div>
+
+      <div className="row justify-content-center p-0 m-0">
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
 
             <div className="col-8 fw-bold ">
 
               <span
-              className={
-                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
-                  task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
-                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-1 py-2 status delivered' :
-                      task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
-                        task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
-                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status delivered' :
-                            'anystatus p-2 status '
-              }>
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
+                    task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
+                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-1 py-2 status delivered' :
+                        task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
+                          task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
+                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status delivered' :
+                              'anystatus p-2 status '
+                }>
                 {
                   task.taskStatus.statusname == 'pending' ?
                     <MdPendingActions />
@@ -185,7 +220,7 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
           </div>
         )) :
@@ -245,7 +280,7 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
           </div>
         )) :
@@ -305,7 +340,7 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
           </div>
         )) :

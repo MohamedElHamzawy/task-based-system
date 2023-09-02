@@ -118,7 +118,21 @@
     color: white;
     border-radius: 10px;
 }
+.name{
+    font-size: 14px;
+}
 
+.analysis{
+    background-color: rgba(197, 100, 200, 0.495);
+
+}
+.analysis-tasks{
+    background-color: rgba(100, 152, 200, 0.495);
+}
+.icon{
+    border-radius: 50px;
+    color: white;
+}
 @media only screen and (max-width: 510px) {
     .name-role {
        font-size: 12px;
