@@ -201,12 +201,13 @@ const confirmTask = async (req,res,next) => {
             await accountModel.findByIdAndUpdate({_id: freelancerAccount._id}, {balance: newBalanceF});
             
             const clientAccount = await accountModel.findOne({owner: thisTask.client});
-            const currencyValue = await currencyModel.findById({_id: thisTask.task_currency}).select("priceToEGP");
             const offer = thisTask.cost + (thisTask.cost*thisTask.profit_percentage);
-            const amount = parseFloat(parseFloat(offer) * parseFloat(currencyValue.priceToEGP));
-            const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: amount, account_id: clientAccount._id}).save();
+            const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: offer, account_id: clientAccount._id}).save();
             const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
             await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
+
+            const currencyValue = await currencyModel.findById({_id: thisTask.task_currency}).select("priceToEGP");
+            await taskModel.findByIdAndUpdate({_id: taskID}, {paid: (offer/currencyValue.priceToEGP)});
             
             const date = new Date();
             await new noteModel({content: `Task has been confirmed by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: taskID}).save();
