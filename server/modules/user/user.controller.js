@@ -2,7 +2,7 @@ const userModel = require("../../DB/user.model");
 const taskModel = require("../../DB/task.model");
 const HttpError = require("../../common/httpError");
 const bcrypt = require("bcrypt");
-const salt = process.env.SALT;
+const salt = parseInt(process.env.SALT);
 const pepper = process.env.PEPPER;
 
 const showAllUsers = async (req,res,next) => {
