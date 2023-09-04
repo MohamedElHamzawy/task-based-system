@@ -7,7 +7,7 @@ const userLogin = async (req,res,next) => {
     const tryGetUser = await userModel.findOne({username: userName});
     if (tryGetUser) {
         if (tryGetUser.password === password) {
-            const token = jwt.sign({id: tryGetUser._id}, "tb2023");
+            const token = jwt.sign({id: tryGetUser._id}, process.env.TOKEN_KEY);
             res.json({
                 message: "User logged in successfully",
                 token,

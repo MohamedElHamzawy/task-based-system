@@ -9,7 +9,7 @@ const auth = (data) => {
             return next(new HttpError("Invalid token!", 401));
         } else {
             let token = tokenHeader.split(" ")[1];
-            let {id} = jwt.verify(token, "tb2023");
+            let {id} = jwt.verify(token, process.env.TOKEN_KEY);
             let user = await userModel.findOne({_id: id}).select("-password");
             if (user) {
                 req.user = user;

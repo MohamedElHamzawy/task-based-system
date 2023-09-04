@@ -41,9 +41,9 @@ app.use((req,res,next) => {
 app.use((error,req,res,next) => {
     res.status(error.code || 500).json({err: error.message || "Something went wrong!"});
 })
-const port = 5000;
+const port = parseInt(process.env.PORT);
 const server = app.listen(port, async () => {
-    await mongoose.connect("mongodb+srv://mohamedfelhamzawy:01029505696@cluster0.zti9wu1.mongodb.net/", {
+    await mongoose.connect(process.env.CON_LINK, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
