@@ -1,6 +1,9 @@
 const userModel = require("../../DB/user.model");
 const taskModel = require("../../DB/task.model");
 const HttpError = require("../../common/httpError");
+const bcrypt = require("bcrypt");
+const salt = process.env.SALT;
+const pepper = process.env.PEPPER;
 
 const showAllUsers = async (req,res,next) => {
     const allUsers = await userModel.find({});
@@ -53,11 +56,12 @@ const createUser = async (req,res,next) => {
     if (tryGetUser) {
         return next(new HttpError("User already registered!", 400));
     } else {
+        const hashedPassword = bcrypt.hashSync(password + pepper, salt);
         if (userRole == "userB") {
             const newUser = new userModel({
                 fullname: fullName,
                 username: userName,
-                password: password,
+                password: hashedPassword,
                 user_role: userRole,
                 user_type: userType,
                 country: country,
@@ -68,7 +72,7 @@ const createUser = async (req,res,next) => {
             const newUser = new userModel({
                 fullname: fullName,
                 username: userName,
-                password: password,
+                password: hashedPassword,
                 user_role: userRole,
                 user_type: userType,
                 country: country,
