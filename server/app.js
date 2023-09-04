@@ -43,8 +43,12 @@ app.use((error,req,res,next) => {
 })
 const port = parseInt(process.env.PORT);
 const server = app.listen(port, async () => {
-    await mongoose.connect(process.env.CON_LINK, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
+    try {
+        await mongoose.connect(process.env.CON_LINK, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
 });
