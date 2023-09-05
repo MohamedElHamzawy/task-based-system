@@ -290,7 +290,7 @@ const FreeLancerDetails = () => {
                 </div>
 
                 <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
+                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">FreeLancer Gain </h6>
                     <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
                     <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
                 </div>
@@ -330,7 +330,7 @@ const FreeLancerDetails = () => {
                         </div>
 
                         <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
-                            <h5 className="col-12 col-md-9 text-danger edit-form-lable">Task Cost:</h5>
+                            <h5 className="col-12 col-md-9 text-danger edit-form-lable">FreeLancer Gain:</h5>
                             <p className="col-12 col-md-3 text-dark fw-bold pt-1 text-end text-md-start">{task.cost} </p>
                         </div>
 

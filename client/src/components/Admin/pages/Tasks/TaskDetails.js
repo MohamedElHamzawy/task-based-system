@@ -441,19 +441,30 @@ const TaskDetails = () => {
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold small"> {client.email} </p>
           </div>
-          <div className='col-12 col-md-6  row'>
-            <h5 className="col-6 edit-form-lable text-start pt-3">  Client Price:</h5>
-            <p className="d-inline col-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
-          </div>
-          <div className='col-12 col-md-6 row'>
-            <h4 className="col-6 edit-form-lable text-start pt-3">  Currency:</h4>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
-          </div>
+          {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
+            <div className='col-12 col-md-6  row'>
+              <h5 className="col-6 edit-form-lable text-start pt-3">  Task Price:</h5>
+              <p className="d-inline col-6 pt-3 edit-form-p fw-bold text-danger "> {task.paid*currency.priceToEGP}EGP </p>
+            </div> 
+          :  
+          <>
+            <div className='col-12 col-md-6  row'>
+              <h5 className="col-6 edit-form-lable text-start pt-3">  Client Price:</h5>
+              <p className="d-inline col-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
+            </div>  
+            <div className='col-12 col-md-6 row'>
+              <h4 className="col-6 edit-form-lable text-start pt-3">  Currency:</h4>
+              <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
+            </div>
+          </>
+          }
+
+
 
           {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
             <div className="col-12 col-md-6  row ">
-              <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Task Price:</h5>
-              <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger small"> {offer} </p>
+              <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Price:</h5>
+              <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger small"> {task.cost}EGP </p>
             </div> : ''
           }
 
@@ -506,7 +517,7 @@ const TaskDetails = () => {
             <div className='col-12 col-lg-7 pt-4 p-0'>
 
               <label className='col-12 col-lg-6 fw-bold add-user-p py-2'>Admin Percentage :</label>
-              <input type='number' placeholder='Task Price '
+              <input type='number' placeholder='Task Percentage '
                 value={percentageState.value}
                 onChange={percentageChangeHandler}
                 onBlur={percentageTouchHandler}

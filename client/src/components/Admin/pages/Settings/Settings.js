@@ -13,7 +13,6 @@ const Settings = () => {
   const [editFull, setEditFull] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [editNumber, setEditNumber] = useState(false);
-  // const [editRole, setEditRole] = useState(false);
   const [editCountry, setEditCountry] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
 
@@ -26,7 +25,6 @@ const Settings = () => {
   const [fullName, setFullName] = useState();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-  // const [userRole, setUserRole] = useState();
   const [country, setCountry] = useState();
   const [phone, setPhone] = useState();
 
@@ -42,7 +40,6 @@ const Settings = () => {
           setUser(res.data.user);
           setFullName(res.data.user.fullname);
           setUserName(res.data.user.username);
-          // setUserRole(res.data.user.user_role);
           setCountry(res.data.user.country);
           setPhone(res.data.user.phone);
           setPassword(res.data.user.password);
@@ -68,7 +65,6 @@ const Settings = () => {
           fullName: fullName,
           userName: userName,
           password: password,
-          // userRole: userRole,
           country: country,
           phone: phone,
         }
@@ -136,18 +132,7 @@ const Settings = () => {
           </div>
         </div>
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start"> PassWord :</h3>
-          <p className={!editPassword ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold" : 'd-none'}> {user.password} </p>
-          <div className={editPassword ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setPassword(e.target.value) }} className="search w-100 p-2" />
-          </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditPassword(!editPassword) }} className="settings-edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
-        </div>
+
 
         <div className="col-12 col-xl-6 row p-2 ">
           <h3 className="col-8 col-md-5  settings-form-lable text-start"> Phone :</h3>
@@ -163,25 +148,6 @@ const Settings = () => {
         </div>
 
         <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start"> User Role :</h3>
-          <p className="col-10 col-md-4 py-3 text-warning fw-bold"> {user.user_role} </p>
-          {/* <div className={editRole ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-            <select id="role" name="role" className="search w-100 p-2"
-              onChange={(e) => { setUserRole(e.target.value) }}>
-              <option value="" className='text-secondary'>Role</option>
-              <option value="admin">Admin</option>
-              <option value="userA">UserA</option>
-              <option value="userB">UserB</option>
-            </select>
-          </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditRole(!editRole) }} className="settings-edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div> */}
-        </div>
-
-        <div className="col-12 col-xl-6 row p-2 ">
           <h3 className="col-8 col-md-5  settings-form-lable text-start"> Country :</h3>
           <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold" : 'd-none'}> {user.country} </p>
           <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
@@ -193,6 +159,18 @@ const Settings = () => {
             </button>
           </div>
         </div>
+        
+        <div className="col-12 col-xl-6 row p-2 ">
+          <h3 className="col-8 col-md-5  settings-form-lable text-start"> User Role :</h3>
+          <p className="col-10 col-md-4 py-3 text-warning fw-bold"> {user.user_role} </p>
+        </div>
+
+
+        <div className="col-12 col-xl-6 row p-2 ">
+          <h3 className="col-8 col-md-5  settings-form-lable text-start"> PassWord :</h3>
+          <p className={!editPassword ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold" : 'd-none'}> *********</p>
+          <a href="/changepass" className="col-1 settings-edit-btn fs-2"><BiSolidEditAlt /></a>
+        </div>
 
         <div className="col-12  p-3">
           <button
@@ -200,9 +178,7 @@ const Settings = () => {
               !editFull &&
               !editUser &&
               !editNumber &&
-              // !editRole &&
-              !editCountry &&
-              !editPassword
+              !editCountry 
             }
             className="settings-edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editUserHandler}>
             Edit

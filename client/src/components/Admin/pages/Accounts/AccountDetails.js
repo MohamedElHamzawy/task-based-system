@@ -28,6 +28,7 @@ const AccountDetails = () => {
         await axios.get(`http://localhost:5000/api/account/${id}`).then((res) => {
           setAccount(res.data.account);
           setTransactions(res.data.transactions);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -35,17 +36,21 @@ const AccountDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/client/").then((res) => {
           setClients(res.data.clients);
+          console.log(res.data)
         });
       });
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
+          console.log(res.data)
+
         });
       });    
     
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+
 
   //error message
   const errorHandler = () => {
@@ -87,20 +92,24 @@ const AccountDetails = () => {
 
       </div>
       <h1 className="edit-form-lable p-2">Transactions :</h1>
-      {!transactions.length == 0 ? transactions.map((transaction) => (
+      {transactions && !transactions.length == 0 ? transactions.map((transaction) => (
         <div className="row col-12 col-lg-10 transactions adduser-form p-3 m-1 justify-content-center my-1" key={transaction._id}>
 
+         {transaction.task && 
           <div className="col-12 col-lg-6 row ">
             <h3 className="col-12 col-md-6  edit-form-lable text-start"> Task Title :</h3>
             <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {transaction.task.title} </p>
-          </div>
+          </div>}
 
           <div className="col-12 col-lg-6 row ">
-            <h3 className="col-6 edit-form-lable text-start"> Cost :</h3>
+             {account.type == 'client' ? 
+             <h3 className="col-6 edit-form-lable text-start"> TaskPrice:</h3>
+             : 
+             <h3 className="col-6 edit-form-lable text-start"> FreeLancerPrice:</h3>} 
             <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount} EGP </p>
           </div>
 
-          {account && account.type == 'freelancer' &&
+          {transaction.task &&  account && account.type == 'freelancer' &&
             <>
               {clients && clients.map((client) => (
                 client._id == transaction.task.client &&
@@ -116,7 +125,7 @@ const AccountDetails = () => {
               </div>
             </>
           }
-          {account && account.type == 'client' &&
+          {transaction.task && account && account.type == 'client' &&
             <>
               {freeLancers && freeLancers.map((freeLancer) => (
                 freeLancer._id == transaction.task.freelancer &&
@@ -131,10 +140,13 @@ const AccountDetails = () => {
               </div>
             </>
           }
-          <div className="col-12 col-lg-6 row ">
+          {
+            transaction.task &&
+            <div className="col-12 col-lg-6 row ">
             <h3 className="col-12 col-md-7  edit-form-lable text-start "> Task Details:</h3>
             <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> <a href={`/task/${transaction.task._id}`}>Click Here </a> </p>
           </div>
+          }  
 
           <div className="col-12 col-lg-6 row ">
             <h3 className="col-12 col-md-7 edit-form-lable text-start transaction-date"> Transaction Date:</h3>
@@ -145,7 +157,7 @@ const AccountDetails = () => {
         <div className="row transactions adduser-form p-3 m-1 justify-content-center edit-form-lable col-12 col-lg-10">
           <h4>There Is No Transactions Right Now</h4>
         </div>
-      }
+      } 
 
     </div>
   )

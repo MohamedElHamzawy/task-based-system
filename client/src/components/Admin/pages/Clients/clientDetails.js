@@ -241,7 +241,7 @@ const ClientDetails = () => {
                 </div>
 
                 <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
+                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Paid </h6>
                     <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
                     <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
                 </div>

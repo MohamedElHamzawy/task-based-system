@@ -146,7 +146,7 @@ const Users = () => {
 
         {RoleFilterData ? !roleFilter.length == 0 ? roleFilter.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-            <p className="col-4 col-md-5 name-role">{user.fullname}</p>
+            <p className="col-4 col-md-5 name-role text-center">{user.fullname}</p>
             <p className="col-3 name-role">{user.user_role}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill /></a> </p>
             <p className="col-2">
