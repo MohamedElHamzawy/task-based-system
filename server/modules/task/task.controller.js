@@ -264,7 +264,7 @@ const deliverTask = async (req,res,next) => {
         if (role != "userB") {
             const thisTask = await taskModel.findOne({_id: taskID});
             const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
-            const profit_amount = parseFloat(parseFloat(parseFloat(thisTask.paid) * parseFloat(currencyValue.priceToEGP)) - parseFloat(thisTask.cost));
+            const profit_amount = (thisTask.cost * (thisTask.profit_percentage/100));
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: profit_amount});
             const date = new Date();
             await new noteModel({content: `Task has been delivered to client by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: taskID}).save();
