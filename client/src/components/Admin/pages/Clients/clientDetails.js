@@ -282,7 +282,7 @@ const ClientDetails = () => {
 
                         <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
                             <h5 className="col-12 col-md-9 text-danger edit-form-lable">Task Cost:</h5>
-                            <p className="col-12 col-md-3 text-dark fw-bold pt-1 text-end text-md-start">{task.cost} </p>
+                            <p className="col-12 col-md-3 text-dark fw-bold pt-1 text-end text-md-start">{task.paid * task.task_currency.priceToEGP} </p>
                         </div>
 
                     </div>

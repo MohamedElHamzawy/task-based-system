@@ -461,7 +461,7 @@ const TaskDetails = () => {
 
 
 
-          {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
+          {status.statusname == 'admin review' || status.statusname == 'in negotiation' || status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
             <div className="col-12 col-md-6  row ">
               <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Price:</h5>
               <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger small"> {task.cost}EGP </p>
@@ -551,7 +551,7 @@ const TaskDetails = () => {
 
             <div className='row col-12 col-md-7 p-4'>
               <h4 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h4>
-              <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} </p>
+              <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} <span className='text-danger'>{currency.currencyname}</span> </p>
             </div>
 
             <div className='col-12 col-md-5'>

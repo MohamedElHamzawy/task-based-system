@@ -105,8 +105,8 @@ const AccountDetails = () => {
              {account.type == 'client' ? 
              <h3 className="col-6 edit-form-lable text-start"> TaskPrice:</h3>
              : 
-             <h3 className="col-6 edit-form-lable text-start"> FreeLancerPrice:</h3>} 
-            <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount} EGP </p>
+             <h3 className="col-12 col-md-6 edit-form-lable text-start"> FreeLancerPrice:</h3>} 
+            <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount} EGP </p>
           </div>
 
           {transaction.task &&  account && account.type == 'freelancer' &&

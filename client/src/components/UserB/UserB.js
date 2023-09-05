@@ -10,6 +10,7 @@ import AddFreeLancer from './Pages/FreeLancers/AddFreeLancer'
 import Settings from './Pages/Settings/Settings'
 import PendingTasks from './Pages/Tasks/PendingTasks';
 import YourTasks from './Pages/Tasks/YourTasks';
+import ChangePass from './Pages/Settings/ChangePass';
 
 const UserB = () => {
   return (
@@ -25,6 +26,7 @@ const UserB = () => {
           <Route path="/freelancer/:id" element={<FreeLancerDetails />} />
           <Route path="/addfreelancer" element={<AddFreeLancer />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/changepass" element={<ChangePass />} />
         </Routes>
       </div>
     </div>

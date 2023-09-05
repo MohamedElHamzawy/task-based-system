@@ -236,15 +236,15 @@ const TaskDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-lg-4 row">
+        <div className="col-12 col-md-6  row">
           <h4 className="col-12 col-md-4 edit-form-lable text-start pt-3">  Title :</h4>
           <p className="d-inline col-12 col-md-8  pt-3 edit-form-p fw-bold "> {task.title} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
+        <div className="col-12 col-md-6  row ">
           <h4 className="col-7 edit-form-lable text-start pt-3">  Speciality :</h4>
           <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
+        <div className="col-12 col-md-6 row ">
           <h4 className="col-12 col-sm-7 edit-form-lable text-start pt-3">  Dead Line :</h4>
           <p className="d-inline col-12 col-sm-5  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
         </div>
@@ -256,16 +256,16 @@ const TaskDetails = () => {
               <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
             </div>
             <div className="col-12 col-md-8 col-lg-6 row ">
-              <h6 className="col-12 col-sm-5  edit-form-lable text-start pt-3">  Freelancer Email :</h6>
-              <p className="d-inline col-12 col-sm-7 pt-3 edit-form-p fw-bold freelanceremail"> {task.freelancer.email} </p>
+              <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Email:</h5>
+              <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold freelanceremail"> {task.freelancer.email} </p>
             </div>
-            <div className="col-12 col-md-4 row ">
-              <h5 className="col-7 col-md-6  edit-form-lable text-start pt-3">  Cost :</h5>
+            <div className="col-12 col-md-6 row ">
+              <h5 className="col-7 col-md-6  edit-form-lable text-start pt-3">  TaskPrice :</h5>
               <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold ">{task.cost} </p>
             </div>
           </>
         }
-        <div className="col-12 col-md-6 col-lg-4 row ">
+        <div className="col-12 col-md-6 row ">
           <h4 className="col-7 edit-form-lable text-start pt-3">  Channel :</h4>
           <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {task.channel} </p>
         </div>

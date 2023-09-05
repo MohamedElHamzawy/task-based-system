@@ -18,7 +18,7 @@ const getSearchFilter = (searchName, freeLancers) => {
 const getSpecialityFilter = (speciality, freeLancers) => {
   if (!speciality) {
     return freeLancers;
-  } return freeLancers.filter((freeLancer) => freeLancer.speciality.includes(speciality));
+  } return freeLancers.filter((freeLancer) => freeLancer.speciality._id.includes(speciality));
 };
 
 const FreeLancers = () => {
@@ -27,6 +27,8 @@ const FreeLancers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const [specialities, setSpecialities] = useState([]);
+  const [speciality, setSpeciality] = useState('');
 
   useEffect(() => {
     let timerId;
@@ -35,30 +37,21 @@ const FreeLancers = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/speciality/").then((res) => {
+          setSpecialities(res.data.specialities);
+        });
       });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  const [specialities, setSpecialities] = useState([]);
-  useEffect(() => {
-    let timerId;
-    if (loading) {
-      setIsLoading(true);
-      timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/speciality/").then((res) => {
-          setSpecialities(res.data.specialities);
-        });
-        setLoading(false);
-        setIsLoading(false);
-      });
-    }
-    return () => clearTimeout(timerId);
-  }, [loading]);
-  const [speciality, setSpeciality] = useState('');
+
 
   const [searchName, setSearchName] = useState('');
   const [searchFilterData, setSearchFilterData] = useState(true);
@@ -118,13 +111,7 @@ const FreeLancers = () => {
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((freeLancer) => (
           <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
             <p className="col-5 name-Speciality text-center name-role">{freeLancer.freelancername}</p>
-
-            {specialities.map((specialitie) => (
-              freeLancer.speciality == specialitie._id ?
-                <p className="col-5 name-Speciality name-role " key={specialitie._id} > {specialitie.specialityName}</p>
-                : ''
-            ))}
-
+            <p className="col-5 name-Speciality name-role " > {freeLancer.speciality.specialityName}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/freeLancer/${freeLancer._id}`}><BsFillFolderSymlinkFill /></a> </p>
           </div>
         )) :
@@ -138,13 +125,7 @@ const FreeLancers = () => {
         {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((freeLancer) => (
           <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
             <p className="col-5 name-Speciality name-role text-center">{freeLancer.freelancername}</p>
-
-            {specialities.map((specialitie) => (
-              freeLancer.speciality == specialitie._id ?
-                <p className="col-5 name-Speciality name-role" key={specialitie._id} > {specialitie.specialityName}</p>
-                : ''
-            ))}
-
+            <p className="col-5 name-Speciality name-role " > {freeLancer.speciality.specialityName}</p>
             <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/freelancer/${freeLancer._id}`}><BsFillFolderSymlinkFill /></a> </p>
           </div>
         )) :

@@ -29,7 +29,7 @@ const ChangePass = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const userID = JSON.parse(localStorage.getItem('AdminData'));
+  const userID = JSON.parse(localStorage.getItem('UserAData'));
 
   //password validation
   const [passwordState, dispatch3] = useReducer(passwordReducer, {
@@ -93,8 +93,8 @@ const ChangePass = () => {
 
 
       <div className="col-12 row text-center edit-form-lable p-2">
-        <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+        <div className="col-8 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>User A</h1>
         </div>
         <h2 className="col-12 col-md-6 text-center ">Change Password </h2>
       </div>

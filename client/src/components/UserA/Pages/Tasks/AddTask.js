@@ -317,7 +317,7 @@ const AddTask = () => {
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>DeadLine :</label>
           <input type='date' placeholder='DeadLine'
             onChange={(e) => (setDeadline(e.target.value))}
-            className='col-6 col-lg-7 search p-2 '
+            className='col-10 col-lg-7 search p-2 '
           />
         </div>
 
@@ -341,7 +341,7 @@ const AddTask = () => {
             onChange={taskPriceChangeHandler}
             onBlur={taskPriceTouchHandler}
             isvalid={taskPriceState.isvalid.toString()}
-            className={`col-8 col-lg-7 search p-2 ${!taskPriceState.isvalid &&
+            className={`col-10 col-lg-7 search p-2 ${!taskPriceState.isvalid &&
               taskPriceState.isTouched &&
               "form-control-invalid"
               }`}

@@ -48,6 +48,7 @@ const FreeLancerDetails = () => {
           setCity(res.data.freelancer.city)
           setPhone(res.data.freelancer.phone);
           setspecialityId(res.data.freelancer.speciality);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -56,8 +57,6 @@ const FreeLancerDetails = () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
-        setLoading(false);
-        setIsLoading(false);
       });
     }
     return () => clearTimeout(timerId);
@@ -204,11 +203,8 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-xl-6 row p-2 ">
           <h3 className="col-8 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          {specialities.map((speciality) => (
-            speciality._id == specialityId ?
-              <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
-              : ''
-          ))}
+          <p  className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{freeLancer.speciality && freeLancer.speciality.specialityName}</p>
+            
           <div className={editSpeciality ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>

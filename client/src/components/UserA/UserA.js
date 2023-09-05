@@ -16,6 +16,7 @@ import Currency from '../UserA/Pages/Currency/Currency';
 import AddCurrency from '../UserA/Pages/Currency/AddCurrency';
 import CurrencyDetails from '../UserA/Pages/Currency/CurrencyDetails';
 import Settings from '../UserA/Pages/Settings/Settings'
+import ChangePass from './Pages/Settings/ChangePass';
 
 const UserA = () => {
   return (
@@ -37,6 +38,7 @@ const UserA = () => {
             <Route path="/currency/:id" element={<CurrencyDetails/>} />
             <Route path="/addcurrency" element={<AddCurrency/>}  />        
             <Route path="/settings" element={<Settings/>} />
+            <Route path="/changepass" element={<ChangePass />} />
           </Routes> 
      </div>
  </div>  

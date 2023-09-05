@@ -316,32 +316,32 @@ const TaskDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-lg-4 row">
+        <div className="col-12 col-md-6  row">
           <h4 className="col-12 col-sm-7 col-md-5 edit-form-lable text-start pt-3">  Title :</h4>
           <p className="d-inline col-12 col-sm-5 col-md-7 pt-3 edit-form-p fw-bold "> {task.title} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
+        <div className="col-12 col-md-6  row ">
           <h4 className="col-7 edit-form-lable text-start pt-3">  Speciality :</h4>
           <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
+        <div className="col-12 col-md-6  row ">
           <h4 className="col-12 col-sm-7 edit-form-lable text-start pt-3">  Dead Line :</h4>
           <p className="d-inline col-12 col-sm-5  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-4 row ">
+        <div className="col-12 col-md-6  row ">
           <h4 className="col-7 edit-form-lable text-start pt-3">  Channel :</h4>
           <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {task.channel} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-3 row ">
+        <div className="col-12 col-md-6  row ">
           <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Client :</h4>
           <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
         </div>
-        <div className="col-12 col-md-6 col-lg-5 row ">
+        <div className="col-12 col-md-6  row ">
           <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
           <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.email} </p>
         </div>
         {status.statusname == 'pending' || status.statusname == 'admin review' || status.statusname == 'in negotiation' ?
-          <div className="col-12 col-md-6 col-lg-5 row ">
+          <div className="col-12 col-md-6 row ">
           <h5 className="col-8 col-md-6 edit-form-lable text-start pt-3">  Client Price:</h5>
           <p className="d-inline col-4 col-md-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
         </div> :''
@@ -353,7 +353,7 @@ const TaskDetails = () => {
         </div> :''
         }
 
-        <div className={status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ? "col-12 col-md-6 row" :'col-12 col-md-6 col-lg-4 row'}>
+        <div className={status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ? "col-12 col-md-6 row" :'col-12 col-md-6 row'}>
           <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Currency:</h4>
           <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
         </div>
@@ -373,7 +373,7 @@ const TaskDetails = () => {
 
           <div className='row col-12 col-md-6 p-4'>
             <h4 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h4>
-            <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} </p>
+            <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} <span className='text-danger'>{currency.currencyname}</span></p>
           </div>
 
           <div className='col-12 col-md-6'>
