@@ -4,10 +4,13 @@ const clientSchema = new mongoose.Schema({
     clientname: {
         type: String,
     },
+    ownerName: {
+        type: String
+    },
     phone: {
         type: String,
     },
-    email: {
+    website: {
         type: String,
     },
     country: {

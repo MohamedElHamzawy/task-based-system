@@ -28,8 +28,9 @@ const createClient = async (req,res,next) => {
     try {
         const {
             clientName,
+            owner,
             phone,
-            email,
+            website,
             country,
             currency
         } = req.body;
@@ -37,7 +38,7 @@ const createClient = async (req,res,next) => {
         if (tryGetClient) {
             return next(new HttpError("Client is already existed!", 400));
         } else {
-            const newClient = await new clientModel({clientname: clientName, phone, email, country, currency}).save();
+            const newClient = await new clientModel({clientname: clientName, ownerName: owner, phone, website, country, currency}).save();
             await new accountModel({owner: newClient._id, title: newClient.clientname, type: "client"}).save();
             res.json({message: "Client has been added successfully"});
         }
@@ -50,15 +51,16 @@ const updateClient = async (req,res,next) => {
     try {
         const {
             clientName,
+            owner,
             phone,
-            email,
+            website,
             country,
-            city
+            currency
         } = req.body;
         const clientID = req.params.id;
         const tryGetClient = await clientModel.findOne({_id: clientID});
         if (tryGetClient) {
-            await clientModel.findByIdAndUpdate({_id: clientID}, {clientname: clientName, phone, email, country, city});
+            await clientModel.findByIdAndUpdate({_id: clientID}, {clientname: clientName, ownerName: owner, phone, website, country, currency});
             res.json({message: "Client has been updated successfully"});
         } else {
             return next(new HttpError("Client doesn't exist on system!", 400));
