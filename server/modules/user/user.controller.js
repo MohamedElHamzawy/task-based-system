@@ -20,28 +20,13 @@ const getUser = async (req,res,next) => {
         const thisUser = await userModel.findById({_id: userID});
         if (thisUser.user_role == "userA") {
             const userTasks = await taskModel.find({created_by: userID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-            const tasksCount = userTasks.length;
-            let totalGain = 0;
-            userTasks.forEach(task => {
-                totalGain += (task.paid * task.task_currency.priceToEGP);
-            });
-            res.json({user: thisUser, tasksCount: tasksCount, totalGain: totalGain, userTasks: userTasks});
+            res.json({user: thisUser, userTasks: userTasks});
         } else if (thisUser.user_role == "userB") {
             const userTasks = await taskModel.find({accepted_by: userID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-            const tasksCount = userTasks.length;
-            let totalCost = 0;
-            userTasks.forEach(task => {
-                totalCost += task.cost;
-            });
-            res.json({user: thisUser, tasksCount: tasksCount, totalCost: totalCost, userTasks: userTasks});
+            res.json({user: thisUser, userTasks: userTasks});
         } else {
             const userTasks = await taskModel.find({created_by: userID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-            const tasksCount = userTasks.length;
-            let totalGain = 0;
-            userTasks.forEach(task => {
-                totalGain += (task.paid * task.task_currency.priceToEGP);
-            });
-            res.json({user: thisUser, tasksCount: tasksCount, totalGain: totalGain, userTasks: userTasks});
+            res.json({user: thisUser, userTasks: userTasks});
         }
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

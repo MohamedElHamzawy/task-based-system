@@ -17,13 +17,8 @@ const getClient = async (req,res,next) => {
         const clientID = req.params.id;
         const thisClient = await clientModel.findById({_id: clientID});
         const clientTasks = await taskModel.find({client: clientID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-        const tasksCount = clientTasks.length;
-        let totalGain = 0;
-        clientTasks.forEach(task => {
-            totalGain += (task.paid * task.task_currency.priceToEGP);
-        });
         const clientAccount = await accountModel.find({owner: clientID}).populate("owner");
-        res.json({client: thisClient, tasksCount: tasksCount, totalGain: totalGain, clientTasks: clientTasks, clientAccount: clientAccount});
+        res.json({client: thisClient, clientTasks: clientTasks, clientAccount: clientAccount});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
@@ -36,13 +31,13 @@ const createClient = async (req,res,next) => {
             phone,
             email,
             country,
-            city
+            currency
         } = req.body;
         const tryGetClient = await clientModel.findOne({email});
         if (tryGetClient) {
             return next(new HttpError("Client is already existed!", 400));
         } else {
-            const newClient = await new clientModel({clientname: clientName, phone, email, country, city}).save();
+            const newClient = await new clientModel({clientname: clientName, phone, email, country, currency}).save();
             await new accountModel({owner: newClient._id, title: newClient.clientname, type: "client"}).save();
             res.json({message: "Client has been added successfully"});
         }

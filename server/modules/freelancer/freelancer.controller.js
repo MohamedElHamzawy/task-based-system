@@ -2,6 +2,7 @@ const freelancerModel = require("../../DB/freelancer.model");
 const accountModel = require("../../DB/account.model");
 const taskModel = require("../../DB/task.model");
 const HttpError = require("../../common/httpError");
+const statusModel = require("../../DB/status.model");
 
 const getAllFreelancers = async (req,res,next) => {
     try {
@@ -18,13 +19,8 @@ const getFreelancer = async (req, res, next) => {
         const thisFreelancer = await freelancerModel.findById({_id: freelancerID}).populate("speciality");
         if (thisFreelancer) {
             const freelancerTasks = await taskModel.find({freelancer: freelancerID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-            const tasksCount = freelancerTasks.length;
-            let totalCost = 0;
-            freelancerTasks.forEach(task => {
-                totalCost += task.cost;
-            });
             const freelancerAccount = await accountModel.find({owner: freelancerID}).populate("owner");
-            res.json({freelancer: thisFreelancer, tasksCount: tasksCount, totalCost: totalCost, freelancerTasks: freelancerTasks, freelancerAccount: freelancerAccount});
+            res.json({freelancer: thisFreelancer, freelancerTasks: freelancerTasks, freelancerAccount: freelancerAccount});
         } else {
             return next(new HttpError("This freelancer doesn't exist on system", 400));
         }
@@ -35,8 +31,8 @@ const getFreelancer = async (req, res, next) => {
 
 const createFreelancer = async (req,res,next) => {
     try {
-        const {name, phone, email, country, city, speciality} = req.body;
-        const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, email: email, country: country, city: city, speciality: speciality}).save();
+        const {name, phone, email, country, speciality, currency} = req.body;
+        const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, email: email, country: country, speciality: speciality, currency}).save();
         await new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername, type:"freelancer"}).save();
         res.json({message: "Freelancer has been created successfully"});
     } catch (error) {
