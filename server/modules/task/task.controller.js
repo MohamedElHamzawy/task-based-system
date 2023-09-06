@@ -24,10 +24,10 @@ const getMyTasks = async (req,res,next) => {
             });
             const totalProfitPercentage = totalProfit/totalGain*100;
             res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
-        } else if (role == "userA") {
+        } else if (role == "customerService") {
             const tasks = await taskModel.find({$and: [{created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({tasks: tasks});
-        } else if (role == "userB") {
+        } else if (role == "specialistService") {
             const pendingTasks = await taskModel.find({$and: [{accepted: false}, {speciality: req.user.speciality}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const myTasks = await taskModel.find({$and: [{accepted_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({myTasks: myTasks, pendingTasks: pendingTasks});
@@ -55,7 +55,7 @@ const getTask = async (req,res,next) => {
             const notes = await noteModel.find({task_id: taskID}).populate(["user_id", "task_id"]);
             const comments = await commentModel.find({task_id: taskID}).populate(["user_id"]);
             res.json({task: task, comments: comments, notes: notes, offer: offer});
-        } else if (role == "userA") {
+        } else if (role == "customerService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
             .select("title description channel client speciality taskStatus deadline task_currency paid cost profit_percentage")
@@ -66,7 +66,7 @@ const getTask = async (req,res,next) => {
             const offer = ((cost + (cost * (profitPercentage/100))) / parseFloat(currencyValue.priceToEGP));
             const comments = await commentModel.find({task_id: taskID}).populate(["user_id"]);
             res.json({task: task, comments: comments, offer: offer});
-        } else if (role == "userB") {
+        } else if (role == "specialistService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
             .select("title description channel freelancer speciality taskStatus deadline cost")
@@ -113,7 +113,7 @@ const createTask = async (req,res,next) => {
             const date = new Date();
             await new noteModel({content: `Task has been created by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: newTask._id}).save();
             res.json({message: "Task has been created successfully"});
-        } else if (role == "userA") {
+        } else if (role == "customerService") {
             const {
                 title,
                 description,
@@ -154,7 +154,7 @@ const addOffer = async (req,res,next) => {
         const taskID = req.params.id;
         const {freelancer, cost} = req.body;
         const statusID = await statusModel.findOne({slug: "admin-review"}).select("_id");
-        if (role != "userA") {
+        if (role != "customerService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {cost: cost, freelancer: freelancer, accepted_by: req.user._id, accepted: true, taskStatus: statusID});
             const date = new Date();
             await new noteModel({content: `${req.user.fullname} has added offer to client in ${date}`, user_id: req.user._id, task_id: taskID}).save();
@@ -191,7 +191,7 @@ const confirmTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const statusID = await statusModel.findOne({slug: "in-progress"}).select("_id");
-        if (role != "userB") {
+        if (role != "specialistService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const thisTask = await taskModel.findById({_id: taskID});
             
@@ -225,7 +225,7 @@ const refuseTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const statusID = await statusModel.findOne({slug: "pending"}).select("_id");
-        if (role != "userB") {
+        if (role != "specialistService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID, profit_percentage: 0, cost: 0, freelancer: "0000000000000000000000ee", accepted_by: "0000000000000000000000ee", accepted: false});
             const date = new Date();
             await new noteModel({content: `Task's offer has been refuse by ${req.user.fullname} in ${date} and task returned to pending`, user_id: req.user._id, task_id: taskID}).save();
@@ -243,7 +243,7 @@ const completeTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const statusID = await statusModel.findOne({slug: "completed"}).select("_id");
-        if (role != "userA") {
+        if (role != "customerService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
             await new noteModel({content: `Task has been set to ready for delivery by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: taskID}).save();
@@ -261,7 +261,7 @@ const deliverTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const statusID = await statusModel.findOne({slug: "delivered-to-client"}).select("_id");
-        if (role != "userB") {
+        if (role != "specialistService") {
             const thisTask = await taskModel.findOne({_id: taskID});
             const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
             const profit_amount = (thisTask.cost * (thisTask.profit_percentage/100));
@@ -335,7 +335,7 @@ const deleteTask = async (req,res,next) => {
     try {
         const role = req.user.user_role;
         const taskID = req.params.id;
-        if (role != "userB") {
+        if (role != "specialistService") {
             await taskModel.findByIdAndDelete({_id: taskID});
             res.json({message: "Task Has been deleted successfully"});
         } else {

@@ -18,10 +18,10 @@ const getUser = async (req,res,next) => {
     try {
         const userID = req.params.id;
         const thisUser = await userModel.findById({_id: userID});
-        if (thisUser.user_role == "userA") {
+        if (thisUser.user_role == "customerService") {
             const userTasks = await taskModel.find({created_by: userID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({user: thisUser, userTasks: userTasks});
-        } else if (thisUser.user_role == "userB") {
+        } else if (thisUser.user_role == "specialistService") {
             const userTasks = await taskModel.find({accepted_by: userID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({user: thisUser, userTasks: userTasks});
         } else {
@@ -51,7 +51,7 @@ const createUser = async (req,res,next) => {
             return next(new HttpError("User already registered!", 400));
         } else {
             const hashedPassword = bcrypt.hashSync(password + pepper, salt);
-            if (userRole == "userB") {
+            if (userRole == "specialistService") {
                 const newUser = new userModel({
                     fullname: fullName,
                     username: userName,
