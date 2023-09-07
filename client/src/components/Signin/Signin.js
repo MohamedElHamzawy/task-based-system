@@ -112,12 +112,12 @@ const emailSubmitHandler = async event =>{
       localStorage.setItem("AdminData", JSON.stringify(responseData.data.user._id))
       setIsLoading(false);
       window.location.href = '/' ;
-   }else if(responseData.data.user.user_role == 'userA'){
+   }else if(responseData.data.user.user_role == 'customerService'){
     SetCookie("UserA" , responseData.data.token);
     localStorage.setItem("UserAData", JSON.stringify(responseData.data.user._id))
     setIsLoading(false);
     window.location.href = '/' ;
-   }else if(responseData.data.user.user_role == 'userB'){
+   }else if(responseData.data.user.user_role == 'specialistService'){
     SetCookie("UserB" , responseData.data.token);
     localStorage.setItem("UserBData", JSON.stringify(responseData.data.user._id))
     setIsLoading(false);

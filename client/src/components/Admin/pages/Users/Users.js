@@ -34,6 +34,7 @@ const Users = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/user/").then((res) => {
           setUsers(res.data.users);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -86,13 +87,7 @@ const Users = () => {
         <h1 className="col-12 col-md-6 text-center ">System Users</h1>
       </div>
 
-      <div className="row p-0 m-0 ">
-
-        <div className="col-8 col-md-4 p-2">
-          <button onClick={() => { window.location.href = '/adduser' }} className="new-user p-2">
-            <RiUserAddFill className="fs-3" />  Add New User
-          </button>
-        </div>
+      <div className="row p-0 m-0 justify-content-md-end ">
 
         <div className="col-8 col-md-3 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search Usernames" value={searchName}
@@ -107,27 +102,31 @@ const Users = () => {
           >
             <option value="">Role</option>
             <option value="admin">Admin</option>
-            <option value="userA">UserA</option>
-            <option value="userB">UserB</option>
+            <option value="customerService">Customer Service</option>
+            <option value="specialistService">Specialist Service</option>
           </select>
+        </div>
+
+        <div className="col-12 col-md-3 p-2 justify-content-end">
+          <button onClick={() => { window.location.href = '/adduser' }} className="new-user p-2">
+            <RiUserAddFill className="fs-3" />  Add New User
+          </button>
         </div>
 
       </div>
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-2">
-          <p className="col-4 col-md-5 text-center">FullName</p>
-          <p className="col-2 col-md-3">Role</p>
-          <p className="col-3 col-md-2">Details</p>
-          <p className="col-2 ">Delete</p>
+          <h4 className="col-6  text-center">FullName</h4>
+          <h4 className="col-4 ">Role</h4>
+          <h4 className="col-2 ">Delete</h4>
 
         </div>
 
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-            <p className="col-4 col-md-5 name-role text-center">{user.fullname}</p>
-            <p className="col-3 name-role">{user.user_role}</p>
-            <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-6  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
+            <p className="col-4 name-role">{user.user_role}</p>
             <p className="col-2">
               {user.user_role == 'admin' ?
                 <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
@@ -146,9 +145,8 @@ const Users = () => {
 
         {RoleFilterData ? !roleFilter.length == 0 ? roleFilter.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-            <p className="col-4 col-md-5 name-role text-center">{user.fullname}</p>
-            <p className="col-3 name-role">{user.user_role}</p>
-            <p className="col-2 fs-5 "> <a className="view-details fs-4" href={`/user/${user._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-6  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
+            <p className="col-4 name-role">{user.user_role}</p>
             <p className="col-2">
               {user.user_role == 'admin' ?
                 <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>

@@ -35,6 +35,7 @@ const Accounts = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/account/").then((res) => {
           setAccounts(res.data.accounts);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -80,9 +81,6 @@ const Accounts = () => {
             <option value="" className='text-secondary'>AccountType</option>
             <option value="freelancer" className=''>FreeLancer</option>
             <option value="client" className=''>Client</option>
-            {/* {accounts.map((account) => (
-              <option value={account.type} key={account._id}>{account.type}</option>
-            ))} */}
           </select>
         </div>
 
@@ -90,16 +88,16 @@ const Accounts = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 accountType-table-head text-center">UserName</p>
-          <p className="col-4 accountType-table-head">Type</p>
-          <p className="col-3  accountType-table-head">Details</p>
+          <h6 className="col-5 accountType-table-head text-center">UserName</h6>
+          <h6 className="col-4 accountType-table-head">Type</h6>
+          <h6 className="col-3  accountType-table-head">Balance</h6>
         </div>
 
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((account) => (
           <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
-            <p className="col-5  name-role text-center">{account.title}</p>
-            <p className="col-5 col-md-4 name-role">{account.type}</p>
-            <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/account/${account._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-5  name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/account/${account._id}`}>{account.title} </a></p>
+            <p className="col-4  name-role">{account.type}</p>
+            <p className="col-3 ">{account.balance}</p>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
@@ -110,9 +108,9 @@ const Accounts = () => {
         }
         {accountTypeFilterData ? !accountTypeFilter.length == 0 ? accountTypeFilter.map((account) => (
           <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
-            <p className="col-5  name-role text-center">{account.title}</p>
-            <p className="col-5 col-md-4 name-role">{account.type}</p>
-            <p className="col-2 col-md-3 fs-5 "> <a className="view-details fs-4" href={`/account/${account._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-5  name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/account/${account._id}`}>{account.title} </a></p>
+            <p className="col-4  name-role">{account.type}</p>
+            <p className="col-3 ">{account.balance}</p>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

@@ -372,18 +372,18 @@ const TaskDetails = () => {
 
           <div className="col-12 row p-3 justify-content-center">
 
-            <div className="col-9 fw-bold pt-2 text-start">
+            <div className="col-12 fw-bold pt-2 row text-center">
               {
                 status &&
                 <span
                   className={
-                    status.statusname == 'pending' ? 'bg-warning  p-1 py-3 status ' :
-                      status.statusname == 'admin review' ? 'bg-danger  p-1 py-3 status ' :
-                        status.statusname == 'in negotiation' ? 'bg-info  p-1 py-3 status ' :
-                          status.statusname == 'in progress' ? 'bg-primary  p-1 py-3 status ' :
-                            status.statusname == 'completed' ? 'bg-success  p-1 py-3 status ' :
-                              status.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status ' :
-                                'anystatus p-1 py-3 status '
+                    status.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
+                      status.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
+                        status.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
+                          status.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
+                            status.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
+                              status.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12 ' :
+                                'anystatus  p-3 status col-12 '
                   }>
                   {
                     status.statusname == 'pending' ?
@@ -410,7 +410,7 @@ const TaskDetails = () => {
                 </span>
               }
             </div>
-            <div className="col-3">
+            <div className="col-12 text-end py-2">
               <button className="delete-btn px-3 p-1 fs-4" onClick={deleteTaskHandler}>
                 <RiDeleteBinFill />
               </button>
@@ -418,28 +418,28 @@ const TaskDetails = () => {
           </div>
           {/* /////////////////////// */}
           <div className="col-12 col-md-6  row">
-            <h4 className="col-5  edit-form-lable text-start pt-3">  Title :</h4>
-            <p className="d-inline col-7   pt-3 edit-form-p fw-bold "> {task.title} </p>
+            <h5 className="col-6  edit-form-lable text-start pt-3">  Title :</h5>
+            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {task.title} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h4 className="col-6 edit-form-lable text-start pt-3">  Speciality :</h4>
+            <h5 className="col-6 edit-form-lable text-start pt-3">  Speciality :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h4 className="col-6  edit-form-lable text-start pt-3">  Dead Line :</h4>
+            <h5 className="col-6  edit-form-lable text-start pt-3">  Dead Line :</h5>
             <p className="d-inline col-6   pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h4 className="col-6 edit-form-lable text-start pt-3">  Channel :</h4>
+            <h5 className="col-6 edit-form-lable text-start pt-3">  Channel :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {task.channel} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h4 className="col-6 edit-form-lable text-start pt-3">  Client :</h4>
+            <h5 className="col-6 edit-form-lable text-start pt-3">  Client :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
           </div>
           <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
-            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold small"> {client.email} </p>
+            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.email} </p>
           </div>
           {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
             <div className='col-12 col-md-6  row'>
@@ -453,7 +453,7 @@ const TaskDetails = () => {
               <p className="d-inline col-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
             </div>  
             <div className='col-12 col-md-6 row'>
-              <h4 className="col-6 edit-form-lable text-start pt-3">  Currency:</h4>
+              <h5 className="col-6 edit-form-lable text-start pt-3">  Currency:</h5>
               <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
             </div>
           </>
@@ -464,40 +464,40 @@ const TaskDetails = () => {
           {status.statusname == 'admin review' || status.statusname == 'in negotiation' || status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
             <div className="col-12 col-md-6  row ">
               <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Price:</h5>
-              <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger small"> {task.cost}EGP </p>
+              <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger "> {task.cost}EGP </p>
             </div> : ''
           }
 
           <div className="col-12 col-md-6 row " >
-            <h4 className="col-6  edit-form-lable text-start pt-3">  Profit :</h4>
+            <h5 className="col-6  edit-form-lable text-start pt-3">  Profit :</h5>
             <p className="d-inline col-6   pt-3 edit-form-p fw-bold text-danger"> {task.profit_percentage} %</p>
           </div>
 
 
           <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  UserName :</h5>
-            <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {user.fullname} </p>
+            <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {user && user.fullname} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h4 className="col-6 edit-form-lable text-start pt-3">  UserRole :</h4>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {user.user_role} </p>
+            <h5 className="col-6 edit-form-lable text-start pt-3">  UserRole :</h5>
+            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {user && user.user_role} </p>
           </div>
           {task.freelancer &&
             <>
-              <div className="col-12 col-xl-6 row ">
+              <div className="col-12 col-md-6 row ">
                 <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Freelancer :</h5>
-                <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold small"> {task.freelancer.freelancername} </p>
+                <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
               </div>
-              <div className="col-12 col-xl-6 row ">
-                <h6 className="col-12 col-sm-5  edit-form-lable text-start pt-3 small">  Freelancer Email :</h6>
-                <p className="d-inline col-12 col-sm-7 pt-3 edit-form-p fw-bold freelanceremail small"> {task.freelancer.email} </p>
+              <div className="col-12 row ">
+                <h5 className="col-12 col-sm-5 edit-form-lable text-start pt-3 ">  Freelancer Email :</h5>
+                <p className="d-inline col-12 col-sm-7 pt-3 edit-form-p fw-bold freelanceremail "> {task.freelancer.email} </p>
               </div>
             </>
           }
 
           <div className="col-12 row ">
             {/* <hr></hr> */}
-            <h4 className="col-md-3 col-12 edit-form-lable text-start pt-3">  Description :</h4>
+            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-3">  Description :</h5>
             <p className="d-inline col-md-9 col-12  pt-3 edit-form-p fw-bold freelanceremail"> {task.description} </p>
           </div>
           {/* /////////////////////// */}
@@ -547,10 +547,10 @@ const TaskDetails = () => {
 
         {status.statusname == 'in negotiation' &&
           <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
-            <h4 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept The Offer To Start : </h4>
+            <h5 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept The Offer To Start : </h5>
 
             <div className='row col-12 col-md-7 p-4'>
-              <h4 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h4>
+              <h5 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h5>
               <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} <span className='text-danger'>{currency.currencyname}</span> </p>
             </div>
 
@@ -581,7 +581,7 @@ const TaskDetails = () => {
 
         {status.statusname == 'completed' &&
           <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
-            <h4 className="text-start py-3 edit-form-lable">Task Is Completed .. When It Delivered Click Here : </h4>
+            <h5 className="text-start py-3 edit-form-lable">Task Is Completed .. When It Delivered Click Here : </h5>
 
             <div className="col-12 col-sm-7  p-3">
               <button
@@ -599,9 +599,9 @@ const TaskDetails = () => {
             {!comments.length == 0 ? comments.map((comment) => (
 
               <div className='comment text-start row p-2 pt-3 my-1' key={comment._id}>
-                <h6 className='col-12 col-sm-4 edit-form-lable fw-bold '>{comment.user_id.fullname} : </h6>
+                <h6 className='col-12 col-sm-4 edit-form-lable fw-bold '>{comment.user_id && comment.user_id.fullname} : </h6>
                 <p className='col-10 col-sm-7 fw-bold text-sm-start text-center'>{comment.content} </p>
-                {
+                {comment.user_id &&
                   comment.user_id._id == userId ?
                   <div className='col-2 col-sm-1'>
                   <button onClick={() => deleteCommentHandler(comment._id)} className='delete-comment-btn p-0'>

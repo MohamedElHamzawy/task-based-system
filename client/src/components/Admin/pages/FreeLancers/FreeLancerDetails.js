@@ -187,7 +187,7 @@ const FreeLancerDetails = () => {
 
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">  Email :</h3>
-          <p className={!editEmail ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold email" : 'd-none'}> {freeLancer.email} </p>
+          <p className={!editEmail ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
           <div className={editEmail ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="email" onChange={(e) => { setEmail(e.target.value) }} className="search w-100 p-2" />
           </div>
@@ -216,7 +216,7 @@ const FreeLancerDetails = () => {
         </div>
 
         {/* /////////////////////// */}
-        <div className="d-flex col-lg col-xl-6 row p-2 ">
+        <div className="d-flex col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
           <p className={!editSpeciality ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
 

@@ -68,27 +68,27 @@ const Clients = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 ">
+    <div className="row w-100 p-0 m-0 justify-content-center">
 
       <div className="col-12 row text-center edit-form-lable p-2">
-        <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>User A </h1>
+        <div className="col-12 col-sm-10 col-md-6 ">
+          <h1 className='logo text-white bg-danger p-2'>Customer Service </h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">System Clients</h1>
+        <h1 className="col-12  text-center ">System Clients</h1>
       </div>
 
-      <div className="row p-0 m-0 ">
+      <div className="row p-0 m-0 col-10 justify-content-center">
 
-        <div className="col-8 col-md-4 p-2">
-          <button onClick={() => { window.location.href = '/addclient' }} className="new-user p-2">
-            <FaHospitalUser className='fs-3' /> Add New Client
-          </button>
-        </div>
-
-        <div className="col-10 col-md-4 p-2">
+        <div className="col-12 col-md-6 p-2  ">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name"
             onChange={(e) => { setSearchName(e.target.value) }}
           />
+        </div>
+
+        <div className="col-12 col-md-5 p-2 text-end">
+          <button onClick={() => { window.location.href = '/addclient' }} className="new-user p-2">
+            <FaHospitalUser className='fs-3' /> Add New Client
+          </button>
         </div>
 
       </div>
@@ -97,17 +97,15 @@ const Clients = () => {
         <div className="row fw-bold table-head p-0 m-0 py-3">
           <p className="col-4 speciality-table-head text-center">Name</p>
           <p className="col-5 speciality-table-head">Email</p>
-          <p className="col-3  speciality-table-head text-center">Details</p>
-          {/* <p className="col-2 ">Delete</p> */}
+          <p className="col-2 ">Delete</p>
 
         </div>
 
         {!searchFilter.length == 0 ? searchFilter.map((client) => (
           <div className="table-body row pt-3 p-0 m-0 " key={client._id}>
-            <p className="col-4 name-role text-center">{client.clientname}</p>
+            <p className="col-4 name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/client/${client._id}`}>{client.clientname} </a></p>
             <p className="col-5 name-role">{client.email}</p>
-            <p className="col-3 fs-5 text-center"> <a className="view-details fs-4" href={`/client/${client._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            {/* <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>      */}
+            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>     
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

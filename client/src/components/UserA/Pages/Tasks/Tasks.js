@@ -92,19 +92,15 @@ const Tasks = () => {
     <div className="row w-100 p-0 m-0 ">
 
       <div className="col-12 row text-center edit-form-lable p-2">
-        <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>UserA</h1>
+        <div className="col-12 col-sm-10 col-md-6 ">
+          <h1 className='logo text-white bg-danger p-2'>Customer Service</h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">System Tasks</h1>
+        <h1 className="col-12  text-center ">System Tasks</h1>
       </div>
 
       <div className="row p-0 m-0 ">
 
-        <div className="col-8 col-md-3 p-2">
-          <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
-            <FaTasks className='fs-3' />  Add New Task
-          </button>
-        </div>
+
 
         <div className="col-8 col-md-3 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name" value={searchName}
@@ -132,21 +128,25 @@ const Tasks = () => {
 
         </div>
 
-
+        <div className="col-8 col-md-3 p-2 text-end">
+          <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
+            <FaTasks className='fs-3' />  Add New Task
+          </button>
+        </div>
       </div>
       <div className="row justify-content-center ">
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
-            <div className="col-8 fw-bold ">
+            <div className="col-12 fw-bold row text-center">
               <span
                 className={
-                  task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
-                    task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
-                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-1 py-2 status delivered' :
-                        task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
-                          task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
-                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary p-1 py-2 status delivered' :
-                              'anystatus p-2 status '
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12' :
+                        task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'completed' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
+                              'anystatus p-3 status col-12 '
                 }>
                 {
                   task.taskStatus.statusname == 'pending' ?
@@ -174,7 +174,7 @@ const Tasks = () => {
 
             </div>
 
-            <p className="col-4 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
             {/* <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(task._id)}> <RiDeleteBinFill /> </button> */}
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
@@ -194,16 +194,16 @@ const Tasks = () => {
         {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((task) => (
           <div key={task._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
 
-            <div className="col-8 fw-bold ">
+            <div className="col-12 fw-bold row text-center">
 
               <span className={
-                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
-                  task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
-                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-2 status ' :
-                      task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
-                        task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
-                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-2 status ' :
-                            'anystatus p-2 status '
+                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
+                  task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'completed' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12 ' :
+                            'anystatus p-3 status col-12 '
               }>
                 {
                   task.taskStatus.statusname == 'pending' ?
@@ -231,7 +231,7 @@ const Tasks = () => {
 
             </div>
 
-            <p className="col-4 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
             {/* <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(task._id)}> <RiDeleteBinFill /> </button> */}
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
@@ -251,16 +251,16 @@ const Tasks = () => {
         {statusFilterData ? !StatusFilter.length == 0 ? StatusFilter.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
 
-            <div className="col-8 fw-bold ">
+            <div className="col-12 fw-bold row text-center">
 
               <span className={
-                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' :
-                  task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-2 status ' :
-                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-2 status ' :
-                      task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-2 status ' :
-                        task.taskStatus.statusname == 'completed' ? 'bg-success  p-2 status ' :
-                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-2 status ' :
-                            'anystatus p-2 status '
+                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
+                  task.taskStatus.statusname == 'admin review' ? 'bg-danger  p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info  p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'in progress' ? 'bg-primary  p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'completed' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12 ' :
+                            'anystatus p-3 status col-12 '
               }>
                 {
                   task.taskStatus.statusname == 'pending' ?
@@ -288,7 +288,7 @@ const Tasks = () => {
 
             </div>
 
-            <p className="col-4 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
             {/* <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(task._id)}> <RiDeleteBinFill /> </button> */}
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>

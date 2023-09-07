@@ -123,7 +123,7 @@ const ClientDetails = () => {
                 <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  Client Details</h2>
             </div>
 
-            <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+            <div className="row bg-white adduser-form p-1 m-1 justify-content-start">
 
                 <div className="col-12 row p-3 justify-content-end ">
                     <div className="col-4">

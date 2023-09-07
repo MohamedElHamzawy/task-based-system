@@ -65,7 +65,7 @@ const Statuses = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 ">
+    <div className="row w-100 p-0 m-0 justify-content-center">
 
       <div className="col-12 row text-center edit-form-lable p-2">
         <div className="col-6 col-md-3">
@@ -74,18 +74,18 @@ const Statuses = () => {
         <h1 className="col-12 col-md-6 text-center ">System Statuses</h1>
       </div>
 
-      <div className="row p-0 m-0 ">
+      <div className="row p-0 m-0 col-10 justify-content-center">
 
-        <div className="col-8 col-md-4 p-2">
-          <button onClick={() => { window.location.href = '/addstatus' }} className="new-user p-2">
-            <TbStatusChange className='fs-3' />  Add New Status
-          </button>
-        </div>
-
-        <div className="col-10 col-md-4 p-2">
+        <div className="col-12 col-md-6 p-2 ">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Status Name"
             onChange={(e) => { setSearchName(e.target.value) }}
           />
+        </div>
+
+        <div className="col-12 col-md-6 p-2 text-end">
+          <button onClick={() => { window.location.href = '/addstatus' }} className="new-user p-2">
+            <TbStatusChange className='fs-3' />  Add New Status
+          </button>
         </div>
 
       </div>
@@ -125,11 +125,6 @@ const Statuses = () => {
 
 
       </div>
-      {/* <div className='p-5'>
-        <h1>
-          status
-        </h1>
-      </div> */}
     </div>
   )
 }

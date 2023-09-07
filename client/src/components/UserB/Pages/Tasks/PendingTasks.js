@@ -57,15 +57,15 @@ const PendingTasks = () => {
     <div className="row w-100 p-0 m-0 ">
 
       <div className="col-12 row text-center edit-form-lable p-2">
-        <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>UserB</h1>
+      <div className="col-12 col-sm-10 col-md-6 ">
+          <h1 className='logo text-white bg-danger p-2'>Specialist Service</h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">Pending Tasks</h1>
+        <h1 className="col-12 text-center ">Pending Tasks</h1>
       </div>
 
       <div className="row p-0 m-0 justify-content-center">
 
-        <div className="col-8 col-md-3 p-2">
+        <div className="col-8 col-lg-4 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name" value={searchName}
             onChange={(e) => { setSearchName(e.target.value); setSearchFilterData(true) }}
           />
@@ -76,10 +76,10 @@ const PendingTasks = () => {
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((task) => (
           task.taskStatus.statusname == 'pending' &&  
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
-            <div className="col-8 fw-bold ">
+            <div className="col-12 fw-bold pt-2 row text-center ">
               <span
                 className={
-                  task.taskStatus.statusname == 'pending' ? 'bg-warning  p-2 status ' : 'anystatus p-2 status '
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' : 'anystatus p-3 status col-12 '
                 }>
                 {
                   task.taskStatus.statusname == 'pending' ?
@@ -92,7 +92,7 @@ const PendingTasks = () => {
 
             </div>
 
-            <p className="col-4 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>

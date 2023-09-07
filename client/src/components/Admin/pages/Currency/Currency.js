@@ -66,7 +66,7 @@ const Currency = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 ">
+    <div className="row w-100 p-0 m-0 justify-content-center">
 
 
       <div className="col-12 row text-center edit-form-lable p-2">
@@ -76,37 +76,34 @@ const Currency = () => {
         <h1 className="col-12 col-md-6 text-center ">System Currencies</h1>
       </div>
 
-      <div className="row p-0 m-0 ">
+      <div className="row p-0 m-0 col-10 justify-content-center">
 
-        <div className="col-8 col-md-4 p-2">
-          <button onClick={() => { window.location.href = '/addcurrency' }} className="new-user p-2">
-            <BsCurrencyExchange className='fs-3' />  Add New Currency
-          </button>
-        </div>
-
-        <div className="col-10 col-md-4 p-2">
+        <div className="col-12 col-md-6 p-2 ">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Currency Name"
             onChange={(e) => { setSearchName(e.target.value) }}
           />
         </div>
 
+        <div className="col-12 col-md-6 p-2 text-end">
+          <button onClick={() => { window.location.href = '/addcurrency' }} className="new-user p-2">
+            <BsCurrencyExchange className='fs-3' />  Add New Currency
+          </button>
+        </div>
       </div>
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-4 speciality-table-head text-center">CurrencyName</p>
-          <p className="col-3 speciality-table-head">Price in EGP</p>
-          <p className="col-2  speciality-table-head">Details</p>
-          <p className="col-2 speciality-table-head">Delete</p>
+          <p className="col-5 speciality-table-head text-center">CurrencyName</p>
+          <p className="col-4 speciality-table-head">Price in EGP</p>
+          <p className="col-3 speciality-table-head">Delete</p>
 
         </div>
 
         {!searchFilter.length == 0 ? searchFilter.map((currency) => (
           <div className="table-body row pt-3 p-0 m-0 " key={currency._id}>
-            <p className="col-4  text-center">{currency.currencyname}</p>
-            <p className="col-3  ">{currency.priceToEGP}</p>
-            <p className="col-2  fs-5 "> <a className="view-details fs-4" href={`/currency/${currency._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={() => deleteCurrencyHandler(currency._id)}> <RiDeleteBinFill /> </button></p>
+            <p className="col-5  text-center"> <a className="text-dark text-decoration-none fw-bold" href={`/currency/${currency._id}`}>{currency.currencyname}</a></p>
+            <p className="col-4 ">{currency.priceToEGP}</p>
+            <p className="col-3"> <button className=" delete-btn p-2 px-3" onClick={() => deleteCurrencyHandler(currency._id)}> <RiDeleteBinFill /> </button></p>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

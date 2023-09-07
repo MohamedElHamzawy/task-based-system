@@ -90,14 +90,14 @@ const Settings = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="text-center row w-100 p-2 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
 
       <div className="col-12 row text-center edit-form-lable p-2">
-        <div className="col-7 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>User A </h1>
+       <div className="col-12 col-sm-10 col-md-6 ">
+          <h1 className='logo text-white bg-danger p-2'>Customer Service </h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">User Settings</h1>
+        <h1 className="col-12 text-center ">User Settings</h1>
       </div>
 
       <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">

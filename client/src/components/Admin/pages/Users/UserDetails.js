@@ -40,7 +40,6 @@ const UserDetails = () => {
   const [country, setCountry] = useState();
   const [phone, setPhone] = useState();
   const [userSpeciality, setUserSpeciality] = useState();
-  // const [userBSpeciality, setUserBSpeciality] = useState();
 
   const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
@@ -68,7 +67,7 @@ const UserDetails = () => {
           setUserRole(res.data.user.user_role);
           setCountry(res.data.user.country);
           setPhone(res.data.user.phone);
-          if (res.data.user.user_role == 'userB') {
+          if (res.data.user.user_role == 'specialistService') {
             setspecialityId(res.data.user.speciality);
             setVisable(true);
           }
@@ -166,7 +165,7 @@ const UserDetails = () => {
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  User Details</h2>
       </div>
 
-      <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
+      <div className="row bg-white adduser-form p-3 m-1 justify-content-start">
         {user.user_role == 'admin' ?
           ''
           :
@@ -179,7 +178,7 @@ const UserDetails = () => {
           </div>}
 
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-xl-4 row ">
+        <div className="col-12 col-md-6  row ">
           <h5 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Full Name :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.fullname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
@@ -198,7 +197,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
 
-        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+        <div className="col-12 col-md-6  row p-2 ">
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Name:</h5>
           <p className={!editUser ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.username} </p>
           <div className={editUser ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
@@ -214,9 +213,9 @@ const UserDetails = () => {
             </div>}
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+        <div className="col-12 col-md-6  row p-2 ">
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Phone :</h5>
-          <p className={!editNumber ? "d-inline col-10 col-md-4 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
+          <p className={!editNumber ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
           <div className={editNumber ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
           </div>
@@ -232,9 +231,9 @@ const UserDetails = () => {
 
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+        <div className="col-12 col-md-6  row p-2 ">
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Country :</h5>
-          <p className={!editCountry ? "d-inline col-10 col-md-4 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
+          <p className={!editCountry ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
           <div className={editCountry ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
           </div>
@@ -249,9 +248,9 @@ const UserDetails = () => {
           }
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 col-xl-4 row p-2 ">
+        <div className="col-12 col-md-6  row p-2 ">
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Role :</h5>
-          <p className={!editRole ? "d-inline col-10 col-md-4 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
+          <p className={!editRole ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
           <div className={editRole ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <select id="role" name="role" className="search w-100 p-2" value={userRole}
               onChange={(e) => { setUserRole(e.target.value); if (e.target.value == 'userB') { setVisable(true); setEditSpeciality(true) } else { setVisable(false) } }} >
@@ -272,11 +271,11 @@ const UserDetails = () => {
           }
         </div>
         {/* /////////////////////// */}
-        <div className={visable ? "d-flex col-12 col-md-6 col-xl-4 row p-2 " : 'd-none'}>
+        <div className={visable ? "d-flex col-12 col-md-6  row p-2 " : 'd-none'}>
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3">Speciality :</h5>
           {specialities.map((speciality) => (
             speciality._id == specialityId ?
-              <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
+              <p key={speciality._id} className={!editSpeciality ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
               : ''
           ))}
           <div className={editSpeciality ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >

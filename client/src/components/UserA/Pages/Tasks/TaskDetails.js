@@ -185,21 +185,21 @@ const TaskDetails = () => {
   };
 
   //comment validation
-  const [commentState, dispatch5] = useReducer(commentReducer, {
+  const [commentState, dispatch4] = useReducer(commentReducer, {
     value: "",
     isvalid: false,
     isTouched: false,
   });
 
   const commentChangeHandler = (event) => {
-    dispatch5({
+    dispatch4({
       type: "CHANGE",
       comment: event.target.value,
       validators: [VALIDATOR_MINLENGTH(3)],
     });
   };
   const commentTouchHandler = () => {
-    dispatch5({
+    dispatch4({
       type: "TOUCH",
     });
   };
@@ -272,22 +272,22 @@ const TaskDetails = () => {
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
       </div>
 
-      <div className="row bg-white adduser-form p-1 justify-content-center p-0 m-0">
+      <div className="row bg-white adduser-form p-1 justify-content-start p-0 m-0">
 
         <div className="col-12 row p-3 justify-content-center">
 
-          <div className="col-9 fw-bold pt-2 text-start">
+          <div className="col-12 fw-bold pt-2 row text-center">
             {
               status &&
               <span
                 className={
-                  status.statusname == 'pending' ? 'bg-warning  p-1 py-3 status ' :
-                    status.statusname == 'admin review' ? 'bg-danger  p-1 py-3 status ' :
-                      status.statusname == 'in negotiation' ? 'bg-info  p-1 py-3 status ' :
-                        status.statusname == 'in progress' ? 'bg-primary  p-1 py-3 status ' :
-                          status.statusname == 'completed' ? 'bg-success  p-1 py-3 status ' :
-                            status.statusname == 'delivered to client' ? 'bg-secondary p-1 py-2 status delivered' :
-                              'anystatus p-1 py-3 status '
+                  status.statusname == 'pending' ? 'bg-warning  p-3 status col-12  ' :
+                    status.statusname == 'admin review' ? 'bg-danger  p-3 status col-12  ' :
+                      status.statusname == 'in negotiation' ? 'bg-info  p-3 status col-12  ' :
+                        status.statusname == 'in progress' ? 'bg-primary  p-3 status col-12  ' :
+                          status.statusname == 'completed' ? 'bg-success  p-3 status col-12  ' :
+                            status.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12 ' :
+                              'anystatus p-3 status col-12  '
                 }>
                 {
                   status.statusname == 'pending' ?
@@ -317,38 +317,38 @@ const TaskDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row">
-          <h4 className="col-12 col-sm-7 col-md-5 edit-form-lable text-start pt-3">  Title :</h4>
-          <p className="d-inline col-12 col-sm-5 col-md-7 pt-3 edit-form-p fw-bold "> {task.title} </p>
+          <h4 className="col-12 col-sm-7 col-md-6 edit-form-lable text-start pt-3">  Title :</h4>
+          <p className="d-inline col-12 col-sm-5 col-md-6 pt-3 edit-form-p fw-bold "> {task.title} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h4 className="col-7 edit-form-lable text-start pt-3">  Speciality :</h4>
-          <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
+          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Speciality :</h4>
+          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h4 className="col-12 col-sm-7 edit-form-lable text-start pt-3">  Dead Line :</h4>
-          <p className="d-inline col-12 col-sm-5  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
+          <h4 className="col-12 col-sm-7 col-md-6 edit-form-lable text-start pt-3">  Dead Line :</h4>
+          <p className="d-inline col-12 col-sm-5 col-md-6  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h4 className="col-7 edit-form-lable text-start pt-3">  Channel :</h4>
-          <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {task.channel} </p>
+          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Channel :</h4>
+          <p className="d-inline col-5 col-md-6 pt-3 edit-form-p fw-bold "> {task.channel} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h4 className="col-7 col-md-6 edit-form-lable text-start pt-3">  Client :</h4>
-          <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
+          <h4 className="col-5 col-md-6 edit-form-lable text-start pt-3">  Client :</h4>
+          <p className="d-inline col-7 col-md-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
+          <h4 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Client Email:</h4>
           <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.email} </p>
         </div>
         {status.statusname == 'pending' || status.statusname == 'admin review' || status.statusname == 'in negotiation' ?
           <div className="col-12 col-md-6 row ">
-          <h5 className="col-8 col-md-6 edit-form-lable text-start pt-3">  Client Price:</h5>
+          <h4 className="col-8 col-md-6 edit-form-lable text-start pt-3">  Client Price:</h4>
           <p className="d-inline col-4 col-md-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
         </div> :''
         }
        {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
           <div className="col-12 col-md-6  row ">
-          <h5 className="col-12 col-sm-5 col-lg-6  edit-form-lable text-start pt-3">  Task Price:</h5>
+          <h4 className="col-12 col-sm-5 col-lg-6  edit-form-lable text-start pt-3">  Task Price:</h4>
           <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger"> {offer} </p>
         </div> :''
         }

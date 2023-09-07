@@ -225,7 +225,7 @@ const AddUser = () => {
   const [role, setRole] = useState('');
   const RoleChangeHandler = (newOne) => {
     setRole(newOne);
-    if (newOne == 'userB') {
+    if (newOne == 'specialistService') {
       setVisable(true)
     } else {
       setVisable(false)
@@ -359,8 +359,8 @@ const AddUser = () => {
             onChange={(event) => RoleChangeHandler(event.target.value)}>
             <option value="" className='text-secondary'>Roles</option>
             <option value="admin">Admin</option>
-            <option value="userA">UserA</option>
-            <option value="userB">UserB</option>
+            <option value="customerService">Customer Service</option>
+            <option value="specialistService">Specialist Service</option>
           </select>
         </div>
 

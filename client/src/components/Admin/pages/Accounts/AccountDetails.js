@@ -74,19 +74,19 @@ const AccountDetails = () => {
       <div className="row bg-white adduser-form p-3 m-1 justify-content-center col-12 col-lg-10">
 
         <div className="col-12 col-lg-6 row  ">
-          <h3 className="col-12 col-md-6  edit-form-lable text-start"> UserName :</h3>
+          <h4 className="col-12 col-md-6  edit-form-lable text-start"> UserName :</h4>
           <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {account.title} </p>
         </div>
         <div className="col-12 col-lg-6 row  ">
-          <h3 className="col-5  edit-form-lable text-start"> Owner:</h3>
+          <h4 className="col-5  edit-form-lable text-start"> Owner:</h4>
           <p className="d-inline col-7 pt-2 edit-form-p fw-bold text-end"> <a href={`/${account.type}/${account.owner}`}> Owner Details </a> </p>
         </div>
         <div className="col-12 col-lg-6 row  ">
-          <h3 className="col-12 col-md-7  edit-form-lable text-start"> AccountType:</h3>
+          <h4 className="col-12 col-md-7  edit-form-lable text-start"> AccountType:</h4>
           <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {account.type} </p>
         </div>
         <div className="col-12 col-lg-6 row ">
-          <h3 className="col-6 edit-form-lable text-start"> Balance:</h3>
+          <h4 className="col-6 edit-form-lable text-start"> Balance:</h4>
           <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {account.balance} EGP </p>
         </div>
 
@@ -97,15 +97,15 @@ const AccountDetails = () => {
 
          {transaction.task && 
           <div className="col-12 col-lg-6 row ">
-            <h3 className="col-12 col-md-6  edit-form-lable text-start"> Task Title :</h3>
+            <h4 className="col-12 col-md-6  edit-form-lable text-start"> Task Title :</h4>
             <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {transaction.task.title} </p>
           </div>}
 
           <div className="col-12 col-lg-6 row ">
              {account.type == 'client' ? 
-             <h3 className="col-6 edit-form-lable text-start"> TaskPrice:</h3>
+             <h4 className="col-6 edit-form-lable text-start"> TaskPrice:</h4>
              : 
-             <h3 className="col-12 col-md-6 edit-form-lable text-start"> FreeLancerPrice:</h3>} 
+             <h4 className="col-12 col-md-6 edit-form-lable text-start"> FreeLancerPrice:</h4>} 
             <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount} EGP </p>
           </div>
 
@@ -114,13 +114,13 @@ const AccountDetails = () => {
               {clients && clients.map((client) => (
                 client._id == transaction.task.client &&
                 <div className="col-12 col-lg-6 row " key={client._id}>
-                  <h3 className="col-6  edit-form-lable text-start"> Client :</h3>
+                  <h4 className="col-6  edit-form-lable text-start"> Client :</h4>
                   <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {client.clientname} </p>
                 </div>
               ))}
 
               <div className="col-12 col-lg-6 row ">
-                <h3 className="col-12 col-md-6  edit-form-lable text-start transaction-date"> Client Details:</h3>
+                <h4 className="col-12 col-md-6  edit-form-lable text-start "> Client Details:</h4>
                 <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end">  <a href={`/client/${transaction.task.client}`}>  Click Here </a> </p>
               </div>
             </>
@@ -130,12 +130,12 @@ const AccountDetails = () => {
               {freeLancers && freeLancers.map((freeLancer) => (
                 freeLancer._id == transaction.task.freelancer &&
                 <div className="col-12 col-lg-6 row " key={freeLancer._id}>
-                  <h3 className="col-12 col-md-6 edit-form-lable text-start"> FreeLancer :</h3>
+                  <h4 className="col-12 col-md-6 edit-form-lable text-start"> FreeLancer :</h4>
                   <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {freeLancer.freelancername} </p>
                 </div>
               ))}
               <div className="col-12 col-lg-6 row ">
-                <h3 className="col-12 col-md-8  edit-form-lable text-start transaction-date FreeLancer-Details">FreeLancer Details:</h3>
+                <h4 className="col-12 col-md-8  edit-form-lable text-start  FreeLancer-Details">FreeLancer Details:</h4>
                 <p className="d-inline col-12 col-md-4 pt-2 edit-form-p fw-bold text-end"> <a href={`/freeLancer/${transaction.task.freelancer}`}> Click Here </a> </p>
               </div>
             </>
@@ -143,13 +143,13 @@ const AccountDetails = () => {
           {
             transaction.task &&
             <div className="col-12 col-lg-6 row ">
-            <h3 className="col-12 col-md-7  edit-form-lable text-start "> Task Details:</h3>
+            <h4 className="col-12 col-md-7  edit-form-lable text-start "> Task Details:</h4>
             <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> <a href={`/task/${transaction.task._id}`}>Click Here </a> </p>
           </div>
           }  
 
           <div className="col-12 col-lg-6 row ">
-            <h3 className="col-12 col-md-7 edit-form-lable text-start transaction-date"> Transaction Date:</h3>
+            <h4 className="col-12 col-md-7 edit-form-lable text-start "> Transaction Date:</h4>
             <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {transaction.createdAt.split('T')[0]} </p>
           </div>
         </div>

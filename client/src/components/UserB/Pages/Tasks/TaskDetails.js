@@ -103,21 +103,21 @@ const TaskDetails = () => {
   };
 
     //comment validation
-    const [commentState, dispatch5] = useReducer(commentReducer, {
+    const [commentState, dispatch4] = useReducer(commentReducer, {
       value: "",
       isvalid: false,
       isTouched: false,
     });
   
     const commentChangeHandler = (event) => {
-      dispatch5({
+      dispatch4({
         type: "CHANGE",
         comment: event.target.value,
         validators: [VALIDATOR_MINLENGTH(3)],
       });
     };
     const commentTouchHandler = () => {
-      dispatch5({
+      dispatch4({
         type: "TOUCH",
       });
     };
@@ -192,22 +192,22 @@ const TaskDetails = () => {
         <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
       </div>
 
-      <div className="row bg-white adduser-form p-1 m-0 justify-content-center">
+      <div className="row bg-white adduser-form p-1 m-0 justify-content-start">
 
         <div className="col-12 row p-3 justify-content-center">
 
-          <div className="col-9 fw-bold pt-2 text-start">
+          <div className=" col-12 fw-bold pt-2 row text-center">
             {
               status &&
               <span
                 className={
-                  status.statusname == 'pending' ? 'bg-warning  p-1 py-3 status ' :
-                    status.statusname == 'admin review' ? 'bg-danger  p-1 py-3 status ' :
-                      status.statusname == 'in negotiation' ? 'bg-info  p-1 py-3 status ' :
-                        status.statusname == 'in progress' ? 'bg-primary  p-1 py-3 status ' :
-                          status.statusname == 'completed' ? 'bg-success  p-1 py-3 status ' :
-                            status.statusname == 'delivered to client' ? 'bg-secondary  p-1 py-2 status delivered' :
-                              'anystatus p-1 py-3 status '
+                  status.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
+                    status.statusname == 'admin review' ? 'bg-danger  p-3 status col-12 ' :
+                      status.statusname == 'in negotiation' ? 'bg-info  p-3 status col-12 ' :
+                        status.statusname == 'in progress' ? 'bg-primary  p-3 status col-12 ' :
+                          status.statusname == 'completed' ? 'bg-success  p-3 status col-12 ' :
+                            status.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
+                              'anystatus p-3 status col-12 '
                 }>
                 {
                   status.statusname == 'pending' ?
@@ -237,38 +237,41 @@ const TaskDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row">
-          <h4 className="col-12 col-md-4 edit-form-lable text-start pt-3">  Title :</h4>
-          <p className="d-inline col-12 col-md-8  pt-3 edit-form-p fw-bold "> {task.title} </p>
+          <h4 className="col-12 col-md-6 edit-form-lable text-start pt-3">  Title :</h4>
+          <p className="d-inline col-12 col-md-6  pt-3 edit-form-p fw-bold "> {task.title} </p>
         </div>
         <div className="col-12 col-md-6  row ">
-          <h4 className="col-7 edit-form-lable text-start pt-3">  Speciality :</h4>
-          <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
+          <h4 className="col-6 edit-form-lable text-start pt-3">  Speciality :</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
         </div>
         <div className="col-12 col-md-6 row ">
-          <h4 className="col-12 col-sm-7 edit-form-lable text-start pt-3">  Dead Line :</h4>
-          <p className="d-inline col-12 col-sm-5  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
+          <h4 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Dead Line :</h4>
+          <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
+        </div>
+
+        <div className="col-12 col-md-6 row ">
+          <h4 className="col-6 edit-form-lable text-start pt-3">  Channel :</h4>
+          <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {task.channel} </p>
         </div>
 
         {task.freelancer &&
           <>
             <div className="col-12 col-md-6 row ">
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Freelancer :</h5>
+              <h4 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Freelancer :</h4>
               <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
             </div>
-            <div className="col-12 col-md-8 col-lg-6 row ">
-              <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Email:</h5>
-              <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold freelanceremail"> {task.freelancer.email} </p>
-            </div>
+
             <div className="col-12 col-md-6 row ">
-              <h5 className="col-7 col-md-6  edit-form-lable text-start pt-3">  TaskPrice :</h5>
+              <h4 className="col-7 col-md-6  edit-form-lable text-start pt-3">  TaskPrice :</h4>
               <p className="d-inline col-5 col-md-6  pt-3 edit-form-p fw-bold ">{task.cost} </p>
+            </div>
+            <div className="col-12 col-md-8 col-lg-6 row ">
+              <h4 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Email:</h4>
+              <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold freelanceremail"> {task.freelancer.email} </p>
             </div>
           </>
         }
-        <div className="col-12 col-md-6 row ">
-          <h4 className="col-7 edit-form-lable text-start pt-3">  Channel :</h4>
-          <p className="d-inline col-5  pt-3 edit-form-p fw-bold "> {task.channel} </p>
-        </div>
+
 
         <div className="col-12 row ">
           {/* <hr></hr> */}
@@ -305,9 +308,9 @@ const TaskDetails = () => {
             {!comments.length == 0 ? comments.map((comment) => (
 
               <div className='comment text-start row p-2 pt-3 my-1 m-0' key={comment._id}>
-                <h6 className='col-12 col-sm-4 edit-form-lable fw-bold '>{comment.user_id.fullname} : </h6>
+                <h6 className='col-12 col-sm-4 edit-form-lable fw-bold '>{comment.user_id && comment.user_id.fullname} : </h6>
                 <p className='col-10 col-sm-7 fw-bold text-sm-start text-center'>{comment.content} </p>
-                {
+                {comment.user_id &&
                   comment.user_id._id == userId ?
                   <div className='col-2 col-sm-1'>
                   <button onClick={() => deleteCommentHandler(comment._id)} className='delete-comment-btn p-0'>
