@@ -4,6 +4,9 @@ const transactionSchema = new mongoose.Schema({
     transactionType: {
         type: String
     },
+    method: {
+        type: String
+    },
     task: {
         type: mongoose.Types.ObjectId,
         ref: "task"

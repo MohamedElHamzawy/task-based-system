@@ -27,8 +27,8 @@ const getTransaction = async (req,res,next) => {
 
 const createTransaction = async (req,res,next) => {
     try {
-        const {account_id, amount} = req.body;
-        const newTransaction = await new transactionModel({transactionType: "paid", task:0, amount, account_id}).save();
+        const {account_id, method, amount} = req.body;
+        const newTransaction = await new transactionModel({transactionType: "paid", task:0, amount, method, account_id}).save();
         const thisAccount = await accountModel.findById({_id: account_id});
         const newBalance = parseFloat(thisAccount.balance) - parseFloat(newTransaction.amount);
         await accountModel.findByIdAndUpdate({_id: account_id}, {balance: newBalance});
