@@ -293,7 +293,7 @@ const AddUser = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-9 col-lg-7 text-center edit-form-lable ">  Add New User</h2>
+        <h2 className="col-9 col-lg-7 text-center system-head ">  Add New User</h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newUserSubmitHandler}>

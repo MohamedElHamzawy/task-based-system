@@ -279,7 +279,7 @@ dispatch6({
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/freelancers' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center edit-form-lable py-4">  Add New FreeLancer</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head py-4">  Add New FreeLancer</h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newFreeLancerSubmitHandler}>

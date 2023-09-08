@@ -68,7 +68,7 @@ const AccountDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/accounts' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-6 text-center edit-form-lable p-2 pt-3 m-0 ">  Account Details</h2>
+        <h2 className="col-12 col-lg-6 text-center system-head p-2 pt-3 m-0 ">  Account Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-3 m-1 justify-content-center col-12 col-lg-10">
@@ -91,7 +91,7 @@ const AccountDetails = () => {
         </div>
 
       </div>
-      <h1 className="edit-form-lable p-2">Transactions :</h1>
+      <h1 className="system-head p-2">Transactions :</h1>
       {transactions && !transactions.length == 0 ? transactions.map((transaction) => (
         <div className="row col-12 col-lg-10 transactions adduser-form p-3 m-1 justify-content-center my-1" key={transaction._id}>
 

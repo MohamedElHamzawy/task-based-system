@@ -364,7 +364,7 @@ const TaskDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/tasks' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center edit-form-lable p-0">  Task Details</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-0">  Task Details</h2>
       </div>
       {/* ////////////////////////////////////////////// */}
       <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1'>
@@ -489,8 +489,8 @@ const TaskDetails = () => {
                 <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
               </div>
               <div className="col-12 row ">
-                <h5 className="col-12 col-sm-5 edit-form-lable text-start pt-3 ">  Freelancer Email :</h5>
-                <p className="d-inline col-12 col-sm-7 pt-3 edit-form-p fw-bold freelanceremail "> {task.freelancer.email} </p>
+                <h5 className="col-12 col-sm-6 col-md-3 edit-form-lable text-start pt-3 ">  Freelancer Email:</h5>
+                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold freelanceremail "> {task.freelancer.email} </p>
               </div>
             </>
           }
