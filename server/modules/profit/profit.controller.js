@@ -1,6 +1,15 @@
 const profitModel = require("../../DB/profit.model");
 const HttpError = require("../../common/httpError");
 
+const getProfit = async (req,res,next) => {
+    try {
+        const profitSystem = await profitModel.find({});
+        res.json({profitSystem});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const createProfit = async (req,res,next) => {
     try {
         const tryGet = await profitModel.find({});
@@ -27,4 +36,4 @@ const updateProfit = async (req,res,next) => {
     }
 }
 
-module.exports = {createProfit, updateProfit};
+module.exports = {getProfit, createProfit, updateProfit};

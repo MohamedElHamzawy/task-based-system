@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const {createProfit, updateProfit} = require("./profit.controller");
+const {getProfit, createProfit, updateProfit} = require("./profit.controller");
 
+router.get("/", getProfit);
 router.post("/", createProfit);
 router.post("/:id", updateProfit);
 
