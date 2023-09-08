@@ -7,6 +7,9 @@ const statusSchema = new mongoose.Schema({
     slug: {
         type: String
     },
+    role: {
+        type: String
+    },
     changable: {
         type: Boolean,
         default: true
