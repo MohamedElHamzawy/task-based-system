@@ -52,10 +52,6 @@ const taskSchema = new mongoose.Schema({
     cost: {
         type: Number
     },
-    profit_percentage: {
-        type: Number,
-        default: 10
-    },
     profit_amount: {
         type: Number
     }

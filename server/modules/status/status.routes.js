@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const auth = require("../../middleware/auth");
 const {
     getAllStatuses, 
     getStatus, 
@@ -7,7 +8,7 @@ const {
     deleteStatus
 } = require("./status.controller");
 
-router.get("/", getAllStatuses);
+router.get("/", auth(), getAllStatuses);
 router.get("/:id", getStatus);
 router.post("/", createStatus);
 router.post("/:id", updateStatus);
