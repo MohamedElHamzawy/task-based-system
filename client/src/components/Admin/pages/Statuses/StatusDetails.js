@@ -7,12 +7,13 @@ import { useParams } from "react-router-dom";
 import { BiSolidEditAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
+import { ImCancelCircle } from 'react-icons/im';
 
 
 
 const StatusDetails = () => {
 
-    const [editName, setEditName] = useState(false);
+    const [edit, setEdit] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,6 @@ const StatusDetails = () => {
             timerId = setTimeout(async () => {
                 await axios.get(`http://localhost:5000/api/status/${id}`).then((res) => {
                     setStatus(res.data.message);
-                    setStatusName(res.data.message.statusname);
                     console.log(res.data.message)
                 });
                 setLoading(false);
@@ -121,29 +121,45 @@ const StatusDetails = () => {
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-10 row p-3">
                     <h3 className="col-12 col-md-5  edit-form-lable text-start py-3"> Status Name :</h3>
-                    <p className={!editName ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold " : 'd-none'}> {status.statusname} </p>
-                    <div className={editName ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
+                    <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold " : 'd-none'}> {status.statusname} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setStatusName(e.target.value) }} className="search w-100 p-2" />
-                    </div>
-                    <div className="col-1 pt-2 ">
-                        <button onClick={() => { setEditName(!editName) }} className="edit-btn fs-2">
-                            <BiSolidEditAlt />
-                        </button>
                     </div>
                 </div> 
 
                 {/* /////////////////////// */}
 
-                <div className="col-12  p-3">
-                    <button
-                        disabled={
-                            !editName
-                        }
-                        className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editStatusHandler}>
-                        Edit
-                    </button>
-                </div>
 
+        <div className="col-12  p-3">
+          {!edit ? 
+            <button
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" 
+              onClick={() => { setEdit(!edit) }}
+              >
+              Edit
+            </button> :''
+          }
+          {edit ? 
+            <>
+            <button
+              disabled={
+                !statusName 
+              }
+              className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
+              onClick={editStatusHandler}
+              >
+              Submit
+            </button> 
+            <button
+              className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold" 
+              onClick={() => { setEdit(!edit) }}
+              >
+              <ImCancelCircle className="fs-3"/>
+            </button>
+            </>          
+            :''
+          }
+        </div>
             </div> 
 
         </div>

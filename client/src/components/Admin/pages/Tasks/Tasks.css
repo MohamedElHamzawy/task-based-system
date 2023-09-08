@@ -35,20 +35,22 @@ background-color: rgba(243, 242, 242, 0.74) !important;
     text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
 }
 .comment{
-    background-color: rgba(202, 122, 205, 0.495);
+    /* background-color: rgba(202, 122, 205, 0.495); */
+    background-color: rgba(136, 136, 136, 0.495);
     border-radius: 20px;
     color: white;
     text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
 }
 
 .comment-btn{
-    background-color: rgba(197, 100, 200, 0.495);
+    background-color: rgba(136, 136, 136, 0.495);
     border: 0px;
     color: white;
     border-radius: 20px;
 }
 .comment-btn:hover{
-    background-color: rgba(197, 100, 200, 0.863);
+    background-color: rgba(127, 127, 127, 0.799);
+
 }
 
 .delete-comment-btn{

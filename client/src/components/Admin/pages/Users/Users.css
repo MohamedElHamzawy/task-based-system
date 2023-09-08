@@ -71,7 +71,11 @@
 .form-control-invalid{
     border: 1px solid rgba(218, 10, 10, 0.616);
 }
-
+.cancel-btn{
+    border: 0px ;
+    color: white;
+    border-radius: 10px ;
+}
 .edit-btn{
     color: rgb(34, 180, 104);
     border: 0px;

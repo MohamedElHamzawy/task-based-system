@@ -103,7 +103,7 @@ const Settings = () => {
       <ErrorModal error={error} onClear={errorHandler} />
 
 
-      <div className="col-12 row text-center edit-form-lable p-2">
+      <div className="col-12 row text-center system-head p-2">
       <div className="col-12 col-sm-10 col-md-6 ">
           <h1 className='logo text-white bg-danger p-2'>Specialist Service</h1>
         </div>

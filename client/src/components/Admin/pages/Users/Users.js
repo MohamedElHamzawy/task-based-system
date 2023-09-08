@@ -117,7 +117,7 @@ const Users = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-2">
-          <h4 className="col-6  text-center">FullName</h4>
+          <h4 className="col-5  text-center">FullName</h4>
           <h4 className="col-4 ">Role</h4>
           <h4 className="col-2 ">Delete</h4>
 
@@ -125,7 +125,7 @@ const Users = () => {
 
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-            <p className="col-6  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
+            <p className="col-5  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
             <p className="col-4 name-role">{user.user_role}</p>
             <p className="col-2">
               {user.user_role == 'admin' ?
