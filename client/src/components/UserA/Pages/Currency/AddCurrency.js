@@ -134,7 +134,7 @@ const  AddCurrency = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/currency' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center edit-form-lable p-3">  Add New Currency</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3">  Add New Currency</h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newCurrencySubmitHandler}>

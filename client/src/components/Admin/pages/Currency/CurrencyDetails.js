@@ -110,7 +110,7 @@ const CurrencyDetails = () => {
                 <div className="col-3 text-center">
                     <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/currency' }}><TiArrowBack /> </button>
                 </div>
-                <h2 className="col-12 col-lg-7 text-center edit-form-lable p-2 pt-4">  Currency Details</h2>
+                <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">  Currency Details</h2>
             </div>
 
             <div className="row bg-white adduser-form p-1 m-1 justify-content-center">

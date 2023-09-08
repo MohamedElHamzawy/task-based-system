@@ -81,12 +81,16 @@
     color: rgb(45, 204, 122);
 }
 
-.edit-form-lable{
+.system-head{
     color: #2a1255;
+    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525) ;
+}
+.edit-form-lable{
+    color: rgb(45, 114, 204);
     text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
 }
 .edit-form-p{
-    color: rgb(45, 114, 204);
+    color: black;
 }
 
 .edit-user-btn{
