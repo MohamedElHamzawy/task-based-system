@@ -13,7 +13,7 @@ const getProfit = async (req,res,next) => {
 const createProfit = async (req,res,next) => {
     try {
         const tryGet = await profitModel.find({});
-        if (tryGet) {
+        if (tryGet.length > 0) {
             return next(new HttpError(`You can't add new profit system`, 404));
         } else {
             const {minimum, maximum} = req.body;
