@@ -8,7 +8,7 @@ const freelancerSchema = new mongoose.Schema({
         type: String
     },
     speciality: {
-        type: mongoose.Types.ObjectId,
+        type: [mongoose.Types.ObjectId],
         ref: "speciality"
     },
     email: {

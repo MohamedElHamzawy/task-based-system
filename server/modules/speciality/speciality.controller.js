@@ -23,16 +23,16 @@ const getSpeciality = async (req,res,next) => {
 const createSpeciality = async (req,res,next) => {
     try {
         const {
-            name,
-            type
+            speciality,
+            sub_speciality
         } = req.body;
-        const tryGetSpeciality = await specialityModel.findOne({specialityName: name});
+        const tryGetSpeciality = await specialityModel.findOne({sub_speciality: sub_speciality});
         if (tryGetSpeciality) {
             return next(new HttpError("Speciality already exist!", 400));
         } else {
             const newSpeciality = await new specialityModel({
-                specialityName: name,
-                specialityType: type
+                speciality: speciality,
+                sub_speciality: sub_speciality
             }).save();
             res.json({message: "Speciality has been added successfully"});
         }
@@ -44,13 +44,13 @@ const createSpeciality = async (req,res,next) => {
 const updateSpeciality = async (req,res,next) => {
     try {
         const {
-            name,
-            type
+            speciality,
+            sub_speciality
         } = req.body;
         const specialityID = req.params.id;
-        const tryGetSpeciality = await specialityModel.findOne({specialityName: name});
+        const tryGetSpeciality = await specialityModel.findOne({sub_speciality: sub_speciality});
         if (tryGetSpeciality) {
-            await specialityModel.findByIdAndUpdate({_id: specialityID}, {specialityName: name, specialityType: type});
+            await specialityModel.findByIdAndUpdate({_id: specialityID}, {speciality: speciality, sub_speciality: sub_speciality});
             res.json({error: "Speciality has been updated successfully!"});
         } else {
             return next(new HttpError("Speciality doesn't exist on system", 400));

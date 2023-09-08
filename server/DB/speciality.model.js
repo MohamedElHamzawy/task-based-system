@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const specialitySchema = new mongoose.Schema({
-    specialityName: {
+    speciality: {
         type: String
     },
-    specialityType: {
+    sub_speciality: {
         type: String
     }
 }, {timestamps: true});
