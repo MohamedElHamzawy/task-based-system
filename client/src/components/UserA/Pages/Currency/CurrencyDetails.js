@@ -8,12 +8,13 @@ import { BiSolidEditAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 
+import { ImCancelCircle } from 'react-icons/im';
 
 
 const CurrencyDetails = () => {
 
-    const [editName, setEditName] = useState(false);
-    const [editPrice, setEditPrice] = useState(false);
+    const [edit, setEdit] = useState(false);
+
 
     const [loading, setLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -32,8 +33,6 @@ const CurrencyDetails = () => {
             timerId = setTimeout(async () => {
                 await axios.get(`http://localhost:5000/api/currency/${id}`).then((res) => {
                   setCurrency(res.data.message);
-                  setCurrencyName(res.data.message.currencyname);
-                  setCurrencyPrice(res.data.message.priceToEGP);
                   console.log(res.data.message)
                 });
                 setLoading(false);
@@ -125,44 +124,56 @@ const CurrencyDetails = () => {
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
                     <h3 className="col-12 col-md-5  edit-form-lable text-start"> Currency Name :</h3>
-                    <p className={!editName ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {currency.currencyname} </p>
-                    <div className={editName ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                    <p className={!edit ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {currency.currencyname} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setCurrencyName(e.target.value) }} className="search w-100 p-2" />
-                    </div>
-                    <div className="col-1 ">
-                        <button onClick={() => { setEditName(!editName) }} className="edit-btn fs-2">
-                            <BiSolidEditAlt />
-                        </button>
                     </div>
                 </div> 
                 {/* /////////////////////// */}
 
                <div className="col-12 col-xl-6 row p-2 ">
                     <h3 className="col-12 col-md-5  edit-form-lable text-start"> Price In EGP :</h3>
-                    <p className={!editPrice ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {currency.priceToEGP} </p>
-                    <div className={editPrice ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                    <p className={!edit ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {currency.priceToEGP} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
                         <input type="number" onChange={(e) => { setCurrencyPrice(e.target.value) }} className="search w-100 p-2" />
                     </div>
-                    <div className="col-1 ">
-                        <button onClick={() => { setEditPrice(!editPrice) }} className="edit-btn fs-2">
-                            <BiSolidEditAlt />
-                        </button>
-                    </div>
+
                 </div> 
 
 
                 {/* /////////////////////// */}
-
                 <div className="col-12  p-3">
-                    <button
-                        disabled={
-                            !editName &&
-                            !editPrice
-                        }
-                        className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editCurrencyHandler}>
-                        Edit
-                    </button>
-                </div>
+          {!edit ? 
+            <button
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" 
+
+              onClick={() => { setEdit(!edit) }}
+              >
+              Edit
+            </button> :''
+          }
+          {edit ?
+            <>
+            <button
+              disabled={
+                !currencyName &&
+                !currencyPrice
+              }
+              className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
+              onClick={editCurrencyHandler}
+              >
+              Submit
+            </button> 
+            <button
+              className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold" 
+              onClick={() => { setEdit(!edit) }}
+              >
+              <ImCancelCircle className="fs-3"/>
+            </button>
+            </>          
+            :''
+          }
+        </div>
 
             </div> 
 

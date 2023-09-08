@@ -368,7 +368,7 @@ const TaskDetails = () => {
       </div>
       {/* ////////////////////////////////////////////// */}
       <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1'>
-        <div className="row bg-white adduser-form p-0 m-0 justify-content-center ">
+        <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
           <div className="col-12 row p-3 justify-content-center">
 
@@ -489,8 +489,8 @@ const TaskDetails = () => {
                 <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {task.freelancer.freelancername} </p>
               </div>
               <div className="col-12 row ">
-                <h5 className="col-12 col-sm-6 col-md-3 edit-form-lable text-start pt-3 ">  Freelancer Email:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold freelanceremail "> {task.freelancer.email} </p>
+                <h5 className="col-12 col-sm-6 col-md-4 edit-form-lable text-start pt-3 ">  Freelancer Email:</h5>
+                <p className="d-inline col-12 col-sm-3 pt-3 edit-form-p fw-bold  "> {task.freelancer.email} </p>
               </div>
             </>
           }
@@ -498,7 +498,7 @@ const TaskDetails = () => {
           <div className="col-12 row ">
             {/* <hr></hr> */}
             <h5 className="col-md-3 col-12 edit-form-lable text-start pt-3">  Description :</h5>
-            <p className="d-inline col-md-9 col-12  pt-3 edit-form-p fw-bold freelanceremail"> {task.description} </p>
+            <p className="d-inline col-md-9 col-12  pt-3 edit-form-p fw-bold "> {task.description} </p>
           </div>
           {/* /////////////////////// */}
 

@@ -11,16 +11,19 @@ import { FaTasks } from 'react-icons/fa';
 import { FaCoins } from 'react-icons/fa';
 import { FaCcVisa } from 'react-icons/fa';
 import { TbListDetails } from 'react-icons/tb';
-
+import { ImCancelCircle } from 'react-icons/im';
+import { BsFillFolderSymlinkFill } from 'react-icons/bs';
+import { MdPendingActions } from 'react-icons/md';
+import { MdRateReview } from 'react-icons/md';
+import { BiSolidOffer } from 'react-icons/bi';
+import { GiProgression } from 'react-icons/gi';
+import { AiOutlineFileDone } from 'react-icons/ai';
+import { TbTruckDelivery } from 'react-icons/tb';
 
 const FreeLancerDetails = () => {
 
   const [editFull, setEditFull] = useState(false);
-  const [editNumber, setEditNumber] = useState(false);
-  const [editEmail, setEditEmail] = useState(false);
-  const [editCountry, setEditCountry] = useState(false);
-  const [editCity, setEditCity] = useState(false);
-  const [editSpeciality, setEditSpeciality] = useState(false);
+
 
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,11 +60,6 @@ const FreeLancerDetails = () => {
           setFreeLancerTasks(res.data.freelancerTasks)
           setFreeLancerAccount(res.data.freelancerAccount)
 
-          setFullName(res.data.freelancer.freelancername);
-          setEmail(res.data.freelancer.email);
-          setCountry(res.data.freelancer.country);
-          setCity(res.data.freelancer.city)
-          setPhone(res.data.freelancer.phone);
           setspecialityId(res.data.freelancer.speciality);
           console.log(res.data)
         });
@@ -174,11 +172,11 @@ const FreeLancerDetails = () => {
             <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
           </div>
 
-          <div className="col-1 ">
+          {/* <div className="col-1 ">
             <button onClick={() => { setEditFull(!editFull) }} className="edit-btn fs-2">
               <BiSolidEditAlt />
             </button>
-          </div>
+          </div> */}
 
 
         </div>
@@ -187,30 +185,18 @@ const FreeLancerDetails = () => {
 
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">  Email :</h3>
-          <p className={!editEmail ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
-          <div className={editEmail ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
+          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type="email" onChange={(e) => { setEmail(e.target.value) }} className="search w-100 p-2" />
-          </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditEmail(!editEmail) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
           </div>
         </div>
 
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
-          <p className={!editNumber ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
-          <div className={editNumber ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
+          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
-          </div>
-
-
-          <div className="col-1 ">
-            <button onClick={() => { setEditNumber(!editNumber) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
           </div>
 
         </div>
@@ -218,10 +204,10 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          <p className={!editSpeciality ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
 
-          <div className={editSpeciality ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
-            <select id="speciality" name="speciality" className="p-2 px-4 search col-10" value={userSpeciality}
+          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+            <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
               {specialities.map((speciality) => (
@@ -229,55 +215,61 @@ const FreeLancerDetails = () => {
               ))}
             </select>
           </div>
-
-          <div className="col-1 ">
-            <button onClick={() => { if (freeLancer.speciality) { setEditSpeciality(!editSpeciality) } else { setEditSpeciality(true) } }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div>
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
-          <p className={!editCountry ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
-          <div className={editCountry ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
+          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
-          </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditCountry(!editCountry) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
           </div>
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> City :</h3>
-          <p className={!editCity ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.city} </p>
-          <div className={editCity ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.city} </p>
+          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type="text" onChange={(e) => { setCity(e.target.value) }} className="search w-100 p-2" />
-          </div>
-          <div className="col-1 ">
-            <button onClick={() => { setEditCity(!editCity) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
           </div>
         </div>
         {/* /////////////////////// */}
 
 
         <div className="col-12  p-3">
-          <button
-            disabled={
-              !editFull &&
-              !editNumber &&
-              !editSpeciality&&
-              !editCountry &&
-              !editEmail &&
-              !editCity
-            }
-            className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" onClick={editFreeLancerHandler}>
-            Edit
-          </button>
+          {!editFull ?
+            <button
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" 
+              // onClick={editUserHandler}
+              onClick={() => { setEditFull(!editFull) }}
+              >
+              Edit
+            </button> :''
+          }
+          {editFull ? 
+            <>
+            <button
+              disabled={
+                !fullName &&
+                !country &&
+                !city &&
+                !country &&
+                !phone &&
+                !userSpeciality
+              }
+              className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
+              onClick={editFreeLancerHandler}
+              >
+              Submit
+            </button> 
+            <button
+              className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold" 
+              onClick={() => { setEditFull(!editFull) }}
+              >
+              <ImCancelCircle className="fs-3"/>
+            </button>
+            </>          
+            :''
+          }
         </div>
 
       </div>
@@ -307,40 +299,67 @@ const FreeLancerDetails = () => {
                 </div>
             </div>
 
-            <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-                {freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
-                    <div key={task._id} className="bg-white adduser-form p-4 row m-2 col-10">
+ {/* /////////////////////////////////////////////////// */}
 
-                        <div className="col-12 justify-content-end row p-0 m-0">
-                            <div className="bg-primary icon p-3 col-4 col-md-2 col-lg-1 ">
-                                <TbListDetails className="fs-2  " />
-                            </div>
-                        </div>
+      <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
+        {freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
 
-                        <div className="row col-12 col-xl-4 p-2 text-start ">
-                            <h5 className="col-12 col-md-5 col-xl-7 text-danger edit-form-lable ">Task Details:</h5>
-                            <div className="col-12 col-md-3 col-xl-5 pt-1 text-end text-md-start">
-                                <a href={`/task/${task._id}`} className="text-dark fw-bold">Click Here </a>
-                            </div>
-                        </div>
+            <div className="col-12 fw-bold row text-center">
 
-                        <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
-                            <h5 className="col-12 col-md-7 text-danger edit-form-lable">Task Title:</h5>
-                            <p className="col-12 col-md-5 text-dark fw-bold pt-1 text-end text-md-start">{task.title} </p>
-                        </div>
-
-                        <div className="row col-12 col-md-6 col-xl-4 p-2 text-start">
-                            <h5 className="col-12 col-md-9 text-danger edit-form-lable">FreeLancer Gain:</h5>
-                            <p className="col-12 col-md-3 text-dark fw-bold pt-1 text-end text-md-start">{task.cost} </p>
-                        </div>
-
-                    </div>
-                )) :
-                    <div className="row col-12  p-2 text-center">
-                        <h3 className=" text-danger edit-form-lable">This Client Didn't Do Any Tasks Yet</h3>
-                    </div>
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
+                              'anystatus  p-3 status col-12 '
+                }>
+                {
+                  task.taskStatus.statusname == 'pending' ?
+                    <MdPendingActions />
+                    :
+                    task.taskStatus.statusname == 'admin review' ?
+                      <MdRateReview />
+                      :
+                      task.taskStatus.statusname == 'in negotiation' ?
+                        <BiSolidOffer />
+                        :
+                        task.taskStatus.statusname == 'in progress' ?
+                          <GiProgression />
+                          :
+                          task.taskStatus.statusname == 'completed' ?
+                            <AiOutlineFileDone />
+                            :
+                            task.taskStatus.statusname == 'delivered to client' ?
+                              <TbTruckDelivery />
+                              :
+                              ''
                 }
+                {task.taskStatus.statusname}
+              </span>
+
             </div>
+
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
+          </div>
+        )) :
+          <div className="row col-12  p-2 text-center">
+            <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div>
+        }
+      </div>
 
     </div>
   )
