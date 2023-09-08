@@ -202,7 +202,7 @@ const confirmTask = async (req,res,next) => {
             
             const clientAccount = await accountModel.findOne({owner: thisTask.client});
             const offer = thisTask.cost + (thisTask.cost*thisTask.profit_percentage/100);
-            const transactionC = await new transactionModel({transactiontype: "paid", task: taskID, amount: offer, account_id: clientAccount._id}).save();
+            const transactionC = await new transactionModel({transactiontype: "gain", task: taskID, amount: offer, account_id: clientAccount._id}).save();
             const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
             await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
 
