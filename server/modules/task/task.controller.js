@@ -199,6 +199,8 @@ const partialUpdateTask = async (req,res,next) => {
             const date = new Date();
             await new noteModel({content: `${req.user.fullname} has set task to be cancelled in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to cancelled successfully"});
+        } else {
+            return next(new HttpError("You are not authorized to make this edit", 401));
         }
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
