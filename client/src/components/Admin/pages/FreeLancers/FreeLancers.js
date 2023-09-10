@@ -128,6 +128,9 @@ const FreeLancers = () => {
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((freeLancer) => (
           <div key={freeLancer._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
             <div className="col-12 fw-bold row text-start">
+              <div className='col-12 p-2 '>
+               <SiFreelancer className="fs-1 text-danger" />
+              </div>
 
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
                 <a className="text-dark fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a>
