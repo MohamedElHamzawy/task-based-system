@@ -232,17 +232,14 @@ const UserDetails = () => {
         {/* /////////////////////// */}
         <div className={visable ? "d-flex col-12 col-md-6  row p-2 " : 'd-none'}>
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3">Speciality :</h5>
-          {specialities.map((speciality) => (
-            speciality._id == specialityId ?
-              <p key={speciality._id} className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}>{speciality.specialityName}</p>
-              : ''
-          ))}
+          <p  className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}>{user.speciality && user.speciality.sub_speciality}</p>
+
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
               {specialities.map((speciality) => (
-                <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+                <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
               ))}
             </select>
           </div>
