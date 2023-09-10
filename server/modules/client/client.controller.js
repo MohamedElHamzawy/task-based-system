@@ -15,7 +15,7 @@ const getAllClients = async (req,res,next) => {
 const getClient = async (req,res,next) => {
     try {
         const clientID = req.params.id;
-        const thisClient = await clientModel.findById({_id: clientID});
+        const thisClient = await clientModel.findById({_id: clientID}).populate("currency");
         const clientTasks = await taskModel.find({client: clientID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         const clientAccount = await accountModel.find({owner: clientID}).populate("owner");
         res.json({client: thisClient, clientTasks: clientTasks, clientAccount: clientAccount});
