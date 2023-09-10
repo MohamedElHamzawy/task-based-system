@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from 'react'
+import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
@@ -9,7 +10,42 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 import { ImCancelCircle } from 'react-icons/im';
 
-
+//specialityName validation
+const specialityNameReducer = (state, action) => {
+    switch (action.type) {
+        case "CHANGE":
+            return {
+                ...state,
+                value: action.specialityName,
+                isvalid: validate(action.specialityName, action.validators),
+            };
+        case "TOUCH":
+            return {
+                ...state,
+                isTouched: true,
+            };
+        default:
+            return state;
+    }
+};
+//specialitType validation
+const specialitTypeReducer = (state, action) => {
+    switch (action.type) {
+        case "CHANGE":
+            return {
+                ...state,
+                value: action.specialitType,
+                isvalid: validate(action.specialitType, action.validators),
+            };
+        case "TOUCH":
+            return {
+                ...state,
+                isTouched: true,
+            };
+        default:
+            return state;
+    }
+};
 
 const SpecialityDetails = () => {
 
@@ -22,8 +58,6 @@ const SpecialityDetails = () => {
     let { id } = useParams();
 
     const [speciality, setSpeciality] = useState([]);
-    const [specialityName, setSpecialityName] = useState();
-    const [specialityType, setSpecialityType] = useState();
 
     useEffect(() => {
         let timerId;
@@ -31,8 +65,7 @@ const SpecialityDetails = () => {
             setIsLoading(true);
             timerId = setTimeout(async () => {
                 await axios.get(`http://localhost:5000/api/speciality/${id}`).then((res) => {
-                      setSpeciality(res.data.speciality);
-                      
+                    setSpeciality(res.data.speciality);
                     console.log(res.data.speciality)
                 });
                 setLoading(false);
@@ -42,6 +75,45 @@ const SpecialityDetails = () => {
         return () => clearTimeout(timerId);
     }, [loading]);
 
+    //specialityName validation
+    const [specialityNameState, dispatch] = useReducer(specialityNameReducer, {
+        value: speciality.sub_speciality || '',
+        isvalid: false,
+        isTouched: false,
+    });
+
+    const specialityNameChangeHandler = (event) => {
+        dispatch({
+            type: "CHANGE",
+            specialityName: event.target.value,
+            validators: [VALIDATOR_MINLENGTH(3)],
+        });
+    };
+    const specialityNameTouchHandler = () => {
+        dispatch({
+            type: "TOUCH",
+        });
+    };
+
+    //specialitType validation
+    const [specialitTypeState, dispatch2] = useReducer(specialitTypeReducer, {
+        value: speciality.speciality || '',
+        isvalid: false,
+        isTouched: false,
+    });
+
+    const specialitTypeChangeHandler = (event) => {
+        dispatch2({
+            type: "CHANGE",
+            specialitType: event.target.value,
+            validators: [VALIDATOR_MINLENGTH(3)],
+        });
+    };
+    const specialitTypeTouchHandler = () => {
+        dispatch2({
+            type: "TOUCH",
+        });
+    };
     //////////////////////////////////////
     const editSpecialityHandler = async (event) => {
         event.preventDefault();
@@ -52,8 +124,8 @@ const SpecialityDetails = () => {
             const response = await axios.post(
                 `http://localhost:5000/api/speciality/${speciality._id}`,
                 {
-                    sub_speciality: specialityName,
-                    tyspecialitype: specialityType,
+                    sub_speciality: specialityNameState.value,
+                    speciality: specialitTypeState.value,
                 }
             );
             const responseData = await response;
@@ -126,57 +198,75 @@ const SpecialityDetails = () => {
                     <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3"> Sub-Speciality:</h3>
                     <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold " : 'd-none'}> {speciality.sub_speciality} </p>
                     <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
-                        <input type="text" onChange={(e) => { setSpecialityName(e.target.value) }} className="search w-100 p-2" />
+                        <input type='text' placeholder={speciality.sub_speciality}
+                            value={specialityNameState.value}
+                            onChange={specialityNameChangeHandler}
+                            onBlur={specialityNameTouchHandler}
+                            isvalid={specialityNameState.isvalid.toString()}
+                            className={`search w-100 p-2 ${!specialityNameState.isvalid &&
+                                specialityNameState.isTouched &&
+                                "form-control-invalid"
+                                }`}
+                        />
                     </div>
-                </div> 
+                </div>
                 {/* /////////////////////// */}
 
-               <div className="col-12 col-xl-6 row ">
+                <div className="col-12 col-xl-6 row ">
                     <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3"> Speciality :</h3>
                     <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold" : 'd-none'}> {speciality.speciality} </p>
                     <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
-                        <input type="text" onChange={(e) => { setSpecialityType(e.target.value) }} className="search w-100 p-2" />
+                        <input type='text' placeholder={speciality.speciality}
+                            value={specialitTypeState.value}
+                            onChange={specialitTypeChangeHandler}
+                            onBlur={specialitTypeTouchHandler}
+                            isvalid={specialitTypeState.isvalid.toString()}
+                            className={`search w-100 p-2 ${!specialitTypeState.isvalid &&
+                                specialitTypeState.isTouched &&
+                                "form-control-invalid"
+                                }`}
+                        />
                     </div>
-                </div> 
+                </div>
 
 
                 {/* /////////////////////// */}
 
 
-<div className="col-12  p-3">
-          {!edit ?
-            <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" 
-              // onClick={editUserHandler}
-              onClick={() => { setEdit(!edit) }}
-              >
-              Edit
-            </button> :''
-          }
-          {edit ?
-            <>
-            <button
-              disabled={
-                !specialityName &&
-                !specialityType
-              }
-              className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
-              onClick={editSpecialityHandler}
-              >
-              Submit
-            </button> 
-            <button
-              className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold" 
-              onClick={() => { setEdit(!edit) }}
-              >
-              <ImCancelCircle className="fs-3"/>
-            </button>
-            </>          
-            :''
-          }
-        </div>
+                <div className="col-12  p-3">
+                    {!edit ?
+                        <button
+                            className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                            // onClick={editUserHandler}
+                            onClick={() => { setEdit(!edit) }}
+                        >
+                            Edit
+                        </button> : ''
+                    }
+                    {edit ?
+                        <>
+                            <button
+                                disabled={
+                                    !specialitTypeState.isvalid &&
+                                    !specialityNameState.isvalid
+                                }
+                                className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
+                                onClick={editSpecialityHandler}
+                            >
+                                Submit
+                            </button>
+                            <button
+                                className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold"
+                                onClick={() => { setEdit(!edit) }}
+                            >
+                                <ImCancelCircle className="fs-3" />
+                            </button>
+                        </>
+                        : ''
+                    }
+                </div>
 
-            </div> 
+            </div>
 
         </div>
     )
