@@ -207,7 +207,7 @@ const FreeLancerDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
           {freeLancer.speciality && freeLancer.speciality.map((speciality) => (
             <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} key={speciality._id} >
-              {speciality.specialityName}
+              {speciality.sub_speciality}
             </p>
           ))}
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
@@ -215,7 +215,7 @@ const FreeLancerDetails = () => {
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
               { specialities.map((speciality) => (
-                <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+                <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
               ))}
             </select>
           </div>
@@ -357,7 +357,7 @@ const FreeLancerDetails = () => {
             <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
