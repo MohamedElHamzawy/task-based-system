@@ -34,7 +34,7 @@ const createClient = async (req,res,next) => {
             country,
             currency
         } = req.body;
-        const tryGetClient = await clientModel.findOne({email});
+        const tryGetClient = await clientModel.findOne({ownerName: owner});
         if (tryGetClient) {
             return next(new HttpError("Client is already existed!", 400));
         } else {
