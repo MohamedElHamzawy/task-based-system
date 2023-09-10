@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from 'react'
+
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
+import { validate, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 
 import { useParams } from "react-router-dom";
 import { BiSolidEditAlt } from 'react-icons/bi';
@@ -21,6 +23,81 @@ import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
 import { GiProfit} from 'react-icons/gi';
 
+
+//fullName validation
+const fullNameReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.fullName,
+        isvalid: validate(action.fullName, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+
+//number validation
+const numberReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.number,
+        isvalid: validate(action.number, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//email validation
+const emailReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.email,
+        isvalid: validate(action.email, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//country validation
+const countryReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.country,
+        isvalid: validate(action.country, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+
 const FreeLancerDetails = () => {
 
   const [editFull, setEditFull] = useState(false);
@@ -33,18 +110,14 @@ const FreeLancerDetails = () => {
   let { id } = useParams();
 
   const [freeLancer, setFreeLancer] = useState([]);
-  const [fullName, setFullName] = useState();
-  const [phone, setPhone] = useState();
-  const [userSpeciality, setUserSpeciality] = useState();
-  const [email, setEmail] = useState();
-  const [country, setCountry] = useState();
+
+
 
   const [specialities, setSpecialities] = useState([]);
 
   const [freeLancerAccount, setFreeLancerAccount] = useState();
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
-  const [currency, setCurreny] = useState('');
 
 
   useEffect(() => {
@@ -80,6 +153,87 @@ const FreeLancerDetails = () => {
     setUserSpeciality(newOne);
   };
 
+  //fullName validation
+  const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
+    value: freeLancer.freelancername,
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const fullNameChangeHandler = (event) => {
+    dispatch2({
+      type: "CHANGE",
+      fullName: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const fullNameTouchHandler = () => {
+    dispatch2({
+      type: "TOUCH",
+    });
+  };
+
+  //Number validation
+  const [numberState, dispatch5] = useReducer(numberReducer, {
+    value: freeLancer.phone,
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const numberChangeHandler = (event) => {
+    dispatch5({
+      type: "CHANGE",
+      number: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(11)],
+    });
+  };
+  const numbertouchHandler = () => {
+    dispatch5({
+      type: "TOUCH",
+    });
+  };
+
+  //email validation
+  const [emailState, dispatch7] = useReducer(emailReducer, {
+    value: freeLancer.email,
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const emailChangeHandler = (event) => {
+    dispatch7({
+      type: "CHANGE",
+      email: event.target.value,
+      validators: [VALIDATOR_EMAIL()],
+    });
+  };
+  const emailTouchHandler = () => {
+    dispatch7({
+      type: "TOUCH",
+    });
+  };
+
+  //country validation
+  const [countryState, dispatch4] = useReducer(countryReducer, {
+    value: freeLancer.country,
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const countryChangeHandler = (event) => {
+    dispatch4({
+      type: "CHANGE",
+      country: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const countryTouchHandler = () => {
+    dispatch4({
+      type: "TOUCH",
+    });
+  };
+  const [currency, setCurreny] = useState(freeLancer.currency && freeLancer.currency.currencyname);
+  const [userSpeciality, setUserSpeciality] = useState(freeLancer.speciality && freeLancer.speciality.sub_speciality);
 
   //////////////////////////////////////
   const editFreeLancerHandler = async (event) => {
@@ -91,11 +245,11 @@ const FreeLancerDetails = () => {
       const response = await axios.post(
         `http://localhost:5000/api/freelancer/${freeLancer._id}`,
         {
-          name: fullName,
+          name: fullNameState.value,
           speciality: userSpeciality,
-          email: email,
-          country: country,
-          phone: phone,
+          email: emailState.value,
+          country: countryState.value,
+          phone: numberState.value,
           currency:currency
         }
       );
@@ -132,7 +286,7 @@ const FreeLancerDetails = () => {
       window.location.href = '/freelancers';
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      setError(err.message&& "SomeThing Went Wrong , Please Try Again .");
     };
   }
   //error message
@@ -169,16 +323,17 @@ const FreeLancerDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">Full Name :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
+            <input type='text' placeholder={freeLancer.freelancername}
+            value={fullNameState.value}
+            onChange={fullNameChangeHandler}
+            onBlur={fullNameTouchHandler}
+            isvalid={fullNameState.isvalid.toString()}
+            className={`search w-100 p-2 ${!fullNameState.isvalid &&
+              fullNameState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
-
-          {/* <div className="col-1 ">
-            <button onClick={() => { setEditFull(!editFull) }} className="edit-btn fs-2">
-              <BiSolidEditAlt />
-            </button>
-          </div> */}
-
-
         </div>
 
         {/* /////////////////////// */}
@@ -187,7 +342,16 @@ const FreeLancerDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">  Email :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
-            <input type="email" onChange={(e) => { setEmail(e.target.value) }} className="search w-100 p-2" />
+            <input type='email' placeholder={freeLancer.email}
+            value={emailState.value}
+            onChange={emailChangeHandler}
+            onBlur={emailTouchHandler}
+            isvalid={emailState.isvalid.toString()}
+            className={`search w-100 p-2 ${!emailState.isvalid &&
+              emailState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
         </div>
 
@@ -196,7 +360,16 @@ const FreeLancerDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
+            <input type='number' placeholder={freeLancer.phone}
+            value={numberState.value}
+            onChange={numberChangeHandler}
+            onBlur={numbertouchHandler}
+            isvalid={numberState.isvalid.toString()}
+            className={`search w-100 p-2 ${!numberState.isvalid &&
+              numberState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
 
         </div>
@@ -204,11 +377,10 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          {freeLancer.speciality && freeLancer.speciality.map((speciality) => (
-            <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} key={speciality._id} >
-              {speciality.sub_speciality}
+            <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} >
+              {freeLancer.speciality && freeLancer.speciality.sub_speciality}
             </p>
-          ))}
+
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
@@ -223,8 +395,17 @@ const FreeLancerDetails = () => {
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
+          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >     
+            <input type='text' placeholder={freeLancer.country} 
+            value={countryState.value}
+            onChange={countryChangeHandler}
+            onBlur={countryTouchHandler}
+            isvalid={countryState.isvalid.toString()}
+            className={`search w-100 p-2 ${!countryState.isvalid &&
+              countryState.isTouched &&
+              "form-control-invalid"
+            }`}
+          />
           </div>
         </div>
         {/* /////////////////////// */}
@@ -257,11 +438,11 @@ const FreeLancerDetails = () => {
             <>
             <button
               disabled={
-                !fullName &&
-                !email &&
-                !country &&
-                !phone &&
-                !currency&&
+                !fullNameState.isvalid &&
+                !numberState.isvalid &&
+                !emailState.isvalid &&
+                !countryState.isvalid &&
+                !currency &&
                 !userSpeciality 
               }
               className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from 'react'
+import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
@@ -19,14 +20,84 @@ import { TbTruckDelivery } from 'react-icons/tb';
 import { GiProfit} from 'react-icons/gi';
 import { GiPayMoney} from 'react-icons/gi';
 
+//userName validation
+const userNameReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.userName,
+        isvalid: validate(action.userName, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//fullName validation
+const fullNameReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.fullName,
+        isvalid: validate(action.fullName, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//number validation
+const numberReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.number,
+        isvalid: validate(action.number, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//country validation
+const countryReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.country,
+        isvalid: validate(action.country, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
 const UserDetails = () => {
 
   const [visable, setVisable] = useState(false);
 
   const [editFull, setEditFull] = useState(false);
   const [editSpeciality, setEditSpeciality] = useState(false);
-
-
 
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,16 +106,12 @@ const UserDetails = () => {
   let { id } = useParams();
 
   const [user, setUser] = useState([]);
-  const [fullName, setFullName] = useState();
-  const [userName, setUserName] = useState();
-  const [userRole, setUserRole] = useState();
-  const [country, setCountry] = useState();
-  const [phone, setPhone] = useState();
+
   const [userSpeciality, setUserSpeciality] = useState();
+  const [userRole, setUserRole] = useState();
 
   const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
-
 
   const [userTasks, setUserTasks] = useState([]);
 
@@ -77,11 +144,90 @@ const UserDetails = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
+//userName validation
+const [userNameState, dispatch] = useReducer(userNameReducer, {
+  value: user.username,
+  isvalid: false,
+  isTouched: false,
+});
 
-  //speciality value
-  const specialityChangeHandler = (newOne) => {
-    setUserSpeciality(newOne);
-  };
+const userNameChangeHandler = (event) => {
+  dispatch({
+    type: "CHANGE",
+    userName: event.target.value,
+    validators: [VALIDATOR_MINLENGTH(3)],
+  });
+};
+const userNameTouchHandler = () => {
+  dispatch({
+    type: "TOUCH",
+  });
+};
+
+//fullName validation
+const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
+  value: user.fullname,
+  isvalid: false,
+  isTouched: false,
+});
+
+const fullNameChangeHandler = (event) => {
+  dispatch2({
+    type: "CHANGE",
+    fullName: event.target.value,
+    validators: [VALIDATOR_MINLENGTH(3)],
+  });
+};
+const fullNameTouchHandler = () => {
+  dispatch2({
+    type: "TOUCH",
+  });
+};
+//country validation
+const [countryState, dispatch4] = useReducer(countryReducer, {
+  value: user.country,
+  isvalid: false,
+  isTouched: false,
+});
+
+const countryChangeHandler = (event) => {
+  dispatch4({
+    type: "CHANGE",
+    country: event.target.value,
+    validators: [VALIDATOR_MINLENGTH(3)],
+  });
+};
+const countryTouchHandler = () => {
+  dispatch4({
+    type: "TOUCH",
+  });
+};
+
+//Number validation
+const [numberState, dispatch5] = useReducer(numberReducer, {
+  value: user.phone,
+  isvalid: false,
+  isTouched: false,
+});
+
+const numberChangeHandler = (event) => {
+  dispatch5({
+    type: "CHANGE",
+    number: event.target.value,
+    validators: [VALIDATOR_MINLENGTH(11)],
+  });
+};
+const numbertouchHandler = () => {
+  dispatch5({
+    type: "TOUCH",
+  });
+};
+
+
+//speciality value
+const specialityChangeHandler = (newOne) => {
+  setUserSpeciality(newOne);
+};
 
 
   //////////////////////////////////////
@@ -94,12 +240,12 @@ const UserDetails = () => {
       const response = await axios.post(
         `http://localhost:5000/api/user/${user._id}`,
         {
-          fullName: fullName,
-          userName: userName,
+          fullName: fullNameState.valu,
+          userName: userNameState.value,
           userRole: userRole,
           speciality: userSpeciality,
-          country: country,
-          phone: phone,
+          country: countryState.value,
+          phone: numberState.value,
         }
       );
       const responseData = await response;
@@ -174,7 +320,16 @@ const UserDetails = () => {
           <h5 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Full Name :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.fullname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2" : 'd-none'} >
-            <input type="text" onChange={(e) => { setFullName(e.target.value) }} className="search w-100 p-2" />
+            <input type='text' placeholder={user.fullname}
+            value={fullNameState.value}
+            onChange={fullNameChangeHandler}
+            onBlur={fullNameTouchHandler}
+            isvalid={fullNameState.isvalid.toString()}
+            className={`search w-100 p-2 ${!fullNameState.isvalid &&
+              fullNameState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
 
           {/* {user.user_role == 'admin' ?
@@ -193,7 +348,16 @@ const UserDetails = () => {
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Name:</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.username} </p>
           <div className={editFull ? "d-inline col-10 col-md-5  pt-2" : 'd-none'} >
-            <input type="text" onChange={(e) => { setUserName(e.target.value) }} className="search w-100 p-2" />
+          <input type='text' placeholder={user.username}
+            value={userNameState.value}
+            onChange={userNameChangeHandler}
+            onBlur={userNameTouchHandler}
+            isvalid={userNameState.isvalid.toString()}
+            className={`search w-100 p-2 ${!userNameState.isvalid &&
+              userNameState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
 
         </div>
@@ -202,7 +366,16 @@ const UserDetails = () => {
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Phone :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
+            <input type='number' placeholder={user.phone}
+            value={numberState.value}
+            onChange={numberChangeHandler}
+            onBlur={numbertouchHandler}
+            isvalid={numberState.isvalid.toString()}
+            className={`search w-100 p-2 ${!numberState.isvalid &&
+              numberState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
 
         </div>
@@ -211,7 +384,16 @@ const UserDetails = () => {
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Country :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
+            <input type='text' placeholder={user.country}
+            value={countryState.value}
+            onChange={countryChangeHandler}
+            onBlur={countryTouchHandler}
+            isvalid={countryState.isvalid.toString()}
+            className={`search w-100 p-2 ${!countryState.isvalid &&
+              countryState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
 
         </div>
@@ -265,11 +447,11 @@ const UserDetails = () => {
             <>
               <button
                 disabled={
-                  !fullName &&
-                  !userName &&
+                  !fullNameState.isvalid &&
+                  !userNameState.isvalid &&
                   !userRole &&
-                  !country &&
-                  !phone &&
+                  !countryState.isvalid &&
+                  !numberState.isvalid &&
                   !userSpeciality
                 }
                 className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
