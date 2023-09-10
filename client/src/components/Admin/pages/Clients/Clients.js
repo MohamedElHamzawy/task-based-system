@@ -93,19 +93,31 @@ const Clients = () => {
 
       </div>
 
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-4 speciality-table-head text-center">Name</p>
-          <p className="col-5 speciality-table-head">Email</p>
-          <p className="col-2 ">Delete</p>
-
-        </div>
-
+      <div className=" w-100 row p-0 m-0 mt-2 justify-content-center">
         {!searchFilter.length == 0 ? searchFilter.map((client) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={client._id}>
-            <p className="col-4 name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/client/${client._id}`}>{client.clientname} </a></p>
-            <p className="col-5 name-role">{client.email}</p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteClientHandler(client._id)}> <RiDeleteBinFill/> </button></p>     
+          <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+            <div className="col-12 fw-bold row text-start">
+
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+                <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
+                {client.country}
+              </p>
+              { client.speciality && client.speciality.map((speciality) => (
+                  <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
+                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
+                  </p>
+                ))
+              }
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
+              <p className="col-12 col-sm-7 edit-form-p fw-bold"> <span className="edit-form-lable">Email : </span>
+                {client.email}
+              </p>
+            </div>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
@@ -114,10 +126,8 @@ const Clients = () => {
             </h2>
           </div>
         }
-
-
+        </div>
       </div>
-    </div>
   )
 }
 

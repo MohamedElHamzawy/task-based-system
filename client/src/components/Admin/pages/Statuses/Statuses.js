@@ -5,6 +5,7 @@ import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
 import { TbStatusChange } from 'react-icons/tb';
 import { RiDeleteBinFill } from 'react-icons/ri';
+import GetCookie from '../../../../hooks/getCookie';
 
 //search filter 
 const getSearchFilter = (searchName, statuses) => {
@@ -19,6 +20,7 @@ const Statuses = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const token = GetCookie("AdminToken")
 
 
   useEffect(() => {
@@ -26,8 +28,9 @@ const Statuses = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/status/").then((res) => {
+        await axios.get("http://localhost:5000/api/status/" ,  { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -93,19 +96,20 @@ const Statuses = () => {
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2 text-center">
         <div className="row fw-bold table-head p-0 m-0 py-3">
           <p className="col-5 ">Name</p>
-          <p className="col-4  ">Edit</p>
+          <p className="col-4  ">Role</p>
           <p className="col-3 ">Delete</p>
 
         </div>
 
         {!searchFilter.length == 0 ? searchFilter.map((status) => (
           <div className="table-body row pt-3 p-0 m-0 " key={status._id}>
-            <p className="col-5  ">{status.statusname}</p>
-            {!status.changable ?
+            <p className="col-5  "><a className="text-dark text-decoration-none fw-bold" href={`/status/${status._id}`}>{status.statusname}</a></p>
+            {/* {!status.changable ?
               <p className="col-4  fs-5 "> <BsFillFolderSymlinkFill className='fs-4 disabled-view-details' /> </p>
               :
               <p className="col-4  fs-5 "> <a className="view-details fs-4" href={`/status/${status._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            }
+            } */}
+            <p className="col-4  fs-5 "> {status.role} </p>
             <p className="col-3">
               {!status.changable ?
                 <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>

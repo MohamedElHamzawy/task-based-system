@@ -1,7 +1,15 @@
 .transactions{
     background-color: rgba(1, 251, 147, 0.375);
 }
-
+.add_trans{
+    background-color: rgb(44, 167, 101);
+    border: 0px;
+    border-radius: 50px;
+    color: white;
+}
+.add_trans:hover{
+    background-color: rgb(36, 141, 85);
+}
 @media only screen and (max-width: 1164px) {
     .transaction-date{
         font-size: 17px;

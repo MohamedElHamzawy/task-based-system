@@ -23,6 +23,7 @@ const StatusDetails = () => {
 
     const [status, setStatus] = useState([]);
     const [statusName, setStatusName] = useState();
+    const [role, setRole] = useState();
 
     useEffect(() => {
         let timerId;
@@ -51,6 +52,7 @@ const StatusDetails = () => {
                 `http://localhost:5000/api/status/${status._id}`,
                 {
                     name: statusName,
+                    role:role
                 }
             );
             const responseData = await response;
@@ -119,11 +121,25 @@ const StatusDetails = () => {
                     </div>
                 </div>
                 {/* /////////////////////// */}
-                <div className="col-12 col-xl-10 row p-3">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start py-3"> Status Name :</h3>
-                    <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold " : 'd-none'}> {status.statusname} </p>
-                    <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
+                <div className="col-12 col-md-6 row p-3">
+                    <h3 className="col-12 col-sm-7  edit-form-lable text-start py-3">Status Name:</h3>
+                    <p className={!edit ? "d-inline col-10 col-sm-5 pt-4 edit-form-p fw-bold " : 'd-none'}> {status.statusname} </p>
+                    <div className={edit ? "d-inline col-10 col-sm-5 pt-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setStatusName(e.target.value) }} className="search w-100 p-2" />
+                    </div>
+                </div> 
+                <div className="col-12 col-md-6 row p-3">
+                    <h3 className="col-6  edit-form-lable text-start py-3"> Role :</h3>
+                    <p className={!edit ? "d-inline col-6 pt-4 edit-form-p fw-bold " : 'd-none'}> {status.role} </p>
+                    <div className={edit ? "d-inline col-6 pt-3 " : 'd-none'} >
+                    <select id="role" name="role" className="p-2 search col-12" value={role}
+                        onChange={(event) => setRole(event.target.value)}>
+                        <option value="" className='text-secondary'>Roles</option>
+                        <option value="admin" className=''>Admin</option>
+                        <option value="specialistService" className=''>SpecialistService</option>
+                        <option value="customerService" className=''>CustomerService</option>
+                        <option value="all" className=''>All</option>        
+                    </select>
                     </div>
                 </div> 
 
@@ -143,7 +159,8 @@ const StatusDetails = () => {
             <>
             <button
               disabled={
-                !statusName 
+                !statusName &&
+                !role
               }
               className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
               onClick={editStatusHandler}

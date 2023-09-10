@@ -254,6 +254,7 @@ const AddTask = () => {
 
 
   const [deadline, setDeadline] = useState()
+  const [status, setStatus] = useState()
 
   /////////////////////////////////
   const token = GetCookie("AdminToken")
@@ -275,7 +276,8 @@ const AddTask = () => {
           speciality : speciality ,
           deadline : deadline ,
           task_currency : currency ,
-          paid : taskPriceState.value
+          paid : taskPriceState.value,
+          status :status
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -348,7 +350,10 @@ const AddTask = () => {
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>DeadLine :</label>
-          <input type='date' placeholder='DeadLine'
+          <input   type="datetime-local"
+            id="meeting-time"
+            name="meeting-time"
+             placeholder='DeadLine'
             onChange={(e) => (setDeadline(e.target.value))}
             className='col-10 col-lg-7 search p-2 '
           />
@@ -421,6 +426,16 @@ const AddTask = () => {
 
         </div>
 
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p'>Status :</label>
+          <select id="status" name="status" className="p-2 px-4 search col-10 col-lg-7" value={status}
+            onChange={(event) => setStatus(event.target.value)}>
+            <option value="" className='text-secondary'>Status</option>
+            <option value="waitingoffer" className=''>Waiting Offer</option>
+            <option value="approved" className=''>Approved</option>     
+          </select>
+        </div>
+
         <div className='col-12 m-1 py-2 p-0'>
           <label className='col-10 col-lg-2 fw-bold add-user-p py-2 '>Description :</label>
           <textarea type='text' placeholder='Description'  rows="4"
@@ -440,12 +455,13 @@ const AddTask = () => {
             disabled={
               !channelState.isvalid ||
               !titleState.isvalid ||
-              // !percentageState.isvalid ||
               !descriptionState.isvalid ||
+              !taskPriceState.isvalid||
               !speciality ||
               !client||
               !currency||
-              !deadline 
+              !deadline ||
+              !status
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Add

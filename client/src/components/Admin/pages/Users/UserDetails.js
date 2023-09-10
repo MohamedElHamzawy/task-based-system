@@ -16,7 +16,8 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-
+import { GiProfit} from 'react-icons/gi';
+import { GiPayMoney} from 'react-icons/gi';
 
 const UserDetails = () => {
 
@@ -44,9 +45,6 @@ const UserDetails = () => {
   const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
 
-  const [tasksCount, setTasksCount] = useState();
-  const [totalCost, setTotalCost] = useState();
-  const [totalGain, setTotalGain] = useState();
 
   const [userTasks, setUserTasks] = useState([]);
 
@@ -57,9 +55,9 @@ const UserDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/user/${id}`).then((res) => {
           setUser(res.data.user);
-          setTasksCount(res.data.tasksCount)
-          setTotalCost(res.data.totalCost)
-          setTotalGain(res.data.totalGain)
+          // setTasksCount(res.data.tasksCount)
+          // setTotalCost(res.data.totalCost)
+          // setTotalGain(res.data.totalGain)
           setUserTasks(res.data.userTasks)
           if (res.data.user.user_role == 'specialistService') {
             setspecialityId(res.data.user.speciality);
@@ -297,22 +295,32 @@ const UserDetails = () => {
       <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
-          <div className="bg-info col-4 icon p-3"><FaTasks className="fs-3" /></div>
-          <h4 className="text-center col-4 fw-bold">{tasksCount ? tasksCount : '0'}</h4>
+          <div className="bg-warning col-4 icon p-3"><FaTasks className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{user.tasksCount}</h4>
+        </div>
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Completed Count </h6>
+          <div className="bg-info col-4 icon p-3"><AiOutlineFileDone className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{user.completedCount}</h4>
         </div>
         {user.user_role == 'userB' ?
           <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
             <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
-            <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
-            <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
+            <div className="bg-success col-4 icon p-3"><GiPayMoney className="fs-3 " /></div>
+            <h4 className="text-center col-4 fw-bold">{user.totalCost }</h4>
           </div>
           :
           <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
             <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
             <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
-            <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
+            <h4 className="text-center col-4 fw-bold">{ user.totalGain }</h4>
           </div>
         }
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
+          <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{ user.totalProfit }</h4>
+        </div>
 
       </div>
 

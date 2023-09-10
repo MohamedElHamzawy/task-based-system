@@ -6,6 +6,7 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { useParams } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
 
+import { AiOutlineTransaction } from 'react-icons/ai';
 
 const AccountDetails = () => {
 
@@ -92,6 +93,13 @@ const AccountDetails = () => {
 
       </div>
       <h1 className="system-head p-2">Transactions :</h1>
+      <div className="col-10 text-end py-1">
+        <button className="add_trans p-2 fw-bold" onClick={() => { window.location.href = '/transactions' }}>
+        <AiOutlineTransaction className='fs-4' />
+          Add New Transaction
+        </button>
+      </div>
+
       {transactions && !transactions.length == 0 ? transactions.map((transaction) => (
         <div className="row col-12 col-lg-10 transactions adduser-form p-3 m-1 justify-content-center my-1" key={transaction._id}>
 

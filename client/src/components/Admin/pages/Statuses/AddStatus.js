@@ -53,6 +53,7 @@ const AddStatus = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [role ,setRole] = useState('')
 
   const newStatusSubmitHandler = async (event) => {
     event.preventDefault();
@@ -64,6 +65,7 @@ const AddStatus = () => {
         "http://localhost:5000/api/status/",
         {
           name: statusNameState.value,
+          role : role
         }
       );
 
@@ -112,11 +114,23 @@ const AddStatus = () => {
             }`}
         />
         </div>
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p'>Role :</label>
+          <select id="role" name="role" className="p-2 px-4 search col-10 col-lg-7" value={role}
+            onChange={(event) => setRole(event.target.value)}>
+            <option value="" className='text-secondary'>Roles</option>
+            <option value="admin" className=''>Admin</option>
+            <option value="specialistService" className=''>SpecialistService</option>
+            <option value="customerService" className=''>CustomerService</option>
+            <option value="all" className=''>All</option>        
+          </select>
+        </div>
 
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
-              !statusNameState.isvalid
+              !statusNameState.isvalid ||
+              !role
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Add

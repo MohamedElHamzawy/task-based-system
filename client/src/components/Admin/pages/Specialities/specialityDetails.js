@@ -52,8 +52,8 @@ const SpecialityDetails = () => {
             const response = await axios.post(
                 `http://localhost:5000/api/speciality/${speciality._id}`,
                 {
-                    name: specialityName,
-                    type: specialityType,
+                    sub_speciality: specialityName,
+                    tyspecialitype: specialityType,
                 }
             );
             const responseData = await response;
@@ -123,18 +123,18 @@ const SpecialityDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Speciality Name :</h3>
-                    <p className={!edit ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {speciality.specialityName} </p>
-                    <div className={edit ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3"> Sub-Speciality:</h3>
+                    <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold " : 'd-none'}> {speciality.sub_speciality} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setSpecialityName(e.target.value) }} className="search w-100 p-2" />
                     </div>
                 </div> 
                 {/* /////////////////////// */}
 
-               <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start"> Speciality Type :</h3>
-                    <p className={!edit ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {speciality.specialityType} </p>
-                    <div className={edit ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+               <div className="col-12 col-xl-6 row ">
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3"> Speciality :</h3>
+                    <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold" : 'd-none'}> {speciality.speciality} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
                         <input type="text" onChange={(e) => { setSpecialityType(e.target.value) }} className="search w-100 p-2" />
                     </div>
                 </div> 

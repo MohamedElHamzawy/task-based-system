@@ -28,6 +28,7 @@ import TaskDetails from './pages/Tasks/TaskDetails';
 import AddTask from './pages/Tasks/AddTask';
 import AccountDetails from './pages/Accounts/AccountDetails';
 import ChangePass from './pages/Settings/ChangePass';
+import Transactions from './pages/Transactions/Transactions';
 
 const Admin = () => {
   return (
@@ -61,6 +62,7 @@ const Admin = () => {
           <Route path="/account/:id" element={<AccountDetails />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />
+          <Route path="/transactions" element={<Transactions />} />
 
         </Routes>
       </div>

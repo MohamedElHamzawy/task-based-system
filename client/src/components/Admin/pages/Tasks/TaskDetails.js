@@ -83,7 +83,9 @@ const TaskDetails = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(`http://localhost:5000/api/task/${id}`, { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+        await axios.get(`http://localhost:5000/api/task/${id}`,
+         { headers: { Authorization: `Bearer ${token}` } }
+         ).then((res) => {
           setTask(res.data.task);
           setOffer(res.data.offer)
           setClient(res.data.task.client)

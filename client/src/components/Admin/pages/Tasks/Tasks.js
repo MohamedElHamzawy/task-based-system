@@ -11,9 +11,11 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-
+import { GiProfit} from 'react-icons/gi';
 import { FaCoins } from 'react-icons/fa';
-import { GiReceiveMoney } from 'react-icons/gi';
+import { GiPayMoney } from 'react-icons/gi';
+import { RiWaterPercentFill } from 'react-icons/ri';
+
 
 
 import GetCookie from "../../../../hooks/getCookie";
@@ -53,17 +55,18 @@ const Tasks = () => {
   const [tasksCount, setTasksCount] = useState();
   const [totalGain, setTotalGain] = useState();
   const [totalCost, setTotalCost] = useState();
-
+  const [totalProfit, setTotalProfit] = useState();
+  const [totalProfitPercentage, setTotalProfitPercentage] = useState();
 
   useEffect(() => {
     let timerId;
     if (loading) {
       setIsLoading(true);
-      timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/status/").then((res) => {
-          setStatuses(res.data.statuses);
-        });
-      });
+      // timerId = setTimeout(async () => {
+      //   await axios.get("http://localhost:5000/api/status/").then((res) => {
+      //     setStatuses(res.data.statuses);
+      //   });
+      // });
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
@@ -78,6 +81,8 @@ const Tasks = () => {
           setTasksCount(res.data.tasksCount)
           setTotalCost(res.data.totalCost)
           setTotalGain(res.data.totalGain)
+          setTotalProfit(res.data.totalProfit)
+          setTotalProfitPercentage(res.data.totalProfitPercentage)
 
           console.log(res.data)
         });
@@ -157,14 +162,26 @@ const Tasks = () => {
 
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
-          <div className="bg-warning col-4 icon p-3 text-center"><FaCoins className="fs-3 " /></div>
+          <div className="bg-warning col-4 icon p-3 text-center"><GiPayMoney className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
         </div>
 
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
-          <div className="bg-success col-4 icon p-3 text-center"><GiReceiveMoney className="fs-3 " /></div>
+          <div className="bg-success col-4 icon p-3 text-center"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
+        </div>
+
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
+          <div className="bg-danger col-4 icon p-3 text-center"><GiProfit className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalProfit ? totalProfit : '0'}</h4>
+        </div>
+
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Profit Percentage </h6>
+          <div className="bg-primary col-4 icon p-3 text-center"><RiWaterPercentFill className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalProfitPercentage ? totalProfitPercentage : '0'}</h4>
         </div>
       </div>
 
@@ -213,7 +230,7 @@ const Tasks = () => {
             <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            {/* <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p> */}
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>

@@ -19,6 +19,7 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
+import { GiProfit} from 'react-icons/gi';
 
 const FreeLancerDetails = () => {
 
@@ -204,13 +205,16 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {specialityId && specialityId.specialityName}</p>
-
+          {freeLancer.speciality && freeLancer.speciality.map((speciality) => (
+            <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} key={speciality._id} >
+              {speciality.specialityName}
+            </p>
+          ))}
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
-              {specialities.map((speciality) => (
+              { specialities.map((speciality) => (
                 <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
               ))}
             </select>
@@ -277,16 +281,24 @@ const FreeLancerDetails = () => {
       <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
                 <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
                     <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
-                    <div className="bg-info col-4 icon p-3"><FaTasks className="fs-3" /></div>
-                    <h4 className="text-center col-4 fw-bold">{tasksCount ? tasksCount : '0'}</h4>
+                    <div className="bg-warning col-4 icon p-3"><FaTasks className="fs-3" /></div>
+                    <h4 className="text-center col-4 fw-bold">{freeLancer.tasksCount}</h4>
                 </div>
-
+                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+                  <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Completed Count </h6>
+                  <div className="bg-info col-4 icon p-3"><AiOutlineFileDone className="fs-3" /></div>
+                  <h4 className="text-center col-4 fw-bold">{freeLancer.completedCount}</h4>
+                </div>
                 <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
                     <h6 className="text-secondary fw-bold col-8 pt-3 text-start">FreeLancer Gain </h6>
                     <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
-                    <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
+                    <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
                 </div>
-
+                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+                  <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
+                  <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
+                  <h4 className="text-center col-4 fw-bold">{ freeLancer.totalProfit }</h4>
+                </div>
                 <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
                     <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Account Details: </h6>
                     <div className="bg-danger col-4 icon p-3"><FaCcVisa className="fs-3 " /></div>
@@ -295,7 +307,6 @@ const FreeLancerDetails = () => {
                             <a  href={`/account/${acc._id}`} className="text-dark fw-bold">Click Here </a>
                         </div>
                     ))}
-
                 </div>
             </div>
 

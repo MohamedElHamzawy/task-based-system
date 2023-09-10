@@ -12,7 +12,7 @@ const getSearchFilter = (searchName, specialities) => {
   if (!searchName) {
     return specialities;
   } return specialities.filter(
-    (specialities) => specialities.specialityName.toLowerCase().includes(searchName.toLowerCase()) || specialities.specialityType.toLowerCase().includes(searchName.toLowerCase()));
+    (specialities) => specialities.speciality.toLowerCase().includes(searchName.toLowerCase()) || specialities.sub_speciality.toLowerCase().includes(searchName.toLowerCase()));
 };
 
 
@@ -30,6 +30,7 @@ const Specialities = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -95,16 +96,20 @@ const Specialities = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 speciality-table-head text-center">specialityName</p>
-          <p className="col-4 speciality-table-head">specialityType</p>
+          <p className="col-5 speciality-table-head text-center">Sub-Speciality</p>
+          <p className="col-4 speciality-table-head">Speciality</p>
           <p className="col-3 ">Delete</p>
 
         </div>
 
         {!searchFilter.length == 0 ? searchFilter.map((speciality) => (
           <div className="table-body row pt-3 p-0 m-0 " key={speciality._id}>
-            <p className="col-5  name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/speciality/${speciality._id}`}>{speciality.specialityName}</a></p>
-            <p className="col-4  name-role">{speciality.specialityType}</p>
+            <p className="col-5  name-role text-center">
+              <a className="text-dark text-decoration-none fw-bold" href={`/speciality/${speciality._id}`}>
+                {speciality.sub_speciality}
+              </a>
+            </p>
+            <p className="col-4  name-role">{speciality.speciality}</p>
             <p className="col-3"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(speciality._id)}> <RiDeleteBinFill/> </button></p>     
           </div>
         )) :
