@@ -51,7 +51,7 @@ const updateSpeciality = async (req,res,next) => {
         const tryGetSpeciality = await specialityModel.findOne({_id: specialityID});
         if (tryGetSpeciality) {
             await specialityModel.findByIdAndUpdate({_id: specialityID}, {speciality: speciality, sub_speciality: sub_speciality});
-            res.json({error: "Speciality has been updated successfully!"});
+            res.json({message: "Speciality has been updated successfully!"});
         } else {
             return next(new HttpError("Speciality doesn't exist on system", 400));
         }
