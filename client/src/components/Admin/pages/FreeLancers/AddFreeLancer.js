@@ -336,7 +336,7 @@ const AddFreeLancer = () => {
             onChange={(event) => specialityChangeHandler(event.target.value)}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
         </div>
