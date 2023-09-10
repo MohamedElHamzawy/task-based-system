@@ -35,7 +35,7 @@ const freelancerSchema = new mongoose.Schema({
     },
     currency: {
         type: mongoose.Types.ObjectId,
-        ref: "cuurency"
+        ref: "currency"
     }
 });
 
