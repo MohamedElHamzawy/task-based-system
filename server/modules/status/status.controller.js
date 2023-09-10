@@ -49,11 +49,18 @@ const createStatus = async (req,res,next) => {
 const updateStatus = async (req,res,next) => {
     try {
         const {name, role} = req.body;
-        const slug = name.replace(" ", "-");
+        let slug;
+        if (name != "") {
+            slug = name.replace(" ", "-");
+        }
         const statusID = req.params.id;
         const tryGetThisStatus = await statusModel.findOne({_id:statusID});
         if (tryGetThisStatus) {
-            await statusModel.findByIdAndUpdate({_id: statusID}, {statusname: name, slug: slug, role: role});
+            if (name != "") {
+                await statusModel.findByIdAndUpdate({_id: statusID}, {statusname: name, slug: slug, role: role});
+            } else {
+                await statusModel.findByIdAndUpdate({_id: statusID}, {role: role});
+            }
             res.json({message:"Status has been updated successfully"});
         } else {
             return next(new HttpError("This status doesn't exist on system", 400));
