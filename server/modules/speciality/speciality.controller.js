@@ -48,7 +48,7 @@ const updateSpeciality = async (req,res,next) => {
             sub_speciality
         } = req.body;
         const specialityID = req.params.id;
-        const tryGetSpeciality = await specialityModel.findOne({sub_speciality: sub_speciality});
+        const tryGetSpeciality = await specialityModel.findOne({_id: specialityID});
         if (tryGetSpeciality) {
             await specialityModel.findByIdAndUpdate({_id: specialityID}, {speciality: speciality, sub_speciality: sub_speciality});
             res.json({error: "Speciality has been updated successfully!"});
