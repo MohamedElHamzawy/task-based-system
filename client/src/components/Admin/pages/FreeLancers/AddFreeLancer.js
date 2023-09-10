@@ -116,7 +116,9 @@ const AddFreeLancer = () => {
   const currencyChangeHandler = (newOne) => {
     setCurrency(newOne);
   };
-
+  //speciality value
+  const [speciality, setSpeciality] = useState('');
+  
   //fullName validation
   const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
     value: "",
@@ -197,8 +199,7 @@ const AddFreeLancer = () => {
     });
   };
 
-  //speciality value
-  const [speciality, setSpeciality] = useState('');
+
 
 
   /////////////////////////////////

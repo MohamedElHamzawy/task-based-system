@@ -23,6 +23,24 @@ const clientNameReducer = (state, action) => {
       return state;
   }
 };
+//owner validation
+const ownerReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.owner,
+        isvalid: validate(action.owner, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
 //clientEmail validation
 const clientEmailReducer = (state, action) => {
   switch (action.type) {
@@ -103,10 +121,6 @@ const AddClient = () => {
 
    //currency value
    const [currency, setCurrency] = useState('');
-   const currencyChangeHandler = (newOne) => {
-     setCurrency(newOne);
-   };
-
    
   //clientName validation
   const [clientNameState, dispatch] = useReducer(clientNameReducer, {
@@ -124,6 +138,25 @@ const AddClient = () => {
   };
   const clientNameTouchHandler = () => {
     dispatch({
+      type: "TOUCH",
+    });
+  };
+   //owner validation
+   const [ownerState, dispatch9] = useReducer(ownerReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const ownerChangeHandler = (event) => {
+    dispatch9({
+      type: "CHANGE",
+      owner: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const ownerTouchHandler = () => {
+    dispatch9({
       type: "TOUCH",
     });
   };
@@ -193,6 +226,7 @@ const AddClient = () => {
 
 
   const newSpecialitySubmitHandler = async (event) => {
+    // console.log(clientNameState.value ,ownerState.value ,currency,numberState.value , clientEmailState.value, countryState.value,)
     event.preventDefault();
     // send api request to validate data
     setIsLoading(true);
@@ -202,6 +236,7 @@ const AddClient = () => {
         "http://localhost:5000/api/client/",
         {
             clientName: clientNameState.value,
+            owner : ownerState.value,
             website: clientEmailState.value,
             country: countryState.value,
             phone: numberState.value,
@@ -223,6 +258,7 @@ const AddClient = () => {
     }
     clientEmailState.value = ''
     clientNameState.value = ''
+    ownerState.value =''
     countryState.value = ''
     numberState.value = ''
     setCurrency('')
@@ -247,16 +283,29 @@ const AddClient = () => {
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Client Name:</label>
-       <input type='text' placeholder='Client Name'
-          value={clientNameState.value}
-          onChange={clientNameChangeHandler}
-          onBlur={clientNameTouchHandler}
-          isvalid={clientNameState.isvalid.toString()}
-          className={`col-10 col-lg-7 search p-2 ${!clientNameState.isvalid &&
-            clientNameState.isTouched &&
-            "form-control-invalid"
-            }`}
-        />
+          <input type='text' placeholder='Client Name'
+              value={clientNameState.value}
+              onChange={clientNameChangeHandler}
+              onBlur={clientNameTouchHandler}
+              isvalid={clientNameState.isvalid.toString()}
+              className={`col-10 col-lg-7 search p-2 ${!clientNameState.isvalid &&
+                clientNameState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
+        </div>
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Owner :</label>
+          <input type='text' placeholder='Owner'
+              value={ownerState.value}
+              onChange={ownerChangeHandler}
+              onBlur={ownerTouchHandler}
+              isvalid={ownerState.isvalid.toString()}
+              className={`col-10 col-lg-7 search p-2 ${!ownerState.isvalid &&
+                ownerState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
         </div>
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Website :</label>
@@ -303,7 +352,7 @@ const AddClient = () => {
           <label htmlFor="currency" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Currency:</label>
 
           <select id="currencies" name="currencies" className="p-2 px-4 search col-10 col-lg-7" value={currency}
-            onChange={(event) => currencyChangeHandler(event.target.value)}>
+            onChange={(event) => setCurrency(event.target.value)}>
             <option value="" className='text-secondary'>currencies</option>
             {currencies.map((currency) => (
               <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
@@ -316,6 +365,7 @@ const AddClient = () => {
           <button
             disabled={
               !clientEmailState.isvalid ||
+              !ownerState.isvalid ||
               !clientNameState.isvalid ||
               !numberState.isvalid ||
               !countryState.isvalid ||
