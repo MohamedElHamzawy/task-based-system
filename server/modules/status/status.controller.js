@@ -4,7 +4,12 @@ const HttpError = require("../../common/httpError");
 const getAllStatuses = async (req,res,next) => {
     try {
         const role = req.user.user_role;
-        const statuses = await statusModel.find({$or: [{role:role}, {role: "all"}]});
+        let statuses;
+        if (role == "admin") {
+            statuses = await statusModel.find({});
+        } else {
+            statuses = await statusModel.find({$or: [{role:role}, {role: "all"}]});
+        }
         res.json({statuses: statuses});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
