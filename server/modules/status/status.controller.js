@@ -50,7 +50,7 @@ const updateStatus = async (req,res,next) => {
     try {
         const {name, role} = req.body;
         let slug;
-        if (name != "") {
+        if (name) {
             slug = name.replace(" ", "-");
         }
         const statusID = req.params.id;
