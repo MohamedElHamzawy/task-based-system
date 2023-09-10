@@ -198,12 +198,8 @@ const AddFreeLancer = () => {
   };
 
   //speciality value
-  const [speciality, setSpeciality] = useState([]);
+  const [speciality, setSpeciality] = useState('');
 
-  const specialityChangeHandler = (newOne) => {
-    speciality.push(newOne);
-    console.log(speciality)
-  };
 
   /////////////////////////////////
 
@@ -333,8 +329,8 @@ const AddFreeLancer = () => {
 
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
           <label htmlFor="speciality" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Speciality:</label>
-          <select  className="px-4 search col-10 col-lg-7" multiple aria-label="multiple select example"  size="2"
-            onChange={(event) => specialityChangeHandler(event.target.value)}>
+          <select  className="px-4 p-2 search col-10 col-lg-7 "
+            onChange={(event) => setSpeciality(event.target.value)}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
               <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>

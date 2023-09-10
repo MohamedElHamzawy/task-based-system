@@ -14,16 +14,12 @@ const getSearchFilter = (searchName, freeLancers) => {
 };
 
 // Speciality filter
-// const getSpecialityFilter = (speciality, freeLancers) => {
-//   if (!speciality) {
-//     return freeLancers;
-//   } return freeLancers.filter((freeLancer) => freeLancer.speciality._id.includes(speciality));
-// };
 const getSpecialityFilter = (speciality, freeLancers) => {
   if (!speciality) {
     return freeLancers;
-  } return freeLancers.filter((freeLancer) => freeLancer.speciality.filter(res => res._id.includes(speciality)));
+  } return freeLancers.filter((freeLancer) => freeLancer.speciality._id.includes(speciality));
 };
+
 
 const FreeLancers = () => {
   const [freeLancers, setFreeLancers] = useState([]);
@@ -114,7 +110,7 @@ const FreeLancers = () => {
             onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setSearchName('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
         </div>
@@ -168,7 +164,7 @@ const FreeLancers = () => {
               {
                 freeLancer.speciality.map((speciality) => (
                   <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
-                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
+                    <span className="edit-form-lable">Speciality :</span> {speciality.sub_speciality}
                   </p>
                 ))
               }

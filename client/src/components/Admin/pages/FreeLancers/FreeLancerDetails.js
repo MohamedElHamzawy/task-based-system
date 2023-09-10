@@ -38,14 +38,10 @@ const FreeLancerDetails = () => {
   const [userSpeciality, setUserSpeciality] = useState();
   const [email, setEmail] = useState();
   const [country, setCountry] = useState();
-  const [city, setCity] = useState();
 
-  const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
 
-  const [tasksCount, setTasksCount] = useState();
   const [freeLancerAccount, setFreeLancerAccount] = useState();
-  const [totalCost, setTotalCost] = useState();
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [currency, setCurreny] = useState('');
@@ -58,13 +54,8 @@ const FreeLancerDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/freeLancer/${id}`).then((res) => {
           setFreeLancer(res.data.freelancer);
-
-          setTasksCount(res.data.tasksCount)
-          setTotalCost(res.data.totalCost)
           setFreeLancerTasks(res.data.freelancerTasks)
           setFreeLancerAccount(res.data.freelancerAccount)
-
-          setspecialityId(res.data.freelancer.speciality);
           console.log(res.data)
         });
         setLoading(false);
@@ -79,8 +70,6 @@ const FreeLancerDetails = () => {
         await axios.get("http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
-        setLoading(false);
-        setIsLoading(false);
       });
     }
     return () => clearTimeout(timerId);
@@ -107,7 +96,6 @@ const FreeLancerDetails = () => {
           email: email,
           country: country,
           phone: phone,
-          city: city,
           currency:currency
         }
       );
@@ -242,7 +230,7 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Currency :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency} </p>
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <select id="Currency" name="Currency" className="p-2 px-4 search col-12" value={currency}
                 onChange={(event) => setCurreny(event.target.value)}>
@@ -260,7 +248,6 @@ const FreeLancerDetails = () => {
           {!editFull ?
             <button
               className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" 
-              // onClick={editUserHandler}
               onClick={() => { setEditFull(!editFull) }}
               >
               Edit
@@ -271,11 +258,11 @@ const FreeLancerDetails = () => {
             <button
               disabled={
                 !fullName &&
-                !country &&
-                !city &&
+                !email &&
                 !country &&
                 !phone &&
-                !userSpeciality
+                !currency&&
+                !userSpeciality 
               }
               className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
               onClick={editFreeLancerHandler}
