@@ -97,7 +97,9 @@ const Clients = () => {
         {!searchFilter.length == 0 ? searchFilter.map((client) => (
           <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
             <div className="col-12 fw-bold row text-start">
-
+              <div className='col-12 p-2 '>
+               <FaHospitalUser className="fs-1 text-danger" />
+              </div>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
                 <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
               </p>
