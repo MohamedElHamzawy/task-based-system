@@ -155,7 +155,7 @@ const FreeLancerDetails = () => {
 
   //fullName validation
   const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
-    value: freeLancer.freelancername || '',
+    value: freeLancer.freelancername  ,
     isvalid: false,
     isTouched: false,
   });
@@ -175,7 +175,7 @@ const FreeLancerDetails = () => {
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
-    value: freeLancer.phone || '',
+    value: freeLancer.phone  ,
     isvalid: false,
     isTouched: false,
   });
@@ -195,7 +195,7 @@ const FreeLancerDetails = () => {
 
   //email validation
   const [emailState, dispatch7] = useReducer(emailReducer, {
-    value: freeLancer.email || '',
+    value: freeLancer.email  ,
     isvalid: false,
     isTouched: false,
   });
@@ -215,7 +215,7 @@ const FreeLancerDetails = () => {
 
   //country validation
   const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: freeLancer.country || '',
+    value: freeLancer.country  ,
     isvalid: false,
     isTouched: false,
   });

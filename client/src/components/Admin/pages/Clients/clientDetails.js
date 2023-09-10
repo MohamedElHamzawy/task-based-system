@@ -154,7 +154,7 @@ const ClientDetails = () => {
 
   //clientName validation
   const [clientNameState, dispatch] = useReducer(clientNameReducer, {
-    value: client.clientname || '',
+    value: client.clientname  ,
     isvalid: false,
     isTouched: false,
   });
@@ -173,7 +173,7 @@ const ClientDetails = () => {
   };
   //owner validation
   const [ownerState, dispatch9] = useReducer(ownerReducer, {
-    value: client.ownerName || '',
+    value: client.ownerName  ,
     isvalid: false,
     isTouched: false,
   });
@@ -193,7 +193,7 @@ const ClientDetails = () => {
 
   //clientEmail validation
   const [clientEmailState, dispatch2] = useReducer(clientEmailReducer, {
-    value: client.website || '',
+    value: client.website  ,
     isvalid: false,
     isTouched: false,
   });
@@ -213,7 +213,7 @@ const ClientDetails = () => {
 
   //country validation
   const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: client.country || '',
+    value: client.country  ,
     isvalid: false,
     isTouched: false,
   });
@@ -234,7 +234,7 @@ const ClientDetails = () => {
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
-    value: client.phone || '',
+    value: client.phone  ,
     isvalid: false,
     isTouched: false,
   });

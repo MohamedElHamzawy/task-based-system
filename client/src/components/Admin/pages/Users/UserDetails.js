@@ -146,7 +146,7 @@ const UserDetails = () => {
 
 //userName validation
 const [userNameState, dispatch] = useReducer(userNameReducer, {
-  value: user.username || '',
+  value: user.username  ,
   isvalid: false,
   isTouched: false,
 });
@@ -166,7 +166,7 @@ const userNameTouchHandler = () => {
 
 //fullName validation
 const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
-  value: user.fullname || '',
+  value: user.fullname  ,
   isvalid: false,
   isTouched: false,
 });
@@ -185,7 +185,7 @@ const fullNameTouchHandler = () => {
 };
 //country validation
 const [countryState, dispatch4] = useReducer(countryReducer, {
-  value: user.country || '',
+  value: user.country  ,
   isvalid: false,
   isTouched: false,
 });
@@ -205,7 +205,7 @@ const countryTouchHandler = () => {
 
 //Number validation
 const [numberState, dispatch5] = useReducer(numberReducer, {
-  value: user.phone || '',
+  value: user.phone  ,
   isvalid: false,
   isTouched: false,
 });

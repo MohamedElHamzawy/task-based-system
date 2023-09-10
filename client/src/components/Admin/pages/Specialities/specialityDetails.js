@@ -77,7 +77,7 @@ const SpecialityDetails = () => {
 
     //specialityName validation
     const [specialityNameState, dispatch] = useReducer(specialityNameReducer, {
-        value: speciality.sub_speciality || '',
+        value: speciality.sub_speciality,
         isvalid: false,
         isTouched: false,
     });
@@ -97,7 +97,7 @@ const SpecialityDetails = () => {
 
     //specialitType validation
     const [specialitTypeState, dispatch2] = useReducer(specialitTypeReducer, {
-        value: speciality.speciality || '',
+        value: speciality.speciality ,
         isvalid: false,
         isTouched: false,
     });
@@ -133,7 +133,7 @@ const SpecialityDetails = () => {
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.message);
             }
-            setError(responseData.data.error);
+            setError(responseData.data.message);
             setIsLoading(false);
 
         } catch (err) {
