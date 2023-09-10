@@ -47,6 +47,9 @@ const FreeLancerDetails = () => {
   const [freeLancerAccount, setFreeLancerAccount] = useState();
   const [totalCost, setTotalCost] = useState();
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
+  const [currency, setCurreny] = useState('');
+
 
   useEffect(() => {
     let timerId;
@@ -71,6 +74,13 @@ const FreeLancerDetails = () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/currency/").then((res) => {
+          setCurrencies(res.data.currencies);
+        });
+        setLoading(false);
+        setIsLoading(false);
       });
     }
     return () => clearTimeout(timerId);
@@ -97,7 +107,8 @@ const FreeLancerDetails = () => {
           email: email,
           country: country,
           phone: phone,
-          city: city
+          city: city,
+          currency:currency
         }
       );
       const responseData = await response;
@@ -230,10 +241,16 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> City :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.city} </p>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Currency :</h3>
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setCity(e.target.value) }} className="search w-100 p-2" />
+            <select id="Currency" name="Currency" className="p-2 px-4 search col-12" value={currency}
+                onChange={(event) => setCurreny(event.target.value)}>
+                <option value="" className='text-secondary'>Currencies</option>
+                { currencies.map((currency) => (
+                  <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+                ))}
+              </select>
           </div>
         </div>
         {/* /////////////////////// */}

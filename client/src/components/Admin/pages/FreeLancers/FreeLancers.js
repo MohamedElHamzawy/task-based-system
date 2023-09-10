@@ -139,7 +139,7 @@ const FreeLancers = () => {
               {
                 freeLancer.speciality.map((speciality) => (
                   <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
-                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
+                    <span className="edit-form-lable">Speciality :</span> {speciality.sub_speciality}
                   </p>
                 ))
               }

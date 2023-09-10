@@ -109,6 +109,7 @@ const AddFreeLancer = () => {
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+  console.log(currencies)
 
   //currency value
   const [currency, setCurrency] = useState('');
