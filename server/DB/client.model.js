@@ -34,7 +34,7 @@ const clientSchema = new mongoose.Schema({
     },
     currency: {
         type: mongoose.Types.ObjectId,
-        ref: "cuurency"
+        ref: "currency"
     }
 }, {timestamps: true});
 const clientModel = mongoose.model("client", clientSchema);
