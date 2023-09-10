@@ -133,7 +133,7 @@ const FreeLancers = () => {
                 <a className="text-dark fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a>
               </p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
-                <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality.sub_speciality}
+                <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality && freeLancer.speciality.sub_speciality}
               </p>
     
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>

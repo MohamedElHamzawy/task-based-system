@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from 'react'
+import { validate, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
@@ -18,30 +19,111 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { GiProfit} from 'react-icons/gi';
+import { GiProfit } from 'react-icons/gi';
+
+//clientName validation
+const clientNameReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.clientName,
+        isvalid: validate(action.clientName, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//owner validation
+const ownerReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.owner,
+        isvalid: validate(action.owner, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//clientEmail validation
+const clientEmailReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.clientEmail,
+        isvalid: validate(action.clientEmail, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+//country validation
+const countryReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.country,
+        isvalid: validate(action.country, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+
+//number validation
+const numberReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.number,
+        isvalid: validate(action.number, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
 
 const ClientDetails = () => {
 
   const [edit, setEdit] = useState(false);
-
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-
   let { id } = useParams();
-
   const [client, setClient] = useState([]);
-  const [clientName, setClientName] = useState();
-  const [clientEmail, setClientEmail] = useState();
-  const [country, setCountry] = useState();
-  const [city, setCity] = useState();
-  const [phone, setPhone] = useState();
-
-  const [tasksCount, setTasksCount] = useState();
   const [clientAccount, setClientAccount] = useState();
-  const [totalGain, setTotalGain] = useState();
-
   const [clientTasks, setClientTasks] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
 
   useEffect(() => {
     let timerId;
@@ -51,20 +133,124 @@ const ClientDetails = () => {
         await axios.get(`http://localhost:5000/api/client/${id}`).then((res) => {
           setClient(res.data.client);
 
-          setTasksCount(res.data.tasksCount)
-          setTotalGain(res.data.totalGain)
           setClientTasks(res.data.clientTasks)
           setClientAccount(res.data.clientAccount)
 
           console.log(res.data)
-        });
+        });    
         setLoading(false);
         setIsLoading(false);
       });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/currency/").then((res) => {
+          setCurrencies(res.data.currencies);
+      }); });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
+  //currency value
+  const [currency, setCurrency] = useState(client.currency && client.currency.currencyname);
+
+  //clientName validation
+  const [clientNameState, dispatch] = useReducer(clientNameReducer, {
+    value: client.clientname || '',
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const clientNameChangeHandler = (event) => {
+    dispatch({
+      type: "CHANGE",
+      clientName: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const clientNameTouchHandler = () => {
+    dispatch({
+      type: "TOUCH",
+    });
+  };
+  //owner validation
+  const [ownerState, dispatch9] = useReducer(ownerReducer, {
+    value: client.ownerName || '',
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const ownerChangeHandler = (event) => {
+    dispatch9({
+      type: "CHANGE",
+      owner: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const ownerTouchHandler = () => {
+    dispatch9({
+      type: "TOUCH",
+    });
+  };
+
+  //clientEmail validation
+  const [clientEmailState, dispatch2] = useReducer(clientEmailReducer, {
+    value: client.website || '',
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const clientEmailChangeHandler = (event) => {
+    dispatch2({
+      type: "CHANGE",
+      clientEmail: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(6)],
+    });
+  };
+  const clientEmailTouchHandler = () => {
+    dispatch2({
+      type: "TOUCH",
+    });
+  };
+
+  //country validation
+  const [countryState, dispatch4] = useReducer(countryReducer, {
+    value: client.country || '',
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const countryChangeHandler = (event) => {
+    dispatch4({
+      type: "CHANGE",
+      country: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const countryTouchHandler = () => {
+    dispatch4({
+      type: "TOUCH",
+    });
+  };
+
+
+  //Number validation
+  const [numberState, dispatch5] = useReducer(numberReducer, {
+    value: client.phone || '',
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const numberChangeHandler = (event) => {
+    dispatch5({
+      type: "CHANGE",
+      number: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(11)],
+    });
+  };
+  const numbertouchHandler = () => {
+    dispatch5({
+      type: "TOUCH",
+    });
+  };
   //////////////////////////////////////
   const editClientHandler = async (event) => {
     event.preventDefault();
@@ -75,11 +261,12 @@ const ClientDetails = () => {
       const response = await axios.post(
         `http://localhost:5000/api/client/${client._id}`,
         {
-          clientName: clientName,
-          email: clientEmail,
-          country: country,
-          phone: phone,
-          city: city
+          clientName: clientNameState.value,
+          owner : ownerState.value,
+          website: clientEmailState.value,
+          country: countryState.value,
+          phone: numberState.value,
+          currency : currency ,
         }
       );
       const responseData = await response;
@@ -116,7 +303,7 @@ const ClientDetails = () => {
       window.location.href = '/clients';
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     };
   }
   //error message
@@ -152,16 +339,51 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Client Name:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.clientname} </p>
           <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setClientName(e.target.value) }} className="search w-100 p-2" />
+             <input type='text' placeholder={client.clientname}
+              value={clientNameState.value}
+              onChange={clientNameChangeHandler}
+              onBlur={clientNameTouchHandler}
+              isvalid={clientNameState.isvalid.toString()}
+              className={`search w-100 p-2 ${!clientNameState.isvalid &&
+                clientNameState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
+          </div>
+        </div>
+        {/* /////////////////////// */}
+        <div className="col-12 col-lg-6 row ">
+          <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Owner :</h3>
+          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.ownerName} </p>
+          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+            <input type='text' placeholder={client.ownerName}
+              value={ownerState.value}
+              onChange={ownerChangeHandler}
+              onBlur={ownerTouchHandler}
+              isvalid={ownerState.isvalid.toString()}
+              className={`search w-100 p-2 ${!ownerState.isvalid &&
+                ownerState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
         {/* /////////////////////// */}
 
         <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Client Email:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.email} </p>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">Website:</h3>
+          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.website} </p>
           <div className={edit ? "d-inline col-10 col-md-5 pt-3" : 'd-none'} >
-            <input type="email" onChange={(e) => { setClientEmail(e.target.value) }} className="search w-100 p-2" />
+          <input type='website' placeholder={client.website}
+            value={clientEmailState.value}
+            onChange={clientEmailChangeHandler}
+            onBlur={clientEmailTouchHandler}
+            isvalid={clientEmailState.isvalid.toString()}
+            className={`search w-100 p-2 ${!clientEmailState.isvalid &&
+              clientEmailState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />  
           </div>
         </div>
         {/* /////////////////////// */}
@@ -169,7 +391,16 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Phone:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.phone} </p>
           <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="search w-100 p-2" />
+            <input type='number' placeholder={client.phone}
+            value={numberState.value}
+            onChange={numberChangeHandler}
+            onBlur={numbertouchHandler}
+            isvalid={numberState.isvalid.toString()}
+            className={`search w-100 p-2 ${!numberState.isvalid &&
+              numberState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
         </div>
         {/* /////////////////////// */}
@@ -177,15 +408,30 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Country:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.country} </p>
           <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
-            <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
+          <input type='text' placeholder={client.country}
+            value={countryState.value}
+            onChange={countryChangeHandler}
+            onBlur={countryTouchHandler}
+            isvalid={countryState.isvalid.toString()}
+            className={`search w-100 p-2 ${!countryState.isvalid &&
+              countryState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 row  ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> City :</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.city} </p>
+        <div className="col-12 col-md-6 row ">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Currency:</h3>
+          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.currency && client.currency.currencyname} </p>
           <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
-            <input type="text" onChange={(e) => { setCity(e.target.value) }} className="search w-100 p-2" />
+          <select id="currencies" name="currencies" className="search w-100 p-2" value={currency}
+            onChange={(event) => setCurrency(event.target.value)}>
+            <option value="" className='text-secondary'>currencies</option>
+            {currencies.map((currency) => (
+              <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+            ))}
+          </select>
           </div>
         </div>
         {/* /////////////////////// */}
@@ -203,11 +449,12 @@ const ClientDetails = () => {
             <>
               <button
                 disabled={
-                  !clientName &&
-                  !clientEmail &&
-                  !city &&
-                  !country &&
-                  !phone
+                  !clientEmailState.isvalid &&
+                  !ownerState.isvalid &&
+                  !clientNameState.isvalid &&
+                  !numberState.isvalid &&
+                  !countryState.isvalid &&
+                  !currency
                 }
                 className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
                 onClick={editClientHandler}
