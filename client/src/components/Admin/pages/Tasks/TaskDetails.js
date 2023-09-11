@@ -86,16 +86,16 @@ const TaskDetails = () => {
         await axios.get(`http://localhost:5000/api/task/${id}`,
          { headers: { Authorization: `Bearer ${token}` } }
          ).then((res) => {
-          setTask(res.data.task);
-          setOffer(res.data.offer)
-          setClient(res.data.task.client)
-          setCurrency(res.data.task.task_currency)
-          setSpeciality(res.data.task.speciality)
-          setStatus(res.data.task.taskStatus)
-          setUser(res.data.task.created_by)
+          // setTask(res.data.task);
+          // setOffer(res.data.offer)
+          // setClient(res.data.task.client)
+          // setCurrency(res.data.task.task_currency)
+          // setSpeciality(res.data.task.speciality)
+          // setStatus(res.data.task.taskStatus)
+          // setUser(res.data.task.created_by)
 
-          setNotes(res.data.notes)
-          setComments(res.data.comments)
+          // setNotes(res.data.notes)
+          // setComments(res.data.comments)
           console.log(res.data)
         });
         setLoading(false);

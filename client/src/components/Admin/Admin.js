@@ -29,6 +29,8 @@ import AddTask from './pages/Tasks/AddTask';
 import AccountDetails from './pages/Accounts/AccountDetails';
 import ChangePass from './pages/Settings/ChangePass';
 import Transactions from './pages/Transactions/Transactions';
+import Profit from './pages/Profit/Profit';
+import ProfitDetails from './pages/Profit/ProfitDetails';
 
 const Admin = () => {
   return (
@@ -63,7 +65,9 @@ const Admin = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />
           <Route path="/transactions" element={<Transactions />} />
-
+          <Route path="/profit" element={<Profit />} />
+          <Route path="/profit/:id" element={<ProfitDetails />} />
+          
         </Routes>
       </div>
 

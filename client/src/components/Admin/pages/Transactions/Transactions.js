@@ -161,7 +161,8 @@ const Transactions = () => {
           <button
             disabled={
               !amountState.isvalid ||
-              !method
+              !method ||
+              !account
             }
             className='add_trans p-3  fw-bold col-10 col-lg-5'>
             Add
