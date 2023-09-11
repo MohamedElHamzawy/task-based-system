@@ -28,7 +28,7 @@ const taskSchema = new mongoose.Schema({
         ref: "status"
     },
     deadline: {
-        type: String
+        type: Date
     },
     created_by: {
         type: mongoose.Types.ObjectId,
