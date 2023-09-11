@@ -46,8 +46,11 @@ const getTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const mainStatuses = await statusModel.find({changable: false}).select("_id");
-        const profitMinPercentage = await profitModel.find({})[0].minimum;
-        const profitMaxPercentage = await profitModel.find({})[0].maximum;
+        const getProfitMinPercentage = await profitModel.find({});
+        const getProfitMaxPercentage = await profitModel.find({});
+
+        const profitMinPercentage = getProfitMinPercentage[0].minimum;
+        const profitMaxPercentage = getProfitMaxPercentage[0].maximum;
         if (role == "admin") {
             const task = await taskModel
             .findOne({_id: taskID})
@@ -102,7 +105,7 @@ const getTask = async (req,res,next) => {
 }
 
 const createTask = async (req,res,next) => {
-    // try {
+    try {
         const role = req.user.user_role;
         if (role != "specialistService") {
             const {
@@ -140,9 +143,9 @@ const createTask = async (req,res,next) => {
         } else {
             return next(new HttpError("You are not authorized to create task!", 401));
         }
-    // } catch (error) {
-    //     return next(new HttpError(`Unexpected Error: ${error}`, 500));
-    // }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
 }
 
 const partialUpdateTask = async (req,res,next) => {
