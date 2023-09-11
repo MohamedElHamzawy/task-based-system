@@ -164,7 +164,7 @@ const Transactions = () => {
               !method ||
               !account
             }
-            className='add_trans p-3  fw-bold col-10 col-lg-5'>
+            className='add-trans-btn p-3  fw-bold col-10 col-lg-5'>
             Add
           </button>
         </div>

@@ -47,6 +47,7 @@ const Settings = () => {
           setPhone(res.data.user.phone);
           setPassword(res.data.user.password);
           setSpeciality(res.data.user.speciality)
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -172,10 +173,10 @@ const Settings = () => {
           <p className="col-10 col-md-4 py-3 text-warning fw-bold"> {user.user_role} </p>
         </div>
         {specialities.map((spy)=>(
-          spy._id == speciality ?
+          spy._id == speciality._id ?
           <div className="col-12 col-xl-6 row p-2 " key={spy._id}>
             <h3 className="col-8 col-md-5  settings-form-lable text-start"> Speciality :</h3>
-            <p className="col-10 col-md-4 py-3 text-warning fw-bold"> {spy.specialityName} </p>
+            <p className="col-10 col-md-4 py-3 text-warning fw-bold"> {spy.sub_speciality} </p>
           </div> : ''
         ))}
 

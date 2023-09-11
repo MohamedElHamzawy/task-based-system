@@ -70,11 +70,12 @@ const Specialities = () => {
   ) : (
     <div className="row w-100 p-0 m-0 justify-content-center">
 
+
       <div className="col-12 row text-center system-head p-2">
-        <div className="col-12 col-sm-10 col-md-6 ">
-          <h1 className='logo text-white bg-danger p-2'>Customer Service </h1>
+        <div className="col-6 col-md-3">
+          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
         </div>
-        <h1 className="col-12  text-center ">System Specialities</h1>
+        <h1 className="col-12 col-md-6 text-center ">System Specialities</h1>
       </div>
 
       <div className="row p-0 m-0 col-10 justify-content-center">

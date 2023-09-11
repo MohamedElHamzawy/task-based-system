@@ -2,10 +2,9 @@ import './FreeLancers.css'
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { BsFillFolderSymlinkFill } from 'react-icons/bs';
 import { SiFreelancer } from 'react-icons/si';
-import { RiDeleteBinFill } from 'react-icons/ri';
 import { FiFilter } from 'react-icons/fi';
+import { RiDeleteBinFill } from 'react-icons/ri';
 
 //search filter
 const getSearchFilter = (searchName, freeLancers) => {
@@ -26,9 +25,7 @@ const FreeLancers = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-
   const [specialities, setSpecialities] = useState([]);
-  const [speciality, setSpeciality] = useState('');
 
   useEffect(() => {
     let timerId;
@@ -38,20 +35,23 @@ const FreeLancers = () => {
         await axios.get("http://localhost:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
           console.log(res.data)
+          setLoading(false);
+          setIsLoading(false);
         });
-        setLoading(false);
-        setIsLoading(false);
       });
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
+
       });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
 
+
+  const [speciality, setSpeciality] = useState('');
 
   const [searchName, setSearchName] = useState('');
   const [searchFilterData, setSearchFilterData] = useState(true);
@@ -111,32 +111,41 @@ const FreeLancers = () => {
             onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setSearchName('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
         </div>
 
-        <div className="col-12 col-md-3  p-2 text-center">
+        <div className="col-12 col-md-3 p-2 text-center">
           <button onClick={() => { window.location.href = '/addfreeLancer' }} className="new-user p-2">
             <SiFreelancer className="fs-3" />  Add New FreeLancer
           </button>
         </div>
 
+
       </div>
 
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-2">
-        <p className="col-5 text-center">FullName</p>
-          <p className="col-4 ">Speciality</p>
-          <p className="col-2 ">Delete</p>
-
-        </div>
-
+      <div className=" w-100 row p-0 m-0 mt-2 justify-content-center">
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((freeLancer) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
-            <p className="col-5 name-Speciality text-center name-role"><a className="text-dark text-decoration-none fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a></p>
-            <p className="col-4 name-Speciality name-role " > {freeLancer.speciality.specialityName}</p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteFreelancerHandler(freeLancer._id)}> <RiDeleteBinFill/> </button></p>     
+          <div key={freeLancer._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+            <div className="col-12 fw-bold row text-start">
+              <div className='col-12 p-2 '>
+                <SiFreelancer className="fs-1 text-danger" />
+              </div>
+
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+                <a className="text-dark fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a>
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
+                <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality && freeLancer.speciality.sub_speciality}
+              </p>
+
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {freeLancer.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p>
+
+            </div>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
@@ -147,10 +156,21 @@ const FreeLancers = () => {
         }
 
         {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((freeLancer) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={freeLancer._id}>
-              <p className="col-5 name-Speciality text-center name-role"><a className="text-dark text-decoration-none fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a></p>
-            <p className="col-4 name-Speciality name-role " > {freeLancer.speciality.specialityName}</p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteFreelancerHandler(freeLancer._id)}> <RiDeleteBinFill/> </button></p>     
+          <div key={freeLancer._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+            <div className="col-12 fw-bold row text-start">
+
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+                <a className="text-dark fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a>
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
+                <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality.sub_speciality}
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {freeLancer.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p>
+
+            </div>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

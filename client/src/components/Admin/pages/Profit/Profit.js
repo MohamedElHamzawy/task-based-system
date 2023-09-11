@@ -1,55 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from 'react'
+import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { FaPercent } from 'react-icons/fa';
 import GetCookie from '../../../../hooks/getCookie';
 import './Profit.css'
+import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
+
+import { useParams } from "react-router-dom";
+import { TiArrowBack } from 'react-icons/ti';
+import { ImCancelCircle } from 'react-icons/im';
+
 
 const Profit = () => {
-    const [profit, setProfit] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const token = GetCookie("AdminToken")
-    useEffect(() => {
-        let timerId;
-        if (loading) {
-          setIsLoading(true);
-          timerId = setTimeout(async () => {
-            await axios.get("http://localhost:5000/api/profit/").then((res) => {
-             setProfit(res.data.profitSystem);
-             console.log(res.data)
-            });
-            setLoading(false);
-            setIsLoading(false);
-          });
-        }
-        return () => clearTimeout(timerId);
-      }, [loading]);
+  const [profit, setProfit] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    let timerId;
+    if (loading) {
+      setIsLoading(true);
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/profit/").then((res) => {
+          setProfit(res.data.profitSystem);
+          console.log(res.data)
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
+    }
+    return () => clearTimeout(timerId);
+  }, [loading]);
+
+  const [minimum, setMinimum] = useState('');
+  const [maximum, setMaximum] = useState('');
 
 
-      const deleteProfitHandler = async (id) => {
-        setIsLoading(true);
-        try {
-          setError(null);
-          const response = await axios.delete(
-            ` http://localhost:5000/api/profit/${id}`
-            //  ,
-            //  { headers :{
-            //     'Authorization':`Bearer ${token}`
-            //   }
-            // }
-          )
-          const responseData = await response;
-          console.log(responseData)
-          setError(responseData.data.message);
-          setIsLoading(false);
-          window.location.href = '/statuses';
-        } catch (err) {
-          setIsLoading(false);
-          setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-        };
-      }
+
+  //////////////////////////////////////
+  const editProfitHandler = async (event) => {
+    console.log(minimum , maximum , profit._id)
+    event.preventDefault();
+    // send api request to validate data
+    // setIsLoading(true);
+    // try {
+    //   setError(null);
+    //   const response = await axios.post(
+    //     `http://localhost:5000/api/profit/${profit._id}`,
+    //     {
+    //       minimum:minimum,
+    //       maximum: maximum
+    //     }
+    //   );
+    //   const responseData = await response;
+    //   console.log(responseData)
+    //   if (!(response.statusText === "OK")) {
+    //     throw new Error(responseData.data.message);
+    //   }
+    //   setError(responseData.data.message);
+    //   setIsLoading(false);
+
+    // } catch (err) {
+    //   setIsLoading(false);
+    //   setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    // }
+  };
+
+  //error message
+  const errorHandler = () => {
+    setError(null);
+    window.location.reload(true);
+  };
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -65,7 +89,7 @@ const Profit = () => {
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2 text-center">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-4 "><FaPercent/></p>
+          <p className="col-4 "><FaPercent /></p>
           <p className="col-4  ">Maximum</p>
           <p className="col-4 ">Minimum</p>
           {/* <p className="col-2 ">Delete</p> */}
@@ -76,7 +100,7 @@ const Profit = () => {
             <p className="col-4  "><a className="text-dark text-decoration-none fw-bold" href={`/profit/${percentage._id}`}>Profit</a></p>
             <p className="col-4 "> {percentage.maximum} </p>
             <p className="col-4  "> {percentage.minimum} </p>
-          {/*  <p className="col-2">
+            {/*  <p className="col-2">
              <button className="delete-btn p-2 px-3" onClick={() => deleteProfitHandler(percentage._id)}> <RiDeleteBinFill /> </button> 
             </p>*/}
           </div>
@@ -90,6 +114,57 @@ const Profit = () => {
         }
 
       </div>
+
+      <div className='row justify-content-center w-100'>
+        <div className='text-end p-3'>
+          <button className='edit-profit p-3 px-5 fw-bold' onClick={()=>(setEdit(!edit))}> 
+            Edit 
+          </button>
+        </div>
+
+        {edit ? 
+        <div className="row bg-white adduser-form p-3 py-5 m-1 justify-content-center col-12 col-lg-10">
+
+          {/* /////////////////////// */}
+          <div className="col-12 col-md-6 row p-3 ">
+            <h3 className="col-12 col-sm-6  edit-form-lable text-center py-1">Maximum:</h3>
+            <div className="d-inline col-12 col-sm-6 pt-1">
+              <input type='number' placeholder='Maximum'
+                value={maximum}
+                onChange={(e)=>setMaximum(e.target.value)}
+                className='search w-100 p-2 '
+              />
+            </div>
+          </div>
+          {/* /////////////////////// */}
+          <div className="col-12 col-md-6 row p-3">
+            <h3 className="col-12 col-sm-6  edit-form-lable text-center py-1">Minimum:</h3>
+            <div className="d-inline col-12 col-sm-6 pt-1 " >
+              <input type='number' placeholder='Minimum'
+                value={minimum}
+                onChange={(e)=>setMinimum(e.target.value)}
+                className='search w-100 p-2'
+              />
+            </div>
+          </div>
+
+          {/* /////////////////////// */}
+
+          <button
+            disabled={
+              !minimum &&
+              !maximum
+            }
+            className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
+            onClick={editProfitHandler}
+          >
+            Submit
+          </button>
+
+        </div> : ''}
+
+      </div>
+
     </div>
   )
 }

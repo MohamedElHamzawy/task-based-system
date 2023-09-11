@@ -17,8 +17,8 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { GiProfit} from 'react-icons/gi';
-import { GiPayMoney} from 'react-icons/gi';
+import { GiProfit } from 'react-icons/gi';
+import { GiPayMoney } from 'react-icons/gi';
 
 //userName validation
 const userNameReducer = (state, action) => {
@@ -144,90 +144,90 @@ const UserDetails = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-//userName validation
-const [userNameState, dispatch] = useReducer(userNameReducer, {
-  value: user.username  ,
-  isvalid: false,
-  isTouched: false,
-});
-
-const userNameChangeHandler = (event) => {
-  dispatch({
-    type: "CHANGE",
-    userName: event.target.value,
-    validators: [VALIDATOR_MINLENGTH(3)],
+  //userName validation
+  const [userNameState, dispatch] = useReducer(userNameReducer, {
+    value: user.username,
+    isvalid: false,
+    isTouched: false,
   });
-};
-const userNameTouchHandler = () => {
-  dispatch({
-    type: "TOUCH",
-  });
-};
 
-//fullName validation
-const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
-  value: user.fullname  ,
-  isvalid: false,
-  isTouched: false,
-});
+  const userNameChangeHandler = (event) => {
+    dispatch({
+      type: "CHANGE",
+      userName: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const userNameTouchHandler = () => {
+    dispatch({
+      type: "TOUCH",
+    });
+  };
 
-const fullNameChangeHandler = (event) => {
-  dispatch2({
-    type: "CHANGE",
-    fullName: event.target.value,
-    validators: [VALIDATOR_MINLENGTH(3)],
+  //fullName validation
+  const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
+    value: user.fullname,
+    isvalid: false,
+    isTouched: false,
   });
-};
-const fullNameTouchHandler = () => {
-  dispatch2({
-    type: "TOUCH",
-  });
-};
-//country validation
-const [countryState, dispatch4] = useReducer(countryReducer, {
-  value: user.country  ,
-  isvalid: false,
-  isTouched: false,
-});
 
-const countryChangeHandler = (event) => {
-  dispatch4({
-    type: "CHANGE",
-    country: event.target.value,
-    validators: [VALIDATOR_MINLENGTH(3)],
+  const fullNameChangeHandler = (event) => {
+    dispatch2({
+      type: "CHANGE",
+      fullName: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const fullNameTouchHandler = () => {
+    dispatch2({
+      type: "TOUCH",
+    });
+  };
+  //country validation
+  const [countryState, dispatch4] = useReducer(countryReducer, {
+    value: user.country,
+    isvalid: false,
+    isTouched: false,
   });
-};
-const countryTouchHandler = () => {
-  dispatch4({
-    type: "TOUCH",
+
+  const countryChangeHandler = (event) => {
+    dispatch4({
+      type: "CHANGE",
+      country: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const countryTouchHandler = () => {
+    dispatch4({
+      type: "TOUCH",
+    });
+  };
+
+  //Number validation
+  const [numberState, dispatch5] = useReducer(numberReducer, {
+    value: user.phone,
+    isvalid: false,
+    isTouched: false,
   });
-};
 
-//Number validation
-const [numberState, dispatch5] = useReducer(numberReducer, {
-  value: user.phone  ,
-  isvalid: false,
-  isTouched: false,
-});
-
-const numberChangeHandler = (event) => {
-  dispatch5({
-    type: "CHANGE",
-    number: event.target.value,
-    validators: [VALIDATOR_MINLENGTH(11)],
-  });
-};
-const numbertouchHandler = () => {
-  dispatch5({
-    type: "TOUCH",
-  });
-};
+  const numberChangeHandler = (event) => {
+    dispatch5({
+      type: "CHANGE",
+      number: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(11)],
+    });
+  };
+  const numbertouchHandler = () => {
+    dispatch5({
+      type: "TOUCH",
+    });
+  };
 
 
-//speciality value
-const specialityChangeHandler = (newOne) => {
-  setUserSpeciality(newOne);
-};
+  //speciality value
+  const specialityChangeHandler = (newOne) => {
+    setUserSpeciality(newOne);
+  };
 
 
   //////////////////////////////////////
@@ -240,7 +240,7 @@ const specialityChangeHandler = (newOne) => {
       const response = await axios.post(
         `http://localhost:5000/api/user/${user._id}`,
         {
-          fullName: fullNameState.valu,
+          fullName: fullNameState.value,
           userName: userNameState.value,
           userRole: userRole,
           speciality: userSpeciality,
@@ -321,15 +321,15 @@ const specialityChangeHandler = (newOne) => {
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.fullname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2" : 'd-none'} >
             <input type='text' placeholder={user.fullname}
-            value={fullNameState.value}
-            onChange={fullNameChangeHandler}
-            onBlur={fullNameTouchHandler}
-            isvalid={fullNameState.isvalid.toString()}
-            className={`search w-100 p-2 ${!fullNameState.isvalid &&
-              fullNameState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={fullNameState.value}
+              onChange={fullNameChangeHandler}
+              onBlur={fullNameTouchHandler}
+              isvalid={fullNameState.isvalid.toString()}
+              className={`search w-100 p-2 ${!fullNameState.isvalid &&
+                fullNameState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
 
           {/* {user.user_role == 'admin' ?
@@ -348,16 +348,16 @@ const specialityChangeHandler = (newOne) => {
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Name:</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.username} </p>
           <div className={editFull ? "d-inline col-10 col-md-5  pt-2" : 'd-none'} >
-          <input type='text' placeholder={user.username}
-            value={userNameState.value}
-            onChange={userNameChangeHandler}
-            onBlur={userNameTouchHandler}
-            isvalid={userNameState.isvalid.toString()}
-            className={`search w-100 p-2 ${!userNameState.isvalid &&
-              userNameState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+            <input type='text' placeholder={user.username}
+              value={userNameState.value}
+              onChange={userNameChangeHandler}
+              onBlur={userNameTouchHandler}
+              isvalid={userNameState.isvalid.toString()}
+              className={`search w-100 p-2 ${!userNameState.isvalid &&
+                userNameState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
 
         </div>
@@ -367,15 +367,15 @@ const specialityChangeHandler = (newOne) => {
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
             <input type='number' placeholder={user.phone}
-            value={numberState.value}
-            onChange={numberChangeHandler}
-            onBlur={numbertouchHandler}
-            isvalid={numberState.isvalid.toString()}
-            className={`search w-100 p-2 ${!numberState.isvalid &&
-              numberState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={numberState.value}
+              onChange={numberChangeHandler}
+              onBlur={numbertouchHandler}
+              isvalid={numberState.isvalid.toString()}
+              className={`search w-100 p-2 ${!numberState.isvalid &&
+                numberState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
 
         </div>
@@ -385,15 +385,15 @@ const specialityChangeHandler = (newOne) => {
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
             <input type='text' placeholder={user.country}
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`search w-100 p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={countryState.value}
+              onChange={countryChangeHandler}
+              onBlur={countryTouchHandler}
+              isvalid={countryState.isvalid.toString()}
+              className={`search w-100 p-2 ${!countryState.isvalid &&
+                countryState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
 
         </div>
@@ -414,7 +414,7 @@ const specialityChangeHandler = (newOne) => {
         {/* /////////////////////// */}
         <div className={visable ? "d-flex col-12 col-md-6  row p-2 " : 'd-none'}>
           <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3">Speciality :</h5>
-          <p  className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}>{user.speciality && user.speciality.sub_speciality}</p>
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}>{user.speciality && user.speciality.sub_speciality}</p>
 
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
@@ -486,19 +486,19 @@ const specialityChangeHandler = (newOne) => {
           <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
             <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
             <div className="bg-success col-4 icon p-3"><GiPayMoney className="fs-3 " /></div>
-            <h4 className="text-center col-4 fw-bold">{user.totalCost }</h4>
+            <h4 className="text-center col-4 fw-bold">{user.totalCost}</h4>
           </div>
           :
           <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
             <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
             <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
-            <h4 className="text-center col-4 fw-bold">{ user.totalGain }</h4>
+            <h4 className="text-center col-4 fw-bold">{user.totalGain}</h4>
           </div>
         }
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
           <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
-          <h4 className="text-center col-4 fw-bold">{ user.totalProfit }</h4>
+          <h4 className="text-center col-4 fw-bold">{user.totalProfit}</h4>
         </div>
 
       </div>
@@ -514,12 +514,16 @@ const specialityChangeHandler = (newOne) => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
-                              'anystatus  p-3 status col-12 '
+                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      'anystatus  p-3 status col-12 '
                 }>
                 {
                   task.taskStatus.statusname == 'pending' ?

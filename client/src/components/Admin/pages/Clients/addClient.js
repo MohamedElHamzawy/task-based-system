@@ -61,41 +61,41 @@ const clientEmailReducer = (state, action) => {
 };
 //country validation
 const countryReducer = (state, action) => {
-    switch (action.type) {
-      case "CHANGE":
-        return {
-          ...state,
-          value: action.country,
-          isvalid: validate(action.country, action.validators),
-        };
-      case "TOUCH":
-        return {
-          ...state,
-          isTouched: true,
-        };
-      default:
-        return state;
-    }
-  };
-  
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.country,
+        isvalid: validate(action.country, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
+
 //number validation
 const numberReducer = (state, action) => {
-    switch (action.type) {
-      case "CHANGE":
-        return {
-          ...state,
-          value: action.number,
-          isvalid: validate(action.number, action.validators),
-        };
-      case "TOUCH":
-        return {
-          ...state,
-          isTouched: true,
-        };
-      default:
-        return state;
-    }
-  };
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.number,
+        isvalid: validate(action.number, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
 
 
 const AddClient = () => {
@@ -119,9 +119,9 @@ const AddClient = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-   //currency value
-   const [currency, setCurrency] = useState('');
-   
+  //currency value
+  const [currency, setCurrency] = useState('');
+
   //clientName validation
   const [clientNameState, dispatch] = useReducer(clientNameReducer, {
     value: "",
@@ -141,8 +141,8 @@ const AddClient = () => {
       type: "TOUCH",
     });
   };
-   //owner validation
-   const [ownerState, dispatch9] = useReducer(ownerReducer, {
+  //owner validation
+  const [ownerState, dispatch9] = useReducer(ownerReducer, {
     value: "",
     isvalid: false,
     isTouched: false,
@@ -181,8 +181,8 @@ const AddClient = () => {
     });
   };
 
- //country validation
- const [countryState, dispatch4] = useReducer(countryReducer, {
+  //country validation
+  const [countryState, dispatch4] = useReducer(countryReducer, {
     value: "",
     isvalid: false,
     isTouched: false,
@@ -202,25 +202,25 @@ const AddClient = () => {
   };
 
 
-    //Number validation
-    const [numberState, dispatch5] = useReducer(numberReducer, {
-        value: "",
-        isvalid: false,
-        isTouched: false,
-      });
-    
-      const numberChangeHandler = (event) => {
-        dispatch5({
-          type: "CHANGE",
-          number: event.target.value,
-          validators: [VALIDATOR_MINLENGTH(11)],
-        });
-      };
-      const numbertouchHandler = () => {
-        dispatch5({
-          type: "TOUCH",
-        });
-      };
+  //Number validation
+  const [numberState, dispatch5] = useReducer(numberReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const numberChangeHandler = (event) => {
+    dispatch5({
+      type: "CHANGE",
+      number: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(11)],
+    });
+  };
+  const numbertouchHandler = () => {
+    dispatch5({
+      type: "TOUCH",
+    });
+  };
 
   /////////////////////////////////
 
@@ -235,12 +235,12 @@ const AddClient = () => {
       const response = await axios.post(
         "http://localhost:5000/api/client/",
         {
-            clientName: clientNameState.value,
-            owner : ownerState.value,
-            website: clientEmailState.value,
-            country: countryState.value,
-            phone: numberState.value,
-            currency : currency ,
+          clientName: clientNameState.value,
+          owner: ownerState.value,
+          website: clientEmailState.value,
+          country: countryState.value,
+          phone: numberState.value,
+          currency: currency,
         }
       );
 
@@ -258,7 +258,7 @@ const AddClient = () => {
     }
     clientEmailState.value = ''
     clientNameState.value = ''
-    ownerState.value =''
+    ownerState.value = ''
     countryState.value = ''
     numberState.value = ''
     setCurrency('')
@@ -284,28 +284,28 @@ const AddClient = () => {
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Client Name:</label>
           <input type='text' placeholder='Client Name'
-              value={clientNameState.value}
-              onChange={clientNameChangeHandler}
-              onBlur={clientNameTouchHandler}
-              isvalid={clientNameState.isvalid.toString()}
-              className={`col-10 col-lg-7 search p-2 ${!clientNameState.isvalid &&
-                clientNameState.isTouched &&
-                "form-control-invalid"
-                }`}
-            />
+            value={clientNameState.value}
+            onChange={clientNameChangeHandler}
+            onBlur={clientNameTouchHandler}
+            isvalid={clientNameState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!clientNameState.isvalid &&
+              clientNameState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
         </div>
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Owner :</label>
           <input type='text' placeholder='Owner'
-              value={ownerState.value}
-              onChange={ownerChangeHandler}
-              onBlur={ownerTouchHandler}
-              isvalid={ownerState.isvalid.toString()}
-              className={`col-10 col-lg-7 search p-2 ${!ownerState.isvalid &&
-                ownerState.isTouched &&
-                "form-control-invalid"
-                }`}
-            />
+            value={ownerState.value}
+            onChange={ownerChangeHandler}
+            onBlur={ownerTouchHandler}
+            isvalid={ownerState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!ownerState.isvalid &&
+              ownerState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
         </div>
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Website :</label>
@@ -318,9 +318,9 @@ const AddClient = () => {
               clientEmailState.isTouched &&
               "form-control-invalid"
               }`}
-          />  
+          />
         </div>
-        
+
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
           <input type='text' placeholder='Country'

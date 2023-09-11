@@ -21,24 +21,6 @@ import GetCookie from "../../../../hooks/getCookie";
 import FreelancerOffer from "./FreelancerOffer";
 
 
-//percentage validation
-const percentageReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.percentage,
-        isvalid: validate(action.percentage, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
 //Comment validation
 const commentReducer = (state, action) => {
   switch (action.type) {
@@ -84,18 +66,18 @@ const TaskDetails = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/task/${id}`,
-         { headers: { Authorization: `Bearer ${token}` } }
-         ).then((res) => {
-          // setTask(res.data.task);
-          // setOffer(res.data.offer)
-          // setClient(res.data.task.client)
-          // setCurrency(res.data.task.task_currency)
-          // setSpeciality(res.data.task.speciality)
-          // setStatus(res.data.task.taskStatus)
-          // setUser(res.data.task.created_by)
+          { headers: { Authorization: `Bearer ${token}` } }
+        ).then((res) => {
+          setTask(res.data.task);
+          setOffer(res.data.offer)
+          setClient(res.data.task.client)
+          setCurrency(res.data.task.task_currency)
+          setSpeciality(res.data.task.speciality)
+          setStatus(res.data.task.taskStatus)
+          setUser(res.data.task.created_by)
 
-          // setNotes(res.data.notes)
-          // setComments(res.data.comments)
+          setNotes(res.data.notes)
+          setComments(res.data.comments)
           console.log(res.data)
         });
         setLoading(false);
@@ -107,27 +89,8 @@ const TaskDetails = () => {
 
 
   //////////////////////////////////////
-  //percentage validation
-  const [percentageState, dispatch] = useReducer(percentageReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
 
-  const percentageChangeHandler = (event) => {
-    dispatch({
-      type: "CHANGE",
-      percentage: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(1)],
-    });
-  };
-  const percentageTouchHandler = () => {
-    dispatch({
-      type: "TOUCH",
-    });
-  };
-
-  //delete user 
+  //delete task 
   const deleteTaskHandler = async () => {
     setIsLoading(true);
     try {
@@ -153,133 +116,133 @@ const TaskDetails = () => {
   }
 
   //Put Admin Percentage
-  const putAdminPercentage = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/addPercentage/${id}`,
-        {
-          percentage: percentageState.value,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
+  // const putAdminPercentage = async (event) => {
+  //   event.preventDefault();
+  //   // send api request to validate data
+  //   setIsLoading(true);
+  //   try {
+  //     setError(null);
+  //     const response = await axios.post(
+  //       `http://localhost:5000/api/task/addPercentage/${id}`,
+  //       {
+  //         percentage: percentageState.value,
+  //       },
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     const responseData = await response;
+  //     console.log(responseData)
+  //     if (!(response.statusText === "OK")) {
+  //       throw new Error(responseData.data.message);
+  //     }
+  //     setError(responseData.data.message);
+  //     setIsLoading(false);
 
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  //   }
+  // };
   //accept Task Handler 
-  const acceptTaskHandler = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/confirm/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
+  // const acceptTaskHandler = async (event) => {
+  //   event.preventDefault();
+  //   // send api request to validate data
+  //   setIsLoading(true);
+  //   try {
+  //     setError(null);
+  //     const response = await axios.post(
+  //       `http://localhost:5000/api/task/confirm/${id}`,
+  //       {}, { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     const responseData = await response;
+  //     console.log(responseData)
+  //     if (!(response.statusText === "OK")) {
+  //       throw new Error(responseData.data.message);
+  //     }
+  //     setError(responseData.data.message);
+  //     setIsLoading(false);
 
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  //   }
+  // };
 
   //not accept Task Handler 
-  const notAcceptTaskHandler = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/refuse/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
+  // const notAcceptTaskHandler = async (event) => {
+  //   event.preventDefault();
+  //   // send api request to validate data
+  //   setIsLoading(true);
+  //   try {
+  //     setError(null);
+  //     const response = await axios.post(
+  //       `http://localhost:5000/api/task/refuse/${id}`,
+  //       {}, { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     const responseData = await response;
+  //     console.log(responseData)
+  //     if (!(response.statusText === "OK")) {
+  //       throw new Error(responseData.data.message);
+  //     }
+  //     setError(responseData.data.message);
+  //     setIsLoading(false);
 
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  //   }
+  // };
 
   // task completed 
 
-  const taskCompleted = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/complete/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
+  // const taskCompleted = async (event) => {
+  //   event.preventDefault();
+  //   // send api request to validate data
+  //   setIsLoading(true);
+  //   try {
+  //     setError(null);
+  //     const response = await axios.post(
+  //       `http://localhost:5000/api/task/complete/${id}`,
+  //       {}, { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     const responseData = await response;
+  //     console.log(responseData)
+  //     if (!(response.statusText === "OK")) {
+  //       throw new Error(responseData.data.message);
+  //     }
+  //     setError(responseData.data.message);
+  //     setIsLoading(false);
 
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  //   }
+  // };
 
   // task delivered 
 
-  const taskDelivered = async (event) => {
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.post(
-        `http://localhost:5000/api/task/deliver/${id}`,
-        {}, { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const responseData = await response;
-      console.log(responseData)
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
-      setIsLoading(false);
+  // const taskDelivered = async (event) => {
+  //   event.preventDefault();
+  //   // send api request to validate data
+  //   setIsLoading(true);
+  //   try {
+  //     setError(null);
+  //     const response = await axios.post(
+  //       `http://localhost:5000/api/task/deliver/${id}`,
+  //       {}, { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     const responseData = await response;
+  //     console.log(responseData)
+  //     if (!(response.statusText === "OK")) {
+  //       throw new Error(responseData.data.message);
+  //     }
+  //     setError(responseData.data.message);
+  //     setIsLoading(false);
 
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+  //   }
+  // };
 
   //comment validation
   const [commentState, dispatch5] = useReducer(commentReducer, {
@@ -329,7 +292,7 @@ const TaskDetails = () => {
       setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
   };
-  
+
   //delete Comment
   const deleteCommentHandler = async (commentId) => {
     setIsLoading(true);
@@ -337,9 +300,9 @@ const TaskDetails = () => {
       setError(null);
       const response = await axios.delete(
         ` http://localhost:5000/api/comment/`, {
-       headers: {'Authorization': `Bearer ${token}`},
-       data:{commentID: commentId}
-        
+        headers: { 'Authorization': `Bearer ${token}` },
+        data: { commentID: commentId }
+
       })
       const responseData = await response;
       setError(responseData.data.message);
@@ -379,13 +342,17 @@ const TaskDetails = () => {
                 status &&
                 <span
                   className={
-                    status.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
-                      status.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                        status.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                          status.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                            status.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                              status.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12 ' :
-                                'anystatus  p-3 status col-12 '
+                    status.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                      status.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                        status.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                          status.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                            status.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                              status.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                                status.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                  status.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                    status.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                      status.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                        'anystatus  p-3 status col-12 '
                   }>
                   {
                     status.statusname == 'pending' ?
@@ -425,7 +392,7 @@ const TaskDetails = () => {
           </div>
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-3">  Speciality :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {speciality.specialityName} </p>
+            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {speciality && speciality.sub_speciality} </p>
           </div>
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6  edit-form-lable text-start pt-3">  Dead Line :</h5>
@@ -437,48 +404,41 @@ const TaskDetails = () => {
           </div>
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-3">  Client :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {client.clientname} </p>
+            <p className="d-inline col-6  pt-3 edit-form-p fw-bold ">
+              <a className="text-dark fw-bold" href={`/client/${client._id}`}>
+                {client.clientname}
+              </a>
+            </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Email:</h5>
-            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.email} </p>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  Client Website:</h5>
+            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold "> {client.website} </p>
           </div>
-          {status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
-            <div className='col-12 col-md-6  row'>
-              <h5 className="col-6 edit-form-lable text-start pt-3">  Task Price:</h5>
-              <p className="d-inline col-6 pt-3 edit-form-p fw-bold text-danger "> {task.paid*currency.priceToEGP}EGP </p>
-            </div> 
-          :  
-          <>
-            <div className='col-12 col-md-6  row'>
-              <h5 className="col-6 edit-form-lable text-start pt-3">  Client Price:</h5>
-              <p className="d-inline col-6 pt-3 edit-form-p fw-bold "> {task.paid} </p>
-            </div>  
-            <div className='col-12 col-md-6 row'>
+
+          <div className='col-12 col-md-6  row'>
+            <h5 className="col-6 edit-form-lable text-start pt-3"> CustomerOfferMax:</h5>
+            <p className="d-inline col-6 pt-3 edit-form-p fw-bold text-danger "> {offer.customerOfferMax} </p>
+          </div>
+          <div className='col-12 col-md-6  row'>
+            <h5 className="col-6 edit-form-lable text-start pt-3">  CustomerOfferMin:</h5>
+            <p className="d-inline col-6 pt-3 edit-form-p fw-bold text-danger"> {offer.customerOfferMin} </p>
+          </div>
+          {/*   <div className='col-12 col-md-6 row'>
               <h5 className="col-6 edit-form-lable text-start pt-3">  Currency:</h5>
               <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
-            </div>
-          </>
-          }
-
-
-
-          {status.statusname == 'admin review' || status.statusname == 'in negotiation' || status.statusname == 'in progress' || status.statusname == 'completed' || status.statusname == 'delivered to client' ?
-            <div className="col-12 col-md-6  row ">
-              <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Price:</h5>
-              <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger "> {task.cost}EGP </p>
-            </div> : ''
-          }
-
-          <div className="col-12 col-md-6 row " >
-            <h5 className="col-6  edit-form-lable text-start pt-3">  Profit :</h5>
-            <p className="d-inline col-6   pt-3 edit-form-p fw-bold text-danger"> {task.profit_percentage} %</p>
-          </div>
-
+            </div> 
+          <div className="col-12 col-md-6  row ">
+            <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Price:</h5>
+            <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger "> {task.cost}EGP </p>
+          </div>  */}
 
           <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  UserName :</h5>
-            <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold "> {user && user.fullname} </p>
+            <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold ">
+              <a className="text-dark fw-bold" href={`/user/${user._id}`}>
+                {user && user.fullname}
+              </a>
+            </p>
           </div>
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-3">  UserRole :</h5>
@@ -498,15 +458,24 @@ const TaskDetails = () => {
           }
 
           <div className="col-12 row ">
-            {/* <hr></hr> */}
             <h5 className="col-md-3 col-12 edit-form-lable text-start pt-3">  Description :</h5>
             <p className="d-inline col-md-9 col-12  pt-3 edit-form-p fw-bold "> {task.description} </p>
           </div>
-          {/* /////////////////////// */}
+
 
         </div>
 
-        {status.statusname == 'pending' &&
+        {/* ///on status approved */}
+
+        {status.statusname == 'approved' &&
+          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+            <FreelancerOffer id={id} />
+          </div>
+        }
+
+        {/* /////////////////////////////////////////////////////////////////////////*/}
+
+        {/* {status.statusname == 'pending' &&
           <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
             <h2 className="text-start py-3 edit-form-lable">Task is Pending .. Waiting To Choose Freelancer : </h2>
             <FreelancerOffer id={id} />
@@ -593,7 +562,7 @@ const TaskDetails = () => {
                 Task Delivered
               </button>
             </div>
-          </div>}
+          </div>} */}
 
         <div className='row bg-white adduser-form p-3 my-2 justify-content-center'>
           <h1 className='edit-form-lable '>Comments</h1>
@@ -606,11 +575,11 @@ const TaskDetails = () => {
                 {comment.user_id &&
                   comment.user_id._id == userId ?
                   <div className='col-2 col-sm-1'>
-                  <button onClick={() => deleteCommentHandler(comment._id)} className='delete-comment-btn p-0'>
-                    <IoMdRemoveCircle className='fs-2' />
-                  </button>
-                </div> : ''
-                } 
+                    <button onClick={() => deleteCommentHandler(comment._id)} className='delete-comment-btn p-0'>
+                      <IoMdRemoveCircle className='fs-2' />
+                    </button>
+                  </div> : ''
+                }
 
               </div>
 

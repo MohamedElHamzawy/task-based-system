@@ -1,9 +1,10 @@
 .add-trans-btn{
     border: 0px;
     color: white;
-    border-radius: 10px;
+    background-color: rgb(44, 167, 101);
+    border-radius: 10px !important;
 }
 
 .add-trans-btn:hover{
-    background-color: #1ba866	 !important;
+    background-color: rgba(44, 167, 101, 0.903) !important;
 }

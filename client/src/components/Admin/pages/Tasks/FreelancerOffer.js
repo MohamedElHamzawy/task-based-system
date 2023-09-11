@@ -34,6 +34,8 @@ const FreelancerOffer = (props) => {
 
     const token = GetCookie("AdminToken")
 
+    const workingOn = '64fdd7b6b19f7955da47eb21' ;
+    const notAvailable = '64fdd7bcb19f7955da47eb24';
 
     useEffect(() => {
         let timerId;
@@ -70,6 +72,7 @@ const FreelancerOffer = (props) => {
         });
     };
 
+//Freelancer offer
     const freeLancerOffer = async (event) => {
         event.preventDefault();
         // send api request to validate data
@@ -97,6 +100,34 @@ const FreelancerOffer = (props) => {
             setError(err.message && "SomeThing Went Wrong , Please Try Again .");
         }
     };
+//Change State
+const changeStatehandler = async (event ,statusId) => {
+    // console.log(statusId)
+    event.preventDefault();
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+        setError(null);
+        const response = await axios.post(
+            `http://localhost:5000/api/task/addOffer/partial/${props.id}`,
+            {
+                statusID : statusId
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const responseData = await response;
+        console.log(responseData)
+        if (!(response.statusText === "OK")) {
+            throw new Error(responseData.data.message);
+        }
+        setError(responseData.data.message);
+        setIsLoading(false);
+
+    } catch (err) {
+        setIsLoading(false);
+        setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
+};
 
     //error message
     const errorHandler = () => {
@@ -145,6 +176,23 @@ const FreelancerOffer = (props) => {
                     onClick={freeLancerOffer}
                 >
                     Add Offer
+                </button>
+            </div>
+            <div className='py-3'>
+                <h3 className='system-head'>
+                    OR Change State To :
+                </h3>
+                <button
+                    className="not-available-btn bg-dark p-3 col-10 col-md-4 fw-bold m-2"
+                    onClick={(event)=>changeStatehandler(event , notAvailable)}
+                >
+                   Not Available
+                </button>
+                <button
+                    className="Working-On-btn bg-primary p-3 col-10 col-md-4 fw-bold m-2"
+                    onClick={(event)=>changeStatehandler(event , workingOn)}
+                >
+                    Working On
                 </button>
             </div>
 
