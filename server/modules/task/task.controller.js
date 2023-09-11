@@ -102,7 +102,7 @@ const getTask = async (req,res,next) => {
 }
 
 const createTask = async (req,res,next) => {
-    try {
+    // try {
         const role = req.user.user_role;
         if (role != "specialistService") {
             const {
@@ -140,9 +140,9 @@ const createTask = async (req,res,next) => {
         } else {
             return next(new HttpError("You are not authorized to create task!", 401));
         }
-    } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
-    }
+    // } catch (error) {
+    //     return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    // }
 }
 
 const partialUpdateTask = async (req,res,next) => {
