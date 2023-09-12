@@ -28,7 +28,7 @@ const Paid = (props) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
-    const token = GetCookie("AdminToken")
+    const token = GetCookie("UserB")
 
     //paid validation
     const [paidState, dispatch] = useReducer(paidReducer, {

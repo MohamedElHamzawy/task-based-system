@@ -1,46 +1,64 @@
-.on-going{
-    background-color:#55B4B0 ;
-}
-.offer-submitted{
-    background-color: #DD4124;
-}
-.task-card{
-    border-radius: 20px;
-}
-.task-card:hover{
-background-color: rgba(243, 242, 242, 0.74) !important;
+.on-going {
+    background-color: #55B4B0;
 }
 
-.status{
+.offer-submitted {
+    background-color: #DD4124;
+}
+.edit{
+    background-color: #98B4D4;
+}
+.cancel{
+    background-color: #9B2335;
+}
+.waiting-offer{
+    background-color: #6B5B95;
+}
+
+
+.task-card {
+    border-radius: 20px;
+}
+
+.task-card:hover {
+    background-color: rgba(243, 242, 242, 0.74) !important;
+}
+
+.status {
     color: white;
     border-radius: 50px;
 }
 
-.anystatus{
+.anystatus {
     background-color: rgb(247, 0, 255);
 }
-.accept-btn{
+
+.accept-btn {
     background-color: rgb(9, 165, 9);
-    color: white; 
-    border: 0px ;
+    color: white;
+    border: 0px;
     border-radius: 50px;
 }
-.accept-btn:hover{
+
+.accept-btn:hover {
     background-color: rgb(8, 143, 8);
 }
-.cansle-btn{
+
+.cansle-btn {
     background-color: red;
-    color: white; 
-    border: 0px ;
+    color: white;
+    border: 0px;
     border-radius: 50px;
 }
-.note{
+
+.note {
     background-color: rgba(97, 169, 208, 0.297);
     border-radius: 40px 0px;
     color: rgba(54, 96, 152, 0.848);
     text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
 }
-.comment{
+
+.comment {
     /* background-color: rgba(202, 122, 205, 0.495); */
     background-color: rgba(136, 136, 136, 0.495);
     border-radius: 20px;
@@ -48,68 +66,62 @@ background-color: rgba(243, 242, 242, 0.74) !important;
     text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
 }
 
-.comment-btn{
+.comment-btn {
     background-color: rgba(136, 136, 136, 0.495);
     border: 0px;
     color: white;
     border-radius: 20px;
 }
-.comment-btn:hover{
+
+.comment-btn:hover {
     background-color: rgba(127, 127, 127, 0.799);
 
 }
 
-.delete-comment-btn{
+.delete-comment-btn {
     background: transparent;
     color: rgb(226, 28, 28);
     border: 0px;
     border-radius: 40px;
 
 }
-.delete-comment-btn:hover{
+
+.delete-comment-btn:hover {
     color: rgb(209, 19, 19);
 }
 
-.not-available-btn{
+.not-available-btn {
     border: 0px;
     color: white;
     border-radius: 10px;
 }
-.not-available-btn:hover{
-    background-color:#212529e4 !important;
+
+.not-available-btn:hover {
+    background-color: #212529e4 !important;
 }
 
-.Working-On-btn{
+.Working-On-btn {
     border: 0px;
     color: white;
     border-radius: 10px;
 }
-.Working-On-btn:hover{
-    background-color:#0d6dfde4 !important;
+
+.Working-On-btn:hover {
+    background-color: #0d6dfde4 !important;
 }
 
-@media only screen and (max-width: 1250px) {
-    .small{
-     font-size: 13px !important;
- }
-     
-}
-@media only screen and (max-width: 800px) {
-    .freelanceremail{
-     font-size: 14px;
- }
-     
- }
 
-@media only screen and (max-width: 450px) {
-   .freelanceremail{
-    font-size: 13px;
+@media only screen and (max-width: 822px) {
+    .data {
+        font-size: 15px !important;
+    }
 }
-    
+
+@media only screen and (max-width: 767px) {
+    .data {
+        font-size: 18px !important;
+    }
+    .date {
+        font-size: 15px !important;
+    }
 }
-@media only screen and (max-width: 368px) {
-.date{
-    font-size: 13px;
- }
-     
- }

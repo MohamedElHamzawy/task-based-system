@@ -34,6 +34,8 @@ const FreelancerOffer = (props) => {
 
     const token = GetCookie("UserB")
 
+    // const workingOn = '64fdd7b6b19f7955da47eb21' ;
+    // const notAvailable = '64fdd7bcb19f7955da47eb24';
 
     useEffect(() => {
         let timerId;
@@ -70,16 +72,19 @@ const FreelancerOffer = (props) => {
         });
     };
 
+//Freelancer offer
     const freeLancerOffer = async (event) => {
+        // console.log(props.id ,freeLancer, costState.value)
         event.preventDefault();
         // send api request to validate data
         setIsLoading(true);
         try {
             setError(null);
             const response = await axios.post(
-                `http://localhost:5000/api/task/addOffer/${props.id}`,
+                `http://localhost:5000/api/task/partial/${props.id}`,
                 {
-                    freelancer: freeLancer,
+                    statusID:props.statusID,
+                    freelancerID: freeLancer,
                     cost: costState.value
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -87,16 +92,17 @@ const FreelancerOffer = (props) => {
             const responseData = await response;
             console.log(responseData)
             if (!(response.statusText === "OK")) {
-                throw new Error(responseData.data.message);
+                throw new Error(responseData.data.msg);
             }
-            setError(responseData.data.message);
+            setError(responseData.data.msg);
             setIsLoading(false);
 
         } catch (err) {
             setIsLoading(false);
-            setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+            setError(err.msg && "SomeThing Went Wrong , Please Try Again .");
         }
     };
+
 
     //error message
     const errorHandler = () => {
@@ -108,12 +114,12 @@ const FreelancerOffer = (props) => {
     return isLoading ? (
         <LoadingSpinner asOverlay />
     ) : (
-        <div className='row text-center justify-content-center'>
-            <ErrorModal error={error} onClear={errorHandler} />
+        <div className='row text-center justify-content-center py-4 col-12'>
+      <ErrorModal error={error} onClear={errorHandler} />
 
-            <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-                <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Freelancer :</label>
-                <select id="Freelancer" name="Freelancer" className="search col-10 col-lg-7 p-2" value={freeLancer}
+            <div className='row col-12 col-lg-6 py-2 p-0 justify-content-center'>
+                <h5 className='col-12 col-lg-7 fw-bold add-user-p py-2 text-start'>Freelancer :</h5>
+                <select id="Freelancer" name="Freelancer" className="search col-12 col-lg-5 p-2" value={freeLancer}
                     onChange={(e) => { setFreeLancer(e.target.value); }}>
                     <option value="" className='text-secondary'>Freelancers</option>
                     {freeLancers && freeLancers.map((freeLancer) => (
@@ -121,14 +127,14 @@ const FreelancerOffer = (props) => {
                     ))}
                 </select>
             </div>
-            <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-                <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Cost :</label>
+            <div className='row col-12 col-lg-6  py-2 p-0 justify-content-center'>
+                <h5 className='col-12 col-lg-5 fw-bold add-user-p py-2 '>Cost :</h5>
                 <input type='number' placeholder='Task Price In EGP'
                     value={costState.value}
                     onChange={costChangeHandler}
                     onBlur={costTouchHandler}
                     isvalid={costState.isvalid.toString()}
-                    className={`col-8 col-lg-5 search p-2 ${!costState.isvalid &&
+                    className={`col-10 col-lg-5 search p-2 ${!costState.isvalid &&
                         costState.isTouched &&
                         "form-control-invalid"
                         }`}

@@ -32,7 +32,7 @@ const FreelancerOffer = (props) => {
 
     const [freeLancer, setFreeLancer] = useState('');
 
-    const token = GetCookie("AdminToken")
+    const token = GetCookie("UserA")
 
     // const workingOn = '64fdd7b6b19f7955da47eb21' ;
     // const notAvailable = '64fdd7bcb19f7955da47eb24';
