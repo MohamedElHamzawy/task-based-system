@@ -43,7 +43,7 @@ const updateCurrency = async (req,res,next) => {
     try {
         const {name, price} = req.body;
         const currencyID = req.params.id;
-        const tryGetThisCurrency = await currencyModel.findOne({currencyname:name});
+        const tryGetThisCurrency = await currencyModel.findOne({_id:currencyID});
         if (tryGetThisCurrency) {
             await currencyModel.findByIdAndUpdate({_id: currencyID}, {currencyname:name, priceToEGP: price});
             res.json({message:"Currency has been updated successfully"});
