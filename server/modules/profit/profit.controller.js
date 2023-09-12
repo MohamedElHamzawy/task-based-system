@@ -3,7 +3,8 @@ const HttpError = require("../../common/httpError");
 
 const getProfit = async (req,res,next) => {
     try {
-        const profitSystem = await profitModel.find({});
+        const getProfitSystem = await profitModel.find({});
+        const profitSystem = getProfitSystem[0];
         res.json({profitSystem});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
