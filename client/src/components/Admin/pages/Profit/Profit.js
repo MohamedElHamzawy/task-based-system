@@ -1,15 +1,10 @@
-import React, { useEffect, useReducer, useState } from 'react'
-import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
+import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { FaPercent } from 'react-icons/fa';
-import GetCookie from '../../../../hooks/getCookie';
 import './Profit.css'
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useParams } from "react-router-dom";
-import { TiArrowBack } from 'react-icons/ti';
-import { ImCancelCircle } from 'react-icons/im';
 
 
 const Profit = () => {
@@ -42,31 +37,31 @@ const Profit = () => {
 
   //////////////////////////////////////
   const editProfitHandler = async (event) => {
-    console.log(minimum , maximum , profit._id)
+    // console.log(minimum , maximum , profit._id)
     event.preventDefault();
     // send api request to validate data
-    // setIsLoading(true);
-    // try {
-    //   setError(null);
-    //   const response = await axios.post(
-    //     `http://localhost:5000/api/profit/${profit._id}`,
-    //     {
-    //       minimum:minimum,
-    //       maximum: maximum
-    //     }
-    //   );
-    //   const responseData = await response;
-    //   console.log(responseData)
-    //   if (!(response.statusText === "OK")) {
-    //     throw new Error(responseData.data.message);
-    //   }
-    //   setError(responseData.data.message);
-    //   setIsLoading(false);
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/profit/${profit._id}`,
+        {
+          minimum:minimum,
+          maximum: maximum
+        }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setError(responseData.data.message);
+      setIsLoading(false);
 
-    // } catch (err) {
-    //   setIsLoading(false);
-    //   setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    // }
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
   };
 
   //error message
@@ -79,7 +74,7 @@ const Profit = () => {
     <LoadingSpinner asOverlay />
   ) : (
     <div className="row w-100 p-0 m-0 justify-content-center">
-
+  <ErrorModal error={error} onClear={errorHandler} />
       <div className="col-12 row text-center system-head p-2">
         <div className="col-6 col-md-3">
           <h1 className='logo text-white bg-danger p-2'>Admin</h1>
@@ -95,16 +90,15 @@ const Profit = () => {
           {/* <p className="col-2 ">Delete</p> */}
         </div>
 
-        {profit.length != 0 ? profit.map((percentage) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={percentage._id}>
-            <p className="col-4  "><a className="text-dark text-decoration-none fw-bold" href={`/profit/${percentage._id}`}>Profit</a></p>
-            <p className="col-4 "> {percentage.maximum} </p>
-            <p className="col-4  "> {percentage.minimum} </p>
+        {profit.length != 0 ? 
+          <div className="table-body row pt-3 p-0 m-0 " key={profit._id}>
+            <p className="col-4  "><a className="text-dark text-decoration-none fw-bold" href={`/profit/${profit._id}`}>Profit</a></p>
+            <p className="col-4 "> {profit.maximum} </p>
+            <p className="col-4  "> {profit.minimum} </p>
             {/*  <p className="col-2">
              <button className="delete-btn p-2 px-3" onClick={() => deleteProfitHandler(percentage._id)}> <RiDeleteBinFill /> </button> 
             </p>*/}
           </div>
-        ))
           :
           <div className="row  p-3 m-0 text-center" >
             <h2>

@@ -74,6 +74,7 @@ const FreelancerOffer = (props) => {
 
 //Freelancer offer
     const freeLancerOffer = async (event) => {
+        // console.log(props.id ,freeLancer, costState.value)
         event.preventDefault();
         // send api request to validate data
         setIsLoading(true);
