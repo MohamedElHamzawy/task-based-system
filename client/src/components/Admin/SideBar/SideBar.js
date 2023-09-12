@@ -12,6 +12,8 @@ import { SiFreelancer } from 'react-icons/si';
 import { TbStatusChange } from 'react-icons/tb';
 import { MdCalculate } from 'react-icons/md';
 import { AiOutlineTransaction } from 'react-icons/ai';
+import { RiWaterPercentFill } from 'react-icons/ri';
+
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -127,6 +129,15 @@ class SideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Status</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/profit'}}>
+            <NavIcon>
+                <RiWaterPercentFill className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Profit</p>
             </NavText>           
           </NavItem>
 

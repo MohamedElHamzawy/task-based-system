@@ -5,14 +5,14 @@ import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from 'react-icons/ti';
 
-//specialityName validation
-const specialityNameReducer = (state, action) => {
+//CurrencyName validation
+const currencyNameReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE":
       return {
         ...state,
-        value: action.specialityName,
-        isvalid: validate(action.specialityName, action.validators),
+        value: action.currencyName,
+        isvalid: validate(action.currencyName, action.validators),
       };
     case "TOUCH":
       return {
@@ -23,14 +23,14 @@ const specialityNameReducer = (state, action) => {
       return state;
   }
 };
-//specialitType validation
-const specialitTypeReducer = (state, action) => {
+//CurrencyPrice validation
+const currencyPriceReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE":
       return {
         ...state,
-        value: action.specialitType,
-        isvalid: validate(action.specialitType, action.validators),
+        value: action.currencyPrice,
+        isvalid: validate(action.currencyPrice, action.validators),
       };
     case "TOUCH":
       return {
@@ -43,43 +43,43 @@ const specialitTypeReducer = (state, action) => {
 };
 
 
-const AddSpeciality = () => {
+const  AddCurrency = () => {
 
-  //specialityName validation
-  const [specialityNameState, dispatch] = useReducer(specialityNameReducer, {
+  //CurrencyName validation
+  const [currencyNameState, dispatch] = useReducer(currencyNameReducer, {
     value: "",
     isvalid: false,
     isTouched: false,
   });
 
-  const specialityNameChangeHandler = (event) => {
+  const currencyNameChangeHandler = (event) => {
     dispatch({
       type: "CHANGE",
-      specialityName: event.target.value,
+      currencyName: event.target.value,
       validators: [VALIDATOR_MINLENGTH(3)],
     });
   };
-  const specialityNameTouchHandler = () => {
+  const currencyNameTouchHandler = () => {
     dispatch({
       type: "TOUCH",
     });
   };
 
-  //specialitType validation
-  const [specialitTypeState, dispatch2] = useReducer(specialitTypeReducer, {
+  //currencyPrice validation
+  const [currencyPriceState, dispatch2] = useReducer(currencyPriceReducer, {
     value: "",
     isvalid: false,
     isTouched: false,
   });
 
-  const specialitTypeChangeHandler = (event) => {
+  const currencyPriceChangeHandler = (event) => {
     dispatch2({
       type: "CHANGE",
-      specialitType: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
+      currencyPrice: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(1)],
     });
   };
-  const specialitTypeTouchHandler = () => {
+  const currencyPriceTouchHandler = () => {
     dispatch2({
       type: "TOUCH",
     });
@@ -92,17 +92,17 @@ const AddSpeciality = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const newSpecialitySubmitHandler = async (event) => {
+  const newCurrencySubmitHandler = async (event) => {
     event.preventDefault();
     // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
       const response = await axios.post(
-        "http://localhost:5000/api/speciality/",
+        "http://localhost:5000/api/currency/",
         {
-          sub_speciality: specialityNameState.value,
-          speciality: specialitTypeState.value,
+            name: currencyNameState.value,
+            price: currencyPriceState.value,
         }
       );
 
@@ -118,8 +118,8 @@ const AddSpeciality = () => {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
-    specialitTypeState.value = ''
-    specialityNameState.value = ''
+    currencyPriceState.value = ''
+    currencyNameState.value = ''
   };
 
   const errorHandler = () => {
@@ -132,35 +132,35 @@ const AddSpeciality = () => {
 
       <div className="row p-1">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/specialities' }}><TiArrowBack /> </button>
+          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/currency' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3">  Add New Speciality</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3">  Add New Currency</h2>
       </div>
 
-      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newSpecialitySubmitHandler}>
+      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newCurrencySubmitHandler}>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Sub-Speciality:</label>
-       <input type='text' placeholder='Sub-Speciality'
-          value={specialityNameState.value}
-          onChange={specialityNameChangeHandler}
-          onBlur={specialityNameTouchHandler}
-          isvalid={specialityNameState.isvalid.toString()}
-          className={`col-10 col-lg-7 search p-2 ${!specialityNameState.isvalid &&
-            specialityNameState.isTouched &&
+          <label className='col-10 col-lg-5 fw-bold add-user-p'>Currency Name:</label>
+       <input type='text' placeholder='Currency Name'
+          value={currencyNameState.value}
+          onChange={currencyNameChangeHandler}
+          onBlur={currencyNameTouchHandler}
+          isvalid={currencyNameState.isvalid.toString()}
+          className={`col-10 col-lg-7 search p-2 ${!currencyNameState.isvalid &&
+            currencyNameState.isTouched &&
             "form-control-invalid"
             }`}
         />
         </div>
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Speciality:</label>
-          <input type='text' placeholder='Speciality'
-            value={specialitTypeState.value}
-            onChange={specialitTypeChangeHandler}
-            onBlur={specialitTypeTouchHandler}
-            isvalid={specialitTypeState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!specialitTypeState.isvalid &&
-              specialitTypeState.isTouched &&
+          <label className='col-10 col-lg-5 fw-bold add-user-p'>Currency Price:</label>
+          <input type='number' placeholder='Currency Price'
+            value={currencyPriceState.value}
+            onChange={currencyPriceChangeHandler}
+            onBlur={currencyPriceTouchHandler}
+            isvalid={currencyPriceState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!currencyPriceState.isvalid &&
+              currencyPriceState.isTouched &&
               "form-control-invalid"
               }`}
           />  
@@ -169,8 +169,8 @@ const AddSpeciality = () => {
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
-              !specialitTypeState.isvalid ||
-              !specialityNameState.isvalid
+              !currencyPriceState.isvalid ||
+              !currencyNameState.isvalid
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Add
@@ -181,4 +181,4 @@ const AddSpeciality = () => {
   )
 }
 
-export default AddSpeciality
+export default  AddCurrency

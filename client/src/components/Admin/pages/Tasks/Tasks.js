@@ -11,7 +11,7 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { GiProfit} from 'react-icons/gi';
+import { GiProfit } from 'react-icons/gi';
 import { FaCoins } from 'react-icons/fa';
 import { GiPayMoney } from 'react-icons/gi';
 import { RiWaterPercentFill } from 'react-icons/ri';
@@ -143,7 +143,7 @@ const Tasks = () => {
             ))}
           </select>
 
-   
+
         </div>
         <div className="col-8 col-md-2 p-2">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
@@ -194,12 +194,16 @@ const Tasks = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
-                              'anystatus  p-3 status col-12 '
+                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                     'anystatus  p-3 status col-12 '
                 }>
                 {
                   task.taskStatus.statusname == 'pending' ?

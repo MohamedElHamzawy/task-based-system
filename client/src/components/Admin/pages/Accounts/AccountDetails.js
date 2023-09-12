@@ -160,6 +160,15 @@ const AccountDetails = () => {
             <h4 className="col-12 col-md-7 edit-form-lable text-start "> Transaction Date:</h4>
             <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {transaction.createdAt.split('T')[0]} </p>
           </div>
+          <div className="col-12 col-lg-6 row ">
+            <h4 className="col-12 col-md-7 edit-form-lable text-start "> Method:</h4>
+            <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {transaction.method} </p>
+          </div>
+          <div className="col-12 col-lg-6 row ">
+            <h4 className="col-12 col-md-7 edit-form-lable text-start "> Transaction Type:</h4>
+            <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {transaction.transactionType} </p>
+          </div>
+
         </div>
       )) :
         <div className="row transactions adduser-form p-3 m-1 justify-content-center edit-form-lable col-12 col-lg-10">

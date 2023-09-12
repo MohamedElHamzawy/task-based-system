@@ -11,7 +11,6 @@ import { FaTasks } from 'react-icons/fa';
 import { FaCoins } from 'react-icons/fa';
 import { FaCcVisa } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
-import { TbListDetails } from 'react-icons/tb';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
 import { MdPendingActions } from 'react-icons/md';
 import { MdRateReview } from 'react-icons/md';
@@ -283,7 +282,7 @@ const ClientDetails = () => {
     }
   };
 
-  //delete user 
+  //delete client 
   const deleteClientHandler = async () => {
     setIsLoading(true);
     try {
@@ -515,15 +514,19 @@ const ClientDetails = () => {
 
             <div className="col-12 fw-bold row text-center">
 
-              <span
+            <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
-                              'anystatus  p-3 status col-12 '
+                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      'anystatus  p-3 status col-12 '
                 }>
                 {
                   task.taskStatus.statusname == 'pending' ?

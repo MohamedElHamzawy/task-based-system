@@ -129,7 +129,7 @@ const FreeLancers = () => {
           <div key={freeLancer._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
             <div className="col-12 fw-bold row text-start">
               <div className='col-12 p-2 '>
-               <SiFreelancer className="fs-1 text-danger" />
+                <SiFreelancer className="fs-1 text-danger" />
               </div>
 
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
@@ -138,7 +138,7 @@ const FreeLancers = () => {
               <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
                 <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality && freeLancer.speciality.sub_speciality}
               </p>
-    
+
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {freeLancer.totalGain}</p>

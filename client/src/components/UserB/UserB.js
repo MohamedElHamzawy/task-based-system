@@ -12,6 +12,13 @@ import PendingTasks from './Pages/Tasks/PendingTasks';
 import YourTasks from './Pages/Tasks/YourTasks';
 import ChangePass from './Pages/Settings/ChangePass';
 
+import Specialities from './Pages/Specialities/Specialities';
+import SpecialityDetails from './Pages/Specialities/specialityDetails';
+import AddSpeciality from './Pages/Specialities/addSpeciality';
+import Currency from './Pages/Currency/Currency';
+import CurrencyDetails from './Pages/Currency/CurrencyDetails';
+import AddCurrency from './Pages/Currency/AddCurrency';
+
 const UserB = () => {
   return (
     <div className='Admin w-100'>
@@ -25,6 +32,14 @@ const UserB = () => {
           <Route path="/freelancers" element={<FreeLancers />} />
           <Route path="/freelancer/:id" element={<FreeLancerDetails />} />
           <Route path="/addfreelancer" element={<AddFreeLancer />} />
+
+          <Route path="/specialities" element={<Specialities />} />
+          <Route path="/speciality/:id" element={<SpecialityDetails />} />
+          <Route path="/addspeciality" element={<AddSpeciality />} />
+          <Route path="/currency" element={<Currency />} />
+          <Route path="/currency/:id" element={<CurrencyDetails />} />
+          <Route path="/addcurrency" element={<AddCurrency />} />
+
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />
         </Routes>

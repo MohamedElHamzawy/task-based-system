@@ -21,7 +21,7 @@ import { BiSolidOffer } from 'react-icons/bi';
 import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { GiProfit} from 'react-icons/gi';
+import { GiProfit } from 'react-icons/gi';
 
 
 //fullName validation
@@ -102,7 +102,6 @@ const FreeLancerDetails = () => {
 
   const [editFull, setEditFull] = useState(false);
 
-
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -110,11 +109,7 @@ const FreeLancerDetails = () => {
   let { id } = useParams();
 
   const [freeLancer, setFreeLancer] = useState([]);
-
-
-
   const [specialities, setSpecialities] = useState([]);
-
   const [freeLancerAccount, setFreeLancerAccount] = useState();
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
@@ -155,7 +150,7 @@ const FreeLancerDetails = () => {
 
   //fullName validation
   const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
-    value: freeLancer.freelancername  ,
+    value: freeLancer.freelancername,
     isvalid: false,
     isTouched: false,
   });
@@ -175,7 +170,7 @@ const FreeLancerDetails = () => {
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
-    value: freeLancer.phone  ,
+    value: freeLancer.phone,
     isvalid: false,
     isTouched: false,
   });
@@ -195,7 +190,7 @@ const FreeLancerDetails = () => {
 
   //email validation
   const [emailState, dispatch7] = useReducer(emailReducer, {
-    value: freeLancer.email  ,
+    value: freeLancer.email,
     isvalid: false,
     isTouched: false,
   });
@@ -215,7 +210,7 @@ const FreeLancerDetails = () => {
 
   //country validation
   const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: freeLancer.country  ,
+    value: freeLancer.country,
     isvalid: false,
     isTouched: false,
   });
@@ -250,7 +245,7 @@ const FreeLancerDetails = () => {
           email: emailState.value,
           country: countryState.value,
           phone: numberState.value,
-          currency:currency
+          currency: currency
         }
       );
       const responseData = await response;
@@ -286,7 +281,7 @@ const FreeLancerDetails = () => {
       window.location.href = '/freelancers';
     } catch (err) {
       setIsLoading(false);
-      setError(err.message&& "SomeThing Went Wrong , Please Try Again .");
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     };
   }
   //error message
@@ -324,15 +319,15 @@ const FreeLancerDetails = () => {
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.freelancername}
-            value={fullNameState.value}
-            onChange={fullNameChangeHandler}
-            onBlur={fullNameTouchHandler}
-            isvalid={fullNameState.isvalid.toString()}
-            className={`search w-100 p-2 ${!fullNameState.isvalid &&
-              fullNameState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={fullNameState.value}
+              onChange={fullNameChangeHandler}
+              onBlur={fullNameTouchHandler}
+              isvalid={fullNameState.isvalid.toString()}
+              className={`search w-100 p-2 ${!fullNameState.isvalid &&
+                fullNameState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
 
@@ -343,15 +338,15 @@ const FreeLancerDetails = () => {
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type='email' placeholder={freeLancer.email}
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            onBlur={emailTouchHandler}
-            isvalid={emailState.isvalid.toString()}
-            className={`search w-100 p-2 ${!emailState.isvalid &&
-              emailState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={emailState.value}
+              onChange={emailChangeHandler}
+              onBlur={emailTouchHandler}
+              isvalid={emailState.isvalid.toString()}
+              className={`search w-100 p-2 ${!emailState.isvalid &&
+                emailState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
 
@@ -361,15 +356,15 @@ const FreeLancerDetails = () => {
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type='number' placeholder={freeLancer.phone}
-            value={numberState.value}
-            onChange={numberChangeHandler}
-            onBlur={numbertouchHandler}
-            isvalid={numberState.isvalid.toString()}
-            className={`search w-100 p-2 ${!numberState.isvalid &&
-              numberState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={numberState.value}
+              onChange={numberChangeHandler}
+              onBlur={numbertouchHandler}
+              isvalid={numberState.isvalid.toString()}
+              className={`search w-100 p-2 ${!numberState.isvalid &&
+                numberState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
 
         </div>
@@ -377,15 +372,15 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
-            <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} >
-              {freeLancer.speciality && freeLancer.speciality.sub_speciality}
-            </p>
+          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} >
+            {freeLancer.speciality && freeLancer.speciality.sub_speciality}
+          </p>
 
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
-              { specialities.map((speciality) => (
+              {specialities.map((speciality) => (
                 <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
               ))}
             </select>
@@ -395,17 +390,17 @@ const FreeLancerDetails = () => {
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >     
-            <input type='text' placeholder={freeLancer.country} 
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`search w-100 p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
+          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+            <input type='text' placeholder={freeLancer.country}
+              value={countryState.value}
+              onChange={countryChangeHandler}
+              onBlur={countryTouchHandler}
+              isvalid={countryState.isvalid.toString()}
+              className={`search w-100 p-2 ${!countryState.isvalid &&
+                countryState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
         {/* /////////////////////// */}
@@ -414,12 +409,12 @@ const FreeLancerDetails = () => {
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <select id="Currency" name="Currency" className="p-2 px-4 search col-12" value={currency}
-                onChange={(event) => setCurreny(event.target.value)}>
-                <option value="" className='text-secondary'>Currencies</option>
-                { currencies.map((currency) => (
-                  <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
-                ))}
-              </select>
+              onChange={(event) => setCurreny(event.target.value)}>
+              <option value="" className='text-secondary'>Currencies</option>
+              {currencies.map((currency) => (
+                <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+              ))}
+            </select>
           </div>
         </div>
         {/* /////////////////////// */}
@@ -428,90 +423,93 @@ const FreeLancerDetails = () => {
         <div className="col-12  p-3">
           {!editFull ?
             <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold" 
+              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
               onClick={() => { setEditFull(!editFull) }}
-              >
+            >
               Edit
-            </button> :''
+            </button> : ''
           }
-          {editFull ? 
+          {editFull ?
             <>
-            <button
-              disabled={
-                !fullNameState.isvalid &&
-                !numberState.isvalid &&
-                !emailState.isvalid &&
-                !countryState.isvalid &&
-                !currency &&
-                !userSpeciality 
-              }
-              className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
-              onClick={editFreeLancerHandler}
+              <button
+                disabled={
+                  !fullNameState.isvalid &&
+                  !numberState.isvalid &&
+                  !emailState.isvalid &&
+                  !countryState.isvalid &&
+                  !currency &&
+                  !userSpeciality
+                }
+                className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
+                onClick={editFreeLancerHandler}
               >
-              Submit
-            </button> 
-            <button
-              className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold" 
-              onClick={() => { setEditFull(!editFull) }}
+                Submit
+              </button>
+              <button
+                className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold"
+                onClick={() => { setEditFull(!editFull) }}
               >
-              <ImCancelCircle className="fs-3"/>
-            </button>
-            </>          
-            :''
+                <ImCancelCircle className="fs-3" />
+              </button>
+            </>
+            : ''
           }
         </div>
 
       </div>
 
       <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
-                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
-                    <div className="bg-warning col-4 icon p-3"><FaTasks className="fs-3" /></div>
-                    <h4 className="text-center col-4 fw-bold">{freeLancer.tasksCount}</h4>
-                </div>
-                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                  <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Completed Count </h6>
-                  <div className="bg-info col-4 icon p-3"><AiOutlineFileDone className="fs-3" /></div>
-                  <h4 className="text-center col-4 fw-bold">{freeLancer.completedCount}</h4>
-                </div>
-                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">FreeLancer Gain </h6>
-                    <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
-                    <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
-                </div>
-                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                  <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
-                  <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
-                  <h4 className="text-center col-4 fw-bold">{ freeLancer.totalProfit }</h4>
-                </div>
-                <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-                    <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Account Details: </h6>
-                    <div className="bg-danger col-4 icon p-3"><FaCcVisa className="fs-3 " /></div>
-                    {freeLancerAccount && freeLancerAccount.map((acc)=>(
-                        <div className="text-center col-8 fw-bold" key={acc._id}>
-                            <a  href={`/account/${acc._id}`} className="text-dark fw-bold">Click Here </a>
-                        </div>
-                    ))}
-                </div>
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
+          <div className="bg-warning col-4 icon p-3"><FaTasks className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{freeLancer.tasksCount}</h4>
+        </div>
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Completed Count </h6>
+          <div className="bg-info col-4 icon p-3"><AiOutlineFileDone className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{freeLancer.completedCount}</h4>
+        </div>
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">FreeLancer Gain </h6>
+          <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
+        </div>
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
+          <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{freeLancer.totalProfit}</h4>
+        </div>
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Account Details: </h6>
+          <div className="bg-danger col-4 icon p-3"><FaCcVisa className="fs-3 " /></div>
+          {freeLancerAccount && freeLancerAccount.map((acc) => (
+            <div className="text-center col-8 fw-bold" key={acc._id}>
+              <a href={`/account/${acc._id}`} className="text-dark fw-bold">Click Here </a>
             </div>
+          ))}
+        </div>
+      </div>
 
- {/* /////////////////////////////////////////////////// */}
+      {/* /////////////////////////////////////////////////// */}
 
       <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
         {freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
 
             <div className="col-12 fw-bold row text-center">
-
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary  p-3 status col-12' :
-                              'anystatus  p-3 status col-12 '
+                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      'anystatus  p-3 status col-12 '
                 }>
                 {
                   task.taskStatus.statusname == 'pending' ?

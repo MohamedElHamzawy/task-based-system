@@ -7,6 +7,8 @@ import { BiLogOut } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
 import { MdPendingActions } from 'react-icons/md';
+import { BiSolidCategoryAlt } from 'react-icons/bi';
+import { BsCurrencyExchange } from 'react-icons/bs';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -66,6 +68,24 @@ class UserBSideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> FreeLancers</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className='my-4' onClick={()=>{window.location.href = '/specialities'}}>
+            <NavIcon>
+                <BiSolidCategoryAlt className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Specialities</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/currency'}}>
+            <NavIcon>
+                <BsCurrencyExchange className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 "> Currency</p>
             </NavText>           
           </NavItem>
 

@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import './Clients.css'
-import { BsFillFolderSymlinkFill } from 'react-icons/bs';
 import { FaHospitalUser } from 'react-icons/fa';
-import { RiDeleteBinFill } from 'react-icons/ri';
-import { FiFilter } from 'react-icons/fi';
 
 //search filter
 const getSearchFilter = (searchName, clients) => {
@@ -31,6 +28,7 @@ const Clients = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/client/").then((res) => {
           setClients(res.data.clients);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -42,7 +40,7 @@ const Clients = () => {
   const [searchName, setSearchName] = useState('');
   const searchFilter = getSearchFilter(searchName, clients);
 
-  const deleteSpecialityHandler = async (id) => {
+  const deleteClientHandler = async (id) => {
     setIsLoading(true);
     try {
       setError(null);
@@ -93,19 +91,33 @@ const Clients = () => {
 
       </div>
 
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-4 speciality-table-head text-center">Name</p>
-          <p className="col-5 speciality-table-head">Email</p>
-          <p className="col-2 ">Delete</p>
-
-        </div>
-
+      <div className=" w-100 row p-0 m-0 mt-2 justify-content-center">
         {!searchFilter.length == 0 ? searchFilter.map((client) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={client._id}>
-            <p className="col-4 name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/client/${client._id}`}>{client.clientname} </a></p>
-            <p className="col-5 name-role">{client.email}</p>
-            <p className="col-2"> <button className=" delete-btn p-2 px-3" onClick={()=>deleteSpecialityHandler(client._id)}> <RiDeleteBinFill/> </button></p>     
+          <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+            <div className="col-12 fw-bold row text-start">
+              <div className='col-12 p-2 '>
+               <FaHospitalUser className="fs-1 text-danger" />
+              </div>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+                <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
+                {client.country}
+              </p>
+              { client.speciality && client.speciality.map((speciality) => (
+                  <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
+                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
+                  </p>
+                ))
+              }
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
+              <p className="col-12 col-sm-7 edit-form-p fw-bold"> <span className="edit-form-lable">Website : </span>
+                {client.website}
+              </p>
+            </div>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

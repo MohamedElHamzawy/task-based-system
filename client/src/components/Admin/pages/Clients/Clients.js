@@ -3,7 +3,6 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import './Clients.css'
 import { FaHospitalUser } from 'react-icons/fa';
-import { RiDeleteBinFill } from 'react-icons/ri';
 
 //search filter
 const getSearchFilter = (searchName, clients) => {
@@ -116,8 +115,8 @@ const Clients = () => {
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
-              <p className="col-12 col-sm-7 edit-form-p fw-bold"> <span className="edit-form-lable">Email : </span>
-                {client.email}
+              <p className="col-12 col-sm-7 edit-form-p fw-bold"> <span className="edit-form-lable">Website : </span>
+                {client.website}
               </p>
             </div>
           </div>

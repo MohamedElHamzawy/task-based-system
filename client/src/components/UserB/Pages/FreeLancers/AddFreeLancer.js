@@ -79,27 +79,10 @@ const countryReducer = (state, action) => {
       return state;
   }
 };
-//city validation
-const cityReducer = (state, action) => {
-switch (action.type) {
-  case "CHANGE":
-    return {
-      ...state,
-      value: action.city,
-      isvalid: validate(action.city, action.validators),
-    };
-  case "TOUCH":
-    return {
-      ...state,
-      isTouched: true,
-    };
-  default:
-    return state;
-}
-};
 
 const AddFreeLancer = () => {
 
+  const [currencies, setCurrencies] = useState([]);
   const [specialities, setSpecialities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,11 +99,26 @@ const AddFreeLancer = () => {
         setLoading(false);
         setIsLoading(false);
       });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/currency/").then((res) => {
+          setCurrencies(res.data.currencies);
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+  console.log(currencies)
 
-
+  //currency value
+  const [currency, setCurrency] = useState('');
+  const currencyChangeHandler = (newOne) => {
+    setCurrency(newOne);
+  };
+  //speciality value
+  const [speciality, setSpeciality] = useState('');
+  
   //fullName validation
   const [fullNameState, dispatch2] = useReducer(fullNameReducer, {
     value: "",
@@ -161,71 +159,48 @@ const AddFreeLancer = () => {
     });
   };
 
-//email validation
-const [emailState, dispatch7] = useReducer(emailReducer, {
-  value: "",
-  isvalid: false,
-  isTouched: false,
-});
-
-const emailChangeHandler = (event) => {
-  dispatch7({
-    type: "CHANGE",
-    email: event.target.value,
-    validators: [VALIDATOR_EMAIL()],
+  //email validation
+  const [emailState, dispatch7] = useReducer(emailReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
   });
-};
-const emailTouchHandler = () => {
-  dispatch7({
-    type: "TOUCH",
-  });
-};
 
-//country validation
-const [countryState, dispatch4] = useReducer(countryReducer, {
-  value: "",
-  isvalid: false,
-  isTouched: false,
-});
-
-const countryChangeHandler = (event) => {
-  dispatch4({
-    type: "CHANGE",
-    country: event.target.value,
-    validators: [VALIDATOR_MINLENGTH(3)],
-  });
-};
-const countryTouchHandler = () => {
-  dispatch4({
-    type: "TOUCH",
-  });
-};
-
- //city validation
-const [cityState, dispatch6] = useReducer(cityReducer, {
-value: "",
-isvalid: false,
-isTouched: false,
-});
-
-const cityChangeHandler = (event) => {
-dispatch6({
-  type: "CHANGE",
-  city: event.target.value,
-  validators: [VALIDATOR_MINLENGTH(3)],
-});
-};
-const cityTouchHandler = () => {
-dispatch6({
-  type: "TOUCH",
-});
-};
-  //speciality value
-  const [speciality, setSpeciality] = useState('');
-
-  const specialityChangeHandler = (newOne) => {
-    setSpeciality(newOne);
+  const emailChangeHandler = (event) => {
+    dispatch7({
+      type: "CHANGE",
+      email: event.target.value,
+      validators: [VALIDATOR_EMAIL()],
+    });
   };
+  const emailTouchHandler = () => {
+    dispatch7({
+      type: "TOUCH",
+    });
+  };
+
+  //country validation
+  const [countryState, dispatch4] = useReducer(countryReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const countryChangeHandler = (event) => {
+    dispatch4({
+      type: "CHANGE",
+      country: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const countryTouchHandler = () => {
+    dispatch4({
+      type: "TOUCH",
+    });
+  };
+
+
+
 
   /////////////////////////////////
 
@@ -243,7 +218,7 @@ dispatch6({
           phone: numberState.value,
           email: emailState.value,
           country: countryState.value,
-          city: cityState.value,
+          currency : currency ,
         }
       );
 
@@ -263,8 +238,8 @@ dispatch6({
     numberState.value = ''
     emailState.value = ''
     countryState.value = ''
-    cityState.value = ''
     setSpeciality('')
+    setCurrency('')
   };
 
   const errorHandler = () => {
@@ -298,19 +273,6 @@ dispatch6({
           />
         </div>
 
-        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="speciality" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Speciality:</label>
-
-          <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={speciality}
-            onChange={(event) => specialityChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>Specialities</option>
-            {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
-            ))}
-          </select>
-
-        </div>
-
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Phone :</label>
           <input type='number' placeholder='Phone Number'
@@ -336,9 +298,9 @@ dispatch6({
               emailState.isTouched &&
               "form-control-invalid"
               }`}
-          />  
+          />
         </div>
-        
+
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
           <input type='text' placeholder='Country'
@@ -353,19 +315,30 @@ dispatch6({
           />
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>City:</label>
-          <input type='text' placeholder='city'
-            value={cityState.value}
-            onChange={cityChangeHandler}
-            onBlur={cityTouchHandler}
-            isvalid={cityState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!cityState.isvalid &&
-              cityState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
+          <label htmlFor="currency" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Currency:</label>
+
+          <select id="currencies" name="currencies" className="p-2 px-4 search col-10 col-lg-7" value={currency}
+            onChange={(event) => currencyChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>currencies</option>
+            {currencies.map((currency) => (
+              <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+            ))}
+          </select>
+
         </div>
+
+        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
+          <label htmlFor="speciality" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Speciality:</label>
+          <select  className="px-4 p-2 search col-10 col-lg-7 "
+            onChange={(event) => setSpeciality(event.target.value)}>
+            <option value="" className='text-secondary'>Specialities</option>
+            {specialities.map((speciality) => (
+              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
+            ))}
+          </select>
+        </div>
+
 
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
@@ -374,8 +347,8 @@ dispatch6({
               !numberState.isvalid ||
               !emailState.isvalid ||
               !countryState.isvalid ||
-              !cityState.isvalid ||
-              !speciality 
+              !speciality||
+              !currency
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Add
