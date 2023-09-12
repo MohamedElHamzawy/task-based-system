@@ -81,9 +81,10 @@ const FreelancerOffer = (props) => {
         try {
             setError(null);
             const response = await axios.post(
-                `http://localhost:5000/api/task/addOffer/${props.id}`,
+                `http://localhost:5000/api/task/partial/${props.id}`,
                 {
-                    freelancer: freeLancer,
+                    statusID:props.statusID,
+                    freelancerID: freeLancer,
                     cost: costState.value
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -91,14 +92,14 @@ const FreelancerOffer = (props) => {
             const responseData = await response;
             console.log(responseData)
             if (!(response.statusText === "OK")) {
-                throw new Error(responseData.data.message);
+                throw new Error(responseData.data.msg);
             }
-            setError(responseData.data.message);
+            setError(responseData.data.msg);
             setIsLoading(false);
 
         } catch (err) {
             setIsLoading(false);
-            setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+            setError(err.msg && "SomeThing Went Wrong , Please Try Again .");
         }
     };
 

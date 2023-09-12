@@ -19,6 +19,7 @@ import { IoMdRemoveCircle } from 'react-icons/io';
 
 import GetCookie from "../../../../hooks/getCookie";
 import FreelancerOffer from "./FreelancerOffer";
+import Paid from './Paid';
 
 
 //Comment validation
@@ -89,6 +90,8 @@ const TaskDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/status/", { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
+          console.log(res.data)
+
         });
       });
     }
@@ -373,28 +376,33 @@ const TaskDetails = () => {
 
         {/* ///on status approved */}
 
-          <div className="row bg-white adduser-form pt-5 m-1  justify-content-center">
-            <h3 className='col-12 col-lg-5 fw-bold add-user-p text-start'>Change Status :</h3>
-            <select id="status" name="status" className="p-2 px-4 search col-12 col-lg-7 " value={changeStatus}
-              onChange={(event) => setChangeStatus(event.target.value)}>
-              <option value="" className='text-secondary'>Statuses</option>
-              {statuses.map((status) => (
-                <option value={status._id} key={status._id}>{status.statusname}</option>
-              ))}
-            </select>
+          <div className=" bg-white adduser-form pt-5 p-4 m-1">
+            <div className='row justify-content-center'>
+              <h4 className='col-12 col-lg-5 fw-bold add-user-p text-start py-2'>Change Status :</h4>
+              <select id="status" name="status" className="p-2 px-4 search col-12 col-lg-7" value={changeStatus}
+                onChange={(event) => setChangeStatus(event.target.value)}>
+                <option value="" className='text-secondary'>Statuses</option>
+                {statuses.map((status) => (
+                  <option value={status._id} key={status._id}>{status.statusname}</option>
+                ))}
+              </select>
+            </div>
 
-            {statuses.map((status) => (status.statusname == 'on going' ? status._id == changeStatus ?
-              <FreelancerOffer id={id} key={status._id} />
+            {changeStatus == '64fdd7c1b19f7955da47eb27' || changeStatus == '64fdd7ccb19f7955da47eb2d' ?
+              <FreelancerOffer id={id} statusID={changeStatus}/>
               :
-              <div className="col-12 col-sm-8  p-3" key={status._id}>
+              changeStatus == '64fdd400a86587827152ab3c' ?
+              <Paid id={id} statusID={changeStatus} />
+              :
+              <div className="row col-12 p-3 justify-content-center" >
                 <button
                   className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
                   onClick={changeStatusHandler}
                 >
                   Change
                 </button>
-              </div>  :''
-            ))}
+              </div> 
+            }
           </div>
       
 
