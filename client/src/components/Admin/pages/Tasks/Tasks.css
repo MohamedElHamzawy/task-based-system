@@ -88,6 +88,12 @@ background-color: rgba(243, 242, 242, 0.74) !important;
     background-color:#0d6dfde4 !important;
 }
 
+@media only screen and (max-width: 1250px) {
+    .small{
+     font-size: 13px !important;
+ }
+     
+}
 @media only screen and (max-width: 800px) {
     .freelanceremail{
      font-size: 14px;
@@ -101,10 +107,9 @@ background-color: rgba(243, 242, 242, 0.74) !important;
 }
     
 }
-
-@media only screen and (max-width: 1250px) {
-    .small{
-     font-size: 13px !important;
+@media only screen and (max-width: 368px) {
+.date{
+    font-size: 13px;
  }
      
-}
+ }

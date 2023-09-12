@@ -34,8 +34,8 @@ const FreelancerOffer = (props) => {
 
     const token = GetCookie("AdminToken")
 
-    const workingOn = '64fdd7b6b19f7955da47eb21' ;
-    const notAvailable = '64fdd7bcb19f7955da47eb24';
+    // const workingOn = '64fdd7b6b19f7955da47eb21' ;
+    // const notAvailable = '64fdd7bcb19f7955da47eb24';
 
     useEffect(() => {
         let timerId;
@@ -101,34 +101,7 @@ const FreelancerOffer = (props) => {
             setError(err.message && "SomeThing Went Wrong , Please Try Again .");
         }
     };
-//Change State
-const changeStatehandler = async (event ,statusId) => {
-    // console.log(statusId)
-    event.preventDefault();
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-        setError(null);
-        const response = await axios.post(
-            `http://localhost:5000/api/task/addOffer/partial/${props.id}`,
-            {
-                statusID : statusId
-            },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const responseData = await response;
-        console.log(responseData)
-        if (!(response.statusText === "OK")) {
-            throw new Error(responseData.data.message);
-        }
-        setError(responseData.data.message);
-        setIsLoading(false);
 
-    } catch (err) {
-        setIsLoading(false);
-        setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-    }
-};
 
     //error message
     const errorHandler = () => {
@@ -140,12 +113,11 @@ const changeStatehandler = async (event ,statusId) => {
     return isLoading ? (
         <LoadingSpinner asOverlay />
     ) : (
-        <div className='row text-center justify-content-center'>
-            <ErrorModal error={error} onClear={errorHandler} />
+        <div className='row text-center justify-content-center py-4 col-12'>
 
-            <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-                <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Freelancer :</label>
-                <select id="Freelancer" name="Freelancer" className="search col-10 col-lg-7 p-2" value={freeLancer}
+            <div className='row col-12 col-lg-6 py-2 p-0 justify-content-center'>
+                <h5 className='col-12 col-lg-7 fw-bold add-user-p py-2 text-start'>Freelancer :</h5>
+                <select id="Freelancer" name="Freelancer" className="search col-12 col-lg-5 p-2" value={freeLancer}
                     onChange={(e) => { setFreeLancer(e.target.value); }}>
                     <option value="" className='text-secondary'>Freelancers</option>
                     {freeLancers && freeLancers.map((freeLancer) => (
@@ -153,14 +125,14 @@ const changeStatehandler = async (event ,statusId) => {
                     ))}
                 </select>
             </div>
-            <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-                <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Cost :</label>
+            <div className='row col-12 col-lg-6  py-2 p-0 justify-content-center'>
+                <h5 className='col-12 col-lg-5 fw-bold add-user-p py-2 '>Cost :</h5>
                 <input type='number' placeholder='Task Price In EGP'
                     value={costState.value}
                     onChange={costChangeHandler}
                     onBlur={costTouchHandler}
                     isvalid={costState.isvalid.toString()}
-                    className={`col-8 col-lg-5 search p-2 ${!costState.isvalid &&
+                    className={`col-10 col-lg-5 search p-2 ${!costState.isvalid &&
                         costState.isTouched &&
                         "form-control-invalid"
                         }`}
@@ -177,23 +149,6 @@ const changeStatehandler = async (event ,statusId) => {
                     onClick={freeLancerOffer}
                 >
                     Add Offer
-                </button>
-            </div>
-            <div className='py-3'>
-                <h3 className='system-head'>
-                    OR Change State To :
-                </h3>
-                <button
-                    className="not-available-btn bg-dark p-3 col-10 col-md-4 fw-bold m-2"
-                    onClick={(event)=>changeStatehandler(event , notAvailable)}
-                >
-                   Not Available
-                </button>
-                <button
-                    className="Working-On-btn bg-primary p-3 col-10 col-md-4 fw-bold m-2"
-                    onClick={(event)=>changeStatehandler(event , workingOn)}
-                >
-                    Working On
                 </button>
             </div>
 
