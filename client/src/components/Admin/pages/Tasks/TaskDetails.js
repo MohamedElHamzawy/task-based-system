@@ -60,6 +60,9 @@ const TaskDetails = () => {
   const [status, setStatus] = useState([]);
   const [currency, setCurrency] = useState([]);
 
+  const [statuses, setStatuses] = useState([]);
+  const [changeStatus, setChangeStatus] = useState('');
+
   useEffect(() => {
     let timerId;
     if (loading) {
@@ -83,11 +86,43 @@ const TaskDetails = () => {
         setLoading(false);
         setIsLoading(false);
       });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/status/", { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+          setStatuses(res.data.statuses);
+        });
+      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
+  /////////////////////////////////////////
+  //Change State
+  const changeStatusHandler = async (event) => {
+    event.preventDefault();
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `http://localhost:5000/api/task/partial/${id}`,
+        {
+          statusID: changeStatus
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const responseData = await response;
+      console.log(responseData)
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.msg);
+      }
+      setError(responseData.data.msg);
+      setIsLoading(false);
 
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
   //////////////////////////////////////
 
   //delete task 
@@ -115,134 +150,6 @@ const TaskDetails = () => {
     };
   }
 
-  //Put Admin Percentage
-  // const putAdminPercentage = async (event) => {
-  //   event.preventDefault();
-  //   // send api request to validate data
-  //   setIsLoading(true);
-  //   try {
-  //     setError(null);
-  //     const response = await axios.post(
-  //       `http://localhost:5000/api/task/addPercentage/${id}`,
-  //       {
-  //         percentage: percentageState.value,
-  //       },
-  //       { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     const responseData = await response;
-  //     console.log(responseData)
-  //     if (!(response.statusText === "OK")) {
-  //       throw new Error(responseData.data.message);
-  //     }
-  //     setError(responseData.data.message);
-  //     setIsLoading(false);
-
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  //   }
-  // };
-  //accept Task Handler 
-  // const acceptTaskHandler = async (event) => {
-  //   event.preventDefault();
-  //   // send api request to validate data
-  //   setIsLoading(true);
-  //   try {
-  //     setError(null);
-  //     const response = await axios.post(
-  //       `http://localhost:5000/api/task/confirm/${id}`,
-  //       {}, { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     const responseData = await response;
-  //     console.log(responseData)
-  //     if (!(response.statusText === "OK")) {
-  //       throw new Error(responseData.data.message);
-  //     }
-  //     setError(responseData.data.message);
-  //     setIsLoading(false);
-
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  //   }
-  // };
-
-  //not accept Task Handler 
-  // const notAcceptTaskHandler = async (event) => {
-  //   event.preventDefault();
-  //   // send api request to validate data
-  //   setIsLoading(true);
-  //   try {
-  //     setError(null);
-  //     const response = await axios.post(
-  //       `http://localhost:5000/api/task/refuse/${id}`,
-  //       {}, { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     const responseData = await response;
-  //     console.log(responseData)
-  //     if (!(response.statusText === "OK")) {
-  //       throw new Error(responseData.data.message);
-  //     }
-  //     setError(responseData.data.message);
-  //     setIsLoading(false);
-
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  //   }
-  // };
-
-  // task completed 
-
-  // const taskCompleted = async (event) => {
-  //   event.preventDefault();
-  //   // send api request to validate data
-  //   setIsLoading(true);
-  //   try {
-  //     setError(null);
-  //     const response = await axios.post(
-  //       `http://localhost:5000/api/task/complete/${id}`,
-  //       {}, { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     const responseData = await response;
-  //     console.log(responseData)
-  //     if (!(response.statusText === "OK")) {
-  //       throw new Error(responseData.data.message);
-  //     }
-  //     setError(responseData.data.message);
-  //     setIsLoading(false);
-
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  //   }
-  // };
-
-  // task delivered 
-
-  // const taskDelivered = async (event) => {
-  //   event.preventDefault();
-  //   // send api request to validate data
-  //   setIsLoading(true);
-  //   try {
-  //     setError(null);
-  //     const response = await axios.post(
-  //       `http://localhost:5000/api/task/deliver/${id}`,
-  //       {}, { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     const responseData = await response;
-  //     console.log(responseData)
-  //     if (!(response.statusText === "OK")) {
-  //       throw new Error(responseData.data.message);
-  //     }
-  //     setError(responseData.data.message);
-  //     setIsLoading(false);
-
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     setError(err.message && "SomeThing Went Wrong , Please Try Again .");
-  //   }
-  // };
 
   //comment validation
   const [commentState, dispatch5] = useReducer(commentReducer, {
@@ -394,9 +301,10 @@ const TaskDetails = () => {
             <h5 className="col-6 edit-form-lable text-start pt-3">  Speciality :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {speciality && speciality.sub_speciality} </p>
           </div>
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-6  edit-form-lable text-start pt-3">  Dead Line :</h5>
-            <p className="d-inline col-6   pt-3 edit-form-p fw-bold "> {task.deadline && task.deadline.split('T')[0]} </p>
+          <div className="col-12 row p-0 m-0">
+            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3">Dead Line :</h5>
+            <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
+            <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date "><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
           </div>
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-3">  Channel :</h5>
@@ -416,21 +324,19 @@ const TaskDetails = () => {
           </div>
 
           <div className='col-12 col-md-6  row'>
-            <h5 className="col-6 edit-form-lable text-start pt-3"> CustomerOfferMax:</h5>
-            <p className="d-inline col-6 pt-3 edit-form-p fw-bold text-danger "> {offer.customerOfferMax} </p>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">Customer Offer:</h5>
+            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger ">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
           </div>
-          <div className='col-12 col-md-6  row'>
-            <h5 className="col-6 edit-form-lable text-start pt-3">  CustomerOfferMin:</h5>
-            <p className="d-inline col-6 pt-3 edit-form-p fw-bold text-danger"> {offer.customerOfferMin} </p>
-          </div>
-          {/*   <div className='col-12 col-md-6 row'>
-              <h5 className="col-6 edit-form-lable text-start pt-3">  Currency:</h5>
-              <p className="d-inline col-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
-            </div> 
+          
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3">  Freelancer Price:</h5>
-            <p className="d-inline col-12  col-sm-6  pt-3 edit-form-p fw-bold text-danger "> {task.cost}EGP </p>
-          </div>  */}
+            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3">Customer Price:</h5>
+            <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold text-danger ">{task.paid} </p>
+          </div> 
+          <div className='col-12 col-md-6 row'>
+            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-3">Currency:</h5>
+            <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold "> {currency.currencyname} </p>
+          </div> 
+          
 
           <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3">  UserName :</h5>
@@ -467,102 +373,32 @@ const TaskDetails = () => {
 
         {/* ///on status approved */}
 
-        {status.statusname == 'approved' &&
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-            <FreelancerOffer id={id} />
+          <div className="row bg-white adduser-form pt-5 m-1  justify-content-center">
+            <h3 className='col-12 col-lg-5 fw-bold add-user-p text-start'>Change Status :</h3>
+            <select id="status" name="status" className="p-2 px-4 search col-12 col-lg-7 " value={changeStatus}
+              onChange={(event) => setChangeStatus(event.target.value)}>
+              <option value="" className='text-secondary'>Statuses</option>
+              {statuses.map((status) => (
+                <option value={status._id} key={status._id}>{status.statusname}</option>
+              ))}
+            </select>
+
+            {statuses.map((status) => (status.statusname == 'on going' ? status._id == changeStatus ?
+              <FreelancerOffer id={id} key={status._id} />
+              :
+              <div className="col-12 col-sm-8  p-3" key={status._id}>
+                <button
+                  className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                  onClick={changeStatusHandler}
+                >
+                  Change
+                </button>
+              </div>  :''
+            ))}
           </div>
-        }
+      
 
         {/* /////////////////////////////////////////////////////////////////////////*/}
-
-        {/* {status.statusname == 'pending' &&
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-            <h2 className="text-start py-3 edit-form-lable">Task is Pending .. Waiting To Choose Freelancer : </h2>
-            <FreelancerOffer id={id} />
-          </div>}
-
-        {status.statusname == 'admin review' &&
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-            <h2 className="text-start py-3 edit-form-lable">Task Status is Admin Review .. Waiting To Put Percentage : </h2>
-
-            <div className='col-12 col-lg-7 pt-4 p-0'>
-
-              <label className='col-12 col-lg-6 fw-bold add-user-p py-2'>Admin Percentage :</label>
-              <input type='number' placeholder='Task Percentage '
-                value={percentageState.value}
-                onChange={percentageChangeHandler}
-                onBlur={percentageTouchHandler}
-                isvalid={percentageState.isvalid.toString()}
-                className={`col-10 col-lg-4 search p-2 ${!percentageState.isvalid &&
-                  percentageState.isTouched &&
-                  "form-control-invalid"
-                  }`}
-              />
-              <span className='col-1 px-2'>
-                %
-              </span>
-            </div>
-
-            <div className="col-12 col-sm-5  p-3">
-              <button
-                disabled={
-                  !percentageState.value
-                }
-                className="edit-user-btn p-3 fw-bold"
-                onClick={putAdminPercentage}
-              >
-                Add Percentage
-              </button>
-            </div>
-          </div>}
-
-        {status.statusname == 'in negotiation' &&
-          <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
-            <h5 className="text-start py-3 edit-form-lable">Task Is In Negotiation .. Waiting To Accept The Offer To Start : </h5>
-
-            <div className='row col-12 col-md-7 p-4'>
-              <h5 className="col-12 col-sm-6  edit-form-lable">  The Offer:</h5>
-              <p className="col-12  col-sm-6 edit-form-p fw-bold "> {offer} <span className='text-danger'>{currency.currencyname}</span> </p>
-            </div>
-
-            <div className='col-12 col-md-5'>
-              <button className='accept-btn p-3 mx-3' onClick={acceptTaskHandler}>
-                <FaCheck className='fs-3' />
-              </button>
-              <button className=' p-3 cansle-btn delete-btn mx-3' onClick={notAcceptTaskHandler}>
-                <CgClose className='fs-3' />
-              </button>
-            </div>
-
-          </div>}
-
-        {status.statusname == 'in progress' &&
-          <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-            <h2 className="text-start py-3 edit-form-lable">Task Is in Progress .. If It Finished Click Here : </h2>
-
-            <div className="col-12 col-sm-7  p-3">
-              <button
-                className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-                onClick={taskCompleted}
-              >
-                Completed
-              </button>
-            </div>
-          </div>}
-
-        {status.statusname == 'completed' &&
-          <div className="row bg-white adduser-form p-3 m-1 justify-content-center">
-            <h5 className="text-start py-3 edit-form-lable">Task Is Completed .. When It Delivered Click Here : </h5>
-
-            <div className="col-12 col-sm-7  p-3">
-              <button
-                className="edit-user-btn p-3 col-10 col-lg-6 fw-bold"
-                onClick={taskDelivered}
-              >
-                Task Delivered
-              </button>
-            </div>
-          </div>} */}
 
         <div className='row bg-white adduser-form p-3 my-2 justify-content-center'>
           <h1 className='edit-form-lable '>Comments</h1>
