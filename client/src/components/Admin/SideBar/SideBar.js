@@ -50,112 +50,112 @@ class SideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="users" className='' onClick={()=>{window.location.href = '/'}}>
+          <NavItem eventKey="users" className='nav-link' onClick={()=>{window.location.href = '/'}}>
             <NavIcon >
-                <FaUsers className='fs-5'/>
+                <FaUsers className='f5'/>
             </NavIcon>
              <NavText >
-               <p className='fs-4'>Users </p> 
+               <p className='f4'>Users </p> 
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/tasks'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/tasks'}}>
             <NavIcon>
-                <FaTasks className='fs-5' />
+                <FaTasks className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Tasks</p>
+             <p className="f4"> Tasks</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/accounts'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/accounts'}}>
             <NavIcon>
-                <MdCalculate className='fs-5' />
+                <MdCalculate className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Accounts</p>
+             <p className="f4"> Accounts</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/transactions'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/transactions'}}>
             <NavIcon>
-                <AiOutlineTransaction className='fs-5' />
+                <AiOutlineTransaction className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Transactions</p>
+             <p className="f4"> Transactions</p>
             </NavText>           
           </NavItem>
 
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/freelancers'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
-                <SiFreelancer className='fs-5' />
+                <SiFreelancer className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Freelancers</p>
+             <p className="f4"> Freelancers</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/clients'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/clients'}}>
             <NavIcon>
-                <FaHospitalUser className='fs-5' />
+                <FaHospitalUser className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Clients</p>
+             <p className="f4"> Clients</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/specialities'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/specialities'}}>
             <NavIcon>
-                <BiSolidCategoryAlt className='fs-5' />
+                <BiSolidCategoryAlt className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Specialities</p>
+             <p className="f4"> Specialities</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/currency'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/currency'}}>
             <NavIcon>
-                <BsCurrencyExchange className='fs-5' />
+                <BsCurrencyExchange className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Currency</p>
+             <p className="f4"> Currency</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/statuses'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/statuses'}}>
             <NavIcon>
-                <TbStatusChange className='fs-5' />
+                <TbStatusChange className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Status</p>
+             <p className="f4"> Status</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/profit'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/profit'}}>
             <NavIcon>
-                <RiWaterPercentFill className='fs-5' />
+                <RiWaterPercentFill className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Profit</p>
+             <p className="f4"> Profit</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/settings'}}>
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>
-                <AiFillSetting className='fs-5' />
+                <AiFillSetting className='f5' />
             </NavIcon>
              <NavText>
-             <p className="fs-4"> Settings</p>
+             <p className="f4"> Settings</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="home" className='log-out' onClick={logout}>
+          <NavItem eventKey="home" className='log-out nav-link' onClick={logout}>
             <NavIcon>
-                <BiLogOut className='fs-5'/>
+                <BiLogOut className='f5'/>
             </NavIcon>
              <NavText>
-              <p className="fs-4">
+              <p className="f4">
                 LOG OUT
               </p>
             </NavText>           

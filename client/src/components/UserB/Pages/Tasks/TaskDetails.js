@@ -232,7 +232,7 @@ const TaskDetails = () => {
         <h2 className="col-12 col-lg-7 text-center system-head p-0">  Task Details</h2>
       </div>
       {/* ////////////////////////////////////////////// */}
-      <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1'>
+      <div className='row co-12 col-lg-10 justify-content-center p-1 mx-1'>
         <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
           <div className="col-12 row p-3 justify-content-center">
