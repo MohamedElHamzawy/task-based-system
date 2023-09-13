@@ -50,7 +50,7 @@ class SideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="users" className=' my-1' onClick={()=>{window.location.href = '/'}}>
+          <NavItem eventKey="users" className='' onClick={()=>{window.location.href = '/'}}>
             <NavIcon >
                 <FaUsers className='fs-4'/>
             </NavIcon>
@@ -59,7 +59,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/tasks'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/tasks'}}>
             <NavIcon>
                 <FaTasks className='fs-4' />
             </NavIcon>
@@ -68,7 +68,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/accounts'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/accounts'}}>
             <NavIcon>
                 <MdCalculate className='fs-4' />
             </NavIcon>
@@ -77,7 +77,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/transactions'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/transactions'}}>
             <NavIcon>
                 <AiOutlineTransaction className='fs-4' />
             </NavIcon>
@@ -87,7 +87,7 @@ class SideBar extends React.Component {
           </NavItem>
 
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/freelancers'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
                 <SiFreelancer className='fs-4' />
             </NavIcon>
@@ -96,7 +96,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/clients'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/clients'}}>
             <NavIcon>
                 <FaHospitalUser className='fs-4' />
             </NavIcon>
@@ -105,7 +105,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className='my-1' onClick={()=>{window.location.href = '/specialities'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/specialities'}}>
             <NavIcon>
                 <BiSolidCategoryAlt className='fs-4' />
             </NavIcon>
@@ -114,7 +114,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/currency'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/currency'}}>
             <NavIcon>
                 <BsCurrencyExchange className='fs-4' />
             </NavIcon>
@@ -123,7 +123,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/statuses'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/statuses'}}>
             <NavIcon>
                 <TbStatusChange className='fs-4' />
             </NavIcon>
@@ -132,7 +132,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/profit'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/profit'}}>
             <NavIcon>
                 <RiWaterPercentFill className='fs-4' />
             </NavIcon>
@@ -141,7 +141,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-1' onClick={()=>{window.location.href = '/settings'}}>
+          <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>
                 <AiFillSetting className='fs-4' />
             </NavIcon>
@@ -150,7 +150,7 @@ class SideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="home" className='log-out mt-2' onClick={logout}>
+          <NavItem eventKey="home" className='log-out mt-1' onClick={logout}>
             <NavIcon>
                 <BiLogOut className='fs-4'/>
             </NavIcon>
