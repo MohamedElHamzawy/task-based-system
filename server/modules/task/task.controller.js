@@ -105,7 +105,7 @@ const getTask = async (req,res,next) => {
         } else if (role == "specialistService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
-            .select("_id title description channel freelancer speciality taskStatus deadline cost")
+            .select("_id title description channel freelancer task_currency speciality taskStatus deadline cost")
             .populate(["speciality", "taskStatus", "freelancer"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const customerOfferMin = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
