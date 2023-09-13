@@ -13,7 +13,7 @@ const {
 
 router.get("/", auth(), getMyTasks);
 router.get("/:id", auth(), getTask);
-router.get("/dateFilter", dateFilterTasks);
+router.get("/filter/date", dateFilterTasks);
 router.post("/", auth(), createTask);
 router.post("/partial/:id", auth(), partialUpdateTask);
 router.post("/:id", auth(), updateTask);
