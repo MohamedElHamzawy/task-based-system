@@ -1,5 +1,6 @@
 const {getAllClients, 
     getClient, 
+    getSortedClients,
     createClient, 
     updateClient, 
     deleteClient
@@ -8,6 +9,7 @@ const router = require("express").Router();
 
 router.get("/", getAllClients);
 router.get("/:id", getClient);
+router.get("/sort/:sort", getSortedClients);
 router.post("/", createClient);
 router.post("/:id", updateClient);
 router.delete("/:id", deleteClient);

@@ -13,6 +13,23 @@ const getAllFreelancers = async (req,res,next) => {
     }
 }
 
+const getSortedFreelancers = async (req,res,next) => {
+    try {
+        const sortation = req.params.sort;
+        if (sortation == "completed") {
+            const allFreelancers = await freelancerModel.find({}).sort({completedCount: -1});
+            res.json({freelancers: allFreelancers});
+        } else if (sortation == "profit") {
+            const allFreelancers = await freelancerModel.find({}).sort({totalProfit: -1});
+            res.json({freelancers: allFreelancers});
+        } else {
+            return next(new HttpError("You can't sort with this attribute", 404));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const getFreelancer = async (req, res, next) => {
     try {
         const freelancerID = req.params.id;
@@ -71,4 +88,4 @@ const deleteFreelancer = async (req,res,next) => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
-module.exports = {getAllFreelancers, getFreelancer, createFreelancer, updateFreelancer, deleteFreelancer}
+module.exports = {getAllFreelancers, getFreelancer, getSortedFreelancers, createFreelancer, updateFreelancer, deleteFreelancer}

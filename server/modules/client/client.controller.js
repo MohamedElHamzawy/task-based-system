@@ -12,6 +12,23 @@ const getAllClients = async (req,res,next) => {
     }
 }
 
+const getSortedClients = async (req,res,next) => {
+    try {
+        const sortation = req.params.sort;
+        if (sortation == "completed") {
+            const allClients = await clientModel.find({}).sort({completedCount: -1});
+            res.json({clients: allClients});
+        } else if (sortation == "profit") {
+            const allClients = await clientModel.find({}).sort({totalProfit: -1});
+            res.json({clients: allClients});
+        } else {
+            return next(new HttpError("You can't sort with this attribute", 404));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const getClient = async (req,res,next) => {
     try {
         const clientID = req.params.id;
@@ -86,4 +103,4 @@ const deleteClient = async (req,res,next) => {
     }
 }
 
-module.exports = {getAllClients, getClient, createClient, updateClient, deleteClient}
+module.exports = {getAllClients, getClient, getSortedClients, createClient, updateClient, deleteClient}
