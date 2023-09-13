@@ -63,8 +63,13 @@ const refuseTask = async (taskID, userName, userID) => {
 const deliverTask = async (taskID,userName,userID) => {
     const thisTask = await taskModel.findOne({_id: taskID});
 
+    const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
+    const freelancer = await freelancerModel.findById({_id: thisTask.freelancer});
+    const client = await clientModel.findById({_id: thisTask.client});
+
     const freelancerAccount = await accountModel.findOne({owner: thisTask.freelancer});
-    const transactionF = await new transactionModel({transactiontype: "cost", task: taskID, amount: thisTask.cost, method: "system", account_id: freelancerAccount._id}).save();
+    const transactF = thisTask.cost / freelancer.currency;
+    const transactionF = await new transactionModel({transactiontype: "cost", task: taskID, amount: transactF, method: "system", account_id: freelancerAccount._id}).save();
     const newBalanceF = parseFloat(freelancerAccount.balance) + parseFloat(transactionF.amount);
     await accountModel.findByIdAndUpdate({_id: freelancerAccount._id}, {balance: newBalanceF});
 
@@ -73,17 +78,14 @@ const deliverTask = async (taskID,userName,userID) => {
     const newBalanceC = parseFloat(clientAccount.balance) + parseFloat(transactionC.amount);
     await accountModel.findByIdAndUpdate({_id: clientAccount._id}, {balance: newBalanceC});
 
-    const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
     const profit_amount = (thisTask.paid * currencyValue.priceToEGP) - thisTask.cost;
     await taskModel.findByIdAndUpdate({_id: taskID}, {profit_amount: profit_amount});
 
-    const client = await clientModel.findById({_id: thisTask.client});
     const newClientCompletedCount = client.completedCount + 1;
     const newClientTotalGain = client.totalGain + thisTask.paid;
     const newClientTotalProfit = client.totalProfit + profit_amount;
     await clientModel.findByIdAndUpdate({_id: thisTask.client}, {completedCount: newClientCompletedCount, totalGain: newClientTotalGain, totalProfit: newClientTotalProfit});
 
-    const freelancer = await freelancerModel.findById({_id: thisTask.freelancer});
     const newfreelancerCompletedCount = freelancer.completedCount + 1;
     const newfreelancerTotalGain = freelancer.totalGain + (thisTask.paid * currencyValue.priceToEGP);
     const newfreelancerTotalProfit = freelancer.totalProfit + profit_amount;
