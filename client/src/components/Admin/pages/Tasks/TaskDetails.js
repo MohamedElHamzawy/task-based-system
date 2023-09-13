@@ -227,7 +227,7 @@ const TaskDetails = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 m-0 justify-content-center">
+    <div className="text-center row w-100 m-0  justify-content-center">
       <ErrorModal error={error} onClear={errorHandler} />
       <div className="row  p-2">
         <div className="col-3 text-center">
@@ -238,9 +238,8 @@ const TaskDetails = () => {
           <button className="task-edit-btn p-2 px-4 fs-3 "onClick={()=>setEditTask(!editTask)} ><FaEdit /> </button>
         </div>
       </div>
-      {/* ////////////////////////////////////////////// */}
-      <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1'>
-
+  {/* ////////////////////////////////////////////// */}
+    <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1 h-100'>
       {!editTask ?
         <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
@@ -457,8 +456,8 @@ const TaskDetails = () => {
         </div>
 
       </div>
-
-      <div className='row col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
+{/* /////////////////////////////////////////////// */}
+      <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
         <div>
           <h1 className='edit-form-lable p-4'>Notes</h1>
           <div className='row p-0 m-0'>
@@ -476,6 +475,7 @@ const TaskDetails = () => {
           </div>
         </div>
       </div>
+{/* /////////////////////////////////////////////// */}
 
     </div>
   )
