@@ -222,7 +222,7 @@ const partialUpdateTask = async (req,res,next) => {
             const msg = await refuseTask(taskID, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
-        } else if (currentStatus.slug == "cancelled") {
+        } else if (currentStatus.slug == "cancel") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
             await new noteModel({content: `${req.user.fullname} has set task to be cancelled in ${date}`, user_id: req.user._id, task_id: taskID}).save();
