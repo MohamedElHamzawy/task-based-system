@@ -15,7 +15,24 @@
     background-color: #6B5B95;
 }
 
-
+.task-edit-btn{
+    color: white;
+    border: 0px;
+    background-color: rgb(34, 180, 104);
+    border-radius: 10px;
+}
+.task-edit-btn:hover{
+    background-color: rgb(27, 150, 86);
+}
+.edit-task-btn{
+    color: white;
+    border: 0px;
+    background-color: #9B2335;
+    border-radius: 10px;
+}
+.edit-task-btn:hover{
+    background-color: #ba2c41;
+}
 .task-card {
     border-radius: 20px;
 }
