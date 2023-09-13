@@ -94,8 +94,8 @@ const getTask = async (req,res,next) => {
             .select("_id title description channel client speciality taskStatus deadline task_currency paid cost")
             .populate(["client", "speciality", "taskStatus", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
-            const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMax = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMin = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
             const offer = {
                 specialistOfferMin,
                 specialistOfferMax
@@ -105,11 +105,11 @@ const getTask = async (req,res,next) => {
         } else if (role == "specialistService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
-            .select("_id title description channel freelancer task_currency speciality taskStatus deadline cost")
+            .select("_id title description channel freelancer paid task_currency speciality taskStatus deadline cost")
             .populate(["speciality", "taskStatus", "freelancer"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const customerOfferMin = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
-            const customerOfferMax = (task.paid - (task.paid * profitMaxPercentage/100)) * currencyValue.priceToEGP;
+            const customerOfferMax = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
+            const customerOfferMin = (task.paid - (task.paid * profitMaxPercentage/100)) * currencyValue.priceToEGP;
             const offer = {
                 customerOfferMin,
                 customerOfferMax
