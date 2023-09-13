@@ -25,7 +25,7 @@ const getMyTasks = async (req,res,next) => {
                 totalProfit += task.profit_amount;
             });
             const totalProfitPercentage = totalProfit/totalGain*100;
-            res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
+            res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage.toFixed(2)});
         } else if (role == "customerService") {
             const tasks = await taskModel.find({created_by: req.user._id}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({tasks: tasks});
