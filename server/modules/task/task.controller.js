@@ -75,8 +75,8 @@ const getTask = async (req,res,next) => {
             .findOne({_id: taskID})
             .populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const specialistOfferMax = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
-            const specialistOfferMin = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
             const customerOfferMax = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
             const customerOfferMin = (task.paid - (task.paid * profitMaxPercentage/100)) * currencyValue.priceToEGP;
             const offer = {
@@ -94,8 +94,8 @@ const getTask = async (req,res,next) => {
             .select("_id title description channel client speciality taskStatus deadline task_currency paid cost")
             .populate(["client", "speciality", "taskStatus", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const specialistOfferMax = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
-            const specialistOfferMin = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
             const offer = {
                 specialistOfferMin,
                 specialistOfferMax
@@ -222,7 +222,7 @@ const partialUpdateTask = async (req,res,next) => {
             const msg = await refuseTask(taskID, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
-        } else if (currentStatus.slug == "cancelled") {
+        } else if (currentStatus.slug == "cancel") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
             await new noteModel({content: `${req.user.fullname} has set task to be cancelled in ${date}`, user_id: req.user._id, task_id: taskID}).save();
