@@ -169,7 +169,7 @@ const createTask = async (req,res,next) => {
 }
 
 const partialUpdateTask = async (req,res,next) => {
-    try {
+    // try {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const {statusID} = req.body;
@@ -235,9 +235,9 @@ const partialUpdateTask = async (req,res,next) => {
         } else {
             return next(new HttpError("You are not authorized to make this edit", 401));
         }
-    } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
-    }
+    // } catch (error) {
+    //     return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    // }
 }
 
 const updateTask = async (req,res,next) => {
