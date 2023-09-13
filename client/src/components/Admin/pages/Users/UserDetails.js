@@ -122,9 +122,6 @@ const UserDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/user/${id}`).then((res) => {
           setUser(res.data.user);
-          // setTasksCount(res.data.tasksCount)
-          // setTotalCost(res.data.totalCost)
-          // setTotalGain(res.data.totalGain)
           setUserTasks(res.data.userTasks)
           if (res.data.user.user_role == 'specialistService') {
             setspecialityId(res.data.user.speciality);

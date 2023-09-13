@@ -5,12 +5,6 @@ import './Tasks.css'
 import { FaTasks } from 'react-icons/fa';
 import { FiFilter } from 'react-icons/fi';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-import { MdPendingActions } from 'react-icons/md';
-import { MdRateReview } from 'react-icons/md';
-import { BiSolidOffer } from 'react-icons/bi';
-import { GiProgression } from 'react-icons/gi';
-import { AiOutlineFileDone } from 'react-icons/ai';
-import { TbTruckDelivery } from 'react-icons/tb';
 import { GiProfit } from 'react-icons/gi';
 import { FaCoins } from 'react-icons/fa';
 import { GiPayMoney } from 'react-icons/gi';
@@ -32,7 +26,7 @@ const getSearchFilter = (searchName, tasks) => {
 const getSpecialityFilter = (speciality, tasks) => {
   if (!speciality) {
     return tasks;
-  } return tasks.filter((tasks) => tasks.speciality.specialityName.includes(speciality));
+  } return tasks.filter((tasks) => tasks.speciality.sub_speciality.includes(speciality));
 };
 // Status filter
 const getStatusFilter = (status, tasks) => {
@@ -62,11 +56,12 @@ const Tasks = () => {
     let timerId;
     if (loading) {
       setIsLoading(true);
-      // timerId = setTimeout(async () => {
-      //   await axios.get("http://localhost:5000/api/status/").then((res) => {
-      //     setStatuses(res.data.statuses);
-      //   });
-      // });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/status/",
+          { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+            setStatuses(res.data.statuses);
+          });
+      });
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
@@ -132,7 +127,7 @@ const Tasks = () => {
             onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
-              <option value={speciality.specialityName} key={speciality._id}>{speciality.specialityName}</option>
+              <option value={speciality.sub_speciality} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
           <select id="status" name="status" className="search col-4" value={status}
@@ -194,38 +189,20 @@ const Tasks = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
                       task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
                         task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
                           task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
                             task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
                                 task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
                                   task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
                                     task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                     'anystatus  p-3 status col-12 '
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+
                 {task.taskStatus.statusname}
               </span>
 
@@ -234,7 +211,7 @@ const Tasks = () => {
             <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            {/* <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p> */}
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
@@ -251,50 +228,36 @@ const Tasks = () => {
         }
 
         {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((task) => (
-          <div key={task._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
 
             <div className="col-12 fw-bold row text-center">
 
-              <span className={
-                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-3 status col-12' :
-                  task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary   p-3 status col-12 ' :
-                            'anystatus  p-3 status col-12 '
-              }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
+                }>
+
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
             <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            {/* <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(task._id)}> <RiDeleteBinFill /> </button> */}
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
@@ -315,46 +278,32 @@ const Tasks = () => {
 
             <div className="col-12 fw-bold row text-center">
 
-              <span className={
-                task.taskStatus.statusname == 'pending' ? 'bg-warning  p-3 status col-12 ' :
-                  task.taskStatus.statusname == 'admin review' ? 'bg-danger   p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'in negotiation' ? 'bg-info   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'in progress' ? 'bg-primary   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'completed' ? 'bg-success   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'delivered to client' ? 'bg-secondary   p-3 status col-12 ' :
-                            'anystatus  p-3 status col-12 '
-              }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
+                }>
+
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
             <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            {/* <button className="delete-btn p-2 px-3" onClick={() => deleteSpecialityHandler(task._id)}> <RiDeleteBinFill /> </button> */}
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>

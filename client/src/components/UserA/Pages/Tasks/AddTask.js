@@ -43,6 +43,7 @@ const channelReducer = (state, action) => {
   }
 };
 
+
 //task price validation
 const taskPriceReducer = (state, action) => {
   switch (action.type) {
@@ -82,10 +83,12 @@ const descriptionReducer = (state, action) => {
 };
 
 const AddTask = () => {
+  const token = GetCookie("UserA")
 
   const [specialities, setSpecialities] = useState([]);
   const [clients, setClients] = useState([]);
   const [currencies, setCurrencies] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -111,6 +114,13 @@ const AddTask = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/status/" ,{ headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+          setStatuses(res.data.statuses);
         });
         setLoading(false);
         setIsLoading(false);
@@ -221,10 +231,9 @@ const AddTask = () => {
 
 
   const [deadline, setDeadline] = useState()
+  const [status, setStatus] = useState()
 
   /////////////////////////////////
-
-  const token = GetCookie("UserA")
 
   const newTaskSubmitHandler = async (event) => {
     event.preventDefault();
@@ -242,11 +251,11 @@ const AddTask = () => {
           speciality : speciality ,
           deadline : deadline ,
           task_currency : currency ,
-          paid : taskPriceState.value
+          paid : taskPriceState.value,
+          status :status
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       const responseData = await response;
       console.log(responseData)
       if (!(response.statusText === "OK")) {
@@ -286,20 +295,7 @@ const AddTask = () => {
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newTaskSubmitHandler}>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Title :</label>
-          <input type='text' placeholder='Title '
-            value={titleState.value}
-            onChange={titleChangeHandler}
-            onBlur={titleTouchHandler}
-            isvalid={titleState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!titleState.isvalid &&
-              titleState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
-        </div>
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+      <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Channel :</label>
           <input type='text' placeholder='Channel '
             value={channelState.value}
@@ -313,12 +309,18 @@ const AddTask = () => {
           />
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>DeadLine :</label>
-          <input type='date' placeholder='DeadLine'
-            onChange={(e) => (setDeadline(e.target.value))}
-            className='col-10 col-lg-7 search p-2 '
-          />
+
+        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
+          <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Clients:</label>
+
+          <select id="clients" name="clients" className="p-2 px-4 search col-10 col-lg-7" value={client}
+            onChange={(event) => clientChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>clients</option>
+            {clients.map((client) => (
+              <option value={client._id} key={client._id}>{client.clientname}</option>
+            ))}
+          </select>
+
         </div>
 
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
@@ -328,12 +330,38 @@ const AddTask = () => {
             onChange={(event) => specialityChangeHandler(event.target.value)}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.specialityName}</option>
+              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
 
         </div>
 
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>DeadLine :</label>
+          <input   type="datetime-local"
+            id="meeting-time"
+            name="meeting-time"
+             placeholder='DeadLine'
+            onChange={(e) => (setDeadline(e.target.value))}
+            className='col-10 col-lg-7 search p-2 '
+          />
+        </div>
+
+
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p'>Status :</label>
+          <select id="status" name="status" className="p-2 px-4 search col-10 col-lg-7" value={status}
+            onChange={(event) => setStatus(event.target.value)}>
+            <option value="" className='text-secondary'>Status</option>
+            {statuses.map((status) => (
+              status.statusname == "approved" || status.statusname == "waiting offer" ?
+              <option value={status._id} key={status._id}>{status.statusname}</option> 
+                :''          
+            ))}    
+          </select>
+        </div>
+
+                
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Task Price :</label>
           <input type='number' placeholder='Task Price '
@@ -343,6 +371,20 @@ const AddTask = () => {
             isvalid={taskPriceState.isvalid.toString()}
             className={`col-10 col-lg-7 search p-2 ${!taskPriceState.isvalid &&
               taskPriceState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
+        </div>
+
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Title :</label>
+          <input type='text' placeholder='Title '
+            value={titleState.value}
+            onChange={titleChangeHandler}
+            onBlur={titleTouchHandler}
+            isvalid={titleState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!titleState.isvalid &&
+              titleState.isTouched &&
               "form-control-invalid"
               }`}
           />
@@ -361,18 +403,7 @@ const AddTask = () => {
 
         </div>
 
-        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Clients:</label>
 
-          <select id="clients" name="clients" className="p-2 px-4 search col-10 col-lg-7" value={client}
-            onChange={(event) => clientChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>clients</option>
-            {clients.map((client) => (
-              <option value={client._id} key={client._id}>{client.clientname}</option>
-            ))}
-          </select>
-
-        </div>
 
         <div className='col-12 m-1 py-2 p-0'>
           <label className='col-10 col-lg-2 fw-bold add-user-p py-2 '>Description :</label>
@@ -391,13 +422,25 @@ const AddTask = () => {
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
+              status == '64fdd400a86587827152ab3c' ? 
+              !channelState.isvalid ||
+              !titleState.isvalid ||
+              !descriptionState.isvalid ||
+              !taskPriceState.isvalid||
+              !speciality ||
+              !client||
+              !currency||
+              !deadline ||
+              !status 
+              :
               !channelState.isvalid ||
               !titleState.isvalid ||
               !descriptionState.isvalid ||
               !speciality ||
               !client||
               !currency||
-              !deadline 
+              !deadline ||
+              !status 
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Add

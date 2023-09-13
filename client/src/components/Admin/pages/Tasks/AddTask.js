@@ -43,24 +43,6 @@ const channelReducer = (state, action) => {
   }
 };
 
-//percentage validation
-// const percentageReducer = (state, action) => {
-//   switch (action.type) {
-//     case "CHANGE":
-//       return {
-//         ...state,
-//         value: action.percentage,
-//         isvalid: validate(action.percentage, action.validators),
-//       };
-//     case "TOUCH":
-//       return {
-//         ...state,
-//         isTouched: true,
-//       };
-//     default:
-//       return state;
-//   }
-// };
 
 //task price validation
 const taskPriceReducer = (state, action) => {
@@ -206,20 +188,6 @@ const AddTask = () => {
     });
   };
 
-  //percentage validation
-  // const [percentageState, dispatch3] = useReducer(percentageReducer, {
-  //   value: "",
-  //   isvalid: false,
-  //   isTouched: false,
-  // });
-
-  // const percentageChangeHandler = (event) => {
-  //   dispatch3({
-  //     type: "CHANGE",
-  //     percentage: event.target.value,
-  //     validators: [VALIDATOR_MINLENGTH(1)],
-  //   });
-  // };
 
   //task price validation
   const [taskPriceState, dispatch4] = useReducer(taskPriceReducer, {
@@ -422,21 +390,6 @@ const AddTask = () => {
           />
         </div>
 
-
-        {/* <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Percentage :</label>
-          <input wtype='number' placeholder='Percentage '
-            value={percentageState.value}
-            onChange={percentageChangeHandler}
-            className={`col-6 col-lg-6 search p-2 ${!percentageState.isvalid &&
-              percentageState.isTouched &&
-              "form-control-invalid"
-              }`}
-          /> <span className='col-1'>
-            %
-          </span>
-        </div> */}
-
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
           <label htmlFor="currency" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Currency:</label>
 
@@ -483,7 +436,6 @@ const AddTask = () => {
               !channelState.isvalid ||
               !titleState.isvalid ||
               !descriptionState.isvalid ||
-              // !taskPriceState.isvalid||
               !speciality ||
               !client||
               !currency||
