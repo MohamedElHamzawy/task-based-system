@@ -71,7 +71,7 @@ const Currency = () => {
 
       <div className="col-12 row text-center system-head p-2">
         <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+          <h1 className='logo text-white bg-danger p-2'>Specialist Service</h1>
         </div>
         <h1 className="col-12 col-md-6 text-center ">System Currencies</h1>
       </div>

@@ -102,7 +102,7 @@ const Tasks = () => {
 
       <div className="col-12 row text-center system-head p-2">
         <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+          <h1 className='logo text-white bg-danger p-2'>Customer Service</h1>
         </div>
         <h1 className="col-12 col-md-6 text-center ">System Tasks</h1>
       </div>
@@ -160,7 +160,7 @@ const Tasks = () => {
                               task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
                                 task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
                                   task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
                                       task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
                                         task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
                                           'anystatus  p-3 status col-12 '
@@ -206,7 +206,7 @@ const Tasks = () => {
                               task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
                                 task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
                                   task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
                                       task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
                                         task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
                                           'anystatus  p-3 status col-12 '
@@ -252,7 +252,7 @@ const Tasks = () => {
                               task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
                                 task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
                                   task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
                                       task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
                                         task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
                                           'anystatus  p-3 status col-12 '

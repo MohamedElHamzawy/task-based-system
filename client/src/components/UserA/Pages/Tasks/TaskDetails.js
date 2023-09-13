@@ -299,10 +299,11 @@ const TaskDetails = () => {
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
           </div> */}
 
-          {task.paid && <div className="col-12 col-md-6  row ">
+          {task.paid ?
+           <div className="col-12 col-md-6  row ">
             <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3 data">Customer Price:</h5>
             <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold text-danger data">{task.paid} </p>
-          </div>
+          </div> :''
           }
           <div className='col-12 col-md-6 row'>
             <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-3 data">Currency:</h5>
