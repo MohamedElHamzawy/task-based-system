@@ -34,18 +34,10 @@
     font-size: 20px !important;
 }
 
-@media only screen and (max-height: 800px) {
+ @media only screen and (max-height: 900px) {
     .nav-link {
         margin-top: 0px !important;
         padding: 0px !important;
         margin: 0px !important;
     }
-
-    .f4 {
-        font-size: 20px !important;
-    }
-
-    .f5 {
-        font-size: 18px !important;
-    }
-}
+} 
