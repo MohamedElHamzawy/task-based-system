@@ -42,7 +42,7 @@ class SideBar extends React.Component {
 
   render() {
     return (
-      <SideNav defaultExpanded={!this.state.isVisible} className='sidebar' >
+      <SideNav defaultExpanded={this.state.isVisible} className='sidebar' >
         <SideNav.Toggle
           onClick={() => {
             this.setState({ isVisible: !this.state.isVisible });
@@ -52,107 +52,107 @@ class SideBar extends React.Component {
 
           <NavItem eventKey="users" className='' onClick={()=>{window.location.href = '/'}}>
             <NavIcon >
-                <FaUsers className='fs-4'/>
+                <FaUsers className='fs-5'/>
             </NavIcon>
              <NavText >
-               <p className='fs-3'>Users </p> 
+               <p className='fs-4'>Users </p> 
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/tasks'}}>
             <NavIcon>
-                <FaTasks className='fs-4' />
+                <FaTasks className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Tasks</p>
+             <p className="fs-4"> Tasks</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/accounts'}}>
             <NavIcon>
-                <MdCalculate className='fs-4' />
+                <MdCalculate className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Accounts</p>
+             <p className="fs-4"> Accounts</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/transactions'}}>
             <NavIcon>
-                <AiOutlineTransaction className='fs-4' />
+                <AiOutlineTransaction className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Transactions</p>
+             <p className="fs-4"> Transactions</p>
             </NavText>           
           </NavItem>
 
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
-                <SiFreelancer className='fs-4' />
+                <SiFreelancer className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Freelancers</p>
+             <p className="fs-4"> Freelancers</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/clients'}}>
             <NavIcon>
-                <FaHospitalUser className='fs-4' />
+                <FaHospitalUser className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Clients</p>
+             <p className="fs-4"> Clients</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/specialities'}}>
             <NavIcon>
-                <BiSolidCategoryAlt className='fs-4' />
+                <BiSolidCategoryAlt className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Specialities</p>
+             <p className="fs-4"> Specialities</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/currency'}}>
             <NavIcon>
-                <BsCurrencyExchange className='fs-4' />
+                <BsCurrencyExchange className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Currency</p>
+             <p className="fs-4"> Currency</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/statuses'}}>
             <NavIcon>
-                <TbStatusChange className='fs-4' />
+                <TbStatusChange className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Status</p>
+             <p className="fs-4"> Status</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/profit'}}>
             <NavIcon>
-                <RiWaterPercentFill className='fs-4' />
+                <RiWaterPercentFill className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Profit</p>
+             <p className="fs-4"> Profit</p>
             </NavText>           
           </NavItem>
 
           <NavItem eventKey="tasks" className='' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>
-                <AiFillSetting className='fs-4' />
+                <AiFillSetting className='fs-5' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Settings</p>
+             <p className="fs-4"> Settings</p>
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="home" className='log-out mt-1' onClick={logout}>
+          <NavItem eventKey="home" className='log-out' onClick={logout}>
             <NavIcon>
-                <BiLogOut className='fs-4'/>
+                <BiLogOut className='fs-5'/>
             </NavIcon>
              <NavText>
               <p className="fs-4">
