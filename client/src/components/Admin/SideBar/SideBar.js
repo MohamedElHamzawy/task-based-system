@@ -42,7 +42,7 @@ class SideBar extends React.Component {
 
   render() {
     return (
-      <SideNav defaultExpanded={this.state.isVisible} className='sidebar' >
+      <SideNav defaultExpanded={!this.state.isVisible} className='sidebar' >
         <SideNav.Toggle
           onClick={() => {
             this.setState({ isVisible: !this.state.isVisible });
