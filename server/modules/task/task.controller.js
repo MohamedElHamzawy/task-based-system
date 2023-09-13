@@ -41,6 +41,26 @@ const getMyTasks = async (req,res,next) => {
     }
 }
 
+const dateFilterTasks = async (req,res,next) => {
+    try {
+        const {start, end} = req.body;
+        const tasks = await taskModel.find({}).gte('createdAt', start).lte('createdAt', end).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        const tasksCount = tasks.length;
+        let totalCost = 0;
+        let totalGain = 0;
+        let totalProfit = 0;
+        tasks.forEach(task => {
+            totalCost += task.cost;
+            totalGain += (task.paid * task.task_currency.priceToEGP);
+            totalProfit += task.profit_amount;
+        });
+        const totalProfitPercentage = totalProfit/totalGain*100;
+        res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const getTask = async (req,res,next) => {
     try {
         const role = req.user.user_role;
@@ -288,4 +308,4 @@ const deleteTask = async (req,res,next) => {
     }
 }
 
-module.exports = {getMyTasks, getTask, createTask, partialUpdateTask, updateTask, deleteTask}
+module.exports = {getMyTasks, getTask, dateFilterTasks, createTask, partialUpdateTask, updateTask, deleteTask}
