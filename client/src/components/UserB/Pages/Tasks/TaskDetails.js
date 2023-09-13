@@ -287,7 +287,7 @@ const TaskDetails = () => {
             <h5 className="col-6 edit-form-lable text-start pt-3 data ">  Channel :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {task.channel} </p>
           </div>
-          <div className="col-12 col-md-6  row ">
+          {/* <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-3 data">  Client :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data">
               <a className="text-dark fw-bold" href={`/client/${client._id}`}>
@@ -298,7 +298,7 @@ const TaskDetails = () => {
           <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Client Website:</h5>
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold data"> {client.website} </p>
-          </div>
+          </div> */}
 
           <div className='col-12 col-md-6  row'>
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Customer Offer:</h5>
@@ -315,7 +315,7 @@ const TaskDetails = () => {
           </div>
 
 
-          <div className="col-12 col-md-6  row ">
+          {/* <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  UserName :</h5>
             <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data">
               <a className="text-dark fw-bold" href={`/user/${user._id}`}>
@@ -326,7 +326,7 @@ const TaskDetails = () => {
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-3 data">  UserRole :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {user && user.user_role} </p>
-          </div>
+          </div> */}
           {task.freelancer &&
             <>
               <div className="col-12 col-md-6 row ">

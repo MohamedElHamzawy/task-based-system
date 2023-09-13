@@ -19,6 +19,14 @@ import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
 import { GiProfit } from 'react-icons/gi';
+import { FiFilter } from 'react-icons/fi';
+
+// Date filter
+const getDateFilter = (start, end, tasks) => {
+  if (!start || !end) {
+    return tasks;
+  } return tasks.filter((task) => start <= task.deadline.split('T')[0] && task.deadline.split('T')[0] <= end);
+};
 
 //clientName validation
 const clientNameReducer = (state, action) => {
@@ -136,14 +144,15 @@ const ClientDetails = () => {
           setClientAccount(res.data.clientAccount)
 
           console.log(res.data)
-        });    
+        });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
-      }); });
+        });
+      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
@@ -153,7 +162,7 @@ const ClientDetails = () => {
 
   //clientName validation
   const [clientNameState, dispatch] = useReducer(clientNameReducer, {
-    value: client.clientname  ,
+    value: client.clientname,
     isvalid: false,
     isTouched: false,
   });
@@ -172,7 +181,7 @@ const ClientDetails = () => {
   };
   //owner validation
   const [ownerState, dispatch9] = useReducer(ownerReducer, {
-    value: client.ownerName  ,
+    value: client.ownerName,
     isvalid: false,
     isTouched: false,
   });
@@ -192,7 +201,7 @@ const ClientDetails = () => {
 
   //clientEmail validation
   const [clientEmailState, dispatch2] = useReducer(clientEmailReducer, {
-    value: client.website  ,
+    value: client.website,
     isvalid: false,
     isTouched: false,
   });
@@ -212,7 +221,7 @@ const ClientDetails = () => {
 
   //country validation
   const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: client.country  ,
+    value: client.country,
     isvalid: false,
     isTouched: false,
   });
@@ -233,7 +242,7 @@ const ClientDetails = () => {
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
-    value: client.phone  ,
+    value: client.phone,
     isvalid: false,
     isTouched: false,
   });
@@ -261,11 +270,11 @@ const ClientDetails = () => {
         `http://localhost:5000/api/client/${client._id}`,
         {
           clientName: clientNameState.value,
-          owner : ownerState.value,
+          owner: ownerState.value,
           website: clientEmailState.value,
           country: countryState.value,
           phone: numberState.value,
-          currency : currency ,
+          currency: currency,
         }
       );
       const responseData = await response;
@@ -311,6 +320,12 @@ const ClientDetails = () => {
     window.location.reload(true);
   };
 
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [withoutFilterData, setwithoutFilterData] = useState(true);
+  const [dateFilterData, setDateFilterData] = useState(false);
+  const DateFilter = getDateFilter(start, end, clientTasks);
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -338,7 +353,7 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Client Name:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.clientname} </p>
           <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
-             <input type='text' placeholder={client.clientname}
+            <input type='text' placeholder={client.clientname}
               value={clientNameState.value}
               onChange={clientNameChangeHandler}
               onBlur={clientNameTouchHandler}
@@ -373,16 +388,16 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">Website:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.website} </p>
           <div className={edit ? "d-inline col-10 col-md-5 pt-3" : 'd-none'} >
-          <input type='website' placeholder={client.website}
-            value={clientEmailState.value}
-            onChange={clientEmailChangeHandler}
-            onBlur={clientEmailTouchHandler}
-            isvalid={clientEmailState.isvalid.toString()}
-            className={`search w-100 p-2 ${!clientEmailState.isvalid &&
-              clientEmailState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />  
+            <input type='website' placeholder={client.website}
+              value={clientEmailState.value}
+              onChange={clientEmailChangeHandler}
+              onBlur={clientEmailTouchHandler}
+              isvalid={clientEmailState.isvalid.toString()}
+              className={`search w-100 p-2 ${!clientEmailState.isvalid &&
+                clientEmailState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
         {/* /////////////////////// */}
@@ -391,15 +406,15 @@ const ClientDetails = () => {
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.phone} </p>
           <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type='number' placeholder={client.phone}
-            value={numberState.value}
-            onChange={numberChangeHandler}
-            onBlur={numbertouchHandler}
-            isvalid={numberState.isvalid.toString()}
-            className={`search w-100 p-2 ${!numberState.isvalid &&
-              numberState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+              value={numberState.value}
+              onChange={numberChangeHandler}
+              onBlur={numbertouchHandler}
+              isvalid={numberState.isvalid.toString()}
+              className={`search w-100 p-2 ${!numberState.isvalid &&
+                numberState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
         {/* /////////////////////// */}
@@ -407,16 +422,16 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Country:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.country} </p>
           <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
-          <input type='text' placeholder={client.country}
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`search w-100 p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+            <input type='text' placeholder={client.country}
+              value={countryState.value}
+              onChange={countryChangeHandler}
+              onBlur={countryTouchHandler}
+              isvalid={countryState.isvalid.toString()}
+              className={`search w-100 p-2 ${!countryState.isvalid &&
+                countryState.isTouched &&
+                "form-control-invalid"
+                }`}
+            />
           </div>
         </div>
         {/* /////////////////////// */}
@@ -424,13 +439,13 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Currency:</h3>
           <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.currency && client.currency.currencyname} </p>
           <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
-          <select id="currencies" name="currencies" className="search w-100 p-2" value={currency}
-            onChange={(event) => setCurrency(event.target.value)}>
-            <option value="" className='text-secondary'>currencies</option>
-            {currencies.map((currency) => (
-              <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
-            ))}
-          </select>
+            <select id="currencies" name="currencies" className="search w-100 p-2" value={currency}
+              onChange={(event) => setCurrency(event.target.value)}>
+              <option value="" className='text-secondary'>currencies</option>
+              {currencies.map((currency) => (
+                <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+              ))}
+            </select>
           </div>
         </div>
         {/* /////////////////////// */}
@@ -508,13 +523,28 @@ const ClientDetails = () => {
 
       {/* /////////////////////////////////////////////////// */}
 
+      <div className="row p-0 m-0 justify-content-center adduser-form">
+        <div className="col-12 col-md-9 text-secondary row p-2">
+          <h3 htmlFor="Speciality" className="my-2 col-12 text-center text-dark fw-bold">Filter:</h3>
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setStart(e.target.value); setDateFilterData(true); setwithoutFilterData(false) }}
+          />
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setEnd(e.target.value); setDateFilterData(true); setwithoutFilterData(false) }}
+          />
+        </div>
+
+      </div>
+
       <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-        {clientTasks && !clientTasks.length == 0 ? clientTasks.map((task) => (
+        {withoutFilterData ? clientTasks && !clientTasks.length == 0 ? clientTasks.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
 
             <div className="col-12 fw-bold row text-center">
 
-            <span
+              <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
                     task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
@@ -557,7 +587,7 @@ const ClientDetails = () => {
             <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
@@ -568,7 +598,68 @@ const ClientDetails = () => {
         )) :
           <div className="row col-12  p-2 text-center">
             <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div> : ''
+        }
+        {dateFilterData ? !DateFilter.length == 0 ? DateFilter.map((task) => (
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
+
+            <div className="col-12 fw-bold row text-center">
+
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      'anystatus  p-3 status col-12 '
+                }>
+                {
+                  task.taskStatus.statusname == 'pending' ?
+                    <MdPendingActions />
+                    :
+                    task.taskStatus.statusname == 'admin review' ?
+                      <MdRateReview />
+                      :
+                      task.taskStatus.statusname == 'in negotiation' ?
+                        <BiSolidOffer />
+                        :
+                        task.taskStatus.statusname == 'in progress' ?
+                          <GiProgression />
+                          :
+                          task.taskStatus.statusname == 'completed' ?
+                            <AiOutlineFileDone />
+                            :
+                            task.taskStatus.statusname == 'delivered to client' ?
+                              <TbTruckDelivery />
+                              :
+                              ''
+                }
+                {task.taskStatus.statusname}
+              </span>
+
+            </div>
+
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
           </div>
+        )) :
+          <div className="row col-12  p-2 text-center">
+            <h3 className=" text-danger edit-form-lable">No Tasks With This Date</h3>
+          </div> : ''
         }
       </div>
 

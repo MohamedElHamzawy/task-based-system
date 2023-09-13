@@ -35,6 +35,13 @@ const getStatusFilter = (status, tasks) => {
   } return tasks.filter((tasks) => tasks.taskStatus.statusname.includes(status));
 };
 
+// Date filter
+
+const getDateFilter = (start ,end, tasks) => {
+  if (!start || !end) {
+    return tasks;
+  } return tasks.filter((task) => start <= task.deadline.split('T')[0] &&  task.deadline.split('T')[0] <= end);
+};
 
 const Tasks = () => {
 
@@ -90,15 +97,19 @@ const Tasks = () => {
 
   const [speciality, setSpeciality] = useState('');
   const [status, setStatus] = useState('');
-
   const [searchName, setSearchName] = useState('');
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [SpecialityFilterData, setSpecialityFilterData] = useState(false);
   const [statusFilterData, setStatusFilterData] = useState(false);
+  const [dateFilterData, setDateFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, tasks);
   const SpecialityFilter = getSpecialityFilter(speciality, tasks);
   const StatusFilter = getStatusFilter(status, tasks);
+  const DateFilter = getDateFilter(start, end, tasks);
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -114,33 +125,43 @@ const Tasks = () => {
 
       <div className="row p-0 m-0 justify-content-center">
 
-        <div className="col-8 col-md-4 p-2">
+        <div className="col-10 col-md-4 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setStatusFilterData(false); setSpeciality(''); setStatus('') }}
+            onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setStatusFilterData(false); setSpeciality(''); setStatus(''); setStart(''); setEnd('') }}
           />
         </div>
 
-        <div className="col-12 col-md-6 text-secondary row p-2">
+        <div className="col-12 col-md-6 text-secondary row p-2 justify-content-center">
 
-          <label htmlFor="Speciality" className="my-2 col-3 text-end "> <FiFilter className="" /> Filter:</label>
-          <select id="speciality" name="speciality" className="search col-4 mx-1" value={speciality}
-            onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus('') }}>
+          <label htmlFor="Speciality" className="my-2 col-sm-3 col-8 text-center "> <FiFilter className="" /> Filter:</label>
+          <select id="speciality" name="speciality" className="search col-sm-4 col-10  m-1 p-2" value={speciality}
+            onChange={(e) => { setSpeciality(e.target.value); setDateFilterData(false); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus(''); setStart(''); setEnd('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
               <option value={speciality.sub_speciality} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
-          <select id="status" name="status" className="search col-4" value={status}
-            onChange={(e) => { setStatus(e.target.value); setStatusFilterData(true); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality('') }}>
+          <select id="status" name="status" className="search col-sm-4 col-10 p-2 m-1" value={status}
+            onChange={(e) => { setStatus(e.target.value); setDateFilterData(false); setStatusFilterData(true); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality(''); setStart(''); setEnd('') }}>
             <option value="" className='text-secondary'>Statuses</option>
             {statuses.map((status) => (
               <option value={status.statusname} key={status._id}>{status.statusname}</option>
             ))}
           </select>
-
-
         </div>
-        <div className="col-8 col-md-2 p-2">
+
+        <div className="col-12 col-md-9 text-secondary row p-2">
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setStart(e.target.value); setDateFilterData(true); setStatusFilterData(false); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality(''); setStatus('') }}
+          />
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setEnd(e.target.value); setDateFilterData(true); setStatusFilterData(false); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality(''); setStatus('') }}
+          />
+        </div>
+
+        <div className="col-8 col-md-3 p-2">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
             <FaTasks className='fs-3' />  Add New Task
           </button>
@@ -312,6 +333,53 @@ const Tasks = () => {
             }
           </div>
         )) :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No Tasks
+            </h2>
+          </div> : ''
+        }
+
+        {dateFilterData ? !DateFilter.length == 0 ? DateFilter.map((task) => (
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
+         
+            {/* <h1>{ start < task.deadline.split('T')[0] < end ? 'y' : 'n'} </h1> */}
+            <div className="col-12 fw-bold row text-center">
+
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
+                }>
+
+                {task.taskStatus.statusname}
+              </span>
+
+            </div>
+
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
+          </div>
+      )) :
           <div className="row  p-3 m-0 text-center" >
             <h2>
               There Is No Tasks

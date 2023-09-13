@@ -4,7 +4,6 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { SiFreelancer } from 'react-icons/si';
 import { FiFilter } from 'react-icons/fi';
-import { RiDeleteBinFill } from 'react-icons/ri';
 
 //search filter
 const getSearchFilter = (searchName, freeLancers) => {
@@ -52,13 +51,33 @@ const FreeLancers = () => {
   }, [loading]);
 
   const [speciality, setSpeciality] = useState('');
-
   const [searchName, setSearchName] = useState('');
+  const [sortedFreelancers, setSortedFreelancers] = useState('');
+
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [SpecialityFilterData, setSpecialityFilterData] = useState(false);
+  const [sortFilterData, setSortFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, freeLancers);
   const SpecialityFilter = getSpecialityFilter(speciality, freeLancers);
+
+  const sortHandler = async (value) => {
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.get(
+        ` http://localhost:5000/api/freelancer/sort/${value}`).then((res) => {
+          setSortedFreelancers(res.data.freelancers);
+          console.log(res.data.freelancers)
+        });
+      setLoading(false);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
 
   const deleteFreelancerHandler = async (id) => {
     setIsLoading(true);
@@ -98,16 +117,16 @@ const FreeLancers = () => {
 
       <div className="row p-0 m-0 ">
 
-        <div className="col-8 col-md-4 p-2">
+        <div className="col-10 col-sm-6 col-lg-3 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setSpeciality('') }}
+            onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setSortFilterData(false); setSpeciality('') }}
           />
         </div>
 
-        <div className="col-12 col-md-5 text-secondary row p-2">
-          <label htmlFor="Speciality" className="m-2 col-5 text-end"> <FiFilter className="" /> Filter:</label>
-          <select id="speciality" name="speciality" className="search col-5" value={speciality}
-            onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setSearchName('') }}>
+        <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter className="" /> Filter:</label>
+          <select id="speciality" name="speciality" className="search col-8 col-sm-7 p-2" value={speciality}
+            onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setSortFilterData(false); setSearchName('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
               <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
@@ -115,7 +134,18 @@ const FreeLancers = () => {
           </select>
         </div>
 
-        <div className="col-12 col-md-3 p-2 text-center">
+        <div className="col-12 col-sm-7 col-lg-3 text-secondary row p-2">
+          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter /> Sort:</label>
+          <select id="role" name="role" className=" search col-8 col-sm-7 p-2"
+            onChange={(e) => { sortHandler(e.target.value); setSearchFilterData(false); setSpecialityFilterData(false); setSortFilterData(true); setSearchName(''); setSpeciality('') }}
+          >
+            <option value="" className="text-secondary">sort</option>
+            <option value="completed">Completed</option>
+            <option value="profit">Profit</option>
+          </select>
+        </div>
+
+        <div className="col-12 col-sm-5 col-lg-3 p-2 text-center">
           <button onClick={() => { window.location.href = '/addfreeLancer' }} className="new-user p-2">
             <SiFreelancer className="fs-3" />  Add New FreeLancer
           </button>
@@ -178,7 +208,30 @@ const FreeLancers = () => {
             </h2>
           </div> : ''
         }
+        {sortFilterData ? !sortedFreelancers.length == 0 ? sortedFreelancers.map((freeLancer) => (
+          <div key={freeLancer._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+            <div className="col-12 fw-bold row text-start">
 
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+                <a className="text-dark fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a>
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
+                <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality.sub_speciality}
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {freeLancer.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p>
+
+            </div>
+          </div>
+        )) :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No FreeLancers
+            </h2>
+          </div> : ''
+        }
       </div>
     </div >
   )

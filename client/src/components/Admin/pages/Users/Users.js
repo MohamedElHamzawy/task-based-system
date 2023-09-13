@@ -44,12 +44,34 @@ const Users = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
-  const [searchFilterData, setSearchFilterData] = useState(true);
   const [searchRole, setSearchRole] = useState('');
+  const [sortedUsers, setSortedUsers] = useState('');
+
+  const [searchFilterData, setSearchFilterData] = useState(true);
   const [RoleFilterData, setRoleFilterData] = useState(false);
+  const [sortFilterData, setSortFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, users);
   const roleFilter = getRoleFilter(searchRole, users);
+
+
+  const sortHandler = async (value) => {
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.get(
+       ` http://localhost:5000/api/user/sort/${value}`).then((res) => {
+        setSortedUsers(res.data.users);
+        console.log(res.data.users)
+      });
+      setLoading(false);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
 
   const deleteUserHandler = async (id) => {
     setIsLoading(true);
@@ -87,27 +109,38 @@ const Users = () => {
         <h1 className="col-12 col-md-6 text-center ">System Users</h1>
       </div>
 
-      <div className="row p-0 m-0 justify-content-md-end ">
+      <div className="row p-0 m-0 justify-content-lg-end col-12 ">
 
-        <div className="col-8 col-md-3 p-2">
+        <div className="col-10 col-sm-6 col-lg-3 p-2 ">
           <input type="name" className="search p-2 w-100" placeholder=" Search Usernames" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value); setRoleFilterData(false); setSearchFilterData(true); setSearchRole('') }}
+            onChange={(e) => { setSearchName(e.target.value); setRoleFilterData(false); setSearchFilterData(true); setSortFilterData(false); setSearchRole('') }}
           />
         </div>
 
-        <div className="col-12 col-md-5 text-secondary row p-2">
-          <label htmlFor="role" className="m-2 col-5 text-end"> <FiFilter className="" /> Filter:</label>
-          <select id="role" name="role" className=" search col-5" value={searchRole}
-            onChange={(e) => { setSearchRole(e.target.value); setSearchFilterData(false); setRoleFilterData(true); setSearchName('') }}
+        <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
+          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter className="" /> Filter:</label>
+          <select id="role" name="role" className=" search col-8 col-sm-7 p-2" value={searchRole}
+            onChange={(e) => { setSearchRole(e.target.value); setSearchFilterData(false); setRoleFilterData(true); setSortFilterData(false); setSearchName('')  }}
           >
-            <option value="">Role</option>
+            <option value="" className="text-secondary">Role</option>
             <option value="admin">Admin</option>
             <option value="customerService">Customer Service</option>
             <option value="specialistService">Specialist Service</option>
           </select>
         </div>
 
-        <div className="col-12 col-md-3 p-2 justify-content-end">
+        <div className="col-12 col-sm-7 col-lg-3 text-secondary row p-2">
+          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter /> Sort:</label>
+          <select id="role" name="role" className=" search col-8 col-sm-7 p-2"
+            onChange={(e) => {sortHandler(e.target.value) ;setSearchFilterData(false); setRoleFilterData(false); setSortFilterData(true) ; setSearchName('') ; setSearchRole('') }}
+          >
+            <option value="" className="text-secondary">sort</option>
+            <option value="completed">Completed</option>
+            <option value="profit">Profit</option>
+          </select>
+        </div>
+
+        <div className="col-12 col-sm-5 col-lg-3 p-2 justify-content-end">
           <button onClick={() => { window.location.href = '/adduser' }} className="new-user p-2">
             <RiUserAddFill className="fs-3" />  Add New User
           </button>
@@ -161,6 +194,26 @@ const Users = () => {
               There Is No Users
             </h2>
           </div> : ''
+        }
+
+        {sortFilterData ? !sortedUsers.length == 0 ? sortedUsers.map((user)=>(
+          <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
+            <p className="col-6  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
+            <p className="col-4 name-role">{user.user_role}</p>
+            <p className="col-2">
+              {user.user_role == 'admin' ?
+                <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
+                :
+                <button className=" delete-btn p-2 px-3" onClick={() => deleteUserHandler(user._id)}> <RiDeleteBinFill /> </button>
+              }
+            </p>
+         </div>
+        )):
+        <div className="row  p-3 m-0 text-center" >
+          <h2>
+            There Is No Users
+          </h2>
+        </div> : ''
         }
 
       </div>

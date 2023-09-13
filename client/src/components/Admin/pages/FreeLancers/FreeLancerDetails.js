@@ -6,13 +6,11 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { validate, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 
 import { useParams } from "react-router-dom";
-import { BiSolidEditAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 import { FaTasks } from 'react-icons/fa';
 import { FaCoins } from 'react-icons/fa';
 import { FaCcVisa } from 'react-icons/fa';
-import { TbListDetails } from 'react-icons/tb';
 import { ImCancelCircle } from 'react-icons/im';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
 import { MdPendingActions } from 'react-icons/md';
@@ -22,7 +20,15 @@ import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { TbTruckDelivery } from 'react-icons/tb';
 import { GiProfit } from 'react-icons/gi';
+import { FiFilter } from 'react-icons/fi';
 
+// Date filter
+
+const getDateFilter = (start, end, tasks) => {
+  if (!start || !end) {
+    return tasks;
+  } return tasks.filter((task) => start <= task.deadline.split('T')[0] && task.deadline.split('T')[0] <= end);
+};
 
 //fullName validation
 const fullNameReducer = (state, action) => {
@@ -101,7 +107,6 @@ const countryReducer = (state, action) => {
 const FreeLancerDetails = () => {
 
   const [editFull, setEditFull] = useState(false);
-
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -289,6 +294,12 @@ const FreeLancerDetails = () => {
     setError(null);
     window.location.reload(true);
   };
+
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [withoutFilterData, setwithoutFilterData] = useState(true);
+  const [dateFilterData, setDateFilterData] = useState(false);
+  const DateFilter = getDateFilter(start, end, freeLancerTasks);
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -491,11 +502,24 @@ const FreeLancerDetails = () => {
       </div>
 
       {/* /////////////////////////////////////////////////// */}
+      <div className="row p-0 m-0 justify-content-center adduser-form">
+        <div className="col-12 col-md-9 text-secondary row p-2">
+        <h3 htmlFor="Speciality" className="my-2 col-12 text-center text-dark fw-bold">Filter:</h3>
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setStart(e.target.value); setDateFilterData(true); setwithoutFilterData(false)}}
+          />
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setEnd(e.target.value); setDateFilterData(true); setwithoutFilterData(false) }}
+          />
+        </div>
+
+      </div>
 
       <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-        {freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
+        {withoutFilterData ? freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
-
             <div className="col-12 fw-bold row text-center">
               <span
                 className={
@@ -551,8 +575,67 @@ const FreeLancerDetails = () => {
         )) :
           <div className="row col-12  p-2 text-center">
             <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div> :''
+        } 
+      {dateFilterData ? !DateFilter.length == 0 ? DateFilter.map((task) => (
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
+            <div className="col-12 fw-bold row text-center">
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
+                                      'anystatus  p-3 status col-12 '
+                }>
+                {
+                  task.taskStatus.statusname == 'pending' ?
+                    <MdPendingActions />
+                    :
+                    task.taskStatus.statusname == 'admin review' ?
+                      <MdRateReview />
+                      :
+                      task.taskStatus.statusname == 'in negotiation' ?
+                        <BiSolidOffer />
+                        :
+                        task.taskStatus.statusname == 'in progress' ?
+                          <GiProgression />
+                          :
+                          task.taskStatus.statusname == 'completed' ?
+                            <AiOutlineFileDone />
+                            :
+                            task.taskStatus.statusname == 'delivered to client' ?
+                              <TbTruckDelivery />
+                              :
+                              ''
+                }
+                {task.taskStatus.statusname}
+              </span>
+
+            </div>
+
+            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
           </div>
-        }
+        )) :
+          <div className="row col-12  p-2 text-center">
+            <h3 className=" text-danger edit-form-lable">No Tasks With This Date</h3>
+          </div> :''
+        } 
       </div>
 
     </div>
