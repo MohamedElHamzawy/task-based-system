@@ -68,7 +68,8 @@ const deliverTask = async (taskID,userName,userID) => {
     const client = await clientModel.findById({_id: thisTask.client});
 
     const freelancerAccount = await accountModel.findOne({owner: thisTask.freelancer});
-    const transactF = thisTask.cost / freelancer.currency;
+    const currencyValueF = await currencyModel.findOne({_id: freelancer.currency}).select("priceToEGP");
+    const transactF = thisTask.cost / currencyValueF.priceToEGP;
     const transactionF = await new transactionModel({transactiontype: "cost", task: taskID, amount: transactF, method: "system", account_id: freelancerAccount._id}).save();
     const newBalanceF = parseFloat(freelancerAccount.balance) + parseFloat(transactionF.amount);
     await accountModel.findByIdAndUpdate({_id: freelancerAccount._id}, {balance: newBalanceF});
