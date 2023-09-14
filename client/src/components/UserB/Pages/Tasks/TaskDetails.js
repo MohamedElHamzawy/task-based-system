@@ -282,11 +282,12 @@ const TaskDetails = () => {
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {task.channel} </p>
           </div>
 
-         {offer && offer.customerOfferMax && offer.customerOfferMin &&
+         {offer && offer.customerOfferMax && offer.customerOfferMin ?
           <div className='col-12 col-md-6  row'>
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Customer Offer:</h5>
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
-          </div>}
+          </div> :''
+          }
 
 
           {task.freelancer &&
