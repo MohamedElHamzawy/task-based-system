@@ -169,7 +169,7 @@ const createTask = async (req,res,next) => {
 }
 
 const partialUpdateTask = async (req,res,next) => {
-    // try {
+    try {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const {statusID} = req.body;
@@ -178,7 +178,7 @@ const partialUpdateTask = async (req,res,next) => {
             const msg = await acceptTask(taskID, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
-        } else if (currentStatus.slug == "waiting-offer" && role != "customerService") {
+        } else if (currentStatus.slug == "waiting-offer" && role != "specialistService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
             await new noteModel({content: `${req.user.fullname} has set task to be waiting offer in ${date}`, user_id: req.user._id, task_id: taskID}).save();
@@ -235,9 +235,9 @@ const partialUpdateTask = async (req,res,next) => {
         } else {
             return next(new HttpError("You are not authorized to make this edit", 401));
         }
-    // } catch (error) {
-    //     return next(new HttpError(`Unexpected Error: ${error}`, 500));
-    // }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
 }
 
 const updateTask = async (req,res,next) => {
