@@ -94,7 +94,7 @@ const FreeLancers = () => {
         <div className="col-12 col-sm-10 col-md-6 ">
           <h1 className='logo text-white bg-danger p-2'>Specialist Service</h1>
         </div>
-        <h1 className="col-12  text-center ">System FreeLancers</h1>
+        <h1 className="col-12  text-center fw-bold">System FreeLancers</h1>
       </div>
 
       <div className="row p-0 m-0 ">

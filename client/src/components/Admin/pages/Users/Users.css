@@ -55,7 +55,7 @@
 }
 .add-user-p{
     color: rgb(45, 114, 204);
-    text-shadow: 4px 2px 5px rgba(105, 104, 104, 0.525);
+    /* text-shadow: 4px 2px 5px rgba(105, 104, 104, 0.525); */
 }
 .add-user-btn{
     border: 0px;
@@ -88,10 +88,12 @@
 .system-head{
     color: #2a1255;
     text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525) ;
+    font-weight: bold !important;
 }
-.edit-form-lable{
+.edit-form-lable{ 
     color: rgb(45, 114, 204);
-    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+    font-weight: bold;
+    /* text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525); */
 }
 .edit-form-p{
     color: black;

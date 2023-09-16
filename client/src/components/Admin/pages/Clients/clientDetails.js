@@ -547,44 +547,30 @@ const ClientDetails = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
-                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                      'anystatus  p-3 status col-12 '
+                  task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                            task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                        'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+             
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
@@ -608,44 +594,30 @@ const ClientDetails = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
-                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                      'anystatus  p-3 status col-12 '
+                  task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                            task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                        'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+              
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>

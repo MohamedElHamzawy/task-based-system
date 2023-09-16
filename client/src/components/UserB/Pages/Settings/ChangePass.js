@@ -91,14 +91,13 @@ const ChangePass = () => {
     <div className="text-center row w-100 p-4 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
 
-
       <div className="col-12 row text-center system-head p-2">
-        <div className="col-8 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>User B</h1>
+        <div className="col-12 col-sm-10 col-md-6 ">
+          <h1 className='logo text-white bg-danger p-2'>Specialist Service</h1>
         </div>
-        <h2 className="col-12 col-md-6 text-center ">Change Password </h2>
+        <h1 className="col-12 text-center fw-bold">Change Password</h1>
       </div>
-
+      
       <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">
 
 

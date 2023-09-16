@@ -79,7 +79,7 @@ const Profit = () => {
         <div className="col-6 col-md-3">
           <h1 className='logo text-white bg-danger p-2'>Admin</h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">System Profit</h1>
+        <h1 className="col-12 col-md-6 text-center fw-bold">System Profit</h1>
       </div>
 
       <div className="bg-white w-100 users-data row p-0 m-0 mt-2 text-center">

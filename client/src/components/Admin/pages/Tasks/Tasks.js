@@ -120,7 +120,7 @@ const Tasks = () => {
         <div className="col-6 col-md-3">
           <h1 className='logo text-white bg-danger p-2'>Admin</h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center ">System Tasks</h1>
+        <h1 className="col-12 col-md-6 text-center fw-bold">System Tasks</h1>
       </div>
 
       <div className="row p-0 m-0 justify-content-center">
@@ -177,15 +177,15 @@ const Tasks = () => {
         </div>
 
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
-          <div className="bg-warning col-4 icon p-3 text-center"><GiPayMoney className="fs-3 " /></div>
-          <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
-        </div>
-
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
           <div className="bg-success col-4 icon p-3 text-center"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
+        </div>
+        
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
+          <div className="bg-warning col-4 icon p-3 text-center"><GiPayMoney className="fs-3 " /></div>
+          <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
         </div>
 
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
@@ -205,7 +205,7 @@ const Tasks = () => {
         {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
 
-            <div className="col-12 fw-bold row text-center">
+            <div className="col-12 fw-bold row text-center ">
 
               <span
                 className={
@@ -228,9 +228,12 @@ const Tasks = () => {
               </span>
 
             </div>
-
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
-
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
+            {/* <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p> */}
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
@@ -239,6 +242,7 @@ const Tasks = () => {
             {task.freelancer &&
               <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
+
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
@@ -275,7 +279,11 @@ const Tasks = () => {
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
@@ -321,7 +329,11 @@ const Tasks = () => {
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
@@ -368,7 +380,11 @@ const Tasks = () => {
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>

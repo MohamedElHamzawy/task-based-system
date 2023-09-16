@@ -97,7 +97,7 @@ const Settings = () => {
        <div className="col-12 col-sm-10 col-md-6 ">
           <h1 className='logo text-white bg-danger p-2'>Customer Service </h1>
         </div>
-        <h1 className="col-12 text-center ">User Settings</h1>
+        <h1 className="col-12 text-center fw-bold ">User Settings</h1>
       </div>
 
       <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">

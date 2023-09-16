@@ -72,7 +72,7 @@
     background-color: rgba(97, 169, 208, 0.297);
     border-radius: 40px 0px;
     color: rgba(54, 96, 152, 0.848);
-    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+    /* text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525); */
 }
 
 .comment {
@@ -80,7 +80,7 @@
     background-color: rgba(136, 136, 136, 0.495);
     border-radius: 20px;
     color: white;
-    text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525);
+    /* text-shadow: 4px 2px 3px rgba(105, 104, 104, 0.525); */
 }
 
 .comment-btn {
@@ -127,7 +127,15 @@
     background-color: #0d6dfde4 !important;
 }
 
-
+.details-btn{
+    border: 0px;
+    border-radius: 30px;
+    color: white;
+    background-color: #d95b67;
+}
+.details-btn:hover{
+    background-color: #F67280;
+}
 @media only screen and (max-width: 822px) {
     .data {
         font-size: 15px !important;

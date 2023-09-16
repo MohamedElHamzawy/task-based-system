@@ -24,25 +24,6 @@ const TitleReducer = (state, action) => {
       return state;
   }
 };
-//channel validation
-const channelReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.channel,
-        isvalid: validate(action.channel, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
-
 
 //task price validation
 const taskPriceReducer = (state, action) => {
@@ -119,7 +100,7 @@ const AddTask = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/status/" ,{ headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+        await axios.get("http://localhost:5000/api/status/", { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
         });
         setLoading(false);
@@ -147,6 +128,11 @@ const AddTask = () => {
     setCurrency(newOne);
   };
 
+  //Channel value
+  const [channel, setChannel] = useState('');
+  const channelChangeHandler = (newOne) => {
+    setChannel(newOne);
+  };
 
   //title validation
   const [titleState, dispatch] = useReducer(TitleReducer, {
@@ -168,25 +154,7 @@ const AddTask = () => {
     });
   };
 
-  //channel validation
-  const [channelState, dispatch2] = useReducer(channelReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
 
-  const channelChangeHandler = (event) => {
-    dispatch2({
-      type: "CHANGE",
-      channel: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const channelTouchHandler = () => {
-    dispatch2({
-      type: "TOUCH",
-    });
-  };
 
 
   //task price validation
@@ -245,14 +213,14 @@ const AddTask = () => {
         "http://localhost:5000/api/task/",
         {
           title: titleState.value,
-          channel: channelState.value,
-          description : descriptionState.value,
-          client : client,
-          speciality : speciality ,
-          deadline : deadline ,
-          task_currency : currency ,
-          paid : taskPriceState.value,
-          status :status
+          channel: channel,
+          description: descriptionState.value,
+          client: client,
+          speciality: speciality,
+          deadline: deadline,
+          task_currency: currency,
+          paid: taskPriceState.value,
+          status: status
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -268,10 +236,10 @@ const AddTask = () => {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
-    channelState.value = ''
     titleState.value = ''
-    descriptionState.value =''
-    taskPriceState.value =''
+    descriptionState.value = ''
+    taskPriceState.value = ''
+    setChannel('')
     setClient('')
     setSpeciality('')
     setDeadline()
@@ -290,25 +258,22 @@ const AddTask = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/tasks' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3">  Add New Task</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3  fw-bold">  Add New Task</h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newTaskSubmitHandler}>
 
-      <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Channel :</label>
-          <input type='text' placeholder='Channel '
-            value={channelState.value}
-            onChange={channelChangeHandler}
-            onBlur={channelTouchHandler}
-            isvalid={channelState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!channelState.isvalid &&
-              channelState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+          <select id="Channel" name="Channel" className="p-2 px-4 search col-10 col-lg-7" value={channel}
+            onChange={(event) => channelChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>clients</option>
+            <option value="Telegram" className=''>Telegram</option>
+            <option value="WhatsApp" className=''>WhatsApp</option>
+            <option value="Website" className=''>Website</option>
+            <option value="Other" className=''>Other</option>
+          </select>
         </div>
-
 
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
           <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Clients:</label>
@@ -338,10 +303,10 @@ const AddTask = () => {
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>DeadLine :</label>
-          <input   type="datetime-local"
+          <input type="datetime-local"
             id="meeting-time"
             name="meeting-time"
-             placeholder='DeadLine'
+            placeholder='DeadLine'
             onChange={(e) => (setDeadline(e.target.value))}
             className='col-10 col-lg-7 search p-2 '
           />
@@ -355,13 +320,13 @@ const AddTask = () => {
             <option value="" className='text-secondary'>Status</option>
             {statuses.map((status) => (
               status.statusname == "approved" || status.statusname == "waiting offer" ?
-              <option value={status._id} key={status._id}>{status.statusname}</option> 
-                :''          
-            ))}    
+                <option value={status._id} key={status._id}>{status.statusname}</option>
+                : ''
+            ))}
           </select>
         </div>
 
-                
+
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Task Price :</label>
           <input type='number' placeholder='Task Price '
@@ -407,7 +372,7 @@ const AddTask = () => {
 
         <div className='col-12 m-1 py-2 p-0'>
           <label className='col-10 col-lg-2 fw-bold add-user-p py-2 '>Description :</label>
-          <textarea type='text' placeholder='Description'  rows="4"
+          <textarea type='text' placeholder='Description' rows="4"
             value={descriptionState.value}
             onChange={descriptionChangeHandler}
             onBlur={descriptionTouchHandler}
@@ -422,25 +387,25 @@ const AddTask = () => {
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
-              status == '64fdd400a86587827152ab3c' ? 
-              !channelState.isvalid ||
-              !titleState.isvalid ||
-              !descriptionState.isvalid ||
-              !taskPriceState.isvalid||
-              !speciality ||
-              !client||
-              !currency||
-              !deadline ||
-              !status 
-              :
-              !channelState.isvalid ||
-              !titleState.isvalid ||
-              !descriptionState.isvalid ||
-              !speciality ||
-              !client||
-              !currency||
-              !deadline ||
-              !status 
+              status == '64fdd400a86587827152ab3c' ?
+                !channel||
+                !titleState.isvalid ||
+                !descriptionState.isvalid ||
+                !taskPriceState.isvalid ||
+                !speciality ||
+                !client ||
+                !currency ||
+                !deadline ||
+                !status
+                :
+                !channel||
+                !titleState.isvalid ||
+                !descriptionState.isvalid ||
+                !speciality ||
+                !client ||
+                !currency ||
+                !deadline ||
+                !status
             }
             className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
             Add

@@ -297,7 +297,7 @@ const UserDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">  User Details</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4  fw-bold">  User Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-3 m-1 justify-content-start">
@@ -314,7 +314,7 @@ const UserDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row ">
-          <h5 className="col-10 col-md-5 edit-form-lable text-start pt-3"> Full Name :</h5>
+          <h5 className="col-10 col-md-5 edit-form-lable text-start pt-3  fw-bold"> Full Name :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.fullname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2" : 'd-none'} >
             <input type='text' placeholder={user.fullname}
@@ -342,7 +342,7 @@ const UserDetails = () => {
         {/* /////////////////////// */}
 
         <div className="col-12 col-md-6  row py-2 ">
-          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Name:</h5>
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold"> User Name:</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold name" : 'd-none'}> {user.username} </p>
           <div className={editFull ? "d-inline col-10 col-md-5  pt-2" : 'd-none'} >
             <input type='text' placeholder={user.username}
@@ -360,7 +360,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row p-2 ">
-          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Phone :</h5>
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold"> Phone :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.phone} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
             <input type='number' placeholder={user.phone}
@@ -378,7 +378,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row p-2 ">
-          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> Country :</h5>
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold"> Country :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.country} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
             <input type='text' placeholder={user.country}
@@ -396,7 +396,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row p-2 ">
-          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3"> User Role :</h5>
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold"> User Role :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {user.user_role} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-2 " : 'd-none'} >
             <select id="role" name="role" className="search w-100 p-2" value={userRole}
@@ -410,7 +410,7 @@ const UserDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className={visable ? "d-flex col-12 col-md-6  row p-2 " : 'd-none'}>
-          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3">Speciality :</h5>
+          <h5 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold">Speciality :</h5>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}>{user.speciality && user.speciality.sub_speciality}</p>
 
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
@@ -511,44 +511,30 @@ const UserDetails = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
                       task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
                         task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
                           task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
                             task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
                                 task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
                                   task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                      'anystatus  p-3 status col-12 '
+                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
+                <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>

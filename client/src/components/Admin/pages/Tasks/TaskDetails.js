@@ -233,13 +233,13 @@ const TaskDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/tasks' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-8 col-sm-6 col-md-3 text-center system-head pt-3">  Task Details</h2>
+        <h2 className="col-8 col-sm-6 col-md-3 text-center system-head pt-3  fw-bold">  Task Details</h2>
         <div className="col-12 col-sm-3 text-end">
           <button className="task-edit-btn p-2 px-4 fs-3 "onClick={()=>setEditTask(!editTask)} ><FaEdit /> </button>
         </div>
       </div>
   {/* ////////////////////////////////////////////// */}
-    <div className='row co-12 col-lg-8 justify-content-center p-1 mx-1 h-100'>
+    <div className='row col-12 col-lg-8 justify-content-center p-1 mx-1 h-100'>
       {!editTask ?
         <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
@@ -277,48 +277,48 @@ const TaskDetails = () => {
           </div>
           {/* /////////////////////// */}
           <div className="col-12 col-md-6 row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Title :</h5>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Title :</h5>
             <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data text-start"> {task.title} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data">  Speciality :</h5>
+            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  Speciality :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start"> {speciality && speciality.sub_speciality} </p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data ">  Channel :</h5>
+            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  Channel :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start"> {task.channel} </p>
           </div>
 
           <div className='col-12 col-md-6  row'>
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Customer Offer:</h5>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">Customer Offer:</h5>
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data">  Client :</h5>
+            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  Client :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start">
               <a className="text-dark fw-bold" href={`/client/${client._id}`}>
                 {client.clientname}
               </a>
             </p>
           </div>
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Client Website:</h5>
+          {/* <div className="col-12 col-md-6  row ">
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Client Website:</h5>
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold data text-start"> {client.website} </p>
-          </div>
+          </div> */}
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3 data">Client Price:</h5>
+            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3 data  fw-bold">Client Price:</h5>
             <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold text-danger data text-start">{task.paid} </p>
           </div>
           <div className='col-12 col-md-6 row'>
-            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-3 data">Currency:</h5>
+            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">Currency:</h5>
             <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold data text-start"> {currency.currencyname} </p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  UserName :</h5>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  UserName :</h5>
             <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data text-start">
               <a className="text-dark fw-bold" href={`/user/${user._id}`}>
                 {user && user.fullname}
@@ -327,13 +327,13 @@ const TaskDetails = () => {
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data">  UserRole :</h5>
+            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  UserRole :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start"> {user && user.user_role} </p>
           </div>
           {task.freelancer &&
             <>
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer :</h5>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Freelancer :</h5>
                 <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data text-start">
                   <a className="text-dark fw-bold" href={`/freelancer/${task.freelancer._id}`}>
                     {task.freelancer.freelancername}
@@ -342,7 +342,7 @@ const TaskDetails = () => {
               </div>
 
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer Price:</h5>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Freelancer Price:</h5>
                 <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start"> {task.cost}EGP </p>
               </div>
 
@@ -352,18 +352,18 @@ const TaskDetails = () => {
               </div> */}
 
               <div className='col-12 col-md-6  row'>
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Specialist Offer:</h5>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">Specialist Offer:</h5>
                 <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start">({offer.specialistOfferMax * currency.priceToEGP} - {offer.specialistOfferMin * currency.priceToEGP})</p>
               </div>
             </>
           }
           <div className="col-12 row p-0 m-0">
-            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data">Dead Line :</h5>
+            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data  fw-bold">Dead Line :</h5>
             <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data text-start"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
             <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data text-start"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
           </div>
           <div className="col-12 row ">
-            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3">  Description :</h5>
+            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3  fw-bold">  Description :</h5>
             <p className="d-inline col-md-8 col-12  pt-3 edit-form-p fw-bold text-start"> {task.description} </p>
           </div>
 
@@ -407,7 +407,7 @@ const TaskDetails = () => {
         {/* /////////////////////////////////////////////////////////////////////////*/}
 
         <div className='row bg-white adduser-form p-3 my-2 justify-content-center'>
-          <h1 className='edit-form-lable '>Comments</h1>
+          <h1 className='edit-form-lable  fw-bold'>Comments</h1>
           <div className='row w-100 p-0 m-0'>
             {!comments.length == 0 ? comments.map((comment) => (
 
@@ -459,7 +459,7 @@ const TaskDetails = () => {
 {/* /////////////////////////////////////////////// */}
       <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
         <div>
-          <h1 className='edit-form-lable p-4'>Notes</h1>
+          <h1 className='edit-form-lable p-4 fw-bold'>Notes</h1>
           <div className='row p-0 m-0'>
             <div className='p-0 m-0'>
               {!notes.length == 0 ? notes.map((note) => (

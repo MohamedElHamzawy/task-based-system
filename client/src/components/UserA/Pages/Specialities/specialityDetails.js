@@ -180,7 +180,7 @@ const SpecialityDetails = () => {
                 <div className="col-3 text-center">
                     <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/specialities' }}><TiArrowBack /> </button>
                 </div>
-                <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">  Speciality Details</h2>
+                <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4  fw-bold">  Speciality Details</h2>
             </div>
 
             <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
@@ -194,7 +194,7 @@ const SpecialityDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3"> Sub-Speciality:</h3>
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3  fw-bold"> Sub-Speciality:</h3>
                     <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold " : 'd-none'}> {speciality.sub_speciality} </p>
                     <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
                         <input type='text' placeholder={speciality.sub_speciality}
@@ -212,7 +212,7 @@ const SpecialityDetails = () => {
                 {/* /////////////////////// */}
 
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3"> Speciality :</h3>
+                    <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3  fw-bold"> Speciality :</h3>
                     <p className={!edit ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold" : 'd-none'}> {speciality.speciality} </p>
                     <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : 'd-none'} >
                         <input type='text' placeholder={speciality.speciality}

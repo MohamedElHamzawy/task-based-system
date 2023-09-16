@@ -299,7 +299,7 @@ const FreeLancerDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/freelancers' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">  Freelancer Details</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4 fw-bold">  Freelancer Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
@@ -473,11 +473,11 @@ const FreeLancerDetails = () => {
           <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
         </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+        {/* <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
           <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
           <h4 className="text-center col-4 fw-bold">{freeLancer.totalProfit}</h4>
-        </div>
+        </div> */}
       </div>
 
       {/* /////////////////////////////////////////////////// */}
@@ -490,44 +490,30 @@ const FreeLancerDetails = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
                       task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
                         task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
                           task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
                             task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
                                 task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
                                   task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                      'anystatus  p-3 status col-12 '
+                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>

@@ -50,7 +50,7 @@ class UserBSideBar extends React.Component {
                 <MdPendingActions className='fs-4' />
             </NavIcon>
              <NavText>
-             <p className="fs-3 "> Pending Tasks</p>
+             <p className="fs-3 ">PendingTasks</p>
             </NavText>           
           </NavItem>
           <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/yourtasks'}}>
@@ -80,14 +80,6 @@ class UserBSideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/currency'}}>
-            <NavIcon>
-                <BsCurrencyExchange className='fs-4' />
-            </NavIcon>
-             <NavText>
-             <p className="fs-3 "> Currency</p>
-            </NavText>           
-          </NavItem>
 
           <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>

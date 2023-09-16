@@ -15,9 +15,7 @@ import ChangePass from './Pages/Settings/ChangePass';
 import Specialities from './Pages/Specialities/Specialities';
 import SpecialityDetails from './Pages/Specialities/specialityDetails';
 import AddSpeciality from './Pages/Specialities/addSpeciality';
-import Currency from './Pages/Currency/Currency';
-import CurrencyDetails from './Pages/Currency/CurrencyDetails';
-import AddCurrency from './Pages/Currency/AddCurrency';
+
 
 const UserB = () => {
   return (
@@ -36,9 +34,6 @@ const UserB = () => {
           <Route path="/specialities" element={<Specialities />} />
           <Route path="/speciality/:id" element={<SpecialityDetails />} />
           <Route path="/addspeciality" element={<AddSpeciality />} />
-          <Route path="/currency" element={<Currency />} />
-          <Route path="/currency/:id" element={<CurrencyDetails />} />
-          <Route path="/addcurrency" element={<AddCurrency />} />
 
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />

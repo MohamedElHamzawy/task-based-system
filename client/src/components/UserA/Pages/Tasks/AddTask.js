@@ -24,24 +24,6 @@ const TitleReducer = (state, action) => {
       return state;
   }
 };
-//channel validation
-const channelReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.channel,
-        isvalid: validate(action.channel, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
 
 
 //task price validation
@@ -140,6 +122,11 @@ const AddTask = () => {
   const clientChangeHandler = (newOne) => {
     setClient(newOne);
   };
+  //Channel value
+  const [channel, setChannel] = useState('');
+  const channelChangeHandler = (newOne) => {
+    setChannel(newOne);
+  };
 
   //currency value
   const [currency, setCurrency] = useState('');
@@ -164,26 +151,6 @@ const AddTask = () => {
   };
   const titleTouchHandler = () => {
     dispatch({
-      type: "TOUCH",
-    });
-  };
-
-  //channel validation
-  const [channelState, dispatch2] = useReducer(channelReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
-
-  const channelChangeHandler = (event) => {
-    dispatch2({
-      type: "CHANGE",
-      channel: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const channelTouchHandler = () => {
-    dispatch2({
       type: "TOUCH",
     });
   };
@@ -245,7 +212,7 @@ const AddTask = () => {
         "http://localhost:5000/api/task/",
         {
           title: titleState.value,
-          channel: channelState.value,
+          channel: channel,
           description : descriptionState.value,
           client : client,
           speciality : speciality ,
@@ -268,10 +235,10 @@ const AddTask = () => {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
-    channelState.value = ''
     titleState.value = ''
     descriptionState.value =''
     taskPriceState.value =''
+    setChannel('')
     setClient('')
     setSpeciality('')
     setDeadline()
@@ -290,23 +257,21 @@ const AddTask = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3">  Add New Task</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3  fw-bold">  Add New Task</h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newTaskSubmitHandler}>
 
       <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Channel :</label>
-          <input type='text' placeholder='Channel '
-            value={channelState.value}
-            onChange={channelChangeHandler}
-            onBlur={channelTouchHandler}
-            isvalid={channelState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!channelState.isvalid &&
-              channelState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+          <select id="Channel" name="Channel" className="p-2 px-4 search col-10 col-lg-7" value={channel}
+            onChange={(event) => channelChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>clients</option>
+            <option value="Telegram" className=''>Telegram</option>
+            <option value="WhatsApp" className=''>WhatsApp</option>
+            <option value="Website" className=''>Website</option>
+            <option value="Other" className=''>Other</option>
+          </select>
         </div>
 
 
@@ -423,7 +388,7 @@ const AddTask = () => {
           <button
             disabled={
               status == '64fdd400a86587827152ab3c' ? 
-              !channelState.isvalid ||
+              !channel||
               !titleState.isvalid ||
               !descriptionState.isvalid ||
               !taskPriceState.isvalid||
@@ -433,7 +398,7 @@ const AddTask = () => {
               !deadline ||
               !status 
               :
-              !channelState.isvalid ||
+              !channel ||
               !titleState.isvalid ||
               !descriptionState.isvalid ||
               !speciality ||

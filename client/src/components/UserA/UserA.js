@@ -12,9 +12,6 @@ import ClientDetails from '../UserA/Pages/Clients/clientDetails';
 import Specialities from '../UserA/Pages/Specialities/Specialities';
 import AddSpeciality from '../UserA/Pages/Specialities/addSpeciality';
 import SpecialityDetails from '../UserA/Pages/Specialities/specialityDetails';
-import Currency from '../UserA/Pages/Currency/Currency';
-import AddCurrency from '../UserA/Pages/Currency/AddCurrency';
-import CurrencyDetails from '../UserA/Pages/Currency/CurrencyDetails';
 import Settings from '../UserA/Pages/Settings/Settings'
 import ChangePass from './Pages/Settings/ChangePass';
 
@@ -33,10 +30,7 @@ const UserA = () => {
             <Route path="/addclient" element={<AddClient/>}  />
             <Route path="/specialities" element={<Specialities/>} />
             <Route path="/speciality/:id" element={<SpecialityDetails/>} />
-            <Route path="/addspeciality" element={<AddSpeciality/>}  />
-            <Route path="/currency" element={<Currency/>} />
-            <Route path="/currency/:id" element={<CurrencyDetails/>} />
-            <Route path="/addcurrency" element={<AddCurrency/>}  />        
+            <Route path="/addspeciality" element={<AddSpeciality/>}  />  
             <Route path="/settings" element={<Settings/>} />
             <Route path="/changepass" element={<ChangePass />} />
           </Routes> 

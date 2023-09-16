@@ -74,14 +74,6 @@ class UserASideBar extends React.Component {
             </NavText>           
           </NavItem>
 
-          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/currency'}}>
-            <NavIcon>
-                <BsCurrencyExchange className='fs-4' />
-            </NavIcon>
-             <NavText>
-             <p className="fs-3 "> Currency</p>
-            </NavText>           
-          </NavItem>
 
           <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/settings'}}>
             <NavIcon>

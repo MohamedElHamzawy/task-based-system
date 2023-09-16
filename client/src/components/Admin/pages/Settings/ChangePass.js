@@ -96,7 +96,7 @@ const ChangePass = () => {
         <div className="col-6 col-md-3">
           <h1 className='logo text-white bg-danger p-2'>Admin</h1>
         </div>
-        <h2 className="col-12 col-md-6 text-center ">Change Password </h2>
+        <h2 className="col-12 col-md-6 text-center fw-bold">Change Password </h2>
       </div>
 
       <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">

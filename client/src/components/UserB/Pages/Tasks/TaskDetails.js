@@ -46,6 +46,7 @@ const TaskDetails = () => {
   const [task, setTask] = useState([]);
   const [offer, setOffer] = useState('');
 
+  const [notes, setNotes] = useState([]);
   const [comments, setComments] = useState([]);
   const [client, setClient] = useState([]);
   const [speciality, setSpeciality] = useState([]);
@@ -72,6 +73,7 @@ const TaskDetails = () => {
           setStatus(res.data.task.taskStatus)
           setUser(res.data.task.created_by)
 
+          // setNotes(res.data.notes)
           setComments(res.data.comments)
           console.log(res.data)
         });
@@ -229,10 +231,10 @@ const TaskDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-0">  Task Details</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-0 fw-bold">  Task Details</h2>
       </div>
       {/* ////////////////////////////////////////////// */}
-      <div className='row co-12 col-lg-10 justify-content-center p-1 mx-1'>
+      <div className='row col-12 col-lg-8 justify-content-center p-1 mx-1'>
         <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
           <div className="col-12 row p-3 justify-content-center">
@@ -269,31 +271,24 @@ const TaskDetails = () => {
           </div>
           {/* /////////////////////// */}
           <div className="col-12 col-md-6 row ">
-            <h5 className="col-6  edit-form-lable text-start pt-3 data">  Title :</h5>
+            <h5 className="col-6  edit-form-lable text-start pt-3 data fw-bold">  Title :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {task.title} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data">  Speciality :</h5>
+            <h5 className="col-6 edit-form-lable text-start pt-3 data fw-bold">  Speciality :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {speciality && speciality.sub_speciality} </p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data ">  Channel :</h5>
+            <h5 className="col-6 edit-form-lable text-start pt-3 data fw-bold">  Channel :</h5>
             <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {task.channel} </p>
           </div>
 
-         {offer && offer.customerOfferMax && offer.customerOfferMin ?
-          <div className='col-12 col-md-6  row'>
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Customer Offer:</h5>
-            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
-          </div> :''
-          }
-
-
-          {task.freelancer &&
+   
+          {task.freelancer ? 
             <>
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer :</h5>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">  Freelancer :</h5>
                 <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data">
                   <a className="text-dark fw-bold" href={`/freelancer/${task.freelancer._id}`}>
                     {task.freelancer.freelancername}
@@ -302,24 +297,30 @@ const TaskDetails = () => {
               </div>
 
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer Price:</h5>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">  Freelancer Price:</h5>
                 <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data"> {task.cost}EGP </p>
               </div>
 
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer Email:</h5>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">  Freelancer Email:</h5>
                 <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold date data"> {task.freelancer.email} </p>
               </div>
-            </>
+            </> :
+            offer && offer.customerOfferMax && offer.customerOfferMin ?
+              <div className='col-12 col-md-6  row'>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">Customer Offer:</h5>
+                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
+              </div> :''
+              
           }
           
           <div className="col-12 row p-0 m-0">
-            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data">Dead Line :</h5>
+            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data fw-bold">Dead Line :</h5>
             <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
             <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
           </div>
           <div className="col-12 row ">
-            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-3">  Description :</h5>
+            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-3 fw-bold">  Description :</h5>
             <p className="d-inline col-md-9 col-12  pt-3 edit-form-p fw-bold "> {task.description} </p>
           </div>
 
@@ -330,7 +331,7 @@ const TaskDetails = () => {
 
         <div className=" bg-white adduser-form pt-5 p-4 m-1">
           <div className='row justify-content-center'>
-            <h4 className='col-12 col-lg-5 fw-bold add-user-p text-start py-2'>Change Status :</h4>
+            <h4 className='col-12 col-lg-5 fw-bold add-user-p text-start py-2 fw-bold'>Change Status :</h4>
             <select id="status" name="status" className="p-2 px-4 search col-12 col-lg-7" value={changeStatus}
               onChange={(event) => setChangeStatus(event.target.value)}>
               <option value="" className='text-secondary'>Statuses</option>
@@ -361,7 +362,7 @@ const TaskDetails = () => {
         {/* /////////////////////////////////////////////////////////////////////////*/}
 
         <div className='row bg-white adduser-form p-3 my-2 justify-content-center'>
-          <h1 className='edit-form-lable '>Comments</h1>
+          <h1 className='edit-form-lable fw-bold'>Comments</h1>
           <div className='row w-100 p-0 m-0'>
             {!comments.length == 0 ? comments.map((comment) => (
 
@@ -410,6 +411,26 @@ const TaskDetails = () => {
         </div>
 
       </div>
+{/* /////////////////////////////////////////////// */}
+{/* <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
+        <div>
+          <h1 className='edit-form-lable p-4 fw-bold'>Notes</h1>
+          <div className='row p-0 m-0'>
+            <div className='p-0 m-0'>
+              {!notes.length == 0 ? notes.map((note) => (
+                <div className='col-12 note my-2 fw-bold p-3 text-start' key={note._id}>
+                  <p className=''>{note.content.split('GMT')[0]}</p>
+                </div>
+              )) :
+                <div className='col-12 note my-2 fw-bold p-3 '>
+                  <p className=''>There Is No Notes </p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div> */}
+{/* /////////////////////////////////////////////// */}
 
   
     </div>

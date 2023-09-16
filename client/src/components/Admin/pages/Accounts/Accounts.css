@@ -1,6 +1,9 @@
 .transactions{
     background-color: rgba(1, 251, 147, 0.375);
 }
+.manual-transactions{
+    background-color: #fffa65f1;
+}
 .add_trans{
     background-color: rgb(44, 167, 101);
     border: 0px;

@@ -5,6 +5,7 @@ import axios from "axios";
 import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from 'react-icons/ti';
+import Select from 'react-select'
 
 //amount validation
 const amountReducer = (state, action) => {
@@ -115,7 +116,7 @@ const Transactions = () => {
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="row p-1">
-        <h2 className="col-12 text-center system-head p-3">  Add Transaction </h2>
+        <h2 className="col-12 text-center system-head p-3  fw-bold">  Add Transaction </h2>
       </div>
 
       <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newTransactionSubmitHandler}>
@@ -147,14 +148,25 @@ const Transactions = () => {
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
           <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Account:</label>
 
-          <select id="account" name="account" className="p-2 px-4 search col-10 col-lg-7" value={account}
+          {/* <select id="account" name="account" className="p-2 px-4 search col-10 col-lg-7" value={account}
             onChange={(event) => setAccount(event.target.value)}>
             <option value="" className='text-secondary'>Accounts</option>
             {accounts.map((account) => (
               <option value={account._id} key={account._id}>{account.title}</option>
             ))}
-          </select>
-
+          </select> */}
+          <Select
+              className="basic-single"
+              classNamePrefix="select"
+              name="account"
+              options={
+                accounts.map((account) => (
+                [
+                  {value: account._id , label: account.title},
+                ]
+                ))
+              }
+            />
         </div>
 
         <div className='col-8 m-3 mt-5 row justify-content-center'>

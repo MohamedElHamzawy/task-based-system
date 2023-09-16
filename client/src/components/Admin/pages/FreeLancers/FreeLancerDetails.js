@@ -311,7 +311,7 @@ const FreeLancerDetails = () => {
         <div className="col-3 text-center">
           <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/freelancers' }}><TiArrowBack /> </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">  Freelancer Details</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4  fw-bold">  Freelancer Details</h2>
       </div>
 
       <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
@@ -326,7 +326,7 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">Full Name :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold">Full Name :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.freelancername}
@@ -345,7 +345,7 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
 
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">  Email :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold">  Email :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
             <input type='email' placeholder={freeLancer.email}
@@ -363,7 +363,7 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold"> Phone :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type='number' placeholder={freeLancer.phone}
@@ -382,7 +382,7 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold">Speciality :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} >
             {freeLancer.speciality && freeLancer.speciality.sub_speciality}
           </p>
@@ -399,7 +399,7 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold"> Country :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.country}
@@ -416,7 +416,7 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Currency :</h3>
+          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold"> Currency :</h3>
           <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
           <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
             <select id="Currency" name="Currency" className="p-2 px-4 search col-12" value={currency}
@@ -524,44 +524,30 @@ const FreeLancerDetails = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
-                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                      'anystatus  p-3 status col-12 '
+                  task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                            task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                        'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+               
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
@@ -583,44 +569,30 @@ const FreeLancerDetails = () => {
               <span
                 className={
                   task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'bg-danger   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-muted   p-3 status col-12 ' :
-                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted ' ? ' offer-submitted   p-3 status col-12 ' :
-                                      'anystatus  p-3 status col-12 '
+                  task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                            task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                        'anystatus  p-3 status col-12 '
                 }>
-                {
-                  task.taskStatus.statusname == 'pending' ?
-                    <MdPendingActions />
-                    :
-                    task.taskStatus.statusname == 'admin review' ?
-                      <MdRateReview />
-                      :
-                      task.taskStatus.statusname == 'in negotiation' ?
-                        <BiSolidOffer />
-                        :
-                        task.taskStatus.statusname == 'in progress' ?
-                          <GiProgression />
-                          :
-                          task.taskStatus.statusname == 'completed' ?
-                            <AiOutlineFileDone />
-                            :
-                            task.taskStatus.statusname == 'delivered to client' ?
-                              <TbTruckDelivery />
-                              :
-                              ''
-                }
+               
                 {task.taskStatus.statusname}
               </span>
 
             </div>
 
-            <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p>
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
