@@ -129,7 +129,7 @@ const FreelancerOffer = (props) => {
             </div>
             <div className='row col-12 col-lg-6  py-2 p-0 justify-content-center'>
                 <h5 className='col-12 col-lg-5 fw-bold add-user-p py-2 '>Cost :</h5>
-                <input type='number' placeholder='Task Price In EGP'
+                <input type='number' placeholder='Task Price In '
                     value={costState.value}
                     onChange={costChangeHandler}
                     onBlur={costTouchHandler}
@@ -138,7 +138,8 @@ const FreelancerOffer = (props) => {
                         costState.isTouched &&
                         "form-control-invalid"
                         }`}
-                /><span className='col-1 mx-1'>EGP</span>
+                />
+                {/* <span className='col-1 mx-1'></span> */}
             </div>
 
             <div className="col-12 col-sm-8  p-3">

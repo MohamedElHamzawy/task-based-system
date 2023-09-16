@@ -289,28 +289,29 @@ const TaskDetails = () => {
               </a>
             </p>
           </div>
-          <div className="col-12 col-md-6  row ">
+          {/* <div className="col-12 col-md-6  row ">
             <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Client Website:</h5>
             <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold data"> {client.website} </p>
-          </div>
+          </div> */}
 
           {task.paid ?
-           <div className="col-12 col-md-6  row ">
-            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3 data">Customer Price:</h5>
-            <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold text-danger data">{task.paid} </p>
-          </div> :''
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3 data">Customer Price:</h5>
+              <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold text-danger data">{task.paid} </p>
+            </div> : ''
+          }
+          {offer && offer.specialistOfferMax && offer.specialistOfferMin ?
+            <div className='col-12 col-md-6  row'>
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Specialist Offer:</h5>
+              <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.specialistOfferMax * currency.priceToEGP} - {offer.specialistOfferMin * currency.priceToEGP})</p>
+            </div> : ''
           }
           <div className='col-12 col-md-6 row'>
             <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-3 data">Currency:</h5>
             <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold data"> {currency.currencyname} </p>
           </div>
 
-          {offer && offer.specialistOfferMax && offer.specialistOfferMin ?
-              <div className='col-12 col-md-6  row'>
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Specialist Offer:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.specialistOfferMax * currency.priceToEGP} - {offer.specialistOfferMin * currency.priceToEGP})</p>
-              </div> :''
-          }
+
           <div className="col-12 row p-0 m-0">
             <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data">Dead Line :</h5>
             <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>

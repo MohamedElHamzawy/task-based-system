@@ -303,7 +303,7 @@ const TaskDetails = () => {
 
               <div className="col-12 col-md-6 row ">
                 <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer Price:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start"> {task.cost}EGP </p>
+                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data"> {task.cost}EGP </p>
               </div>
 
               <div className="col-12 col-md-6 row ">
