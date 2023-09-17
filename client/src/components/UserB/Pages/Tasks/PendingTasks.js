@@ -171,7 +171,7 @@ const PendingTasks = () => {
             {task.freelancer &&
               <>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost}EGP </p>
+                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
               </>
             }
           </div>
@@ -224,7 +224,7 @@ const PendingTasks = () => {
             {task.freelancer &&
               <>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost}EGP </p>
+                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
               </>
             }
           </div>
@@ -277,7 +277,7 @@ const PendingTasks = () => {
             {task.freelancer &&
               <>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost}EGP </p>
+                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
               </>
             }
           </div>

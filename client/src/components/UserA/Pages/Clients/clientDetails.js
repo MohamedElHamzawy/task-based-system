@@ -333,10 +333,10 @@ const ClientDetails = () => {
                     </div>
                 </div>
                 {/* /////////////////////// */}
-                <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3 fw-bold"> Client Name:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.clientname} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5 edit-form-lable text-start p-2"> Client Name:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data " : 'd-none'}> {client.clientname} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
              <input type='text' placeholder={client.clientname}
               value={clientNameState.value}
               onChange={clientNameChangeHandler}
@@ -350,10 +350,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3 fw-bold"> Owner :</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.ownerName} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5 edit-form-lable text-start p-2"> Owner :</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data " : 'd-none'}> {client.ownerName} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='text' placeholder={client.ownerName}
               value={ownerState.value}
               onChange={ownerChangeHandler}
@@ -368,10 +368,10 @@ const ClientDetails = () => {
         </div>
         {/* /////////////////////// */}
 
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold">Website:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.website} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3" : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">Website:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.website} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
           <input type='website' placeholder={client.website}
             value={clientEmailState.value}
             onChange={clientEmailChangeHandler}
@@ -385,10 +385,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold"> Phone:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.phone} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Phone:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.phone} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
             <input type='number' placeholder={client.phone}
             value={numberState.value}
             onChange={numberChangeHandler}
@@ -402,10 +402,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold"> Country:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.country} </p>
-          <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Country:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.country} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
           <input type='text' placeholder={client.country}
             value={countryState.value}
             onChange={countryChangeHandler}
@@ -419,10 +419,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold"> Currency:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.currency && client.currency.currencyname} </p>
-          <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Currency:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.currency && client.currency.currencyname} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
           <select id="currencies" name="currencies" className="search w-100 p-2" value={currency}
             onChange={(event) => setCurrency(event.target.value)}>
             <option value="" className='text-secondary'>currencies</option>
@@ -487,11 +487,6 @@ const ClientDetails = () => {
           <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{client.totalGain}</h4>
         </div>
-        {/* <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
-          <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
-          <h4 className="text-center col-4 fw-bold">{client.totalProfit}</h4>
-        </div> */}
         
       </div>
 

@@ -118,6 +118,8 @@ const AddUser = () => {
     }
     return () => clearTimeout(timerId);
   }, [loading]);
+  
+  console.log(specialities)
 
   //userName validation
   const [userNameState, dispatch] = useReducer(userNameReducer, {
@@ -285,6 +287,12 @@ const AddUser = () => {
   const errorHandler = () => {
     setError(null);
   };
+
+  const uniqueItems = specialities.filter((item,index,self)=>{
+    return index === self.findIndex((i)=>(
+      i.speciality === item.speciality
+    ))
+  })
   return (
     <div className='row text-center p-3 w-100 m-0'>
       <ErrorModal error={error} onClear={errorHandler} />
@@ -371,8 +379,8 @@ const AddUser = () => {
           <select id="speciality" name="speciality" className="p-2 px-4 search col-10 col-lg-7" value={speciality}
             onChange={(event) => specialityChangeHandler(event.target.value)}>
             <option value="" className='text-secondary'>Specialities</option>
-            {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
+            {uniqueItems.map((speciality) => (
+              <option value={speciality._id} key={speciality._id}>{speciality.speciality}</option>
             ))}
           </select>
 
