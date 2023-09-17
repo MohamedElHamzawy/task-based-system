@@ -70,7 +70,11 @@ const Transactions = () => {
       type: "TOUCH",
     });
   };
+//////////////////////////////
 
+const handleChange =(selectedOption)=>{
+  setAccount(selectedOption.value);
+}
 
   /////////////////////////////////
 
@@ -145,9 +149,8 @@ const Transactions = () => {
           </select>
         </div>
 
-        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
+        <div className='row col-12 col-lg-5 m-1 py-2 p-0'>
           <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Account:</label>
-
           {/* <select id="account" name="account" className="p-2 px-4 search col-10 col-lg-7" value={account}
             onChange={(event) => setAccount(event.target.value)}>
             <option value="" className='text-secondary'>Accounts</option>
@@ -155,17 +158,13 @@ const Transactions = () => {
               <option value={account._id} key={account._id}>{account.title}</option>
             ))}
           </select> */}
-          <Select
-              className="basic-single"
+          <Select  
+              // value={account}
+              options={accounts.map(account =>({label:account.title , value:account._id}))}
+              onChange={handleChange}
+              className="basic-single col-10 col-lg-7 "
               classNamePrefix="select"
               name="account"
-              options={
-                accounts.map((account) => (
-                [
-                  {value: account._id , label: account.title},
-                ]
-                ))
-              }
             />
         </div>
 

@@ -8,3 +8,7 @@
 .add-trans-btn:hover{
     background-color: rgba(44, 167, 101, 0.903) !important;
 }
+
+.select__control{
+    border-radius: 10px !important;
+}

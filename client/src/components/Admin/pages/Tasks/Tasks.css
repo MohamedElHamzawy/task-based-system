@@ -1,3 +1,8 @@
+.details-data{
+    border: 1px solid rgba(128, 128, 128, 0.448);
+    border-radius: 10px;
+}
+
 .on-going {
     background-color: #55B4B0;
 }

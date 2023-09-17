@@ -245,7 +245,7 @@ const TaskDetails = () => {
 
           <div className="col-12 row p-3 justify-content-center">
 
-            <div className="col-12 fw-bold pt-2 row text-center">
+            <div className="col-12 fw-bold pt-3 row text-center">
               {
                 status &&
                 <span
@@ -277,49 +277,49 @@ const TaskDetails = () => {
           </div>
           {/* /////////////////////// */}
           <div className="col-12 col-md-6 row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Title :</h5>
-            <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data text-start"> {task.title} </p>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Title :</h5>
+            <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.title} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  Speciality :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start"> {speciality && speciality.sub_speciality} </p>
+            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Speciality :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {speciality && speciality.sub_speciality} </p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  Channel :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start"> {task.channel} </p>
+            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Channel :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.channel} </p>
           </div>
 
           <div className='col-12 col-md-6  row'>
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">Customer Offer:</h5>
-            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Customer Offer:</h5>
+            <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  Client :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start">
+            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Client :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center">
               <a className="text-dark fw-bold" href={`/client/${client._id}`}>
                 {client.clientname}
               </a>
             </p>
           </div>
           {/* <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Client Website:</h5>
-            <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold data text-start"> {client.website} </p>
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Client Website:</h5>
+            <p className="d-inline col-12 col-sm-6 pt-2 edit-form-p details-data fw-bold data text-start"> {client.website} </p>
           </div> */}
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-3 data  fw-bold">Client Price:</h5>
-            <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold text-danger data text-start">{task.paid} </p>
+            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-2 data  fw-bold">Client Price:</h5>
+            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold text-danger data text-center">{task.paid} </p>
           </div>
           <div className='col-12 col-md-6 row'>
-            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">Currency:</h5>
-            <p className="d-inline col-4 col-sm-6  pt-3 edit-form-p fw-bold data text-start"> {currency.currencyname} </p>
+            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
+            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {currency.currencyname} </p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  UserName :</h5>
-            <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data text-start">
+            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  UserName :</h5>
+            <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
               <a className="text-dark fw-bold" href={`/user/${user._id}`}>
                 {user && user.fullname}
               </a>
@@ -327,14 +327,14 @@ const TaskDetails = () => {
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data  fw-bold">  UserRole :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data text-start"> {user && user.user_role} </p>
+            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  UserRole :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {user && user.user_role} </p>
           </div>
           {task.freelancer &&
             <>
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Freelancer :</h5>
-                <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data text-start">
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer :</h5>
+                <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
                   <a className="text-dark fw-bold" href={`/freelancer/${task.freelancer._id}`}>
                     {task.freelancer.freelancername}
                   </a>
@@ -342,29 +342,29 @@ const TaskDetails = () => {
               </div>
 
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">  Freelancer Price:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start"> {task.cost}EGP </p>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer Price:</h5>
+                <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center"> {task.cost}EGP </p>
               </div>
 
               {/* <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Freelancer Email:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold date data text-start"> {task.freelancer.email} </p>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data">  Freelancer Email:</h5>
+                <p className="d-inline col-12 col-sm-6 pt-2 edit-form-p details-data fw-bold date data text-start"> {task.freelancer.email} </p>
               </div> */}
 
               <div className='col-12 col-md-6  row'>
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data  fw-bold">Specialist Offer:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data text-start">({offer.specialistOfferMax * currency.priceToEGP} - {offer.specialistOfferMin * currency.priceToEGP})</p>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Specialist Offer:</h5>
+                <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({offer.specialistOfferMax * currency.priceToEGP} - {offer.specialistOfferMin * currency.priceToEGP})</p>
               </div>
             </>
           }
-          <div className="col-12 row p-0 m-0">
-            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data  fw-bold">Dead Line :</h5>
-            <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data text-start"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
-            <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data text-start"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
+          <div className="col-12 row p-0 m-0 justify-content-center justify-content-md-start">
+            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2 data  fw-bold">Dead Line :</h5>
+            <p className="d-inline col-md-4 col-5 mx-1 p-2 edit-form-p details-data fw-bold date data text-center"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
+            <p className="d-inline col-md-4 col-5  p-2 edit-form-p details-data fw-bold date data text-center"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
           </div>
-          <div className="col-12 row ">
-            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3  fw-bold">  Description :</h5>
-            <p className="d-inline col-md-8 col-12  pt-3 edit-form-p fw-bold text-start"> {task.description} </p>
+          <div className="col-12 row justify-content-center justify-content-md-start p-0 m-0">
+            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2  fw-bold">  Description :</h5>
+            <p className="d-inline col-md-8 col-10 mx-1 p-2 edit-form-p details-data fw-bold text-center"> {task.description} </p>
           </div>
 
         </div> 
