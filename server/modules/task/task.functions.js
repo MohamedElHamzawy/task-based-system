@@ -8,20 +8,33 @@ const freelancerModel = require("../../DB/freelancer.model");
 const clientModel = require("../../DB/client.model");
 
 
-const acceptTask = async (taskID,userName,userID) => {
-    await taskModel.findByIdAndUpdate({_id: taskID}, {accepted_by: userID, accepted: true});
-    const thisTask = await taskModel.findOne({_id: taskID});
-    const userB = await userModel.findById({_id: thisTask.accepted_by});
-    const newuserBTasksCount = userB.tasksCount + 1;
-    await userModel.findByIdAndUpdate({_id: userID}, {tasksCount: newuserBTasksCount});
-    
-    const date = new Date();
-    await new noteModel({content: `${userName} has received task in ${date} and now working on it`, user_id: userID, task_id: taskID}).save();
-    return "Task has been accepted successfully";
+const acceptTask = async (taskID,userName,userID,shareWith) => {
+
+    if (shareWith) {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {accepted_by: userID, show_accepted: shareWith});
+        const thisTask = await taskModel.findOne({_id: taskID});
+        const userB = await userModel.findById({_id: thisTask.accepted_by});
+        const newuserBTasksCount = userB.tasksCount + 1;
+        await userModel.findByIdAndUpdate({_id: userID}, {tasksCount: newuserBTasksCount});
+        
+        const date = new Date();
+        await new noteModel({content: `${userName} has received task in ${date} and now working on it`, user_id: userID, task_id: taskID}).save();
+        return "Task has been accepted successfully";
+    } else {
+        await taskModel.findByIdAndUpdate({_id: taskID}, {accepted_by: userID});
+        const thisTask = await taskModel.findOne({_id: taskID});
+        const userB = await userModel.findById({_id: thisTask.accepted_by});
+        const newuserBTasksCount = userB.tasksCount + 1;
+        await userModel.findByIdAndUpdate({_id: userID}, {tasksCount: newuserBTasksCount});
+        
+        const date = new Date();
+        await new noteModel({content: `${userName} has received task in ${date} and now working on it`, user_id: userID, task_id: taskID}).save();
+        return "Task has been accepted successfully";
+    }
 }
 
 const confirmTaskB = async (taskID, freelancerID, cost, userName, userID) => {
-    await taskModel.findByIdAndUpdate({_id: taskID}, {freelancer: freelancerID, cost: cost});
+    await taskModel.findByIdAndUpdate({_id: taskID}, {freelancer: freelancerID, cost: cost, accepted: true});
     const thisTask = await taskModel.findOne({_id: taskID});
     const freelancer = await freelancerModel.findById({_id: thisTask.freelancer});
     const newfreelancerTasksCount = freelancer.tasksCount + 1;

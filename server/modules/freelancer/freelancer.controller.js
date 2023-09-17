@@ -13,20 +13,29 @@ const getAllFreelancers = async (req,res,next) => {
     }
 }
 
-const getSortedFreelancers = async (req,res,next) => {
-    try {
-        const sortation = req.params.sort;
-        if (sortation == "completed") {
+const filterSortedFreelancers = async (req,res,next) => {
+    const {sort, speciality} = req.body;
+    if (sort && speciality) {
+        if (sort == "completed") {
+            const allFreelancers = await freelancerModel.find({speciality: speciality}).sort({completedCount: -1});
+            res.json({freelancers: allFreelancers});
+        } else if (sort == "profit") {
+            const allFreelancers = await freelancerModel.find({speciality: speciality}).sort({totalProfit: -1});
+            res.json({freelancers: allFreelancers});
+        }         
+    } else if (sort) {
+        if (sort == "completed") {
             const allFreelancers = await freelancerModel.find({}).sort({completedCount: -1});
             res.json({freelancers: allFreelancers});
-        } else if (sortation == "profit") {
+        } else if (sort == "profit") {
             const allFreelancers = await freelancerModel.find({}).sort({totalProfit: -1});
             res.json({freelancers: allFreelancers});
-        } else {
-            return next(new HttpError("You can't sort with this attribute", 404));
-        }
-    } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+        }     
+    } else if (speciality) {
+        const allFreelancers = await freelancerModel.find({speciality: speciality});
+        res.json({freelancers: allFreelancers});
+    } else {
+        return next(new HttpError("Invalid filter & sort!", 404));
     }
 }
 
@@ -88,4 +97,4 @@ const deleteFreelancer = async (req,res,next) => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
-module.exports = {getAllFreelancers, getFreelancer, getSortedFreelancers, createFreelancer, updateFreelancer, deleteFreelancer}
+module.exports = {getAllFreelancers, getFreelancer, filterSortedFreelancers, createFreelancer, updateFreelancer, deleteFreelancer}

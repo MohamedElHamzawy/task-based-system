@@ -22,7 +22,9 @@ const {
     taskRoutes,
     transactionRoutes,
     commentRoutes,
-    profitRoutes
+    profitRoutes,
+    notesRouter,
+    countryRouter
 } = require("./routes/allRoutes");
 
 app.use("/api", loginRoutes);
@@ -37,6 +39,8 @@ app.use("/api/task", taskRoutes);
 app.use("/api/transaction", transactionRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/profit", profitRoutes);
+app.use("/api/note", notesRouter);
+app.use("/api/country", countryRouter);
 app.use((req,res,next) => {
     return next(new HttpError("Route Not Found", 404));
 });

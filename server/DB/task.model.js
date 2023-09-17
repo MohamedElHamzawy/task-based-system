@@ -5,6 +5,9 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    serialNumber: {
+        type: Number
+    },
     description: {
         type: String
     },
@@ -23,6 +26,10 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "speciality"
     },
+    country: {
+        type: mongoose.Types.ObjectId,
+        ref: "country"
+    },
     taskStatus: {
         type: mongoose.Types.ObjectId,
         ref: "status"
@@ -31,6 +38,14 @@ const taskSchema = new mongoose.Schema({
         type: Date
     },
     created_by: {
+        type: mongoose.Types.ObjectId,
+        ref: "user"
+    },
+    show_created: {
+        type: mongoose.Types.ObjectId,
+        ref: "user"
+    },
+    show_accepted: {
         type: mongoose.Types.ObjectId,
         ref: "user"
     },

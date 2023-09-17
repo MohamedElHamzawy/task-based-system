@@ -12,20 +12,29 @@ const getAllClients = async (req,res,next) => {
     }
 }
 
-const getSortedClients = async (req,res,next) => {
-    try {
-        const sortation = req.params.sort;
-        if (sortation == "completed") {
+const filterSortedClients = async (req,res,next) => {
+    const {sort, country} = req.body;
+    if (sort && country) {
+        if (sort == "completed") {
+            const allClients = await clientModel.find({country: country}).sort({completedCount: -1});
+            res.json({clients: allClients});
+        } else if (sort == "profit") {
+            const allClients = await clientModel.find({country: country}).sort({totalProfit: -1});
+            res.json({clients: allClients});
+        }         
+    } else if (sort) {
+        if (sort == "completed") {
             const allClients = await clientModel.find({}).sort({completedCount: -1});
             res.json({clients: allClients});
-        } else if (sortation == "profit") {
+        } else if (sort == "profit") {
             const allClients = await clientModel.find({}).sort({totalProfit: -1});
             res.json({clients: allClients});
-        } else {
-            return next(new HttpError("You can't sort with this attribute", 404));
-        }
-    } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+        }     
+    } else if (country) {
+        const allClients = await clientModel.find({country: country});
+        res.json({clients: allClients});
+    } else {
+        return next(new HttpError("Invalid filter & sort!", 404));
     }
 }
 
@@ -103,4 +112,4 @@ const deleteClient = async (req,res,next) => {
     }
 }
 
-module.exports = {getAllClients, getClient, getSortedClients, createClient, updateClient, deleteClient}
+module.exports = {getAllClients, getClient, filterSortedClients, createClient, updateClient, deleteClient}

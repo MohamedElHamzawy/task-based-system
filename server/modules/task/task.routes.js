@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth");
 const {
     getMyTasks, 
     getTask, 
-    dateFilterTasks,
+    FilterTasks,
     createTask,
     partialUpdateTask, 
     updateTask, 
@@ -13,7 +13,7 @@ const {
 
 router.get("/", auth(), getMyTasks);
 router.get("/:id", auth(), getTask);
-router.get("/filter/date", dateFilterTasks);
+router.get("/filter", FilterTasks);
 router.post("/", auth(), createTask);
 router.post("/partial/:id", auth(), partialUpdateTask);
 router.post("/:id", auth(), updateTask);

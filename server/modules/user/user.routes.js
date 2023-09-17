@@ -1,6 +1,8 @@
-const {showAllUsers, 
+const {
+    showAllUsers, 
+    getCustomerService,
     getUser, 
-    getSortedUsers,
+    filterSortedUsers,
     createUser, 
     updateUser, 
     deleteUser
@@ -8,8 +10,9 @@ const {showAllUsers,
 const router = require("express").Router();
 
 router.get("/", showAllUsers);
+router.get("/customerService", getCustomerService);
 router.get("/:id", getUser);
-router.get("/sort/:sort", getSortedUsers);
+router.get("/sort", filterSortedUsers);
 router.post("/", createUser);
 router.post("/:id", updateUser);
 router.delete("/:id", deleteUser);

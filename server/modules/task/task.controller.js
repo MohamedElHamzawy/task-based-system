@@ -9,13 +9,16 @@ const userModel = require("../../DB/user.model");
 const clientModel = require("../../DB/client.model");
 
 const {acceptTask, confirmTaskB, makeOffer, confirmTaskA, refuseTask, deliverTask} = require("./task.functions");
+const specialityModel = require("../../DB/speciality.model");
 
 const getMyTasks = async (req,res,next) => {
     try {
         const role = req.user.user_role;
         if (role == "admin") {
-            const tasks = await taskModel.find({}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            const tasks = await taskModel.find({}).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const tasksCount = tasks.length;
+            const completedTasks = await taskModel.find({taskStatus: "64fdd7aeb19f7955da47eb1e"});
+            const completedCount = completedTasks.length;
             let totalCost = 0;
             let totalGain = 0;
             let totalProfit = 0;
@@ -25,13 +28,18 @@ const getMyTasks = async (req,res,next) => {
                 totalProfit += task.profit_amount;
             });
             const totalProfitPercentage = totalProfit/totalGain*100;
-            res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage.toFixed(2)});
+            res.json({tasks: tasks, tasksCount: tasksCount, completedCount: completedCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage.toFixed(2)});
         } else if (role == "customerService") {
-            const tasks = await taskModel.find({created_by: req.user._id}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-            res.json({tasks: tasks});
+            const status1 = await statusModel.find({slug: "offer-submitted"});
+            const status2 = await statusModel.find({slug: "on-going"});
+            const status3 = await statusModel.find({slug: "done"});
+            const pendingTasks = await taskModel.find({$or: [{taskStatus: status1._id}, {taskStatus: status2._id}, {taskStatus: status3._id}]}).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_accepted: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            res.json({tasks: tasks, pendingTasks: pendingTasks});
         } else if (role == "specialistService") {
-            const pendingTasks = await taskModel.find({$and: [{accepted: false}, {speciality: req.user.speciality}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
-            const myTasks = await taskModel.find({$and: [{accepted_by: req.user._id}]}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            const userSpeciality = await specialityModel.find({$or: [{speciality: req.user.speciality}, {speciality: "all"}]}).select("sub_speciality");
+            const pendingTasks = await taskModel.find({$and: [{accepted: false}, {speciality: {$in: userSpeciality}}]}).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            const myTasks = await taskModel.find({$and: [{accepted_by: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({myTasks: myTasks, pendingTasks: pendingTasks});
         } else {
             return next(new HttpError("You are not authorized to show tasks!", 401));
@@ -41,10 +49,10 @@ const getMyTasks = async (req,res,next) => {
     }
 }
 
-const dateFilterTasks = async (req,res,next) => {
+const FilterTasks = async (req,res,next) => {
     try {
-        const {start, end} = req.body;
-        const tasks = await taskModel.find({}).gte('createdAt', start).lte('createdAt', end).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        const {status, speciality, country, start, end, freelancer, client} = req.body;
+        const tasks = await taskModel.find({$and: [status? {taskStatus: status}: {taskStatus: null}, speciality? {speciality: speciality} : {speciality: null}, country? {country: country} : {country: null}, freelancer? {freelancer: freelancer} : {freelancer: null}, client? {client: client} : {client: null}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         const tasksCount = tasks.length;
         let totalCost = 0;
         let totalGain = 0;
@@ -91,7 +99,7 @@ const getTask = async (req,res,next) => {
         } else if (role == "customerService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
-            .select("_id title description channel client speciality taskStatus deadline task_currency paid cost")
+            .select("_id title serialNumber description channel client speciality taskStatus deadline task_currency paid cost")
             .populate(["client", "speciality", "taskStatus", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
@@ -100,12 +108,13 @@ const getTask = async (req,res,next) => {
                 specialistOfferMin,
                 specialistOfferMax
             };
+            const notes = await noteModel.find({task_id: taskID}).populate(["user_id", "task_id"]);
             const comments = await commentModel.find({task_id: taskID}).populate(["user_id"]);
-            res.json({task: task, comments: comments, offer: offer});
+            res.json({task: task, comments: comments, notes: notes, offer: offer});
         } else if (role == "specialistService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
-            .select("_id title description channel freelancer paid task_currency speciality taskStatus deadline cost")
+            .select("_id title serialNumber description channel freelancer paid task_currency speciality taskStatus deadline cost")
             .populate(["speciality", "taskStatus", "freelancer"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const customerOfferMax = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
@@ -114,8 +123,9 @@ const getTask = async (req,res,next) => {
                 customerOfferMin,
                 customerOfferMax
             };
+            const notes = await noteModel.find({task_id: taskID}).populate(["user_id", "task_id"]);
             const comments = await commentModel.find({task_id: taskID}).populate(["user_id"]);
-            res.json({task: task, comments: comments, offer: offer});
+            res.json({task: task, comments: comments, notes: notes, offer: offer});
         } else {
             return next(new HttpError("You are not authorized to show this task!", 401));
         }
@@ -133,24 +143,44 @@ const createTask = async (req,res,next) => {
                 description,
                 channel,
                 client,
+                shareWith,
                 speciality,
                 deadline,
                 task_currency,
                 paid,
                 status
             } = req.body;
-            const newTask = await new taskModel({
-                title,
-                description,
-                channel,
-                client,
-                speciality,
-                deadline,
-                task_currency,
-                paid,
-                created_by: req.user._id,
-                taskStatus: status
-            }).save();
+            let newTask;
+            if (shareWith) {
+                newTask = await new taskModel({
+                    title,
+                    serialNumber: Math.floor(Math.random() * 1000000),
+                    description,
+                    channel,
+                    client,
+                    speciality,
+                    deadline,
+                    task_currency,
+                    paid,
+                    created_by: req.user._id,
+                    show_created: shareWith,
+                    taskStatus: status
+                }).save();
+            } else {
+                newTask = await new taskModel({
+                    title,
+                    serialNumber: Math.floor(Math.random() * 1000000),
+                    description,
+                    channel,
+                    client,
+                    speciality,
+                    deadline,
+                    task_currency,
+                    paid,
+                    created_by: req.user._id,
+                    taskStatus: status
+                }).save();
+            }
             const date = new Date();
             await new noteModel({content: `Task has been created by ${req.user.fullname} in ${date}`, user_id: req.user._id, task_id: newTask._id}).save();
             const userA = await userModel.findById({_id: newTask.created_by});
@@ -175,7 +205,8 @@ const partialUpdateTask = async (req,res,next) => {
         const {statusID} = req.body;
         const currentStatus = await statusModel.findById({_id: statusID});
         if (currentStatus.slug == "working-on" && role != "customerService") {
-            const msg = await acceptTask(taskID, req.user.fullname, req.user._id);
+            const {shareWith} = req.body;
+            const msg = await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
         } else if (currentStatus.slug == "waiting-offer" && role != "specialistService") {
@@ -189,7 +220,8 @@ const partialUpdateTask = async (req,res,next) => {
             await new noteModel({content: `${req.user.fullname} has set task to be unavailable in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to not available successfully"});
         } else if (currentStatus.slug == "on-going" && role != "customerService") {
-            const {freelancerID, cost} = req.body;
+            const {freelancerID, cost, shareWith} = req.body;
+            await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
             const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
@@ -203,8 +235,8 @@ const partialUpdateTask = async (req,res,next) => {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
         } else if (currentStatus.slug == "offer-submitted" && role != "customerService") {
-            const {freelancerID, cost} = req.body;
-            await acceptTask(taskID, req.user.fullname, req.user._id);
+            const {freelancerID, cost, shareWith} = req.body;
+            await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
             const msg = await makeOffer(taskID, freelancerID, cost, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
@@ -309,4 +341,4 @@ const deleteTask = async (req,res,next) => {
     }
 }
 
-module.exports = {getMyTasks, getTask, dateFilterTasks, createTask, partialUpdateTask, updateTask, deleteTask}
+module.exports = {getMyTasks, getTask, FilterTasks, createTask, partialUpdateTask, updateTask, deleteTask}

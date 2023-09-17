@@ -10,6 +10,8 @@ const taskRoutes = require("../modules/task/task.routes");
 const transactionRoutes = require("../modules/transaction/transaction.routes");
 const commentRoutes = require("../modules/comment/comment.routes");
 const profitRoutes = require("../modules/profit/profit.routes");
+const notesRouter = require("../modules/note/note.routes");
+const countryRouter = require("../modules/country/country.routes");
 
 module.exports = {
     loginRoutes,
@@ -23,5 +25,7 @@ module.exports = {
     taskRoutes,
     transactionRoutes,
     commentRoutes,
-    profitRoutes
+    profitRoutes,
+    notesRouter,
+    countryRouter
 }

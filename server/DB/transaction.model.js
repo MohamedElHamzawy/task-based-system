@@ -7,6 +7,9 @@ const transactionSchema = new mongoose.Schema({
     method: {
         type: String
     },
+    accountNumber: {
+        type: String
+    },
     task: {
         type: mongoose.Types.ObjectId,
         ref: "task"

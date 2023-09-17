@@ -14,20 +14,38 @@ const showAllUsers = async (req,res,next) => {
     }
 }
 
-const getSortedUsers = async (req,res,next) => {
+const getCustomerService = async (req,res,next) => {
     try {
-        const sortation = req.params.sort;
-        if (sortation == "completed") {
-            const allUsers = await userModel.find({}).sort({completedCount: -1});
-            res.json({users: allUsers});
-        } else if (sortation == "profit") {
-            const allUsers = await userModel.find({}).sort({totalProfit: -1});
-            res.json({users: allUsers});
-        } else {
-            return next(new HttpError("You can't sort with this attribute", 404));
-        }
+        const allUsers = await userModel.find({user_role: "customerService"});
+        res.json({users: allUsers});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
+const filterSortedUsers = async (req,res,next) => {
+    const {sort, role} = req.body;
+    if (sort && role) {
+        if (sort == "completed") {
+            const allUsers = await userModel.find({user_role: role}).sort({completedCount: -1});
+            res.json({users: allUsers});
+        } else if (sort == "profit") {
+            const allUsers = await userModel.find({user_role: role}).sort({totalProfit: -1});
+            res.json({users: allUsers});
+        }         
+    } else if (sort) {
+        if (sort == "completed") {
+            const allUsers = await userModel.find({}).sort({completedCount: -1});
+            res.json({users: allUsers});
+        } else if (sort == "profit") {
+            const allUsers = await userModel.find({}).sort({totalProfit: -1});
+            res.json({users: allUsers});
+        }     
+    } else if (role) {
+        const allUsers = await userModel.find({user_role: role});
+        res.json({users: allUsers});
+    } else {
+        return next(new HttpError("Invalid filter & sort!", 404));
     }
 }
 
@@ -138,4 +156,4 @@ const deleteUser = async (req,res,next) => {
     }
 }
 
-module.exports = {showAllUsers, getUser, getSortedUsers, createUser, updateUser, deleteUser}
+module.exports = {showAllUsers, getCustomerService, getUser, filterSortedUsers, createUser, updateUser, deleteUser}
