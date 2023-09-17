@@ -9,7 +9,7 @@ import { GiProfit } from 'react-icons/gi';
 import { FaCoins } from 'react-icons/fa';
 import { GiPayMoney } from 'react-icons/gi';
 import { RiWaterPercentFill } from 'react-icons/ri';
-
+import { AiOutlineFileDone } from 'react-icons/ai';
 
 
 import GetCookie from "../../../../hooks/getCookie";
@@ -57,6 +57,7 @@ const Tasks = () => {
   const [totalGain, setTotalGain] = useState();
   const [totalCost, setTotalCost] = useState();
   const [totalProfit, setTotalProfit] = useState();
+  const [completedCount, setCompletedCount] = useState();
   const [totalProfitPercentage, setTotalProfitPercentage] = useState();
 
   useEffect(() => {
@@ -84,6 +85,7 @@ const Tasks = () => {
           setTotalCost(res.data.totalCost)
           setTotalGain(res.data.totalGain)
           setTotalProfit(res.data.totalProfit)
+          setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
 
           console.log(res.data)
@@ -111,6 +113,30 @@ const Tasks = () => {
   const StatusFilter = getStatusFilter(status, tasks);
   const DateFilter = getDateFilter(start, end, tasks);
 
+//Filter Handler
+  const filterHandler = async (value) => {
+    // send api request to validate data
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.get(
+       'http://localhost:5000/api/task/filter/' , 
+       {
+        params:{
+          speciality : value
+       }
+      }
+       ).then((res) => {
+        console.log(res.data)
+      });
+      setLoading(false);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -135,7 +161,7 @@ const Tasks = () => {
 
           <label htmlFor="Speciality" className="my-2 col-sm-3 col-8 text-center "> <FiFilter className="" /> Filter:</label>
           <select id="speciality" name="speciality" className="search col-sm-4 col-10  m-1 p-2" value={speciality}
-            onChange={(e) => { setSpeciality(e.target.value); setDateFilterData(false); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus(''); setStart(''); setEnd('') }}>
+            onChange={(e) => { filterHandler(e.target.value); setDateFilterData(false); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus(''); setStart(''); setEnd('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
               <option value={speciality.sub_speciality} key={speciality._id}>{speciality.sub_speciality}</option>
@@ -170,31 +196,37 @@ const Tasks = () => {
       </div>
 
       <div className="row analysis adduser-form p-1 justify-content-center col-11">
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Tasks Count </h6>
           <div className="bg-info col-4 icon p-3 text-center"><FaTasks className="fs-3" /></div>
           <h4 className="text-center col-4 fw-bold">{tasksCount ? tasksCount : '0'}</h4>
         </div>
 
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
+          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Completed Count </h6>
+          <div className="waiting-offer col-4 icon p-3 text-center"><AiOutlineFileDone className="fs-3" /></div>
+          <h4 className="text-center col-4 fw-bold">{completedCount ? completedCount : '0'}</h4>
+        </div>
+
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Gain </h6>
           <div className="bg-success col-4 icon p-3 text-center"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
         </div>
         
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
           <div className="bg-warning col-4 icon p-3 text-center"><GiPayMoney className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalCost ? totalCost : '0'}</h4>
         </div>
 
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
           <div className="bg-danger col-4 icon p-3 text-center"><GiProfit className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalProfit ? totalProfit : '0'}</h4>
         </div>
 
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
+        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Profit Percentage </h6>
           <div className="bg-primary col-4 icon p-3 text-center"><RiWaterPercentFill className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalProfitPercentage ? totalProfitPercentage : '0'}</h4>
@@ -233,7 +265,6 @@ const Tasks = () => {
               <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>
             </div>
-            {/* <p className="col-12 text-end  fs-5 "> <a className="view-details fs-4" href={`/task/${task._id}`}><BsFillFolderSymlinkFill /></a> </p> */}
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
@@ -355,7 +386,6 @@ const Tasks = () => {
         {dateFilterData ? !DateFilter.length == 0 ? DateFilter.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
          
-            {/* <h1>{ start < task.deadline.split('T')[0] < end ? 'y' : 'n'} </h1> */}
             <div className="col-12 fw-bold row text-center">
 
               <span

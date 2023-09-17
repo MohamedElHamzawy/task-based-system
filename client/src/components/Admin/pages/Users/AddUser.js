@@ -77,29 +77,12 @@ const numberReducer = (state, action) => {
       return state;
   }
 };
-//country validation
-const countryReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.country,
-        isvalid: validate(action.country, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
 
 
 const AddUser = () => {
 
   const [specialities, setSpecialities] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -115,11 +98,18 @@ const AddUser = () => {
         setLoading(false);
         setIsLoading(false);
       });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
   
-  console.log(specialities)
+  console.log(countries)
 
   //userName validation
   const [userNameState, dispatch] = useReducer(userNameReducer, {
@@ -181,25 +171,6 @@ const AddUser = () => {
     });
   };
 
-  //country validation
-  const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
-
-  const countryChangeHandler = (event) => {
-    dispatch4({
-      type: "CHANGE",
-      country: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const countryTouchHandler = () => {
-    dispatch4({
-      type: "TOUCH",
-    });
-  };
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
@@ -241,6 +212,12 @@ const AddUser = () => {
     setSpeciality(newOne);
   };
 
+  //country value
+  const [country, setCountry] = useState('');
+  const countryChangeHandler = (newOne) => {
+    setCountry(newOne);
+  };
+
   /////////////////////////////////
 
   const newUserSubmitHandler = async (event) => {
@@ -258,7 +235,7 @@ const AddUser = () => {
           userRole: role,
           speciality: speciality,
           userType:speciality,
-          country: countryState.value,
+          country: country,
           phone: numberState.value,
         }
       );
@@ -278,10 +255,10 @@ const AddUser = () => {
     fullNameState.value = ''
     userNameState.value = ''
     passwordState.value = ''
-    countryState.value = ''
     numberState.value = ''
     setRole('')
     setSpeciality('')
+    setCountry('')
   };
 
   const errorHandler = () => {
@@ -350,16 +327,13 @@ const AddUser = () => {
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p'>Country:</label>
-          <input type='text' placeholder='Country'
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+          <select id="country" name="country" className="p-2 px-4 search col-10 col-lg-7" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+            ))}
+          </select>
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
@@ -407,14 +381,14 @@ const AddUser = () => {
               !fullNameState.isvalid ||
               !userNameState.isvalid ||
               !passwordState.isvalid ||
-              !countryState.isvalid ||
               !numberState.isvalid ||
+              !country ||
               !role
               :
               !fullNameState.isvalid ||
               !userNameState.isvalid ||
               !passwordState.isvalid ||
-              !countryState.isvalid ||
+              !country ||
               !numberState.isvalid ||
               !role ||
               !speciality

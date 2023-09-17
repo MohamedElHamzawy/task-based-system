@@ -13,7 +13,7 @@ import { TbStatusChange } from 'react-icons/tb';
 import { MdCalculate } from 'react-icons/md';
 import { AiOutlineTransaction } from 'react-icons/ai';
 import { RiWaterPercentFill } from 'react-icons/ri';
-
+import { FaFlagUsa } from 'react-icons/fa';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -129,6 +129,15 @@ class SideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="f4"> Status</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/country'}}>
+            <NavIcon>
+                <FaFlagUsa className='f5' />
+            </NavIcon>
+             <NavText>
+             <p className="f4">Country</p>
             </NavText>           
           </NavItem>
 

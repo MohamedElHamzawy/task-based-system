@@ -59,24 +59,7 @@ const clientEmailReducer = (state, action) => {
       return state;
   }
 };
-//country validation
-const countryReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.country,
-        isvalid: validate(action.country, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
+
 
 //number validation
 const numberReducer = (state, action) => {
@@ -100,6 +83,7 @@ const numberReducer = (state, action) => {
 
 const AddClient = () => {
   const [currencies, setCurrencies] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -111,6 +95,13 @@ const AddClient = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
         });
         setLoading(false);
         setIsLoading(false);
@@ -181,26 +172,6 @@ const AddClient = () => {
     });
   };
 
-  //country validation
-  const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
-
-  const countryChangeHandler = (event) => {
-    dispatch4({
-      type: "CHANGE",
-      country: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const countryTouchHandler = () => {
-    dispatch4({
-      type: "TOUCH",
-    });
-  };
-
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
@@ -221,6 +192,12 @@ const AddClient = () => {
       type: "TOUCH",
     });
   };
+
+  //country value
+  const [country, setCountry] = useState('');
+  const countryChangeHandler = (newOne) => {
+    setCountry(newOne);
+  };
   /////////////////////////////////
 
   const newSpecialitySubmitHandler = async (event) => {
@@ -235,7 +212,7 @@ const AddClient = () => {
           clientName: clientNameState.value,
           owner: ownerState.value,
           website: clientEmailState.value,
-          country: countryState.value,
+          country: country,
           phone: numberState.value,
           currency: currency,
         }
@@ -256,7 +233,7 @@ const AddClient = () => {
     clientEmailState.value = ''
     clientNameState.value = ''
     ownerState.value = ''
-    countryState.value = ''
+    setCountry('')
     numberState.value = ''
     setCurrency('')
   };
@@ -320,16 +297,13 @@ const AddClient = () => {
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
-          <input type='text' placeholder='Country'
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+          <select id="country" name="country" className="p-2 px-4 search col-10 col-lg-7" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+            ))}
+          </select>
         </div>
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
@@ -365,7 +339,7 @@ const AddClient = () => {
               !ownerState.isvalid ||
               !clientNameState.isvalid ||
               !numberState.isvalid ||
-              !countryState.isvalid ||
+              !country ||
               !currency
 
             }
