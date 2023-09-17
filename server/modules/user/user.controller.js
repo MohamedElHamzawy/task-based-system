@@ -23,6 +23,15 @@ const getCustomerService = async (req,res,next) => {
     }
 }
 
+const getSpecialistService = async (req,res,next) => {
+    try {
+        const allUsers = await userModel.find({user_role: "specialistService"});
+        res.json({users: allUsers});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const filterSortedUsers = async (req,res,next) => {
     const {sort, role} = req.body;
     if (sort && role) {
@@ -156,4 +165,4 @@ const deleteUser = async (req,res,next) => {
     }
 }
 
-module.exports = {showAllUsers, getCustomerService, getUser, filterSortedUsers, createUser, updateUser, deleteUser}
+module.exports = {showAllUsers, getCustomerService, getSpecialistService, getUser, filterSortedUsers, createUser, updateUser, deleteUser}

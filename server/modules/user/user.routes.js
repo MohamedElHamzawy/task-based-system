@@ -1,6 +1,7 @@
 const {
     showAllUsers, 
     getCustomerService,
+    getSpecialistService,
     getUser, 
     filterSortedUsers,
     createUser, 
@@ -11,6 +12,7 @@ const router = require("express").Router();
 
 router.get("/", showAllUsers);
 router.get("/customerService", getCustomerService);
+router.get("/specialistService", getSpecialistService);
 router.get("/:id", getUser);
 router.get("/sort", filterSortedUsers);
 router.post("/", createUser);
