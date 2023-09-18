@@ -19,7 +19,8 @@ const getSearchFilter = (searchName, tasks) => {
   if (!searchName) {
     return tasks;
   } return tasks.filter(
-    (task) => task.title.toLowerCase().includes(searchName.toLowerCase())
+    (task) => task.title.toLowerCase().includes(searchName.toLowerCase()) 
+    // || task.serialNumber.includes(searchName) 
   );
 };
 
@@ -89,6 +90,8 @@ const Tasks = () => {
           setTotalProfit(res.data.totalProfit)
           setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
+
+          console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -117,32 +120,45 @@ const Tasks = () => {
 
 
   //Filter Handler
-  const filterHandler = async (value) => {
-    console.log(value)
+  const filterHandler = async () => {
+    setAllFilterData(true); 
+    setSearchFilterData(false);
+    setSearchName('');
+    console.log( speciality,status ,country ,start ,end ,freelancer ,client)
     // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.get(
+      const response = await axios.post(
         'http://localhost:5000/api/task/filter/result/',
         {
-        params:{
-          speciality: value
-          // status ,
-          // country ,
-          // start ,
-          // end,
-          // freelancer ,
-          // client ,
-        }
-      });
+          speciality: speciality,
+          status :status ,
+          country : country ,
+          start : start ,
+          end : end ,
+          freelancer :freelancer ,
+          client :client ,  
+       });
+      const responseData = await response;
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
       setFilterData(response.data.tasks)
+
+      setTasksCount(response.data.tasksCount)
+      setTotalCost(response.data.totalCost)
+      setTotalGain(response.data.totalGain)
+      setTotalProfit(response.data.totalProfit)
+      setCompletedCount(response.data.completedCount)
+      setTotalProfitPercentage(response.data.totalProfitPercentage)
+
       console.log(response.data)
       setLoading(false);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
   };
 
@@ -161,7 +177,7 @@ const Tasks = () => {
       <div className="row p-0 m-0 justify-content-center">
 
         <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name" value={searchName}
+          <input type="name" className="search p-2 w-100" placeholder=" Search By Name or Serial Number" value={searchName}
             onChange={(e) => { 
               setSearchName(e.target.value);
               setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
@@ -169,37 +185,68 @@ const Tasks = () => {
           />
         </div>
 
-        <div className="col-12 col-md-6 text-secondary row p-2 justify-content-center">
+        <div className="col-12 col-md-8 text-secondary row p-2">
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end"> <FiFilter className="" /> From:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => {setStart(e.target.value);  }}
+          />
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end"> <FiFilter className="" />To:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => {setEnd(e.target.value);  }}
+          />
+        </div>
 
-          <label htmlFor="Speciality" className="my-2 col-sm-3 col-8 text-center "> <FiFilter className="" /> Filter:</label>
-          <select id="speciality" name="speciality" className="search col-sm-4 col-10  m-1 p-2" value={speciality}
-            onChange={(e) => { setSpeciality(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName(''); }}>
+        <div className="col-12  text-secondary row p-2 justify-content-center">
+
+          <label htmlFor="Speciality" className="my-2 col-12 text-start "> <FiFilter className="" /> Filter:</label>
+
+          <select id="speciality" name="speciality" className="search col-sm-4 col-md-3 col-lg-2 col-10  m-1 p-2" value={speciality}
+            onChange={(e) => {setSpeciality(e.target.value);   }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
               <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
-          <select id="status" name="status" className="search col-sm-4 col-10 p-2 m-1" value={status}
-            onChange={(e) => { setStatus(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName('');}}>
+
+          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={status}
+            onChange={(e) => { setStatus(e.target.value);  }}>
             <option value="" className='text-secondary'>Statuses</option>
             {statuses.map((status) => (
-              <option value={status.statusname} key={status._id}>{status.statusname}</option>
+              <option value={status._id} key={status._id}>{status.statusname}</option>
+            ))}
+          </select>
+
+          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={freelancer}
+            onChange={(e) => { setFreelancer(e.target.value);  }}>
+            <option value="" className='text-secondary'>Freelanceres</option>
+            {freelancers.map((freelancer) => (
+              <option value={freelancer._id} key={freelancer._id}>{freelancer.freelancername}</option>
+            ))}
+          </select>
+
+          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={client}
+            onChange={(e) => { setClient(e.target.value);  }}>
+            <option value="" className='text-secondary'>Clients</option>
+            {clients.map((client) => (
+              <option value={client._id} key={client._id}>{client.clientname}</option>
+            ))}
+          </select>
+          
+          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={country}
+            onChange={(e) => { setCountry(e.target.value);  }}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.counrtyname}</option>
             ))}
           </select>
         </div>
 
-        <div className="col-12 col-md-9 text-secondary row p-2">
-          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
-          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => { setStart(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName('');}}
-          />
-          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
-          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => { setEnd(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName('');}}
-          />
+        <div className="col-4 col-sm-5 p-2 text-start ">
+          <button onClick={filterHandler} className="filter-btn p-2">
+            <FiFilter className='fs-3' /> Filter
+          </button>
         </div>
-
-        <div className="col-8 col-md-3 p-2">
+        <div className="col-7 col-sm-6 p-2 text-end">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
             <FaTasks className='fs-3' />  Add New Task
           </button>
@@ -241,7 +288,7 @@ const Tasks = () => {
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Profit Percentage </h6>
           <div className="bg-primary col-4 icon p-3 text-center"><RiWaterPercentFill className="fs-3 " /></div>
-          <h4 className="text-center col-4 fw-bold">{totalProfitPercentage ? totalProfitPercentage : '0'}</h4>
+          <h4 className="text-center col-4 fw-bold">{totalProfitPercentage ? Math.floor(totalProfitPercentage) : '0'}</h4>
         </div>
       </div>
 
@@ -272,7 +319,12 @@ const Tasks = () => {
               </span>
 
             </div>
-            <div className="col-12 row text-center justify-content-end my-2">
+            <div className="col-12 row text-center justify-content-end my-2 ">
+              <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                  {task.serialNumber}
+                </span>
+              </div>
               <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
                 <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>

@@ -19,7 +19,15 @@
 .waiting-offer{
     background-color: #6B5B95;
 }
-
+.filter-btn {
+    color: white;
+    border: 0px;
+    background-color: rgb(34, 180, 104);
+    border-radius: 10px;
+}
+.filter-btn:hover{
+    background-color: rgb(27, 150, 86);
+}
 .task-edit-btn{
     color: white;
     border: 0px;
@@ -140,6 +148,11 @@
 }
 .details-btn:hover{
     background-color: #F67280;
+}
+.serial-number{
+    background-color: #4b6584;
+    color: white;
+    border-radius: 30px;
 }
 @media only screen and (max-width: 822px) {
     .data {
