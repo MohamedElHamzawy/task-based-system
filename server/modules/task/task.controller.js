@@ -53,7 +53,6 @@ const getMyTasks = async (req,res,next) => {
 const FilterTasks = async (req,res,next) => {
     try {
         const {status, speciality, country, start, end, freelancer, client} = req.body;
-        // const tasks = await taskModel.find({$and: [status? {taskStatus: status}: {taskStatus: null}, speciality? {speciality: speciality} : {speciality: null}, country? {country: country} : {country: null}, freelancer? {freelancer: freelancer} : {freelancer: null}, client? {client: client} : {client: null}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         let tasks;
         if (end && start) {
             tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
@@ -65,9 +64,9 @@ const FilterTasks = async (req,res,next) => {
         let totalGain = 0;
         let totalProfit = 0;
         tasks.forEach(task => {
-            totalCost += task.cost;
+            task.cost? totalCost += task.cost : totalCost += 0;
             totalGain += (task.paid * task.task_currency.priceToEGP);
-            totalProfit += task.profit_amount;
+            task.profit_amount? totalProfit += task.profit_amount : totalProfit += 0;
         });
         const totalProfitPercentage = totalProfit/totalGain*100;
         res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
@@ -147,7 +146,6 @@ const createTask = async (req,res,next) => {
                 title,
                 description,
                 channel,
-                country,
                 client,
                 shareWith,
                 speciality,
