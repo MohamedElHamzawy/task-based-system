@@ -22,36 +22,23 @@ const getSearchFilter = (searchName, tasks) => {
     (task) => task.title.toLowerCase().includes(searchName.toLowerCase())
   );
 };
-// Speciality filter
-const getSpecialityFilter = (speciality, tasks) => {
-  if (!speciality) {
-    return tasks;
-  } return tasks.filter((tasks) => tasks.speciality.sub_speciality.includes(speciality));
-};
-// Status filter
-const getStatusFilter = (status, tasks) => {
-  if (!status) {
-    return tasks;
-  } return tasks.filter((tasks) => tasks.taskStatus.statusname.includes(status));
-};
 
-// Date filter
-
-const getDateFilter = (start ,end, tasks) => {
-  if (!start || !end) {
-    return tasks;
-  } return tasks.filter((task) => start <= task.deadline.split('T')[0] &&  task.deadline.split('T')[0] <= end);
-};
 
 const Tasks = () => {
 
   const token = GetCookie("AdminToken")
-  const [tasks, setTasks] = useState([]);
-  const [specialities, setSpecialities] = useState([]);
-  const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const [tasks, setTasks] = useState([]);
+
+  const [specialities, setSpecialities] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [freelancers, setFreelancers] = useState([]);
+  const [clients, setClients] = useState([]);
+
 
   const [tasksCount, setTasksCount] = useState();
   const [totalGain, setTotalGain] = useState();
@@ -76,6 +63,21 @@ const Tasks = () => {
         });
       });
       timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
+        });
+      });      
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/freelancer/").then((res) => {
+          setFreelancers(res.data.freelancers);
+        });
+      });    
+        timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/client/").then((res) => {
+          setClients(res.data.clients);
+        });
+      });
+      timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
@@ -87,8 +89,6 @@ const Tasks = () => {
           setTotalProfit(res.data.totalProfit)
           setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
-
-          console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -97,38 +97,47 @@ const Tasks = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
+  const [searchName, setSearchName] = useState('');
+
   const [speciality, setSpeciality] = useState('');
   const [status, setStatus] = useState('');
-  const [searchName, setSearchName] = useState('');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
+  const [freelancer, setFreelancer] = useState('');
+  const [client, setClient] = useState('');
+  const [country, setCountry] = useState('');
 
   const [searchFilterData, setSearchFilterData] = useState(true);
-  const [SpecialityFilterData, setSpecialityFilterData] = useState(false);
-  const [statusFilterData, setStatusFilterData] = useState(false);
-  const [dateFilterData, setDateFilterData] = useState(false);
+  const [allFilterData, setAllFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, tasks);
-  const SpecialityFilter = getSpecialityFilter(speciality, tasks);
-  const StatusFilter = getStatusFilter(status, tasks);
-  const DateFilter = getDateFilter(start, end, tasks);
 
-//Filter Handler
+
+  const [filterData, setFilterData] = useState([]);
+
+
+  //Filter Handler
   const filterHandler = async (value) => {
+    console.log(value)
     // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
       const response = await axios.get(
-       'http://localhost:5000/api/task/filter/' , 
-       {
+        'http://localhost:5000/api/task/filter/result/',
+        {
         params:{
-          speciality : value
-       }
-      }
-       ).then((res) => {
-        console.log(res.data)
+          speciality: value
+          // status ,
+          // country ,
+          // start ,
+          // end,
+          // freelancer ,
+          // client ,
+        }
       });
+      setFilterData(response.data.tasks)
+      console.log(response.data)
       setLoading(false);
       setIsLoading(false);
     } catch (err) {
@@ -153,7 +162,10 @@ const Tasks = () => {
 
         <div className="col-10 col-md-4 p-2">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setStatusFilterData(false); setSpeciality(''); setStatus(''); setStart(''); setEnd('') }}
+            onChange={(e) => { 
+              setSearchName(e.target.value);
+              setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
+              setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') }}
           />
         </div>
 
@@ -161,14 +173,14 @@ const Tasks = () => {
 
           <label htmlFor="Speciality" className="my-2 col-sm-3 col-8 text-center "> <FiFilter className="" /> Filter:</label>
           <select id="speciality" name="speciality" className="search col-sm-4 col-10  m-1 p-2" value={speciality}
-            onChange={(e) => { filterHandler(e.target.value); setDateFilterData(false); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus(''); setStart(''); setEnd('') }}>
+            onChange={(e) => { setSpeciality(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName(''); }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
-              <option value={speciality.sub_speciality} key={speciality._id}>{speciality.sub_speciality}</option>
+              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
           <select id="status" name="status" className="search col-sm-4 col-10 p-2 m-1" value={status}
-            onChange={(e) => { setStatus(e.target.value); setDateFilterData(false); setStatusFilterData(true); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality(''); setStart(''); setEnd('') }}>
+            onChange={(e) => { setStatus(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName('');}}>
             <option value="" className='text-secondary'>Statuses</option>
             {statuses.map((status) => (
               <option value={status.statusname} key={status._id}>{status.statusname}</option>
@@ -179,11 +191,11 @@ const Tasks = () => {
         <div className="col-12 col-md-9 text-secondary row p-2">
           <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
           <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => { setStart(e.target.value); setDateFilterData(true); setStatusFilterData(false); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality(''); setStatus('') }}
+            onChange={(e) => { setStart(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName('');}}
           />
           <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
           <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => { setEnd(e.target.value); setDateFilterData(true); setStatusFilterData(false); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality(''); setStatus('') }}
+            onChange={(e) => { setEnd(e.target.value); setAllFilterData(true); setSearchFilterData(false); setSearchName('');}}
           />
         </div>
 
@@ -213,7 +225,7 @@ const Tasks = () => {
           <div className="bg-success col-4 icon p-3 text-center"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{totalGain ? totalGain : '0'}</h4>
         </div>
-        
+
         <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
           <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Cost </h6>
           <div className="bg-warning col-4 icon p-3 text-center"><GiPayMoney className="fs-3 " /></div>
@@ -261,8 +273,8 @@ const Tasks = () => {
 
             </div>
             <div className="col-12 row text-center justify-content-end my-2">
-              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
-              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
+                <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>
             </div>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
@@ -283,7 +295,7 @@ const Tasks = () => {
           </div> : ''
         }
 
-        {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((task) => (
+        {allFilterData ? !filterData.length == 0 ? filterData.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
 
             <div className="col-12 fw-bold row text-center">
@@ -311,8 +323,8 @@ const Tasks = () => {
             </div>
 
             <div className="col-12 row text-center justify-content-end my-2">
-              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
-              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
+                <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>
             </div>
 
@@ -326,106 +338,6 @@ const Tasks = () => {
             }
           </div>
         )) :
-          <div className="row  p-3 m-0 text-center" >
-            <h2>
-              There Is No Tasks
-            </h2>
-          </div> : ''
-        }
-
-        {statusFilterData ? !StatusFilter.length == 0 ? StatusFilter.map((task) => (
-          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
-
-            <div className="col-12 fw-bold row text-center">
-
-              <span
-                className={
-                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
-                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
-                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
-                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
-                                          'anystatus  p-3 status col-12 '
-                }>
-
-                {task.taskStatus.statusname}
-              </span>
-
-            </div>
-
-            <div className="col-12 row text-center justify-content-end my-2">
-              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
-              <BsFillFolderSymlinkFill className="fs-4" /> Details
-              </button>
-            </div>
-
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
-            {task.freelancer &&
-              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-            }
-          </div>
-        )) :
-          <div className="row  p-3 m-0 text-center" >
-            <h2>
-              There Is No Tasks
-            </h2>
-          </div> : ''
-        }
-
-        {dateFilterData ? !DateFilter.length == 0 ? DateFilter.map((task) => (
-          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
-         
-            <div className="col-12 fw-bold row text-center">
-
-              <span
-                className={
-                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
-                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
-                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
-                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
-                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
-                                          'anystatus  p-3 status col-12 '
-                }>
-
-                {task.taskStatus.statusname}
-              </span>
-
-            </div>
-
-            <div className="col-12 row text-center justify-content-end my-2">
-              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
-              <BsFillFolderSymlinkFill className="fs-4" /> Details
-              </button>
-            </div>
-
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
-            {task.freelancer &&
-              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-            }
-          </div>
-      )) :
           <div className="row  p-3 m-0 text-center" >
             <h2>
               There Is No Tasks
