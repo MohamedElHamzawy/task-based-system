@@ -13,7 +13,7 @@ const {
 
 router.get("/", auth(), getMyTasks);
 router.get("/:id", auth(), getTask);
-router.get("/filter/result/", FilterTasks);
+router.post("/filter/result/", FilterTasks);
 router.post("/", auth(), createTask);
 router.post("/partial/:id", auth(), partialUpdateTask);
 router.post("/:id", auth(), updateTask);
