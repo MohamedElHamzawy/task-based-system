@@ -51,7 +51,6 @@ const getMyTasks = async (req,res,next) => {
 }
 
 const FilterTasks = async (req,res,next) => {
-    console.log(req.body)
     try {
         const {status, speciality, country, start, end, freelancer, client} = req.body;
         let tasks;
