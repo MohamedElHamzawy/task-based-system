@@ -53,7 +53,13 @@ const getMyTasks = async (req,res,next) => {
 const FilterTasks = async (req,res,next) => {
     try {
         const {status, speciality, country, start, end, freelancer, client} = req.body;
-        const tasks = await taskModel.find({$and: [status? {taskStatus: status}: {taskStatus: null}, speciality? {speciality: speciality} : {speciality: null}, country? {country: country} : {country: null}, freelancer? {freelancer: freelancer} : {freelancer: null}, client? {client: client} : {client: null}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        // const tasks = await taskModel.find({$and: [status? {taskStatus: status}: {taskStatus: null}, speciality? {speciality: speciality} : {speciality: null}, country? {country: country} : {country: null}, freelancer? {freelancer: freelancer} : {freelancer: null}, client? {client: client} : {client: null}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        let tasks;
+        if (end && start) {
+            tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        } else {
+            tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).sort({updatedAt: -1}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        }
         const tasksCount = tasks.length;
         let totalCost = 0;
         let totalGain = 0;
