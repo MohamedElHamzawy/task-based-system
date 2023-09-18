@@ -14,28 +14,32 @@ const getAllFreelancers = async (req,res,next) => {
 }
 
 const filterSortedFreelancers = async (req,res,next) => {
-    const {sort, speciality} = req.body;
-    if (sort && speciality) {
-        if (sort == "completed") {
-            const allFreelancers = await freelancerModel.find({speciality: speciality}).sort({completedCount: -1});
+    try {
+        const {sort, speciality} = req.body;
+        if (sort && speciality) {
+            if (sort == "completed") {
+                const allFreelancers = await freelancerModel.find({speciality: speciality}).sort({completedCount: -1});
+                res.json({freelancers: allFreelancers});
+            } else if (sort == "profit") {
+                const allFreelancers = await freelancerModel.find({speciality: speciality}).sort({totalProfit: -1});
+                res.json({freelancers: allFreelancers});
+            }         
+        } else if (sort) {
+            if (sort == "completed") {
+                const allFreelancers = await freelancerModel.find({}).sort({completedCount: -1});
+                res.json({freelancers: allFreelancers});
+            } else if (sort == "profit") {
+                const allFreelancers = await freelancerModel.find({}).sort({totalProfit: -1});
+                res.json({freelancers: allFreelancers});
+            }     
+        } else if (speciality) {
+            const allFreelancers = await freelancerModel.find({speciality: speciality});
             res.json({freelancers: allFreelancers});
-        } else if (sort == "profit") {
-            const allFreelancers = await freelancerModel.find({speciality: speciality}).sort({totalProfit: -1});
-            res.json({freelancers: allFreelancers});
-        }         
-    } else if (sort) {
-        if (sort == "completed") {
-            const allFreelancers = await freelancerModel.find({}).sort({completedCount: -1});
-            res.json({freelancers: allFreelancers});
-        } else if (sort == "profit") {
-            const allFreelancers = await freelancerModel.find({}).sort({totalProfit: -1});
-            res.json({freelancers: allFreelancers});
-        }     
-    } else if (speciality) {
-        const allFreelancers = await freelancerModel.find({speciality: speciality});
-        res.json({freelancers: allFreelancers});
-    } else {
-        return next(new HttpError("Invalid filter & sort!", 404));
+        } else {
+            return next(new HttpError("Invalid filter & sort!", 404));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
 

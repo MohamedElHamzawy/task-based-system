@@ -13,28 +13,32 @@ const getAllClients = async (req,res,next) => {
 }
 
 const filterSortedClients = async (req,res,next) => {
-    const {sort, country} = req.body;
-    if (sort && country) {
-        if (sort == "completed") {
-            const allClients = await clientModel.find({country: country}).sort({completedCount: -1});
+    try {
+        const {sort, country} = req.body;
+        if (sort && country) {
+            if (sort == "completed") {
+                const allClients = await clientModel.find({country: country}).sort({completedCount: -1});
+                res.json({clients: allClients});
+            } else if (sort == "profit") {
+                const allClients = await clientModel.find({country: country}).sort({totalProfit: -1});
+                res.json({clients: allClients});
+            }         
+        } else if (sort) {
+            if (sort == "completed") {
+                const allClients = await clientModel.find({}).sort({completedCount: -1});
+                res.json({clients: allClients});
+            } else if (sort == "profit") {
+                const allClients = await clientModel.find({}).sort({totalProfit: -1});
+                res.json({clients: allClients});
+            }     
+        } else if (country) {
+            const allClients = await clientModel.find({country: country});
             res.json({clients: allClients});
-        } else if (sort == "profit") {
-            const allClients = await clientModel.find({country: country}).sort({totalProfit: -1});
-            res.json({clients: allClients});
-        }         
-    } else if (sort) {
-        if (sort == "completed") {
-            const allClients = await clientModel.find({}).sort({completedCount: -1});
-            res.json({clients: allClients});
-        } else if (sort == "profit") {
-            const allClients = await clientModel.find({}).sort({totalProfit: -1});
-            res.json({clients: allClients});
-        }     
-    } else if (country) {
-        const allClients = await clientModel.find({country: country});
-        res.json({clients: allClients});
-    } else {
-        return next(new HttpError("Invalid filter & sort!", 404));
+        } else {
+            return next(new HttpError("Invalid filter & sort!", 404));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
 

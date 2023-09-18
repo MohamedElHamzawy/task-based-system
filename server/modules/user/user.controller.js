@@ -33,28 +33,32 @@ const getSpecialistService = async (req,res,next) => {
 }
 
 const filterSortedUsers = async (req,res,next) => {
-    const {sort, role} = req.body;
-    if (sort && role) {
-        if (sort == "completed") {
-            const allUsers = await userModel.find({user_role: role}).sort({completedCount: -1});
+    try {
+        const {sort, role} = req.body;
+        if (sort && role) {
+            if (sort == "completed") {
+                const allUsers = await userModel.find({user_role: role}).sort({completedCount: -1});
+                res.json({users: allUsers});
+            } else if (sort == "profit") {
+                const allUsers = await userModel.find({user_role: role}).sort({totalProfit: -1});
+                res.json({users: allUsers});
+            }         
+        } else if (sort) {
+            if (sort == "completed") {
+                const allUsers = await userModel.find({}).sort({completedCount: -1});
+                res.json({users: allUsers});
+            } else if (sort == "profit") {
+                const allUsers = await userModel.find({}).sort({totalProfit: -1});
+                res.json({users: allUsers});
+            }     
+        } else if (role) {
+            const allUsers = await userModel.find({user_role: role});
             res.json({users: allUsers});
-        } else if (sort == "profit") {
-            const allUsers = await userModel.find({user_role: role}).sort({totalProfit: -1});
-            res.json({users: allUsers});
-        }         
-    } else if (sort) {
-        if (sort == "completed") {
-            const allUsers = await userModel.find({}).sort({completedCount: -1});
-            res.json({users: allUsers});
-        } else if (sort == "profit") {
-            const allUsers = await userModel.find({}).sort({totalProfit: -1});
-            res.json({users: allUsers});
-        }     
-    } else if (role) {
-        const allUsers = await userModel.find({user_role: role});
-        res.json({users: allUsers});
-    } else {
-        return next(new HttpError("Invalid filter & sort!", 404));
+        } else {
+            return next(new HttpError("Invalid filter & sort!", 404));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
 
