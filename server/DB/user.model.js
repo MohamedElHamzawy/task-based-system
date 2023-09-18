@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     country: {
-        type: String
+        type: mongoose.Types.ObjectId,
+        ref: "country"
     },
     phone: {
         type: String

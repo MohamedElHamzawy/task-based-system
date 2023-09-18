@@ -82,7 +82,7 @@ const getTask = async (req,res,next) => {
         if (role == "admin") {
             const task = await taskModel
             .findOne({_id: taskID})
-            .populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            .populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
             const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
@@ -100,8 +100,7 @@ const getTask = async (req,res,next) => {
         } else if (role == "customerService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
-            .select("_id title serialNumber description channel client speciality taskStatus deadline task_currency paid cost")
-            .populate(["client", "speciality", "taskStatus", "task_currency"]);
+            .populate(["client", "country", "speciality", "taskStatus", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
             const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
@@ -115,8 +114,7 @@ const getTask = async (req,res,next) => {
         } else if (role == "specialistService") {
             const task = await taskModel
             .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
-            .select("_id title serialNumber description channel freelancer paid task_currency speciality taskStatus deadline cost")
-            .populate(["speciality", "taskStatus", "freelancer"]);
+            .populate(["speciality", "country", "taskStatus", "freelancer"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const customerOfferMax = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
             const customerOfferMin = (task.paid - (task.paid * profitMaxPercentage/100)) * currencyValue.priceToEGP;
@@ -143,6 +141,7 @@ const createTask = async (req,res,next) => {
                 title,
                 description,
                 channel,
+                country,
                 client,
                 shareWith,
                 speciality,
@@ -159,6 +158,7 @@ const createTask = async (req,res,next) => {
                     description,
                     channel,
                     client,
+                    country,
                     speciality,
                     deadline,
                     task_currency,
@@ -174,6 +174,7 @@ const createTask = async (req,res,next) => {
                     description,
                     channel,
                     client,
+                    country,
                     speciality,
                     deadline,
                     task_currency,

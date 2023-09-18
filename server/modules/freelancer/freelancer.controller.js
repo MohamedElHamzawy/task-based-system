@@ -42,7 +42,7 @@ const filterSortedFreelancers = async (req,res,next) => {
 const getFreelancer = async (req, res, next) => {
     try {
         const freelancerID = req.params.id;
-        const thisFreelancer = await freelancerModel.findById({_id: freelancerID}).populate(["speciality", "currency"]);
+        const thisFreelancer = await freelancerModel.findById({_id: freelancerID}).populate(["speciality", "currency", "country"]);
         if (thisFreelancer) {
             const freelancerTasks = await taskModel.find({freelancer: freelancerID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const freelancerAccount = await accountModel.find({owner: freelancerID}).populate("owner");
