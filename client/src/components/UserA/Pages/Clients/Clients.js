@@ -3,6 +3,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import './Clients.css'
 import { FaHospitalUser } from 'react-icons/fa';
+import { FiFilter } from 'react-icons/fi';
 
 //search filter
 const getSearchFilter = (searchName, clients) => {
@@ -10,12 +11,12 @@ const getSearchFilter = (searchName, clients) => {
     return clients;
   } return clients.filter(
     (clients) => clients.clientname.toLowerCase().includes(searchName.toLowerCase()))
-  // || clients.specialityType.includes(searchName) );
 };
-
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
+  const [countries, setCountries] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -33,35 +34,53 @@ const Clients = () => {
         setLoading(false);
         setIsLoading(false);
       });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
+          console.log(res.data)
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
-  const searchFilter = getSearchFilter(searchName, clients);
+  const [country, setCountry] = useState('');
 
-  const deleteClientHandler = async (id) => {
+  const [searchFilterData, setSearchFilterData] = useState(true);
+  const [sortFilterData, setSortFilterData] = useState(false);
+
+  const searchFilter = getSearchFilter(searchName, clients);
+  const [filterData, setFilterData] = useState([]);
+
+  //sort data
+  const sortHandler = async (value) => {
+    setSortFilterData(true);
+    setSearchFilterData(false);
+    setSearchName('');
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.delete(
-        ` http://localhost:5000/api/client/${id}`
-        //  ,
-        //  { headers :{
-        //     'Authorization':`Bearer ${token}`
-        //   }
-        // }
-      )
+      const response = await axios.post(
+        'http://localhost:5000/api/client/sort/filter/',
+        {
+          country: value
+        });
       const responseData = await response;
-      console.log(responseData)
-      setError(responseData.data.message);
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setFilterData(response.data.clients);
+      console.log(response.data)
+      setLoading(false);
       setIsLoading(false);
-      window.location.href = '/clients';
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -77,13 +96,23 @@ const Clients = () => {
 
       <div className="row p-0 m-0 col-10 justify-content-center">
 
-        <div className="col-12 col-md-6 p-2  ">
+        <div className="col-10 col-sm-5 col-md-4  row p-2 mx-1">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name"
-            onChange={(e) => { setSearchName(e.target.value) }}
+            onChange={(e) => { setSearchName(e.target.value); setSearchFilterData(true); setSortFilterData(false); }}
           />
         </div>
 
-        <div className="col-12 col-md-5 p-2 text-end ">
+        <div className="col-10 col-sm-5 col-md-4 text-secondary row p-2">
+          <select id="speciality" name="speciality" className="search p-2" value={country}
+            onChange={(e) => { sortHandler(e.target.value); }}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-12 col-md-4 p-2 justify-content-end text-end">
           <button onClick={() => { window.location.href = '/addclient' }} className="new-user p-2">
             <FaHospitalUser className='fs-3' /> Add New Client
           </button>
@@ -92,11 +121,11 @@ const Clients = () => {
       </div>
 
       <div className=" w-100 row p-0 m-0 mt-2 justify-content-center">
-        {!searchFilter.length == 0 ? searchFilter.map((client) => (
+        {searchFilterData ? !searchFilter.length == 0 ? searchFilter.map((client) => (
           <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
             <div className="col-12 fw-bold row text-start">
               <div className='col-12 p-2 '>
-               <FaHospitalUser className="fs-1 text-danger" />
+                <FaHospitalUser className="fs-1 text-danger" />
               </div>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
                 <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
@@ -104,11 +133,11 @@ const Clients = () => {
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
                 {client.country}
               </p>
-              { client.speciality && client.speciality.map((speciality) => (
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
-                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
-                  </p>
-                ))
+              {client.speciality && client.speciality.map((speciality) => (
+                <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
+                  <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
+                </p>
+              ))
               }
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
@@ -124,7 +153,42 @@ const Clients = () => {
             <h2>
               There Is No Clients
             </h2>
+          </div> : ''
+        }
+
+        {sortFilterData ? !filterData.length == 0 ? filterData.map((client) => (
+          <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
+            <div className="col-12 fw-bold row text-start">
+              <div className='col-12 p-2 '>
+                <FaHospitalUser className="fs-1 text-danger" />
+              </div>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+                <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
+              </p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
+                {client.country}
+              </p>
+              {client.speciality && client.speciality.map((speciality) => (
+                <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
+                  <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
+                </p>
+              ))
+              }
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
+              <p className="col-12 col-sm-7 edit-form-p fw-bold"> <span className="edit-form-lable">Website : </span>
+                {client.website}
+              </p>
+            </div>
           </div>
+        )) :
+          <div className="row  p-3 m-0 text-center" >
+            <h2>
+              There Is No Clients
+            </h2>
+          </div> : ''
         }
 
 

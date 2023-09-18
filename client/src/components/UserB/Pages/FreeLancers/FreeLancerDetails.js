@@ -526,8 +526,13 @@ const FreeLancerDetails = () => {
             </div>
 
             <div className="col-12 row text-center justify-content-end my-2">
-              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
-              <BsFillFolderSymlinkFill className="fs-4" /> Details
+            <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                  {task.serialNumber}
+                </span>
+              </div>
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
+                <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>
             </div>
 
@@ -572,8 +577,13 @@ const FreeLancerDetails = () => {
             </div>
 
             <div className="col-12 row text-center justify-content-end my-2">
-              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
-              <BsFillFolderSymlinkFill className="fs-4" /> Details
+            <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                  {task.serialNumber}
+                </span>
+              </div>
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
+                <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>
             </div>
 

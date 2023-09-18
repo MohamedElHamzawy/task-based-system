@@ -62,45 +62,27 @@ const FreeLancers = () => {
   const SpecialityFilter = getSpecialityFilter(speciality, freeLancers);
 
   const sortHandler = async (value) => {
-    // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.get(
-        ` http://localhost:5000/api/freelancer/sort/${value}`).then((res) => {
-          setSortedFreelancers(res.data.freelancers);
-          console.log(res.data.freelancers)
-        });
+      const response = await axios.post(
+        'http://localhost:5000/api/freelancer/sort/filter/',
+        {
+         sort: value, 
+       });
+      const responseData = await response;
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setSortedFreelancers(response.data.freelancers)
+      console.log(response.data)
       setLoading(false);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
   };
-
-  const deleteFreelancerHandler = async (id) => {
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.delete(
-        ` http://localhost:5000/api/freelancer/${id}`
-        //  ,
-        //  { headers :{
-        //     'Authorization':`Bearer ${token}`
-        //   }
-        // }
-      )
-      const responseData = await response;
-      console.log(responseData)
-      setError(responseData.data.message);
-      setIsLoading(false);
-      window.location.href = '/freelancers';
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
 
   return isLoading ? (
     <LoadingSpinner asOverlay />

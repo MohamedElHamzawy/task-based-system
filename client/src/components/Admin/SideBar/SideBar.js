@@ -14,6 +14,7 @@ import { MdCalculate } from 'react-icons/md';
 import { AiOutlineTransaction } from 'react-icons/ai';
 import { RiWaterPercentFill } from 'react-icons/ri';
 import { FaFlagUsa } from 'react-icons/fa';
+import { MdOutlineNotificationsActive} from 'react-icons/md';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -65,6 +66,15 @@ class SideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="f4"> Tasks</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/notifications'}}>
+            <NavIcon>
+                <MdOutlineNotificationsActive className='f5' />
+            </NavIcon>
+             <NavText>
+             <p className="f4"> Notifications</p>
             </NavText>           
           </NavItem>
 

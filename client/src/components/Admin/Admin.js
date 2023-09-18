@@ -32,6 +32,8 @@ import Transactions from './pages/Transactions/Transactions';
 import Profit from './pages/Profit/Profit';
 import Country from './pages/Country/Country';
 import AddCountry from './pages/Country/AddCountry';
+import Notifications from './pages/Notifications/Notifications.js';
+
 
 const Admin = () => {
   return (
@@ -65,6 +67,7 @@ const Admin = () => {
           <Route path="/addcountry" element={<AddCountry />} />
           <Route path="/accounts" element={<Accounts />} />
           <Route path="/account/:id" element={<AccountDetails />} />
+          <Route path="/notifications" element={<Notifications/>} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />
           <Route path="/transactions" element={<Transactions />} />

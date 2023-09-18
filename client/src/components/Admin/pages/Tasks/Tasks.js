@@ -19,8 +19,7 @@ const getSearchFilter = (searchName, tasks) => {
   if (!searchName) {
     return tasks;
   } return tasks.filter(
-    (task) => task.title.toLowerCase().includes(searchName.toLowerCase()) 
-    // || task.serialNumber.includes(searchName) 
+    (task) => task.title.toLowerCase().includes(searchName.toLowerCase()) || task.serialNumber.includes(searchName) 
   );
 };
 
@@ -176,8 +175,10 @@ const Tasks = () => {
 
       <div className="row p-0 m-0 justify-content-center">
 
-        <div className="col-10 col-md-4 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Name or Serial Number" value={searchName}
+        <label htmlFor="Speciality" className="my-3 col-2 col-md-1 text-start text-muted">Filter:</label>
+
+        <div className="col-8 col-md-3 p-2">
+          <input type="name" className="search p-2 w-100" placeholder="Search By Name or Serial Number" value={searchName}
             onChange={(e) => { 
               setSearchName(e.target.value);
               setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
@@ -185,12 +186,12 @@ const Tasks = () => {
           />
         </div>
 
-        <div className="col-12 col-md-8 text-secondary row p-2">
-          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end"> <FiFilter className="" /> From:</label>
+        <div className="col-10 col-md-7 text-secondary row p-2">
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end">From:</label>
           <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
             onChange={(e) => {setStart(e.target.value);  }}
           />
-          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end"> <FiFilter className="" />To:</label>
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end">To:</label>
           <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
             onChange={(e) => {setEnd(e.target.value);  }}
           />
@@ -198,7 +199,6 @@ const Tasks = () => {
 
         <div className="col-12  text-secondary row p-2 justify-content-center">
 
-          <label htmlFor="Speciality" className="my-2 col-12 text-start "> <FiFilter className="" /> Filter:</label>
 
           <select id="speciality" name="speciality" className="search col-sm-4 col-md-3 col-lg-2 col-10  m-1 p-2" value={speciality}
             onChange={(e) => {setSpeciality(e.target.value);   }}>
@@ -375,6 +375,11 @@ const Tasks = () => {
             </div>
 
             <div className="col-12 row text-center justify-content-end my-2">
+            <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                  {task.serialNumber}
+                </span>
+              </div>
               <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={() => { window.location.href = `/task/${task._id}` }}>
                 <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>

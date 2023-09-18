@@ -13,12 +13,6 @@ const getSearchFilter = (searchName, users) => {
     return users;
   } return users.filter((user) => user.fullname.toLowerCase().includes(searchName.toLowerCase()));
 };
-// Role filter
-const getRoleFilter = (searchRole, users) => {
-  if (!searchRole) {
-    return users;
-  } return users.filter((user) => user.user_role.includes(searchRole));
-};
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -44,40 +38,18 @@ const Users = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState('');
+
   const [searchRole, setSearchRole] = useState('');
   const [sortedUsers, setSortedUsers] = useState('');
+  const [filterRole, setFilterRole] = useState('');
 
   const [searchFilterData, setSearchFilterData] = useState(true);
-  const [RoleFilterData, setRoleFilterData] = useState(false);
-  const [sortFilterData, setSortFilterData] = useState(false);
+  const [allFilterData, setAllFilterData] = useState(false);
+
 
   const searchFilter = getSearchFilter(searchName, users);
-  const roleFilter = getRoleFilter(searchRole, users);
+  const [filterData, setFilterData] = useState([]);
 
-
-  const sortHandler = async (value) => {
-    // send api request to validate data
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.get(
-       ' http://localhost:5000/api/user/sort/' , 
-       {
-        params:{
-        sort : value
-       }
-      }
-       ).then((res) => {
-        setSortedUsers(res.data.users);
-        console.log(res.data.users)
-      });
-      setLoading(false);
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    }
-  };
 
   const deleteUserHandler = async (id) => {
     setIsLoading(true);
@@ -98,6 +70,36 @@ const Users = () => {
   }
 
 
+    //Filter Handler
+    const filterHandler = async () => {
+      setAllFilterData(true); 
+      setSearchFilterData(false);
+      setSearchName('');
+      console.log( sortedUsers,filterRole)
+      // send api request to validate data
+      setIsLoading(true);
+      try {
+        setError(null);
+        const response = await axios.post(
+          'http://localhost:5000/api/user/sort/filter/',
+          {
+            sort: sortedUsers,
+            role :filterRole  ,  
+         });
+        const responseData = await response;
+        if (!(response.statusText === "OK")) {
+          throw new Error(responseData.data.message);
+        }
+        setFilterData(response.data.users)
+        console.log(response.data)
+        setLoading(false);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+      }
+    };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -112,16 +114,16 @@ const Users = () => {
 
       <div className="row p-0 m-0 justify-content-lg-end col-12 ">
 
-        <div className="col-10 col-sm-6 col-lg-3 p-2 ">
+        <div className="col-10 col-sm-8 col-lg-3 p-2 ">
           <input type="name" className="search p-2 w-100" placeholder=" Search Usernames" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value); setRoleFilterData(false); setSearchFilterData(true); setSortFilterData(false); setSearchRole('') }}
+            onChange={(e) => { setSearchName(e.target.value); setAllFilterData(false); setSearchFilterData(true); setFilterRole(''); setSortedUsers('')}}
           />
         </div>
 
         <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
-          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter className="" /> Filter:</label>
-          <select id="role" name="role" className=" search col-8 col-sm-7 p-2" value={searchRole}
-            onChange={(e) => { setSearchRole(e.target.value); setSearchFilterData(false); setRoleFilterData(true); setSortFilterData(false); setSearchName('')  }}
+          <label htmlFor="role" className="mt-2 col-4 col-sm-3 text-end">Filter:</label>
+          <select id="role" name="role" className=" search col-8 col-sm-9 p-2" value={filterRole}
+            onChange={(e) => { setFilterRole(e.target.value); }}
           >
             <option value="" className="text-secondary">Role</option>
             <option value="admin">Admin</option>
@@ -130,10 +132,10 @@ const Users = () => {
           </select>
         </div>
 
-        <div className="col-12 col-sm-7 col-lg-3 text-secondary row p-2">
-          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter /> Sort:</label>
-          <select id="role" name="role" className=" search col-8 col-sm-7 p-2"
-            onChange={(e) => {sortHandler(e.target.value) ;setSearchFilterData(false); setRoleFilterData(false); setSortFilterData(true) ; setSearchName('') ; setSearchRole('') }}
+        <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
+          <label htmlFor="role" className="mt-2 col-4 col-sm-3 text-end">Sort:</label>
+          <select id="role" name="role" className=" search col-8 col-sm-9 p-2"
+            onChange={(e) => {setSortedUsers(e.target.value) ;}}
           >
             <option value="" className="text-secondary">sort</option>
             <option value="completed">Completed</option>
@@ -141,7 +143,18 @@ const Users = () => {
           </select>
         </div>
 
-        <div className="col-12 col-sm-5 col-lg-3 p-2 justify-content-end">
+        <div className="col-5 col-sm-2 col-lg-3  p-2 text-center ">
+          <button 
+          disabled={
+            !filterRole &&
+            !sortedUsers
+          }
+          onClick={filterHandler} className="filter-btn p-2">
+            <FiFilter className='fs-3' /> Filter
+          </button>
+        </div>
+
+        <div className="col-7 col-sm-12 p-2 justify-content-end text-end">
           <button onClick={() => { window.location.href = '/adduser' }} className="new-user p-2">
             <RiUserAddFill className="fs-3" />  Add New User
           </button>
@@ -177,7 +190,7 @@ const Users = () => {
           </div> : ''
         }
 
-        {RoleFilterData ? !roleFilter.length == 0 ? roleFilter.map((user) => (
+        {allFilterData ? !filterData.length == 0 ? filterData.map((user) => (
           <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
             <p className="col-6  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
             <p className="col-4 name-role">{user.user_role}</p>
@@ -195,26 +208,6 @@ const Users = () => {
               There Is No Users
             </h2>
           </div> : ''
-        }
-
-        {sortFilterData ? !sortedUsers.length == 0 ? sortedUsers.map((user)=>(
-          <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-            <p className="col-6  name-role text-center  "><a className="text-dark text-decoration-none fw-bold" href={`/user/${user._id}`}>{user.fullname}</a></p>
-            <p className="col-4 name-role">{user.user_role}</p>
-            <p className="col-2">
-              {user.user_role == 'admin' ?
-                <button className=" disabled-btn p-2 px-3" disabled> <RiDeleteBinFill /> </button>
-                :
-                <button className=" delete-btn p-2 px-3" onClick={() => deleteUserHandler(user._id)}> <RiDeleteBinFill /> </button>
-              }
-            </p>
-         </div>
-        )):
-        <div className="row  p-3 m-0 text-center" >
-          <h2>
-            There Is No Users
-          </h2>
-        </div> : ''
         }
 
       </div>

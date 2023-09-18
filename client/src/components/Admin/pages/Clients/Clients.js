@@ -11,18 +11,12 @@ const getSearchFilter = (searchName, clients) => {
     return clients;
   } return clients.filter(
     (clients) => clients.clientname.toLowerCase().includes(searchName.toLowerCase()))
-  // || clients.specialityType.includes(searchName) );
 };
-// country filter
-const getCountryFilter = (country, clients) => {
-  if (!country) {
-    return clients;
-  } return clients.filter((client) => client.country.includes(country));
-};
-
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
+  const [countries, setCountries] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -40,60 +34,55 @@ const Clients = () => {
         setLoading(false);
         setIsLoading(false);
       });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
+          console.log(res.data)
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  const [country, setCountry] = useState('');
   const [searchName, setSearchName] = useState('');
   const [sortedClients, setSortedClients] = useState('');
+  const [country, setCountry] = useState('');
 
   const [searchFilterData, setSearchFilterData] = useState(true);
-  const [countryFilterData, setCountryFilterData] = useState(false);
   const [sortFilterData, setSortFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, clients);
-  const countryFilter = getCountryFilter(country, clients);
+  const [filterData, setFilterData] = useState([]);
 
-  const sortHandler = async (value) => {
-    // send api request to validate data
+  //sort data
+  const sortHandler = async () => {
+    setSortFilterData(true); 
+    setSearchFilterData(false);
+    setSearchName('');
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.get(
-        ` http://localhost:5000/api/client/sort/${value}`).then((res) => {
-          setSortedClients(res.data.clients);
-          console.log(res.data.clients)
-        });
+      const response = await axios.post(
+        'http://localhost:5000/api/client/sort/filter/',
+        {
+         sort: sortedClients, 
+         country : country
+       });
+      const responseData = await response;
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      setFilterData(response.data.clients);
+      console.log(response.data)
       setLoading(false);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
     }
   };
-  const deleteClientHandler = async (id) => {
-    setIsLoading(true);
-    try {
-      setError(null);
-      const response = await axios.delete(
-        ` http://localhost:5000/api/client/${id}`
-        //  ,
-        //  { headers :{
-        //     'Authorization':`Bearer ${token}`
-        //   }
-        // }
-      )
-      const responseData = await response;
-      console.log(responseData)
-      setError(responseData.data.message);
-      setIsLoading(false);
-      window.location.href = '/clients';
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -110,22 +99,15 @@ const Clients = () => {
 
       <div className="row p-0 m-0 col-10 justify-content-center">
 
-        <div className="col-12 col-sm-6 col-lg-3 row p-2 mx-1">
+        <div className="col-10 col-sm-8 col-lg-3 row p-2 mx-1">
           <input type="name" className="search p-2 w-100" placeholder=" Search By Name"
-            onChange={(e) => { setSearchName(e.target.value) ;  setCountryFilterData(false); setSearchFilterData(true); setSortFilterData(false); setCountry('')  }}
+            onChange={(e) => { setSearchName(e.target.value) ; setSearchFilterData(true); setSortFilterData(false); setCountry('') ;setSortedClients('')  }}
           />
         </div>
 
-        <div className="col-12 col-sm-6 col-lg-3 row p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search Country"
-            onChange={(e) => { setCountry(e.target.value);  setCountryFilterData(true); setSearchFilterData(false); setSortFilterData(false); setSearchName('')  }}
-          />
-        </div>
-
-        <div className="col-12 col-sm-7 col-lg-3 text-secondary row p-2">
-          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end"> <FiFilter /> Sort:</label>
-          <select id="role" name="role" className=" search col-8 col-sm-7 p-2"
-            onChange={(e) => { sortHandler(e.target.value); setSearchFilterData(false); setCountryFilterData(false); setSortFilterData(true); setSearchName(''); setCountry('') }}
+        <div className="col-12 col-sm-4 col-lg-3 text-secondary row p-2 mx-1">
+          <select id="role" name="role" className=" search  p-2"
+            onChange={(e) => {setSortedClients(e.target.value); }}
           >
             <option value="" className="text-secondary">sort</option>
             <option value="completed">Completed</option>
@@ -133,7 +115,28 @@ const Clients = () => {
           </select>
         </div>
 
-        <div className="col-12 col-sm-5 col-lg-3 p-2 text-end">
+        <div className="col-12 col-sm-4 col-lg-3 text-secondary row p-2">
+        <select id="speciality" name="speciality" className="search p-2" value={country}
+            onChange={(e) => {setCountry(e.target.value);   }}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-5 col-sm-3 col-lg-3  p-2 text-center ">
+          <button 
+          disabled={
+            !sortedClients &&
+            !country
+          }
+          onClick={sortHandler} className="filter-btn p-2">
+            <FiFilter className='fs-3' /> Filter
+          </button>
+        </div>
+
+        <div className="col-7 col-sm-12 p-2 justify-content-end text-end">
           <button onClick={() => { window.location.href = '/addclient' }} className="new-user p-2">
             <FaHospitalUser className='fs-3' /> Add New Client
           </button>
@@ -176,41 +179,7 @@ const Clients = () => {
             </h2>
           </div>:''
         }
-         {countryFilterData ? !countryFilter.length == 0 ? countryFilter.map((client) => (
-          <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
-            <div className="col-12 fw-bold row text-start">
-              <div className='col-12 p-2 '>
-               <FaHospitalUser className="fs-1 text-danger" />
-              </div>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
-                <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
-              </p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
-                {client.country}
-              </p>
-              { client.speciality && client.speciality.map((speciality) => (
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
-                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
-                  </p>
-                ))
-              }
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
-              <p className="col-12 col-sm-7 edit-form-p fw-bold"> <span className="edit-form-lable">Website : </span>
-                {client.website}
-              </p>
-            </div>
-          </div>
-        )) :
-          <div className="row  p-3 m-0 text-center" >
-            <h2>
-              There Is No Clients
-            </h2>
-          </div>:''
-        }
-         {sortFilterData ? !sortedClients.length == 0 ? sortedClients.map((client) => (
+         {sortFilterData ? !filterData.length == 0 ? filterData.map((client) => (
           <div key={client._id} className="task-card bg-white  p-2 py-3 row users-data col-11 my-1">
             <div className="col-12 fw-bold row text-start">
               <div className='col-12 p-2 '>
