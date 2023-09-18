@@ -23,9 +23,9 @@ const getMyTasks = async (req,res,next) => {
             let totalGain = 0;
             let totalProfit = 0;
             tasks.forEach(task => {
-                totalCost += task.cost;
-                totalGain += (task.paid * task.task_currency.priceToEGP);
-                totalProfit += task.profit_amount;
+                task.cost? totalCost += task.cost : totalCost += 0;
+                task.paid? totalGain += (task.paid * task.task_currency.priceToEGP) : totalGain += 0;
+                task.profit_amount? totalProfit += task.profit_amount : totalProfit += 0;
             });
             const totalProfitPercentage = totalProfit/totalGain*100;
             res.json({tasks: tasks, tasksCount: tasksCount, completedCount: completedCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage.toFixed(2)});
@@ -51,7 +51,6 @@ const getMyTasks = async (req,res,next) => {
 }
 
 const FilterTasks = async (req,res,next) => {
-    console.log(req.body)
     try {
         const {status, speciality, country, start, end, freelancer, client} = req.body;
         let tasks;
@@ -66,7 +65,7 @@ const FilterTasks = async (req,res,next) => {
         let totalProfit = 0;
         tasks.forEach(task => {
             task.cost? totalCost += task.cost : totalCost += 0;
-            totalGain += (task.paid * task.task_currency.priceToEGP);
+            task.paid? totalGain += (task.paid * task.task_currency.priceToEGP) : totalGain += 0;
             task.profit_amount? totalProfit += task.profit_amount : totalProfit += 0;
         });
         const totalProfitPercentage = totalProfit/totalGain*100;
@@ -160,7 +159,7 @@ const createTask = async (req,res,next) => {
             if (shareWith) {
                 newTask = await new taskModel({
                     title,
-                    serialNumber: Math.floor(Math.random() * 1000000),
+                    serialNumber: Math.floor(Math.random() * 1000000).toString(),
                     description,
                     channel,
                     client,

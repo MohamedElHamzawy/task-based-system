@@ -6,7 +6,7 @@ const taskSchema = new mongoose.Schema({
         required: true
     },
     serialNumber: {
-        type: Number
+        type: String
     },
     description: {
         type: String
