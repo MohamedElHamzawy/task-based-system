@@ -10,7 +10,7 @@ const {
 
 router.get("/", getAllFreelancers);
 router.get("/:id", getFreelancer);
-router.get("/sort", filterSortedFreelancers);
+router.get("/sort/filter/", filterSortedFreelancers);
 router.post("/", createFreelancer);
 router.post("/:id", updateFreelancer);
 router.delete("/:id", deleteFreelancer);
