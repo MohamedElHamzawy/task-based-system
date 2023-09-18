@@ -61,7 +61,7 @@ const TaskDetails = () => {
     let timerId;
     if (loading) {
       setIsLoading(true);
-       timerId = setTimeout(async () => {
+      timerId = setTimeout(async () => {
         await axios.get(`http://localhost:5000/api/task/${id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
@@ -73,7 +73,7 @@ const TaskDetails = () => {
           setStatus(res.data.task.taskStatus)
           setUser(res.data.task.created_by)
 
-          // setNotes(res.data.notes)
+          setNotes(res.data.notes)
           setComments(res.data.comments)
           console.log(res.data)
         });
@@ -234,7 +234,7 @@ const TaskDetails = () => {
         <h2 className="col-12 col-lg-7 text-center system-head p-0 fw-bold">  Task Details</h2>
       </div>
       {/* ////////////////////////////////////////////// */}
-      <div className='row col-12 col-lg-8 justify-content-center p-1 mx-1'>
+      <div className='row col-12 col-lg-8 justify-content-center p-1 mx-1 h-100'>
         <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
           <div className="col-12 row p-3 justify-content-center">
@@ -258,7 +258,7 @@ const TaskDetails = () => {
                                           status.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
                                             'anystatus  p-3 status col-12 '
                   }>
-              
+
                   {status.statusname}
                 </span>
               }
@@ -271,25 +271,25 @@ const TaskDetails = () => {
           </div>
           {/* /////////////////////// */}
           <div className="col-12 col-md-6 row ">
-            <h5 className="col-6  edit-form-lable text-start pt-3 data fw-bold">  Title :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {task.title} </p>
+            <h5 className="col-6  edit-form-lable text-start pt-2 data fw-bold">  Title :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data"> {task.title} </p>
           </div>
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data fw-bold">  Speciality :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {speciality && speciality.sub_speciality} </p>
+            <h5 className="col-6 edit-form-lable text-start pt-2 data fw-bold">  Speciality :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data"> {speciality && speciality.sub_speciality} </p>
           </div>
 
           <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-3 data fw-bold">  Channel :</h5>
-            <p className="d-inline col-6  pt-3 edit-form-p fw-bold data"> {task.channel} </p>
+            <h5 className="col-6 edit-form-lable text-start pt-2 data fw-bold">  Channel :</h5>
+            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data"> {task.channel} </p>
           </div>
 
-   
-          {task.freelancer ? 
+
+          {task.freelancer &&
             <>
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">  Freelancer :</h5>
-                <p className="d-inline col-12 col-sm-6  pt-3 edit-form-p fw-bold data">
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data fw-bold">  Freelancer :</h5>
+                <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data">
                   <a className="text-dark fw-bold" href={`/freelancer/${task.freelancer._id}`}>
                     {task.freelancer.freelancername}
                   </a>
@@ -297,31 +297,29 @@ const TaskDetails = () => {
               </div>
 
               <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">  Freelancer Price:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data"> {task.cost}EGP </p>
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data fw-bold">  Freelancer Price:</h5>
+                <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data"> {task.cost} </p>
               </div>
-
-              <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">  Freelancer Email:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold date data"> {task.freelancer.email} </p>
-              </div>
-            </> :
-            offer && offer.customerOfferMax && offer.customerOfferMin ?
-              <div className='col-12 col-md-6  row'>
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data fw-bold">Customer Offer:</h5>
-                <p className="d-inline col-12 col-sm-6 pt-3 edit-form-p fw-bold text-danger data">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
-              </div> :''
-              
+              {/* <div className="col-12 col-md-6 row ">
+                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data fw-bold">  Freelancer Email:</h5>
+                <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold date data"> {task.freelancer.email} </p>
+              </div> */}
+            </>}
+          {offer &&
+            <div className='col-12 col-md-6 row  '>
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data fw-bold">Client Offer:</h5>
+              <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
+            </div>
           }
-          
-          <div className="col-12 row p-0 m-0">
-            <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3 data fw-bold">Dead Line :</h5>
-            <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
-            <p className="d-inline col-md-4 col-6  pt-3 edit-form-p fw-bold date data"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
+
+          <div className="col-12 row p-0 m-0 justify-content-center justify-content-md-start">
+            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2 data fw-bold">Dead Line :</h5>
+            <p className="d-inline col-md-4 col-6  p-2 edit-form-p details-data fw-bold date data"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
+            <p className="d-inline col-md-4 col-6  p-2 edit-form-p details-data fw-bold date data"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
           </div>
-          <div className="col-12 row ">
-            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-3 fw-bold">  Description :</h5>
-            <p className="d-inline col-md-9 col-12  pt-3 edit-form-p fw-bold "> {task.description} </p>
+          <div className="col-12 row justify-content-center justify-content-md-start p-0 m-0">
+            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2 fw-bold">  Description :</h5>
+            <p className="d-inline col-md-8 col-12  p-2 edit-form-p details-data fw-bold "> {task.description} </p>
           </div>
 
 
@@ -366,9 +364,9 @@ const TaskDetails = () => {
           <div className='row w-100 p-0 m-0'>
             {!comments.length == 0 ? comments.map((comment) => (
 
-              <div className='comment text-start row p-2 pt-3 my-1' key={comment._id}>
-                <h6 className='col-12 col-sm-4 edit-form-lable fw-bold '>{comment.user_id && comment.user_id.fullname} : </h6>
-                <p className='col-10 col-sm-7 fw-bold text-sm-start text-center'>{comment.content} </p>
+              <div className='comment text-start row  my-1' key={comment._id}>
+                <h6 className='col-12 col-sm-4 edit-form-lable fw-bold pt-2'>{comment.user_id && comment.user_id.fullname} : </h6>
+                <p className='col-10 col-sm-7 fw-bold text-sm-start text-center pt-2'>{comment.content} </p>
                 {comment.user_id &&
                   comment.user_id._id == userId ?
                   <div className='col-2 col-sm-1'>
@@ -411,8 +409,8 @@ const TaskDetails = () => {
         </div>
 
       </div>
-{/* /////////////////////////////////////////////// */}
-{/* <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
+      {/* /////////////////////////////////////////////// */}
+      <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
         <div>
           <h1 className='edit-form-lable p-4 fw-bold'>Notes</h1>
           <div className='row p-0 m-0'>
@@ -429,10 +427,10 @@ const TaskDetails = () => {
             </div>
           </div>
         </div>
-      </div> */}
-{/* /////////////////////////////////////////////// */}
+      </div>
+      {/* /////////////////////////////////////////////// */}
 
-  
+
     </div>
   )
 }

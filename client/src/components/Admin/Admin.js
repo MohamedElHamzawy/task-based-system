@@ -30,6 +30,8 @@ import AccountDetails from './pages/Accounts/AccountDetails';
 import ChangePass from './pages/Settings/ChangePass';
 import Transactions from './pages/Transactions/Transactions';
 import Profit from './pages/Profit/Profit';
+import Country from './pages/Country/Country';
+import AddCountry from './pages/Country/AddCountry';
 
 const Admin = () => {
   return (
@@ -59,6 +61,8 @@ const Admin = () => {
           <Route path="/statuses" element={<Statuses />} />
           <Route path="/status/:id" element={<StatusDetails />} />
           <Route path="/addstatus" element={<AddStatus />} />
+          <Route path="/country" element={<Country />} />
+          <Route path="/addcountry" element={<AddCountry />} />
           <Route path="/accounts" element={<Accounts />} />
           <Route path="/account/:id" element={<AccountDetails />} />
           <Route path="/settings" element={<Settings />} />

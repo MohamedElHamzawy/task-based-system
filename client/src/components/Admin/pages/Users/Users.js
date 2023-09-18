@@ -61,7 +61,13 @@ const Users = () => {
     try {
       setError(null);
       const response = await axios.get(
-       ` http://localhost:5000/api/user/sort/${value}`).then((res) => {
+       ' http://localhost:5000/api/user/sort/' , 
+       {
+        params:{
+        sort : value
+       }
+      }
+       ).then((res) => {
         setSortedUsers(res.data.users);
         console.log(res.data.users)
       });
@@ -79,11 +85,6 @@ const Users = () => {
       setError(null);
       const response = await axios.delete(
         ` http://localhost:5000/api/user/${id}`
-        //  ,
-        //  { headers :{
-        //     'Authorization':`Bearer ${token}`
-        //   }
-        // }
       )
       const responseData = await response;
       console.log(responseData.data)

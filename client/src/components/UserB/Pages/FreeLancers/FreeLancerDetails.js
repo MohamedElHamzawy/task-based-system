@@ -6,23 +6,23 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { validate, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 
 import { useParams } from "react-router-dom";
-import { BiSolidEditAlt } from 'react-icons/bi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 import { FaTasks } from 'react-icons/fa';
 import { FaCoins } from 'react-icons/fa';
-import { FaCcVisa } from 'react-icons/fa';
-import { TbListDetails } from 'react-icons/tb';
 import { ImCancelCircle } from 'react-icons/im';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-import { MdPendingActions } from 'react-icons/md';
-import { MdRateReview } from 'react-icons/md';
-import { BiSolidOffer } from 'react-icons/bi';
-import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
-import { TbTruckDelivery } from 'react-icons/tb';
-import { GiProfit } from 'react-icons/gi';
+import { FiFilter } from 'react-icons/fi';
 
+
+// Date filter
+
+const getDateFilter = (start, end, tasks) => {
+  if (!start || !end) {
+    return tasks;
+  } return tasks.filter((task) => start <= task.deadline.split('T')[0] && task.deadline.split('T')[0] <= end);
+};
 
 //fullName validation
 const fullNameReducer = (state, action) => {
@@ -289,6 +289,12 @@ const FreeLancerDetails = () => {
     window.location.reload(true);
   };
 
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [withoutFilterData, setwithoutFilterData] = useState(true);
+  const [dateFilterData, setDateFilterData] = useState(false);
+  const DateFilter = getDateFilter(start, end, freeLancerTasks);
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -313,10 +319,10 @@ const FreeLancerDetails = () => {
         </div>
 
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">Full Name :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">Full Name :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.freelancername}
               value={fullNameState.value}
               onChange={fullNameChangeHandler}
@@ -333,9 +339,9 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
 
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3">  Email :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">  Email :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold " : 'd-none'}> {freeLancer.email} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='email' placeholder={freeLancer.email}
               value={emailState.value}
               onChange={emailChangeHandler}
@@ -351,9 +357,9 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Phone :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Phone :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.phone} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='number' placeholder={freeLancer.phone}
               value={numberState.value}
               onChange={numberChangeHandler}
@@ -370,12 +376,12 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start">Speciality :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">Speciality :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'} >
             {freeLancer.speciality && freeLancer.speciality.sub_speciality}
           </p>
 
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
@@ -387,9 +393,9 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Country :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Country :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.country} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.country}
               value={countryState.value}
               onChange={countryChangeHandler}
@@ -404,9 +410,9 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start"> Currency :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Currency :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <select id="Currency" name="Currency" className="p-2 px-4 search col-12" value={currency}
               onChange={(event) => setCurreny(event.target.value)}>
               <option value="" className='text-secondary'>Currencies</option>
@@ -473,17 +479,27 @@ const FreeLancerDetails = () => {
           <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
         </div>
-        {/* <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
-          <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
-          <h4 className="text-center col-4 fw-bold">{freeLancer.totalProfit}</h4>
-        </div> */}
       </div>
 
       {/* /////////////////////////////////////////////////// */}
 
+      <div className="row p-0 m-0 justify-content-center adduser-form">
+        <div className="col-12 col-md-9 text-secondary row p-2">
+        <h3 htmlFor="Speciality" className="my-2 col-12 text-center text-dark fw-bold">Filter:</h3>
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setStart(e.target.value); setDateFilterData(true); setwithoutFilterData(false)}}
+          />
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setEnd(e.target.value); setDateFilterData(true); setwithoutFilterData(false) }}
+          />
+        </div>
+
+      </div>
+
       <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-        {freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
+        {withoutFilterData ? freeLancerTasks && !freeLancerTasks.length == 0 ? freeLancerTasks.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
 
             <div className="col-12 fw-bold row text-center">
@@ -527,7 +543,53 @@ const FreeLancerDetails = () => {
         )) :
           <div className="row col-12  p-2 text-center">
             <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div> : ''
+        }
+        {dateFilterData ? DateFilter && !DateFilter.length == 0 ? DateFilter.map((task) => (
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
+
+            <div className="col-12 fw-bold row text-center">
+              <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                            task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                              task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                        task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                          'anystatus  p-3 status col-12 '
+                }>
+
+                {task.taskStatus.statusname}
+              </span>
+
+            </div>
+
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
+
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
           </div>
+        )) :
+          <div className="row col-12  p-2 text-center">
+            <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div> : ''
         }
       </div>
     </div>

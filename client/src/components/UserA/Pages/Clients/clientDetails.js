@@ -9,16 +9,17 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 import { FaTasks } from 'react-icons/fa';
 import { FaCoins } from 'react-icons/fa';
-import { FaCcVisa } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-import { MdPendingActions } from 'react-icons/md';
-import { MdRateReview } from 'react-icons/md';
-import { BiSolidOffer } from 'react-icons/bi';
-import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
-import { TbTruckDelivery } from 'react-icons/tb';
-import { GiProfit } from 'react-icons/gi';
+import { FiFilter } from 'react-icons/fi';
+
+// Date filter
+const getDateFilter = (start, end, tasks) => {
+  if (!start || !end) {
+    return tasks;
+  } return tasks.filter((task) => start <= task.deadline.split('T')[0] && task.deadline.split('T')[0] <= end);
+};
 
 //clientName validation
 const clientNameReducer = (state, action) => {
@@ -310,6 +311,12 @@ const ClientDetails = () => {
         window.location.reload(true);
     };
 
+    const [start, setStart] = useState('');
+    const [end, setEnd] = useState('');
+    const [withoutFilterData, setwithoutFilterData] = useState(true);
+    const [dateFilterData, setDateFilterData] = useState(false);
+    const DateFilter = getDateFilter(start, end, clientTasks);
+
     return isLoading ? (
         <LoadingSpinner asOverlay />
     ) : (
@@ -333,10 +340,10 @@ const ClientDetails = () => {
                     </div>
                 </div>
                 {/* /////////////////////// */}
-                <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3 fw-bold"> Client Name:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.clientname} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5 edit-form-lable text-start p-2"> Client Name:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data " : 'd-none'}> {client.clientname} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
              <input type='text' placeholder={client.clientname}
               value={clientNameState.value}
               onChange={clientNameChangeHandler}
@@ -350,10 +357,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5 edit-form-lable text-start pt-3 fw-bold"> Owner :</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {client.ownerName} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5 edit-form-lable text-start p-2"> Owner :</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data " : 'd-none'}> {client.ownerName} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='text' placeholder={client.ownerName}
               value={ownerState.value}
               onChange={ownerChangeHandler}
@@ -368,10 +375,10 @@ const ClientDetails = () => {
         </div>
         {/* /////////////////////// */}
 
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold">Website:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.website} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3" : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">Website:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.website} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
           <input type='website' placeholder={client.website}
             value={clientEmailState.value}
             onChange={clientEmailChangeHandler}
@@ -385,10 +392,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold"> Phone:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.phone} </p>
-          <div className={edit ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Phone:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.phone} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
             <input type='number' placeholder={client.phone}
             value={numberState.value}
             onChange={numberChangeHandler}
@@ -402,10 +409,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold"> Country:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.country} </p>
-          <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Country:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.country} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
           <input type='text' placeholder={client.country}
             value={countryState.value}
             onChange={countryChangeHandler}
@@ -419,10 +426,10 @@ const ClientDetails = () => {
           </div>
         </div>
         {/* /////////////////////// */}
-        <div className="col-12 col-md-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3 fw-bold"> Currency:</h3>
-          <p className={!edit ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold" : 'd-none'}> {client.currency && client.currency.currencyname} </p>
-          <div className={edit ? "d-inline col-10 col-md-5  pt-3" : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Currency:</h3>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.currency && client.currency.currencyname} </p>
+          <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
           <select id="currencies" name="currencies" className="search w-100 p-2" value={currency}
             onChange={(event) => setCurrency(event.target.value)}>
             <option value="" className='text-secondary'>currencies</option>
@@ -487,19 +494,29 @@ const ClientDetails = () => {
           <div className="bg-success col-4 icon p-3"><FaCoins className="fs-3 " /></div>
           <h4 className="text-center col-4 fw-bold">{client.totalGain}</h4>
         </div>
-        {/* <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">Total Profit </h6>
-          <div className="bg-danger col-4 icon p-3"><GiProfit className="fs-3" /></div>
-          <h4 className="text-center col-4 fw-bold">{client.totalProfit}</h4>
-        </div> */}
         
       </div>
 
 
       {/* /////////////////////////////////////////////////// */}
 
+      <div className="row p-0 m-0 justify-content-center adduser-form">
+        <div className="col-12 col-md-9 text-secondary row p-2">
+          <h3 htmlFor="Speciality" className="my-2 col-12 text-center text-dark fw-bold">Filter:</h3>
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" /> From:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setStart(e.target.value); setDateFilterData(true); setwithoutFilterData(false) }}
+          />
+          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start"> <FiFilter className="" />To:</label>
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+            onChange={(e) => { setEnd(e.target.value); setDateFilterData(true); setwithoutFilterData(false) }}
+          />
+        </div>
+
+      </div>
+
       <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-        {clientTasks && !clientTasks.length == 0 ? clientTasks.map((task) => (
+        {withoutFilterData ? clientTasks && !clientTasks.length == 0 ? clientTasks.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
 
             <div className="col-12 fw-bold row text-center">
@@ -544,7 +561,54 @@ const ClientDetails = () => {
         )) :
           <div className="row col-12  p-2 text-center">
             <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div> :''
+        }
+      {dateFilterData ? DateFilter && !DateFilter.length == 0 ? DateFilter.map((task) => (
+          <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start">
+
+            <div className="col-12 fw-bold row text-center">
+
+            <span
+                className={
+                  task.taskStatus.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                  task.taskStatus.statusname == 'waiting offer' ? 'waiting-offer   p-3 status col-12 ' :
+                    task.taskStatus.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                      task.taskStatus.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                        task.taskStatus.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                          task.taskStatus.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                            task.taskStatus.statusname == 'rejected' ? 'bg-danger   p-3 status col-12 ' :
+                              task.taskStatus.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                task.taskStatus.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                  task.taskStatus.statusname == 'offer submitted' ? ' offer-submitted   p-3 status col-12 ' :
+                                    task.taskStatus.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                      task.taskStatus.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                        'anystatus  p-3 status col-12 '
+                }>
+              
+                {task.taskStatus.statusname}
+              </span>
+
+            </div>
+
+            <div className="col-12 row text-center justify-content-end my-2">
+              <button className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2" onClick={()=>{window.location.href = `/task/${task._id}`}}>
+              <BsFillFolderSymlinkFill className="fs-4" /> Details
+              </button>
+            </div>
+            
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            {task.freelancer &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
           </div>
+        )) :
+          <div className="row col-12  p-2 text-center">
+            <h3 className=" text-danger edit-form-lable">This User Didn't Do Any Tasks Yet</h3>
+          </div> :''
         }
       </div>
         </div>

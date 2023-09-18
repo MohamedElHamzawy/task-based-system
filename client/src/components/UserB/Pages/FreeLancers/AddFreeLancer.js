@@ -61,28 +61,12 @@ const emailReducer = (state, action) => {
       return state;
   }
 };
-//country validation
-const countryReducer = (state, action) => {
-  switch (action.type) {
-    case "CHANGE":
-      return {
-        ...state,
-        value: action.country,
-        isvalid: validate(action.country, action.validators),
-      };
-    case "TOUCH":
-      return {
-        ...state,
-        isTouched: true,
-      };
-    default:
-      return state;
-  }
-};
+
 
 const AddFreeLancer = () => {
 
   const [currencies, setCurrencies] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [specialities, setSpecialities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +86,13 @@ const AddFreeLancer = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
         });
         setLoading(false);
         setIsLoading(false);
@@ -179,26 +170,13 @@ const AddFreeLancer = () => {
     });
   };
 
-  //country validation
-  const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: "",
-    isvalid: false,
-    isTouched: false,
-  });
 
-  const countryChangeHandler = (event) => {
-    dispatch4({
-      type: "CHANGE",
-      country: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const countryTouchHandler = () => {
-    dispatch4({
-      type: "TOUCH",
-    });
-  };
 
+  //country value
+  const [country, setCountry] = useState('');
+  const countryChangeHandler = (newOne) => {
+    setCountry(newOne);
+  };
 
 
 
@@ -217,7 +195,7 @@ const AddFreeLancer = () => {
           speciality: speciality,
           phone: numberState.value,
           email: emailState.value,
-          country: countryState.value,
+          country: country,
           currency : currency ,
         }
       );
@@ -237,7 +215,7 @@ const AddFreeLancer = () => {
     fullNameState.value = ''
     numberState.value = ''
     emailState.value = ''
-    countryState.value = ''
+    setCountry('')
     setSpeciality('')
     setCurrency('')
   };
@@ -303,16 +281,13 @@ const AddFreeLancer = () => {
 
         <div className='col-12 col-lg-5 m-1 py-2 p-0'>
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
-          <input type='text' placeholder='Country'
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+          <select id="country" name="country" className="p-2 px-4 search col-10 col-lg-7" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+            ))}
+          </select>
         </div>
 
         <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
@@ -346,7 +321,7 @@ const AddFreeLancer = () => {
               !fullNameState.isvalid ||
               !numberState.isvalid ||
               !emailState.isvalid ||
-              !countryState.isvalid ||
+              !country ||
               !speciality||
               !currency
             }

@@ -13,12 +13,7 @@ import { FaCoins } from 'react-icons/fa';
 import { FaCcVisa } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-import { MdPendingActions } from 'react-icons/md';
-import { MdRateReview } from 'react-icons/md';
-import { BiSolidOffer } from 'react-icons/bi';
-import { GiProgression } from 'react-icons/gi';
 import { AiOutlineFileDone } from 'react-icons/ai';
-import { TbTruckDelivery } from 'react-icons/tb';
 import { GiProfit } from 'react-icons/gi';
 import { FiFilter } from 'react-icons/fi';
 
@@ -325,10 +320,10 @@ const FreeLancerDetails = () => {
         </div>
 
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold">Full Name :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+        <div className="col-12 col-lg-6 row p-2 ">
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">Full Name :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold " : 'd-none'}> {freeLancer.freelancername} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.freelancername}
               value={fullNameState.value}
               onChange={fullNameChangeHandler}
@@ -345,9 +340,9 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
 
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start pt-3  fw-bold">  Email :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 pt-3 edit-form-p fw-bold " : 'd-none'}> {freeLancer.email} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 pt-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2  fw-bold">  Email :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold " : 'd-none'}> {freeLancer.email} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='email' placeholder={freeLancer.email}
               value={emailState.value}
               onChange={emailChangeHandler}
@@ -363,9 +358,9 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold"> Phone :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.phone} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Phone :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.phone} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='number' placeholder={freeLancer.phone}
               value={numberState.value}
               onChange={numberChangeHandler}
@@ -382,12 +377,11 @@ const FreeLancerDetails = () => {
 
         {/* /////////////////////// */}
         <div className="d-flex col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold">Speciality :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">Speciality :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'} >
             {freeLancer.speciality && freeLancer.speciality.sub_speciality}
           </p>
-
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}>
               <option value="" className='text-secondary'>Specialities</option>
@@ -399,9 +393,9 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold"> Country :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.country} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Country :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.country} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <input type='text' placeholder={freeLancer.country}
               value={countryState.value}
               onChange={countryChangeHandler}
@@ -416,9 +410,9 @@ const FreeLancerDetails = () => {
         </div>
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start  fw-bold"> Currency :</h3>
-          <p className={!editFull ? "d-inline col-10 col-md-5 py-3 edit-form-p fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
-          <div className={editFull ? "d-inline col-10 col-md-5 py-3 " : 'd-none'} >
+          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Currency :</h3>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.currency && freeLancer.currency.currencyname} </p>
+          <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
             <select id="Currency" name="Currency" className="p-2 px-4 search col-12" value={currency}
               onChange={(event) => setCurreny(event.target.value)}>
               <option value="" className='text-secondary'>Currencies</option>
@@ -549,13 +543,13 @@ const FreeLancerDetails = () => {
               </button>
             </div>
 
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
-              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+              <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
           </div>
         )) :
@@ -594,11 +588,11 @@ const FreeLancerDetails = () => {
               </button>
             </div>
 
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
+            <p className="col-12 col-sm-6 edit-form-p  fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
               <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
