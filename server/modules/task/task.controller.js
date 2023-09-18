@@ -156,6 +156,7 @@ const createTask = async (req,res,next) => {
                 paid,
                 status
             } = req.body;
+            const clientCounrty = await clientModel.findById({_id: client}).select("country");
             let newTask;
             if (shareWith) {
                 newTask = await new taskModel({
@@ -164,7 +165,7 @@ const createTask = async (req,res,next) => {
                     description,
                     channel,
                     client,
-                    country,
+                    country: clientCounrty.country,
                     speciality,
                     deadline,
                     task_currency,
@@ -180,7 +181,7 @@ const createTask = async (req,res,next) => {
                     description,
                     channel,
                     client,
-                    country,
+                    country: clientCounrty.country,
                     speciality,
                     deadline,
                     task_currency,
