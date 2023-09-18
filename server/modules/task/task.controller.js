@@ -160,7 +160,7 @@ const createTask = async (req,res,next) => {
             if (shareWith) {
                 newTask = await new taskModel({
                     title,
-                    serialNumber: Math.floor(Math.random() * 1000000),
+                    serialNumber: Math.floor(Math.random() * 1000000).toString(),
                     description,
                     channel,
                     client,
