@@ -87,7 +87,7 @@ const getTask = async (req,res,next) => {
         if (role == "admin") {
             const task = await taskModel
             .findOne({_id: taskID})
-            .populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+            .populate(["client", "show_created", "show_accepted", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
             const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
             const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
