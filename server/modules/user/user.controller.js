@@ -100,7 +100,7 @@ const createUser = async (req,res,next) => {
         } else {
             const hashedPassword = bcrypt.hashSync(password + pepper, salt);
             if (userRole == "specialistService") {
-                const newUser = new userModel({
+                await new userModel({
                     fullname: fullName,
                     username: userName,
                     password: hashedPassword,
@@ -111,7 +111,7 @@ const createUser = async (req,res,next) => {
                     speciality: speciality
                 }).save();
             } else {
-                const newUser = new userModel({
+                await new userModel({
                     fullname: fullName,
                     username: userName,
                     password: hashedPassword,

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const counrtySchema = new mongoose.Schema({
-    counrtyname: {
+const countrySchema = new mongoose.Schema({
+    countryname: {
         type: String
     }
 }, {timestamps: true});
 
-const counrtyModel = mongoose.model("counrty", counrtySchema);
-module.exports = counrtyModel;
+const countryModel = mongoose.model("country", countrySchema);
+module.exports = countryModel;

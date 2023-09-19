@@ -1,9 +1,9 @@
-const counrtyModel = require("../../DB/country.model");
+const countryModel = require("../../DB/country.model");
 const HttpError = require("../../common/httpError");
 
 const getAllCountries = async (req,res,next) => {
     try {
-        const countries = await counrtyModel.find({});
+        const countries = await countryModel.find({});
         res.json({countries: countries});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -12,8 +12,8 @@ const getAllCountries = async (req,res,next) => {
 
 const createCountry = async (req,res,next) => {
     try {
-        const {counrtyname} = req.body;
-        await new counrtyModel({counrtyname: counrtyname}).save();
+        const {countryname} = req.body;
+        await new countryModel({countryname: countryname}).save();
         res.json({message: "country added successfully"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
