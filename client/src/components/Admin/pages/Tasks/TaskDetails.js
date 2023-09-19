@@ -14,6 +14,7 @@ import GetCookie from "../../../../hooks/getCookie";
 import FreelancerOffer from "./FreelancerOffer";
 import Paid from './Paid';
 import EditTask from './EditTask';
+import ShareWith from './ShareWith';
 
 
 //Comment validation
@@ -86,7 +87,6 @@ const TaskDetails = () => {
         await axios.get("http://localhost:5000/api/status/", { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
           console.log(res.data)
-
         });
       });
     }
@@ -384,6 +384,9 @@ const TaskDetails = () => {
             changeStatus == '64fdd400a86587827152ab3c' ?
               <Paid id={id} statusID={changeStatus} />
               :
+            changeStatus == '64fdd7b6b19f7955da47eb21' ?
+            <ShareWith id={id} statusID={changeStatus} />
+            :
               <div className="row col-12 p-3 justify-content-center" >
                 <button
                   className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"

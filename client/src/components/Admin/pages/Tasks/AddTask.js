@@ -70,6 +70,7 @@ const AddTask = () => {
   const [clients, setClients] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -100,6 +101,14 @@ const AddTask = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/user/customerService").then((res) => {
+          setUsers(res.data.users);
+          console.log(res.data)
+        });
+        setLoading(false);
+        setIsLoading(false);
+      });
+      timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/status/", { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
         });
@@ -120,6 +129,12 @@ const AddTask = () => {
   const [client, setClient] = useState('');
   const clientChangeHandler = (newOne) => {
     setClient(newOne);
+  };
+
+  //user value
+  const [user, setUser] = useState('');
+  const userChangeHandler = (newOne) => {
+    setUser(newOne);
   };
 
   //currency value
@@ -220,7 +235,8 @@ const AddTask = () => {
           deadline: deadline,
           task_currency: currency,
           paid: taskPriceState.value,
-          status: status
+          status: status ,
+          shareWith : user
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -244,6 +260,7 @@ const AddTask = () => {
     setSpeciality('')
     setDeadline()
     setCurrency('')
+    setUser('')
   };
 
   const errorHandler = () => {
@@ -368,7 +385,18 @@ const AddTask = () => {
 
         </div>
 
+        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
+          <label htmlFor="user" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Share With:</label>
 
+          <select id="user" name="user" className="p-2 px-4 search col-10 col-lg-7" value={user}
+            onChange={(event) => userChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>CustomerService</option>
+            {users.map((user) => (
+              <option value={user._id} key={user._id}>{user.username}</option>
+            ))}
+          </select>
+
+        </div>
 
         <div className='col-12 m-1 py-2 p-0'>
           <label className='col-10 col-lg-2 fw-bold add-user-p py-2 '>Description :</label>
