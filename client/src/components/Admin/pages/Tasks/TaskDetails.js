@@ -46,7 +46,7 @@ const TaskDetails = () => {
 
   let { id } = useParams();
 
-  const [editTask , setEditTask] = useState(false);
+  const [editTask, setEditTask] = useState(false);
   const [task, setTask] = useState([]);
   const [offer, setOffer] = useState('');
   const [notes, setNotes] = useState([]);
@@ -235,134 +235,143 @@ const TaskDetails = () => {
         </div>
         <h2 className="col-8 col-sm-6 col-md-3 text-center system-head pt-3  fw-bold">  Task Details</h2>
         <div className="col-12 col-sm-3 text-end">
-          <button className="task-edit-btn p-2 px-4 fs-3 "onClick={()=>setEditTask(!editTask)} ><FaEdit /> </button>
+          <button className="task-edit-btn p-2 px-4 fs-3 " onClick={() => setEditTask(!editTask)} ><FaEdit /> </button>
         </div>
       </div>
-  {/* ////////////////////////////////////////////// */}
-    <div className='row col-12 col-lg-8 justify-content-center p-1 mx-1 h-100'>
-      {!editTask ?
-        <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
+      {/* ////////////////////////////////////////////// */}
+      <div className='row col-12 col-lg-8 justify-content-center p-1 mx-1 h-100'>
+        {!editTask ?
+          <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
 
-          <div className="col-12 row p-3 justify-content-center">
+            <div className="col-12 row p-3 justify-content-center">
 
-            <div className="col-12 fw-bold pt-3 row text-center">
-              {
-                status &&
-                <span
-                  className={
-                    status.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
-                      status.statusname == 'waiting offer' ? ' waiting-offer  p-3 status col-12 ' :
-                        status.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
-                          status.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
-                            status.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
-                              status.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
-                                status.statusname == 'rejected' ? 'bg-danger p-3 status col-12 ' :
-                                  status.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
-                                    status.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
-                                      status.statusname == 'offer submitted' ? 'offer-submitted   p-3 status col-12 ' :
-                                        status.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
-                                          status.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
-                                            'anystatus  p-3 status col-12 '
-                  }>
-              
-                  {status.statusname}
-                </span>
-              }
+              <div className="col-12 fw-bold pt-3 row text-center">
+                {
+                  status &&
+                  <span
+                    className={
+                      status.statusname == 'pending' ? 'bg-warning p-3 status col-12 ' :
+                        status.statusname == 'waiting offer' ? ' waiting-offer  p-3 status col-12 ' :
+                          status.statusname == 'approved' ? 'bg-info   p-3 status col-12 ' :
+                            status.statusname == 'working on' ? 'bg-primary   p-3 status col-12 ' :
+                              status.statusname == 'done' ? 'bg-success  p-3 status col-12 ' :
+                                status.statusname == 'delivered' ? 'bg-secondary  p-3 status col-12' :
+                                  status.statusname == 'rejected' ? 'bg-danger p-3 status col-12 ' :
+                                    status.statusname == 'not available' ? 'bg-dark   p-3 status col-12 ' :
+                                      status.statusname == 'on going' ? 'on-going  p-3 status col-12 ' :
+                                        status.statusname == 'offer submitted' ? 'offer-submitted   p-3 status col-12 ' :
+                                          status.statusname == 'edit' ? 'edit   p-3 status col-12 ' :
+                                            status.statusname == 'cancel' ? 'cancel   p-3 status col-12 ' :
+                                              'anystatus  p-3 status col-12 '
+                    }>
+
+                    {status.statusname}
+                  </span>
+                }
+              </div>
+              <div className="col-12 text-end py-2 row">
+                <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                  <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                    {task.serialNumber}
+                  </span>
+                </div>
+                <div className='col-7 col-sm-5 col-md-4 col-lg-2 text-end justify-content-end p-0 m-0'>
+                  <button className="delete-btn px-3 p-1 fs-4 " onClick={deleteTaskHandler}>
+                    <RiDeleteBinFill />
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="col-12 text-end py-2">
-              <button className="delete-btn px-3 p-1 fs-4" onClick={deleteTaskHandler}>
-                <RiDeleteBinFill />
-              </button>
+            {/* /////////////////////// */}
+            <div className="col-12 col-md-6 row ">
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Title :</h5>
+              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.title} </p>
             </div>
-          </div>
-          {/* /////////////////////// */}
-          <div className="col-12 col-md-6 row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Title :</h5>
-            <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.title} </p>
-          </div>
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Speciality :</h5>
-            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {speciality && speciality.sub_speciality} </p>
-          </div>
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Speciality :</h5>
+              <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {speciality && speciality.sub_speciality} </p>
+            </div>
 
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Channel :</h5>
-            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.channel} </p>
-          </div>
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Channel :</h5>
+              <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.channel} </p>
+            </div>
 
-          <div className='col-12 col-md-6 row'>
-            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
-            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {currency.currencyname} </p>
-          </div>
+            <div className='col-12 col-md-6 row'>
+              <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
+              <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {currency.currencyname} </p>
+            </div>
 
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Client :</h5>
-            <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center">
-              <a className="text-dark fw-bold" href={`/client/${client._id}`}>
-                {client.clientname}
-              </a>
-            </p>
-          </div>
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">  Client :</h5>
+              <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center">
+                <a className="text-dark fw-bold" href={`/client/${client._id}`}>
+                  {client.clientname}
+                </a>
+              </p>
+            </div>
 
-          <div className='col-12 col-md-6  row'>
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Client Offer:</h5>
-            <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
-          </div>
+            <div className='col-12 col-md-6  row'>
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Client Offer:</h5>
+              <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({offer.customerOfferMax} - {offer.customerOfferMin})</p>
+            </div>
 
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-2 data  fw-bold">Client Price:</h5>
-            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold text-danger data text-center">{task.paid} </p>
-          </div>
-
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  UserName :</h5>
-            <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-              <a className="text-dark fw-bold" href={`/user/${user._id}`}>
-                {user && user.fullname}
-              </a>
-            </p>
-          </div>
-
-          <div className="col-12 col-md-6  row ">
-            <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold"> UserRole :</h5>
-            <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {user && user.user_role} </p>
-          </div>
-          {task.freelancer &&
-            <>
-              <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer :</h5>
-                <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                  <a className="text-dark fw-bold" href={`/freelancer/${task.freelancer._id}`}>
-                    {task.freelancer.freelancername}
-                  </a>
-                </p>
+            {task.paid &&
+              <div className="col-12 col-md-6  row ">
+                <h5 className="col-8 col-sm-6  edit-form-lable text-start pt-2 data  fw-bold">Client Price:</h5>
+                <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold text-danger data text-center">{task.paid} </p>
               </div>
+            }
 
-              <div className="col-12 col-md-6 row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer Price:</h5>
-                <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center"> {task.cost} </p>
-              </div>
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  UserName :</h5>
+              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
+                <a className="text-dark fw-bold" href={`/user/${user._id}`}>
+                  {user && user.fullname}
+                </a>
+              </p>
+            </div>
 
-              <div className='col-12 col-md-6  row'>
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Freelancer Offer:</h5>
-                <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({Math.floor(offer.specialistOfferMax)} - {Math.floor(offer.specialistOfferMin)})</p>
-              </div>
-            </>
-          }
-          <div className="col-12 row p-0 m-0 justify-content-center justify-content-md-start">
-            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2 data  fw-bold">DeadLine :</h5>
-            <p className="d-inline col-md-4 col-6 p-2 edit-form-p details-data fw-bold date data text-center"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
-            <p className="d-inline col-md-4 col-6  p-2 edit-form-p details-data fw-bold date data text-center"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold"> UserRole :</h5>
+              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {user && user.user_role} </p>
+            </div>
+            {task.freelancer &&
+              <>
+                <div className="col-12 col-md-6 row ">
+                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer :</h5>
+                  <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
+                    <a className="text-dark fw-bold" href={`/freelancer/${task.freelancer._id}`}>
+                      {task.freelancer.freelancername}
+                    </a>
+                  </p>
+                </div>
+
+                <div className="col-12 col-md-6 row ">
+                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer Price:</h5>
+                  <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center"> {task.cost} </p>
+                </div>
+
+                <div className='col-12 col-md-6  row'>
+                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Freelancer Offer:</h5>
+                  <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({Math.floor(offer.specialistOfferMax)} - {Math.floor(offer.specialistOfferMin)})</p>
+                </div>
+              </>
+            }
+            <div className="col-12 row p-0 m-0 justify-content-center justify-content-md-start">
+              <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2 data  fw-bold">DeadLine :</h5>
+              <p className="d-inline col-md-4 col-6 p-2 edit-form-p details-data fw-bold date data text-center"><span className='text-danger'>Date:</span>{task.deadline && task.deadline.split('T')[0]} </p>
+              <p className="d-inline col-md-4 col-6  p-2 edit-form-p details-data fw-bold date data text-center"><span className='text-danger'>Time:</span> {task.deadline && task.deadline.split('T')[1].split('.')[0]}</p>
+            </div>
+            <div className="col-12 row justify-content-center justify-content-md-start p-0 m-0">
+              <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2  fw-bold">  Description :</h5>
+              <p className="d-inline col-md-8 col-12 p-2 edit-form-p details-data fw-bold text-center"> {task.description} </p>
+            </div>
+
           </div>
-          <div className="col-12 row justify-content-center justify-content-md-start p-0 m-0">
-            <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2  fw-bold">  Description :</h5>
-            <p className="d-inline col-md-8 col-12 p-2 edit-form-p details-data fw-bold text-center"> {task.description} </p>
-          </div>
 
-        </div> 
-       
-     : <EditTask id={id} token={token} task={task} />
-     }
+          : <EditTask id={id} token={token} task={task} />
+        }
 
         {/* ///on status approved */}
 
@@ -384,17 +393,17 @@ const TaskDetails = () => {
             changeStatus == '64fdd400a86587827152ab3c' ?
               <Paid id={id} statusID={changeStatus} />
               :
-            changeStatus == '64fdd7b6b19f7955da47eb21' ?
-            <ShareWith id={id} statusID={changeStatus} />
-            :
-              <div className="row col-12 p-3 justify-content-center" >
-                <button
-                  className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-                  onClick={changeStatusHandler}
-                >
-                  Change
-                </button>
-              </div>
+              changeStatus == '64fdd7b6b19f7955da47eb21' ?
+                <ShareWith id={id} statusID={changeStatus} />
+                :
+                <div className="row col-12 p-3 justify-content-center" >
+                  <button
+                    className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                    onClick={changeStatusHandler}
+                  >
+                    Change
+                  </button>
+                </div>
           }
         </div>
 
@@ -451,7 +460,7 @@ const TaskDetails = () => {
         </div>
 
       </div>
-{/* /////////////////////////////////////////////// */}
+      {/* /////////////////////////////////////////////// */}
       <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
         <div>
           <h1 className='edit-form-lable p-4 fw-bold'>Notes</h1>
@@ -470,7 +479,7 @@ const TaskDetails = () => {
           </div>
         </div>
       </div>
-{/* /////////////////////////////////////////////// */}
+      {/* /////////////////////////////////////////////// */}
 
     </div>
   )
