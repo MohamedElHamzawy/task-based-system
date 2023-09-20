@@ -109,6 +109,7 @@ const FreeLancerDetails = () => {
   let { id } = useParams();
 
   const [freeLancer, setFreeLancer] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [specialities, setSpecialities] = useState([]);
   const [freeLancerAccount, setFreeLancerAccount] = useState();
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
@@ -137,6 +138,11 @@ const FreeLancerDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
+        });
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
         });
       });
     }
@@ -208,25 +214,12 @@ const FreeLancerDetails = () => {
     });
   };
 
-  //country validation
-  const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: freeLancer.country,
-    isvalid: false,
-    isTouched: false,
-  });
+  //country value
+  const [country, setCountry] = useState('');
+  const countryChangeHandler = (newOne) => {
+    setCountry(newOne);
+  };
 
-  const countryChangeHandler = (event) => {
-    dispatch4({
-      type: "CHANGE",
-      country: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const countryTouchHandler = () => {
-    dispatch4({
-      type: "TOUCH",
-    });
-  };
   const [currency, setCurreny] = useState(freeLancer.currency && freeLancer.currency.currencyname);
   const [userSpeciality, setUserSpeciality] = useState(freeLancer.speciality && freeLancer.speciality.sub_speciality);
 
@@ -243,7 +236,7 @@ const FreeLancerDetails = () => {
           name: fullNameState.value,
           speciality: userSpeciality,
           email: emailState.value,
-          country: countryState.value,
+          country: country,
           phone: numberState.value,
           currency: currency
         }
@@ -396,16 +389,13 @@ const FreeLancerDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Country :</h3>
           <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.country && freeLancer.country.countryName} </p>
           <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
-            <input type='text' placeholder={freeLancer.country && freeLancer.country.countryName}
-              value={countryState.value}
-              onChange={countryChangeHandler}
-              onBlur={countryTouchHandler}
-              isvalid={countryState.isvalid.toString()}
-              className={`search w-100 p-2 ${!countryState.isvalid &&
-                countryState.isTouched &&
-                "form-control-invalid"
-                }`}
-            />
+          <select id="country" name="country" className="p-2 search w-100" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.countryName}</option>
+            ))}
+          </select>
           </div>
         </div>
         {/* /////////////////////// */}
@@ -441,7 +431,7 @@ const FreeLancerDetails = () => {
                   !fullNameState.isvalid &&
                   !numberState.isvalid &&
                   !emailState.isvalid &&
-                  !countryState.isvalid &&
+                  !country&&
                   !currency &&
                   !userSpeciality
                 }

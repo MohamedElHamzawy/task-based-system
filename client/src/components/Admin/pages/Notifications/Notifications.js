@@ -42,16 +42,16 @@ const Notifications = () => {
     return isLoading ? (
         <LoadingSpinner asOverlay />
     ) : (
-        <div className='row justify-content-center w-100'>
+        <div className='row justify-content-center w-100 p-0 m-0'>
             <ErrorModal error={error} onClear={errorHandler} />
-            <div className='row notes-component col-11 row bg-white adduser-form p-1 m-1 justify-content-center'>
+            <div className='row notes-component col-12 col-md-10 row bg-white adduser-form p-1 m-1 justify-content-center'>
                 <div>
                     <h1 className='edit-form-lable p-4 fw-bold text-center '>
                         <MdOutlineNotificationsActive className=''/>Notifications</h1>
                     <div className='row p-0 m-0'>
                         <div className='p-0 m-0 row justify-content-center'>
                             {!notifications.length == 0 ? notifications.map((note) => (
-                                <div className='col-3 note m-2 fw-bold p-3 text-start' key={note._id}>
+                                <div className='col-11 col-md-5 col-lg-3 note m-2 fw-bold p-3 text-start' key={note._id}>
                                     <p className=''>{note.content.split('GMT')[0]}</p>
                                 </div>
                             )) :

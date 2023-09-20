@@ -123,6 +123,7 @@ const ClientDetails = () => {
     const [clientAccount, setClientAccount] = useState();
     const [clientTasks, setClientTasks] = useState([]);
     const [currencies, setCurrencies] = useState([]);;
+    const [countries, setCountries] = useState([]);
 
     useEffect(() => {
         let timerId;
@@ -143,7 +144,13 @@ const ClientDetails = () => {
           timerId = setTimeout(async () => {
             await axios.get("http://localhost:5000/api/currency/").then((res) => {
               setCurrencies(res.data.currencies);
-          }); });
+          }); 
+        });
+          timerId = setTimeout(async () => {
+            await axios.get("http://localhost:5000/api/country/").then((res) => {
+              setCountries(res.data.countries);
+            });
+          });
         }
         return () => clearTimeout(timerId);
       }, [loading]);
@@ -210,25 +217,12 @@ const ClientDetails = () => {
     });
   };
 
-  //country validation
-  const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: client.country  ,
-    isvalid: false,
-    isTouched: false,
-  });
-
-  const countryChangeHandler = (event) => {
-    dispatch4({
-      type: "CHANGE",
-      country: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
-  };
-  const countryTouchHandler = () => {
-    dispatch4({
-      type: "TOUCH",
-    });
-  };
+    //country value
+    const [country, setCountry] = useState('');
+    const countryChangeHandler = (newOne) => {
+      setCountry(newOne);
+    };
+  
 
 
   //Number validation
@@ -263,7 +257,7 @@ const ClientDetails = () => {
               clientName: clientNameState.value,
               owner : ownerState.value,
               website: clientEmailState.value,
-              country: countryState.value,
+              country: country,
               phone: numberState.value,
               currency : currency ,
             }
@@ -413,16 +407,13 @@ const ClientDetails = () => {
           <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Country:</h3>
           <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.country && client.country.countryName} </p>
           <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
-          <input type='text' placeholder={client.country && client.country.countryName}
-            value={countryState.value}
-            onChange={countryChangeHandler}
-            onBlur={countryTouchHandler}
-            isvalid={countryState.isvalid.toString()}
-            className={`search w-100 p-2 ${!countryState.isvalid &&
-              countryState.isTouched &&
-              "form-control-invalid"
-              }`}
-          />
+          <select id="country" name="country" className="p-2 search w-100" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.countryName}</option>
+            ))}
+          </select>
           </div>
         </div>
         {/* /////////////////////// */}
@@ -458,7 +449,7 @@ const ClientDetails = () => {
                   !ownerState.isvalid &&
                   !clientNameState.isvalid &&
                   !numberState.isvalid &&
-                  !countryState.isvalid &&
+                  !country&&
                   !currency
                 }
                 className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"

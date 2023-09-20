@@ -74,7 +74,6 @@ const Settings = () => {
         {
           fullName: fullName,
           userName: userName,
-          password: password,
           country: country,
           phone: phone,
         }
