@@ -133,7 +133,6 @@ const updateUser = async (req,res,next) => {
         const {
             fullName,
             userName,
-            password,
             userRole,
             userType,
             country,
@@ -143,8 +142,7 @@ const updateUser = async (req,res,next) => {
         const userID = req.params.id;
         const tryGetUser = await userModel.findOne({_id: userID});
         if (tryGetUser) {
-            const hashedPassword = bcrypt.hashSync(password + pepper, salt);
-            await userModel.updateOne({_id: userID}, {fullname: fullName, username: userName, password: hashedPassword, user_role: userRole, user_type: userType, country: country, phone: phone, speciality: speciality});
+            await userModel.updateOne({_id: userID}, {fullname: fullName, username: userName, user_role: userRole, user_type: userType, country: country, phone: phone, speciality: speciality});
             res.json({message:"User has been updated successfully"});
         } else {
             return next(new HttpError("User doesn't exist on system!", 400));
