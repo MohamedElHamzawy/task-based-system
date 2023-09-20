@@ -154,6 +154,25 @@ const updateUser = async (req,res,next) => {
     }
 }
 
+const updateUserPassword = async (req,res,next) => {
+    try {
+        const {
+            password
+        } = req.body;
+        const userID = req.params.id;
+        const tryGetUser = await userModel.findOne({_id: userID});
+        if (tryGetUser) {
+            const hashedPassword = bcrypt.hashSync(password + pepper, salt);
+            await userModel.updateOne({_id: userID}, {password: hashedPassword});
+            res.json({message:"Password has been updated successfully"});
+        } else {
+            return next(new HttpError("User doesn't exist on system!", 400));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const deleteUser = async (req,res,next) => {
     try {
         const userID = req.params.id;
@@ -169,4 +188,4 @@ const deleteUser = async (req,res,next) => {
     }
 }
 
-module.exports = {showAllUsers, getCustomerService, getSpecialistService, getUser, filterSortedUsers, createUser, updateUser, deleteUser}
+module.exports = {showAllUsers, getCustomerService, getSpecialistService, getUser, filterSortedUsers, createUser, updateUser, updateUserPassword, deleteUser}
