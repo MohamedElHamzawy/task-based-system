@@ -65,7 +65,7 @@ const filterSortedUsers = async (req,res,next) => {
 const getUser = async (req,res,next) => {
     try {
         const userID = req.params.id;
-        const thisUser = await userModel.findById({_id: userID}).populate("speciality");
+        const thisUser = await userModel.findById({_id: userID}).populate(["speciality", "country"]);
         if (thisUser.user_role == "customerService") {
             const userTasks = await taskModel.find({created_by: userID}).populate(["client", "freelancer", "country", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             res.json({user: thisUser, userTasks: userTasks});

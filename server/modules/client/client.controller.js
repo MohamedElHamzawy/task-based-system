@@ -46,7 +46,7 @@ const getClient = async (req,res,next) => {
     try {
         const clientID = req.params.id;
         const thisClient = await clientModel.findById({_id: clientID}).populate(["currency", "country"]);
-        const clientTasks = await taskModel.find({client: clientID}).populate(["client", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        const clientTasks = await taskModel.find({client: clientID}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
         const clientAccount = await accountModel.find({owner: clientID}).populate("owner");
         res.json({client: thisClient, clientTasks: clientTasks, clientAccount: clientAccount});
     } catch (error) {
