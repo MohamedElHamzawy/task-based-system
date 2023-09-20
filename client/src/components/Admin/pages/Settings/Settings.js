@@ -21,11 +21,11 @@ const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const [countries, setCountries] = useState([]);
   const [user, setUser] = useState([]);
   const [fullName, setFullName] = useState();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [country, setCountry] = useState();
   const [phone, setPhone] = useState();
 
   const userID = JSON.parse(localStorage.getItem('AdminData'));
@@ -43,14 +43,26 @@ const Settings = () => {
           setCountry(res.data.user.country);
           setPhone(res.data.user.phone);
           setPassword(res.data.user.password);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
+          console.log(res.data)
+        });
       });
     }
     return () => clearTimeout(timerId);
   }, [loading]);
 
+  //country value
+  const [country, setCountry] = useState('');
+  const countryChangeHandler = (newOne) => {
+    setCountry(newOne);
+  };
 
   //////////////////////////////////////
   const editUserHandler = async (event) => {
@@ -149,9 +161,15 @@ const Settings = () => {
 
         <div className="col-12 col-xl-6 row p-2 ">
           <h3 className="col-8 col-md-5  settings-form-lable text-start"> Country :</h3>
-          <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold" : 'd-none'}> {user.country} </p>
+          <p className={!editCountry ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold" : 'd-none'}> {user.country && user.country.countryName} </p>
           <div className={editCountry ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
-            <input type="text" onChange={(e) => { setCountry(e.target.value) }} className="search w-100 p-2" />
+          <select id="country" name="country" className="p-2 search w-100" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.countryName}</option>
+            ))}
+          </select>
           </div>
           <div className="col-1 ">
             <button onClick={() => { setEditCountry(!editCountry) }} className="settings-edit-btn fs-2">

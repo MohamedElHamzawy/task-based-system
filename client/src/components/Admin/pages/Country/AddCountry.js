@@ -61,7 +61,7 @@ const AddCountry = () => {
       const response = await axios.post(
         "http://localhost:5000/api/country/",
         {
-         counrtyname: countryNameState.value,
+          countryName: countryNameState.value,
         }
       );
 

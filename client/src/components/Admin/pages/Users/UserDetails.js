@@ -379,9 +379,9 @@ const UserDetails = () => {
         {/* /////////////////////// */}
         <div className="col-12 col-md-6  row p-2 ">
           <h5 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Country :</h5>
-          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p fw-bold details-data" : 'd-none'}> {user.country} </p>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p fw-bold details-data" : 'd-none'}> {user.country && user.country.countryName} </p>
           <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
-            <input type='text' placeholder={user.country}
+            <input type='text' placeholder={user.country && user.country.countryName}
               value={countryState.value}
               onChange={countryChangeHandler}
               onBlur={countryTouchHandler}
