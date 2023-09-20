@@ -18,22 +18,22 @@ const filterSortedFreelancers = async (req,res,next) => {
         const {sort, speciality} = req.body;
         if (sort && speciality) {
             if (sort == "completed") {
-                const allFreelancers = await freelancerModel.find({speciality: speciality}).populate("country").sort({completedCount: -1});
+                const allFreelancers = await freelancerModel.find({speciality: speciality}).populate().sort({completedCount: -1});
                 res.json({freelancers: allFreelancers});
             } else if (sort == "profit") {
-                const allFreelancers = await freelancerModel.find({speciality: speciality}).populate("country").sort({totalProfit: -1});
+                const allFreelancers = await freelancerModel.find({speciality: speciality}).populate().sort({totalProfit: -1});
                 res.json({freelancers: allFreelancers});
             }         
         } else if (sort) {
             if (sort == "completed") {
-                const allFreelancers = await freelancerModel.find({}).populate("country").sort({completedCount: -1});
+                const allFreelancers = await freelancerModel.find({}).populate().sort({completedCount: -1});
                 res.json({freelancers: allFreelancers});
             } else if (sort == "profit") {
-                const allFreelancers = await freelancerModel.find({}).populate("country").sort({totalProfit: -1});
+                const allFreelancers = await freelancerModel.find({}).populate().sort({totalProfit: -1});
                 res.json({freelancers: allFreelancers});
             }     
         } else if (speciality) {
-            const allFreelancers = await freelancerModel.find({speciality: speciality}).populate("country");
+            const allFreelancers = await freelancerModel.find({speciality: speciality}).populate();
             res.json({freelancers: allFreelancers});
         } else {
             return next(new HttpError("Invalid filter & sort!", 404));
