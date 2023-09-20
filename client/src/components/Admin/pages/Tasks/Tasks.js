@@ -65,6 +65,7 @@ const Tasks = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
+          console.log(res.data)
         });
       });      
       timerId = setTimeout(async () => {
@@ -236,7 +237,7 @@ const Tasks = () => {
             onChange={(e) => { setCountry(e.target.value);  }}>
             <option value="" className='text-secondary'>Countries</option>
             {countries.map((country) => (
-              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+              <option value={country._id} key={country._id}>{country.countryName}</option>
             ))}
           </select>
         </div>

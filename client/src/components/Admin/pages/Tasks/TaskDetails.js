@@ -298,8 +298,8 @@ const TaskDetails = () => {
             </div>
 
             <div className='col-12 col-md-6 row'>
-              <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
-              <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {currency.currencyname} </p>
+              <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Country:</h5>
+              <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.country && task.country.countryName} </p>
             </div>
 
             <div className="col-12 col-md-6  row ">
@@ -322,7 +322,11 @@ const TaskDetails = () => {
                 <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold text-danger data text-center">{task.paid} </p>
               </div>
             }
-
+            <div className='col-12 col-md-6 row'>
+              <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
+              <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {currency.currencyname} </p>
+            </div>
+            
             {task.freelancer &&
               <>
                 <div className="col-12 col-md-6 row ">

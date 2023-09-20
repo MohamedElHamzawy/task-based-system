@@ -394,9 +394,9 @@ const FreeLancerDetails = () => {
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2 ">
           <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Country :</h3>
-          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.country} </p>
+          <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold" : 'd-none'}> {freeLancer.country && freeLancer.country.countryName} </p>
           <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
-            <input type='text' placeholder={freeLancer.country}
+            <input type='text' placeholder={freeLancer.country && freeLancer.country.countryName}
               value={countryState.value}
               onChange={countryChangeHandler}
               onBlur={countryTouchHandler}

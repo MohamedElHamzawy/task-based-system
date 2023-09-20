@@ -120,7 +120,7 @@ const Clients = () => {
             onChange={(e) => {setCountry(e.target.value);   }}>
             <option value="" className='text-secondary'>Countries</option>
             {countries.map((country) => (
-              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+              <option value={country._id} key={country._id}>{country.countryName}</option>
             ))}
           </select>
         </div>
