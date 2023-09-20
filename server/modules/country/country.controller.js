@@ -12,8 +12,8 @@ const getAllCountries = async (req,res,next) => {
 
 const createCountry = async (req,res,next) => {
     try {
-        const {countryname} = req.body;
-        await new countryModel({countryname: countryname}).save();
+        const {countryName} = req.body;
+        await new countryModel({countryName: countryName}).save();
         res.json({message: "country added successfully"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

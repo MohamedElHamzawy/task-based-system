@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const countrySchema = new mongoose.Schema({
-    countryname: {
+    countryName: {
         type: String
     }
 }, {timestamps: true});
