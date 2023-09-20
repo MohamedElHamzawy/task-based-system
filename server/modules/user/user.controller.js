@@ -7,7 +7,7 @@ const pepper = process.env.PEPPER;
 
 const showAllUsers = async (req,res,next) => {
     try {
-        const allUsers = await userModel.find({});
+        const allUsers = await userModel.find({}).populate("country");
         res.json({users: allUsers});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -16,7 +16,7 @@ const showAllUsers = async (req,res,next) => {
 
 const getCustomerService = async (req,res,next) => {
     try {
-        const allUsers = await userModel.find({user_role: "customerService"});
+        const allUsers = await userModel.find({user_role: "customerService"}).populate("country");
         res.json({users: allUsers});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -25,7 +25,7 @@ const getCustomerService = async (req,res,next) => {
 
 const getSpecialistService = async (req,res,next) => {
     try {
-        const allUsers = await userModel.find({user_role: "specialistService"});
+        const allUsers = await userModel.find({user_role: "specialistService"}).populate("country");
         res.json({users: allUsers});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -37,22 +37,22 @@ const filterSortedUsers = async (req,res,next) => {
         const {sort, role} = req.body;
         if (sort && role) {
             if (sort == "completed") {
-                const allUsers = await userModel.find({user_role: role}).sort({completedCount: -1});
+                const allUsers = await userModel.find({user_role: role}).populate("country").sort({completedCount: -1});
                 res.json({users: allUsers});
             } else if (sort == "profit") {
-                const allUsers = await userModel.find({user_role: role}).sort({totalProfit: -1});
+                const allUsers = await userModel.find({user_role: role}).populate("country").sort({totalProfit: -1});
                 res.json({users: allUsers});
             }         
         } else if (sort) {
             if (sort == "completed") {
-                const allUsers = await userModel.find({}).sort({completedCount: -1});
+                const allUsers = await userModel.find({}).populate("country").sort({completedCount: -1});
                 res.json({users: allUsers});
             } else if (sort == "profit") {
-                const allUsers = await userModel.find({}).sort({totalProfit: -1});
+                const allUsers = await userModel.find({}).populate("country").sort({totalProfit: -1});
                 res.json({users: allUsers});
             }     
         } else if (role) {
-            const allUsers = await userModel.find({user_role: role});
+            const allUsers = await userModel.find({user_role: role}).populate("country");
             res.json({users: allUsers});
         } else {
             return next(new HttpError("Invalid filter & sort!", 404));

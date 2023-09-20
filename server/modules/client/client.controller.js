@@ -5,7 +5,7 @@ const HttpError = require("../../common/httpError");
 
 const getAllClients = async (req,res,next) => {
     try {
-        const allClients = await clientModel.find({});
+        const allClients = await clientModel.find({}).populate("country");
         res.json({clients: allClients});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -17,22 +17,22 @@ const filterSortedClients = async (req,res,next) => {
         const {sort, country} = req.body;
         if (sort && country) {
             if (sort == "completed") {
-                const allClients = await clientModel.find({country: country}).sort({completedCount: -1});
+                const allClients = await clientModel.find({country: country}).populate("country").sort({completedCount: -1});
                 res.json({clients: allClients});
             } else if (sort == "profit") {
-                const allClients = await clientModel.find({country: country}).sort({totalProfit: -1});
+                const allClients = await clientModel.find({country: country}).populate("country").sort({totalProfit: -1});
                 res.json({clients: allClients});
             }         
         } else if (sort) {
             if (sort == "completed") {
-                const allClients = await clientModel.find({}).sort({completedCount: -1});
+                const allClients = await clientModel.find({}).populate("country").sort({completedCount: -1});
                 res.json({clients: allClients});
             } else if (sort == "profit") {
-                const allClients = await clientModel.find({}).sort({totalProfit: -1});
+                const allClients = await clientModel.find({}).populate("country").sort({totalProfit: -1});
                 res.json({clients: allClients});
             }     
         } else if (country) {
-            const allClients = await clientModel.find({country: country});
+            const allClients = await clientModel.find({country: country}).populate("country");
             res.json({clients: allClients});
         } else {
             return next(new HttpError("Invalid filter & sort!", 404));
