@@ -115,6 +115,7 @@ const UserDetails = () => {
 
   const [specialityId, setspecialityId] = useState();
   const [specialities, setSpecialities] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   const [userTasks, setUserTasks] = useState([]);
 
@@ -138,6 +139,11 @@ const UserDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
+        });
+      });
+      timerId = setTimeout(async () => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
+          setCountries(res.data.countries);
         });
       });
     }
@@ -183,25 +189,13 @@ const UserDetails = () => {
       type: "TOUCH",
     });
   };
-  //country validation
-  const [countryState, dispatch4] = useReducer(countryReducer, {
-    value: user.country,
-    isvalid: false,
-    isTouched: false,
-  });
 
-  const countryChangeHandler = (event) => {
-    dispatch4({
-      type: "CHANGE",
-      country: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
-    });
+  //country value
+  const [country, setCountry] = useState('');
+  const countryChangeHandler = (newOne) => {
+    setCountry(newOne);
   };
-  const countryTouchHandler = () => {
-    dispatch4({
-      type: "TOUCH",
-    });
-  };
+
 
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
@@ -244,7 +238,7 @@ const UserDetails = () => {
           userName: userNameState.value,
           userRole: userRole,
           speciality: userSpeciality,
-          country: countryState.value,
+          country: country,
           phone: numberState.value,
         }
       );
@@ -381,16 +375,13 @@ const UserDetails = () => {
           <h5 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold"> Country :</h5>
           <p className={!editFull ? "d-inline col-12 col-md-6 py-2 edit-form-p fw-bold details-data" : 'd-none'}> {user.country && user.country.countryName} </p>
           <div className={editFull ? "d-inline col-12 col-md-6 py-2 " : 'd-none'} >
-            <input type='text' placeholder={user.country && user.country.countryName}
-              value={countryState.value}
-              onChange={countryChangeHandler}
-              onBlur={countryTouchHandler}
-              isvalid={countryState.isvalid.toString()}
-              className={`search w-100 p-2 ${!countryState.isvalid &&
-                countryState.isTouched &&
-                "form-control-invalid"
-                }`}
-            />
+          <select id="country" name="country" className="p-2 search w-100" value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}>
+            <option value="" className='text-secondary'>Countries</option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>{country.countryName}</option>
+            ))}
+          </select>
           </div>
 
         </div>
@@ -447,7 +438,7 @@ const UserDetails = () => {
                   !fullNameState.isvalid &&
                   !userNameState.isvalid &&
                   !userRole &&
-                  !countryState.isvalid &&
+                  !country&&
                   !numberState.isvalid &&
                   !userSpeciality
                 }
