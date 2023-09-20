@@ -107,7 +107,7 @@ const Clients = () => {
             onChange={(e) => { sortHandler(e.target.value); }}>
             <option value="" className='text-secondary'>Countries</option>
             {countries.map((country) => (
-              <option value={country._id} key={country._id}>{country.counrtyname}</option>
+              <option value={country._id} key={country._id}>{country.countryName}</option>
             ))}
           </select>
         </div>
@@ -131,7 +131,7 @@ const Clients = () => {
                 <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
               </p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
-                {client.country}
+               {client.country.countryName}
               </p>
               {client.speciality && client.speciality.map((speciality) => (
                 <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
@@ -166,7 +166,7 @@ const Clients = () => {
                 <a className="text-dark fw-bold" href={`/client/${client._id}`}>{client.clientname}</a>
               </p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Country : </span>
-                {client.country}
+               {client.country.countryName}
               </p>
               {client.speciality && client.speciality.map((speciality) => (
                 <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >

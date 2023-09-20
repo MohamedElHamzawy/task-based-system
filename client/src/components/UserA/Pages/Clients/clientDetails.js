@@ -411,9 +411,9 @@ const ClientDetails = () => {
         {/* /////////////////////// */}
         <div className="col-12 col-lg-6 row p-2">
           <h3 className="col-10 col-md-5  edit-form-lable text-start p-2"> Country:</h3>
-          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.country} </p>
+          <p className={!edit ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data" : 'd-none'}> {client.country && client.country.countryName} </p>
           <div className={edit ? "d-inline col-12 col-md-6 py-2" : 'd-none'} >
-          <input type='text' placeholder={client.country}
+          <input type='text' placeholder={client.country && client.country.countryName}
             value={countryState.value}
             onChange={countryChangeHandler}
             onBlur={countryTouchHandler}
@@ -554,7 +554,7 @@ const ClientDetails = () => {
               </button>
             </div>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
@@ -605,7 +605,7 @@ const ClientDetails = () => {
               </button>
             </div>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.specialityName}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>

@@ -2,8 +2,7 @@ import './Country.css'
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { BiSolidCategoryAlt } from 'react-icons/bi';
-import { RiDeleteBinFill } from 'react-icons/ri';
+
 import { FaFlagUsa } from 'react-icons/fa';
 
 //search filter 
@@ -11,7 +10,7 @@ const getSearchFilter = (searchName, countries) => {
   if (!searchName) {
     return countries;
   } return countries.filter(
-    (country) => country.counrtyname.toLowerCase().includes(searchName.toLowerCase()));
+    (country) => country.countryName.toLowerCase().includes(searchName.toLowerCase()));
 };
 
 
@@ -40,28 +39,6 @@ const Country = () => {
   const [searchName, setSearchName] = useState('');
   const searchFilter = getSearchFilter(searchName, countries);
 
-//   const deleteSpecialityHandler=async(id)=>{
-//     setIsLoading(true);
-//     try {
-//     setError(null);
-//     const response = await axios.delete(
-//      ` http://localhost:5000/api/country/${id}`
-//     //  ,
-//     //  { headers :{
-//     //     'Authorization':`Bearer ${token}`
-//     //   }
-//     // }
-//     )
-//     const responseData = await response;
-//     console.log(responseData)
-//     setError(responseData.data.message);
-//     setIsLoading(false);
-//     window.location.href = '/country' ;
-//   }catch (err) {
-//     setIsLoading(false);
-//     setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-//   };
-//   }
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
