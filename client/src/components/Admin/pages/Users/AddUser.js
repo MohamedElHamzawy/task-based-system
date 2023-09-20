@@ -101,6 +101,7 @@ const AddUser = () => {
       timerId = setTimeout(async () => {
         await axios.get("http://localhost:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
