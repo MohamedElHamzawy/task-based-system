@@ -99,7 +99,7 @@ const Country = () => {
 
         {!searchFilter.length == 0 ? searchFilter.map((country) => (
           <div className="table-body row pt-3 p-0 m-0 " key={country._id}>
-            <p className=" text-center">{country.counrtyname}</p> 
+            <p className=" text-center">{country.countryname}</p> 
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
