@@ -3,14 +3,8 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import './Tasks.css'
 import { FaTasks } from 'react-icons/fa';
-import { FiFilter } from 'react-icons/fi';
+
 import { BsFillFolderSymlinkFill } from 'react-icons/bs';
-
-import { GiProfit } from 'react-icons/gi';
-import { FaCoins } from 'react-icons/fa';
-import { GiPayMoney } from 'react-icons/gi';
-import { RiWaterPercentFill } from 'react-icons/ri';
-
 
 
 import GetCookie from "../../../../hooks/getCookie";
@@ -120,13 +114,6 @@ const Tasks = () => {
               <option value={speciality.sub_speciality} key={speciality._id}>{speciality.sub_speciality}</option>
             ))}
           </select>
-          {/* <select id="status" name="status" className="search col-4" value={status}
-            onChange={(e) => { setStatus(e.target.value); setStatusFilterData(true); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality('') }}>
-            <option value="" className='text-secondary'>Statuses</option>
-            {statuses.map((status) => (
-              <option value={status.statusname} key={status._id}>{status.statusname}</option>
-            ))}
-          </select> */}
         </div>
         <div className="col-12 col-md-3 p-2 text-end">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
@@ -177,6 +164,7 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Country :</span> {task.country.countryName}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.paid ? 
@@ -233,6 +221,7 @@ const Tasks = () => {
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Country :</span> {task.country.countryName}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
           

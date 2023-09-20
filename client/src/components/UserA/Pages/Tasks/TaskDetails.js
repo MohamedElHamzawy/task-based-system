@@ -264,17 +264,17 @@ const TaskDetails = () => {
               }
             </div>
             <div className="col-12 text-end py-2 row">
-                <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                  <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
-                    {task.serialNumber}
-                  </span>
-                </div>
-                <div className='col-7 col-sm-5 col-md-4 col-lg-2 text-end justify-content-end p-0 m-0'>
-                  <button className="delete-btn px-3 p-1 fs-4 " onClick={deleteTaskHandler}>
-                    <RiDeleteBinFill />
-                  </button>
-                </div>
+              <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                  {task.serialNumber}
+                </span>
               </div>
+              <div className='col-7 col-sm-5 col-md-4 col-lg-2 text-end justify-content-end p-0 m-0'>
+                <button className="delete-btn px-3 p-1 fs-4 " onClick={deleteTaskHandler}>
+                  <RiDeleteBinFill />
+                </button>
+              </div>
+            </div>
           </div>
           {/* /////////////////////// */}
           <div className="col-12 col-md-6 row ">
@@ -292,9 +292,10 @@ const TaskDetails = () => {
           </div>
 
           <div className='col-12 col-md-6 row'>
-            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
-            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data"> {currency.currencyname} </p>
+            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Country:</h5>
+            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {task.country && task.country.countryName} </p>
           </div>
+
 
           <div className="col-12 col-md-6  row ">
             <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">Client :</h5>
@@ -311,6 +312,11 @@ const TaskDetails = () => {
               <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold text-danger data">{task.paid} </p>
             </div> : ''
           }
+          <div className='col-12 col-md-6 row'>
+            <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
+            <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data"> {currency.currencyname} </p>
+          </div>
+
           {offer && offer.specialistOfferMax && offer.specialistOfferMin ?
             <div className='col-12 col-md-6  row justify-content-center justify-content-md-start'>
               <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Freelancer Offer:</h5>
@@ -416,8 +422,8 @@ const TaskDetails = () => {
 
       </div>
 
-{/* /////////////////////////////////////////////// */}
-<div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
+      {/* /////////////////////////////////////////////// */}
+      <div className='row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center'>
         <div>
           <h1 className='edit-form-lable p-4 fw-bold'>Notes</h1>
           <div className='row p-0 m-0'>
@@ -435,7 +441,7 @@ const TaskDetails = () => {
           </div>
         </div>
       </div>
-{/* /////////////////////////////////////////////// */}
+      {/* /////////////////////////////////////////////// */}
 
     </div>
   )
