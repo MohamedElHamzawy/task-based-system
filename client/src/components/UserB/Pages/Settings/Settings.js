@@ -25,7 +25,6 @@ const Settings = () => {
   const [user, setUser] = useState([]);
   const [fullName, setFullName] = useState();
   const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
   const [phone, setPhone] = useState();
   const [speciality, setSpeciality] = useState();
   const [specialities, setSpecialities] = useState([]);
@@ -45,7 +44,6 @@ const Settings = () => {
           setUserName(res.data.user.username);
           setCountry(res.data.user.country);
           setPhone(res.data.user.phone);
-          setPassword(res.data.user.password);
           setSpeciality(res.data.user.speciality)
           console.log(res.data)
         });

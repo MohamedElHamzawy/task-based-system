@@ -97,7 +97,7 @@ const Accounts = () => {
           <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
             <p className="col-5  name-role text-center"><a className="text-dark text-decoration-none fw-bold" href={`/account/${account._id}`}>{account.title} </a></p>
             <p className="col-4  name-role">{account.type}</p>
-            <p className="col-3 ">{account.balance}</p>
+            <p className="col-3 ">{Math.floor(account.balance)}</p>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

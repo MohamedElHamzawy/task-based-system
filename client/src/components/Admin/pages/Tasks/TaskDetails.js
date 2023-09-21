@@ -353,7 +353,7 @@ const TaskDetails = () => {
             <div className="col-12 col-md-6  row ">
               <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  UserName :</h5>
               <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                <a className="text-dark fw-bold" href={`/user/${user._id}`}>
+                <a className="text-dark fw-bold" href={`/user/${user && user._id}`}>
                   {user && user.fullname}
                 </a>
               </p>

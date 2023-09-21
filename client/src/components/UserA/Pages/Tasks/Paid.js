@@ -96,7 +96,7 @@ const Paid = (props) => {
 
             <div className='row col-12  py-2 p-0 justify-content-center'>
                 <h5 className='col-12 col-lg-5 fw-bold add-user-p py-2 '>Task Price :</h5>
-                <input type='number' placeholder='Task Price In EGP'
+                <input type='number' placeholder='Task Price'
                     value={paidState.value}
                     onChange={paidChangeHandler}
                     onBlur={paidTouchHandler}

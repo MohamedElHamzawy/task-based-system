@@ -76,7 +76,7 @@ const AccountDetails = () => {
 
         <div className="col-12 col-lg-6 row  ">
           <h4 className="col-12 col-md-6  edit-form-lable text-start  fw-bold"> UserName :</h4>
-          <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {account.title} </p>
+          <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end">{account.title} </p>
         </div>
         <div className="col-12 col-lg-6 row  ">
           <h4 className="col-5  edit-form-lable text-start  fw-bold"> Owner:</h4>
@@ -88,7 +88,7 @@ const AccountDetails = () => {
         </div>
         <div className="col-12 col-lg-6 row ">
           <h4 className="col-6 edit-form-lable text-start  fw-bold"> Balance:</h4>
-          <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {account.balance} </p>
+          <p className="d-inline col-6 pt-2 edit-form-p fw-bold text-end"> {Math.floor(account.balance)} </p>
         </div>
 
       </div>
@@ -109,7 +109,7 @@ const AccountDetails = () => {
              <h4 className="col-6 edit-form-lable text-start  fw-bold"> TaskPrice:</h4>
              : 
              <h4 className="col-12 col-md-6 edit-form-lable text-start  fw-bold"> FreeLancerPrice:</h4>} 
-            <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {transaction.amount}  </p>
+            <p className="d-inline col-12 col-md-6 pt-2 edit-form-p fw-bold text-end"> {Math.floor(transaction.amount)}  </p>
           </div>
 
           <div className="col-12 col-lg-6 row ">
