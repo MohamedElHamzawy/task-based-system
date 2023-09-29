@@ -55,14 +55,14 @@ app.use((error,req,res,next) => {
 })
 const port = parseInt(process.env.PORT);
 const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(port, async (req,res,next) => {
+httpsServer.listen(port, async () => {
     try {
         await mongoose.connect(process.env.CON_LINK, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
     } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+        return new HttpError(`Unexpected Error: ${error}`, 500);
     }
 });
 
