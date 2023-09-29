@@ -2,12 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const HttpError = require("./common/httpError");
-const fs = require("fs");
-const https = require("https");
-
-var privateKey  = fs.readFileSync('/etc/letsencrypt/live/smarteduservices.com/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('/etc/letsencrypt/live/smarteduservices.com/fullchain.pem', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
 
 require("dotenv").config();
 const cors = require("cors");
@@ -54,8 +48,7 @@ app.use((error,req,res,next) => {
     res.status(error.code || 500).json({err: error.message || "Something went wrong!"});
 })
 const port = parseInt(process.env.PORT);
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(port, async () => {
+const server = app.listen(port, async () => {
     try {
         await mongoose.connect(process.env.CON_LINK, {
             useNewUrlParser: true,
@@ -65,14 +58,3 @@ httpsServer.listen(port, async () => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 });
-
-// const server = app.listen(port, async () => {
-//     try {
-//         await mongoose.connect(process.env.CON_LINK, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
-//     } catch (error) {
-//         return next(new HttpError(`Unexpected Error: ${error}`, 500));
-//     }
-// });
