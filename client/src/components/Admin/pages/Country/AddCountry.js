@@ -59,7 +59,7 @@ const AddCountry = () => {
     try {
       setError(null);
       const response = await axios.post(
-        "http://localhost:5000/api/country/",
+        "https://smarteduservices.com:5000/api/country/",
         {
           countryName: countryNameState.value,
         }

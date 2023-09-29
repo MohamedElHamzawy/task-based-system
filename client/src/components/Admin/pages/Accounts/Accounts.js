@@ -33,7 +33,7 @@ const Accounts = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/account/").then((res) => {
+        await axios.get("https://smarteduservices.com:5000/api/account/").then((res) => {
           setAccounts(res.data.accounts);
           console.log(res.data)
         });

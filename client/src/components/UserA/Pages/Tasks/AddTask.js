@@ -80,28 +80,28 @@ const AddTask = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get("https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/client/").then((res) => {
+        await axios.get("https://smarteduservices.com:5000/api/client/").then((res) => {
           setClients(res.data.clients);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/currency/").then((res) => {
+        await axios.get("https://smarteduservices.com:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/status/" ,{ headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+        await axios.get("https://smarteduservices.com:5000/api/status/" ,{ headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
         });
         setLoading(false);
@@ -209,7 +209,7 @@ const AddTask = () => {
     try {
       setError(null);
       const response = await axios.post(
-        "http://localhost:5000/api/task/",
+        "https://smarteduservices.com:5000/api/task/",
         {
           title: titleState.value,
           channel: channel,
