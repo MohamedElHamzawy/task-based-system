@@ -17,7 +17,7 @@ const getMyTasks = async (req,res,next) => {
         if (role == "admin") {
             const tasks = await taskModel.find({}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             const tasksCount = tasks.length;
-            const completedTasks = await taskModel.find({taskStatus: "64fdd7aeb19f7955da47eb1e"});
+            const completedTasks = await taskModel.find({taskStatus: "651737dce979f2bb0fb8a3d2"});
             const completedCount = completedTasks.length;
             let totalCost = 0;
             let totalGain = 0;
