@@ -55,7 +55,7 @@ app.use((error,req,res,next) => {
 })
 const port = parseInt(process.env.PORT);
 const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(port, async () => {
+httpsServer.listen(port, async (req,res,next) => {
     try {
         await mongoose.connect(process.env.CON_LINK, {
             useNewUrlParser: true,
