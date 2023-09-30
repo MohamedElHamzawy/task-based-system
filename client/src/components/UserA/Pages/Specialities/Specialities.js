@@ -28,7 +28,7 @@ const Specialities = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/speciality/").then((res) => {
+        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
           console.log(res.data)
         });
@@ -47,7 +47,7 @@ const Specialities = () => {
     try {
     setError(null);
     const response = await axios.delete(
-     ` https://smarteduservices.com:5000/api/speciality/${id}`
+     `  http://localhost:5000/api/speciality/${id}`
     //  ,
     //  { headers :{
     //     'Authorization':`Bearer ${token}`

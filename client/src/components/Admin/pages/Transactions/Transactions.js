@@ -40,7 +40,7 @@ const Transactions = () => {
         if (loading) {
           setIsLoading(true);
           timerId = setTimeout(async () => {
-            await axios.get("https://smarteduservices.com:5000/api/account/").then((res) => {
+            await axios.get(" http://localhost:5000/api/account/").then((res) => {
               setAccounts(res.data.accounts);
               console.log(res.data)
             });
@@ -86,7 +86,7 @@ const handleChange =(selectedOption)=>{
     try {
       setError(null);
       const response = await axios.post(
-        "https://smarteduservices.com:5000/api/transaction/",
+        " http://localhost:5000/api/transaction/",
         {
           amount: amountState.value,
           method : method,
@@ -149,20 +149,13 @@ const handleChange =(selectedOption)=>{
           </select>
         </div>
 
-        <div className='row col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Account:</label>
-          {/* <select id="account" name="account" className="p-2 px-4 search col-10 col-lg-7" value={account}
-            onChange={(event) => setAccount(event.target.value)}>
-            <option value="" className='text-secondary'>Accounts</option>
-            {accounts.map((account) => (
-              <option value={account._id} key={account._id}>{account.title}</option>
-            ))}
-          </select> */}
+        <div className='col-12 col-lg-5 m-1 py-2 p-0 justify-content-center text-center row ' >
+          <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p "> Account:</label>
           <Select  
               // value={account}
               options={accounts.map(account =>({label:account.title , value:account._id}))}
               onChange={handleChange}
-              className="basic-single col-10 col-lg-7 "
+              className="basic-single  col-10 col-lg-10 "
               classNamePrefix="select"
               name="account"
             />
