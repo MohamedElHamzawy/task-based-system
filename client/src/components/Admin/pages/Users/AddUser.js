@@ -92,14 +92,14 @@ const AddUser = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/speciality/").then((res) => {
+        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/country/").then((res) => {
+        await axios.get(" http://localhost:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
           console.log(res.data)
         });
@@ -228,7 +228,7 @@ const AddUser = () => {
     try {
       setError(null);
       const response = await axios.post(
-        "https://smarteduservices.com:5000/api/user/",
+        " http://localhost:5000/api/user/",
         {
           fullName: fullNameState.value,
           userName: userNameState.value,

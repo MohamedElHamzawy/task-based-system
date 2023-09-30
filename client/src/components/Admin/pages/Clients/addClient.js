@@ -92,14 +92,14 @@ const AddClient = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/currency/").then((res) => {
+        await axios.get(" http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/country/").then((res) => {
+        await axios.get(" http://localhost:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
         });
         setLoading(false);
@@ -211,7 +211,7 @@ const AddClient = () => {
     try {
       setError(null);
       const response = await axios.post(
-        "https://smarteduservices.com:5000/api/client/",
+        " http://localhost:5000/api/client/",
         {
           clientName: clientNameState.value,
           owner: ownerState.value,

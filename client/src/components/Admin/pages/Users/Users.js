@@ -26,7 +26,7 @@ const Users = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/user/").then((res) => {
+        await axios.get(" http://localhost:5000/api/user/").then((res) => {
           setUsers(res.data.users);
           console.log(res.data)
         });
@@ -56,7 +56,7 @@ const Users = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        ` https://smarteduservices.com:5000/api/user/${id}`
+        `  http://localhost:5000/api/user/${id}`
       )
       const responseData = await response;
       console.log(responseData.data)
@@ -81,7 +81,7 @@ const Users = () => {
       try {
         setError(null);
         const response = await axios.post(
-          'https://smarteduservices.com:5000/api/user/sort/filter/',
+          ' http://localhost:5000/api/user/sort/filter/',
           {
             sort: sortedUsers,
             role :filterRole  ,  

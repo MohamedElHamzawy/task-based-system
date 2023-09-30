@@ -99,7 +99,7 @@ const AddSpeciality = () => {
     try {
       setError(null);
       const response = await axios.post(
-        "https://smarteduservices.com:5000/api/speciality/",
+        " http://localhost:5000/api/speciality/",
         {
           sub_speciality: specialityNameState.value,
           speciality: specialitTypeState.value,

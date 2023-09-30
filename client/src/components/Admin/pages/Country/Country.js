@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 
+import { RiDeleteBinFill } from 'react-icons/ri';
 import { FaFlagUsa } from 'react-icons/fa';
 
 //search filter 
@@ -25,7 +26,7 @@ const Country = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/country/").then((res) => {
+        await axios.get("http://localhost:5000/api/country/").then((res) => {
             setCountries(res.data.countries);
           console.log(res.data)
         });
@@ -39,7 +40,28 @@ const Country = () => {
   const [searchName, setSearchName] = useState('');
   const searchFilter = getSearchFilter(searchName, countries);
 
-
+  const deleteCountryHandler = async (id) => {
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.delete(
+        `http://localhost:5000/api/country/${id}`
+        //  ,
+        //  { headers :{
+        //     'Authorization':`Bearer ${token}`
+        //   }
+        // }
+      )
+      const responseData = await response;
+      console.log(responseData)
+      setError(responseData.data.message);
+      setIsLoading(false);
+      window.location.href = '/country';
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+    };
+  }
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -71,12 +93,14 @@ const Country = () => {
 
       <div className="bg-white col-12 users-data row p-0 m-0 mt-2">
         <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="text-center">Countries </p>
+          <p className="col-9 text-center">Countries </p>
+          <p className="col-3 speciality-table-head">Delete</p>
         </div>
 
         {!searchFilter.length == 0 ? searchFilter.map((country) => (
           <div className="table-body row pt-3 p-0 m-0 " key={country._id}>
-            <p className=" text-center">{country.countryName}</p> 
+            <p className="col-9 text-center">{country.countryName}</p> 
+            <p className="col-3"> <button className=" delete-btn p-2 px-3" onClick={() => deleteCountryHandler(country._id)}> <RiDeleteBinFill /> </button></p>
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

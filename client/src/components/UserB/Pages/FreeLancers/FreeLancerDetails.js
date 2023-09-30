@@ -119,7 +119,7 @@ const FreeLancerDetails = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(`https://smarteduservices.com:5000/api/freeLancer/${id}`).then((res) => {
+        await axios.get(` http://localhost:5000/api/freeLancer/${id}`).then((res) => {
           setFreeLancer(res.data.freelancer);
           setFreeLancerTasks(res.data.freelancerTasks)
           console.log(res.data)
@@ -128,17 +128,17 @@ const FreeLancerDetails = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/speciality/").then((res) => {
+        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/currency/").then((res) => {
+        await axios.get(" http://localhost:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/country/").then((res) => {
+        await axios.get(" http://localhost:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
         });
       });
@@ -228,7 +228,7 @@ const FreeLancerDetails = () => {
     try {
       setError(null);
       const response = await axios.post(
-        `https://smarteduservices.com:5000/api/freelancer/${freeLancer._id}`,
+        ` http://localhost:5000/api/freelancer/${freeLancer._id}`,
         {
           name: fullNameState.value,
           speciality: userSpeciality,
@@ -257,7 +257,7 @@ const FreeLancerDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        ` https://smarteduservices.com:5000/api/freelancer/${id}`
+        `  http://localhost:5000/api/freelancer/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`
