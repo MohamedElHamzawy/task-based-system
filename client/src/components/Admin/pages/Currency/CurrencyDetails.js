@@ -29,9 +29,9 @@ const CurrencyDetails = () => {
         if (loading) {
             setIsLoading(true);
             timerId = setTimeout(async () => {
-                await axios.get(` http://localhost:5000/api/currency/${id}`).then((res) => {
+                await axios.get(` https://smarteduservices.com:5000/api/currency/${id}`).then((res) => {
                   setCurrency(res.data.message);
-                  console.log(res.data.message)
+              
                 });
                 setLoading(false);
                 setIsLoading(false);
@@ -48,14 +48,14 @@ const CurrencyDetails = () => {
         try {
             setError(null);
             const response = await axios.post(
-                ` http://localhost:5000/api/currency/${currency._id}`,
+                ` https://smarteduservices.com:5000/api/currency/${currency._id}`,
                 {
                     name: currencyName,
                     price: currencyPrice,
                 }
             );
             const responseData = await response;
-            console.log(responseData)
+        
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.message);
             }
@@ -74,7 +74,7 @@ const CurrencyDetails = () => {
         try {
             setError(null);
             const response = await axios.delete(
-                `  http://localhost:5000/api/currency/${id}`
+                `  https://smarteduservices.com:5000/api/currency/${id}`
                 //  ,
                 //  { headers :{
                 //     'Authorization':`Bearer ${token}`
@@ -82,7 +82,7 @@ const CurrencyDetails = () => {
                 // }
             )
             const responseData = await response;
-            console.log(responseData.data)
+       
             setError(responseData.data.message);
             setIsLoading(false);
             window.location.href = '/currency';

@@ -99,7 +99,7 @@ const AddSpeciality = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/speciality/",
+        " https://smarteduservices.com:5000/api/speciality/",
         {
           sub_speciality: specialityNameState.value,
           speciality: specialitTypeState.value,
@@ -107,7 +107,7 @@ const AddSpeciality = () => {
       );
 
       const responseData = await response;
-      console.log(responseData)
+       
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }

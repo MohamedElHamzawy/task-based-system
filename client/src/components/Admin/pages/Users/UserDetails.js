@@ -124,25 +124,25 @@ const UserDetails = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(` http://localhost:5000/api/user/${id}`).then((res) => {
+        await axios.get(` https://smarteduservices.com:5000/api/user/${id}`).then((res) => {
           setUser(res.data.user);
           setUserTasks(res.data.userTasks)
           if (res.data.user.user_role == 'specialistService') {
             setspecialityId(res.data.user.speciality);
             setVisable(true);
           }
-          console.log(res.data)
+           
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
         });
       });
@@ -232,7 +232,7 @@ const UserDetails = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/user/${user._id}`,
+        ` https://smarteduservices.com:5000/api/user/${user._id}`,
         {
           fullName: fullNameState.value,
           userName: userNameState.value,
@@ -261,7 +261,7 @@ const UserDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/user/${id}`
+        `  https://smarteduservices.com:5000/api/user/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`
@@ -269,7 +269,7 @@ const UserDetails = () => {
         // }
       )
       const responseData = await response;
-      console.log(responseData.data)
+       
       setError(responseData.data.message);
       setIsLoading(false);
       window.location.href = '/';

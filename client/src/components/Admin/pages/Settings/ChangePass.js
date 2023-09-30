@@ -59,13 +59,13 @@ const ChangePass = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/user/password/${userID}`,
+        ` https://smarteduservices.com:5000/api/user/password/${userID}`,
         {
           password: passwordState.value,
         }
       );
       const responseData = await response;
-      console.log(responseData)
+       
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }

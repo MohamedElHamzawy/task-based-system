@@ -26,6 +26,24 @@ const amountReducer = (state, action) => {
   }
 };
 
+//number validation
+const numberReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE":
+      return {
+        ...state,
+        value: action.number,
+        isvalid: validate(action.number, action.validators),
+      };
+    case "TOUCH":
+      return {
+        ...state,
+        isTouched: true,
+      };
+    default:
+      return state;
+  }
+};
 
 const Transactions = () => {
     const [loading, setLoading] = useState(true);
@@ -40,9 +58,9 @@ const Transactions = () => {
         if (loading) {
           setIsLoading(true);
           timerId = setTimeout(async () => {
-            await axios.get(" http://localhost:5000/api/account/").then((res) => {
+            await axios.get(" https://smarteduservices.com:5000/api/account/").then((res) => {
               setAccounts(res.data.accounts);
-              console.log(res.data)
+               
             });
             setLoading(false);
             setIsLoading(false);
@@ -70,6 +88,26 @@ const Transactions = () => {
       type: "TOUCH",
     });
   };
+
+  //number validation
+  const [numberState, dispatch2] = useReducer(numberReducer, {
+    value: "",
+    isvalid: false,
+    isTouched: false,
+  });
+
+  const numberChangeHandler = (event) => {
+    dispatch2({
+      type: "CHANGE",
+      number: event.target.value,
+      validators: [VALIDATOR_MINLENGTH(3)],
+    });
+  };
+  const numberTouchHandler = () => {
+    dispatch2({
+      type: "TOUCH",
+    });
+  };
 //////////////////////////////
 
 const handleChange =(selectedOption)=>{
@@ -86,16 +124,17 @@ const handleChange =(selectedOption)=>{
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/transaction/",
+        " https://smarteduservices.com:5000/api/transaction/",
         {
           amount: amountState.value,
           method : method,
-          account_id :account
+          account_id :account,
+          accountNumber : numberState.value
         }
       );
 
       const responseData = await response;
-      console.log(responseData)
+       
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -149,13 +188,27 @@ const handleChange =(selectedOption)=>{
           </select>
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0 justify-content-center text-center row ' >
+        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
+          <label className='col-10 col-lg-5 fw-bold add-user-p'>Account Number :</label>
+          <input type='text' placeholder='Account Number'
+            value={numberState.value}
+            onChange={numberChangeHandler}
+            onBlur={numberTouchHandler}
+            isvalid={numberState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${!numberState.isvalid &&
+              numberState.isTouched &&
+              "form-control-invalid"
+              }`}
+          />
+        </div>
+
+        <div className='col-12 col-lg-5 m-1 py-2 p-0 justify-content-lg-end justify-content-center text-center row ' >
           <label htmlFor="client" className="col-10 col-lg-5 fw-bold add-user-p "> Account:</label>
           <Select  
               // value={account}
               options={accounts.map(account =>({label:account.title , value:account._id}))}
               onChange={handleChange}
-              className="basic-single  col-10 col-lg-10 "
+              className="basic-single  col-10 col-lg-7 "
               classNamePrefix="select"
               name="account"
             />
@@ -166,7 +219,8 @@ const handleChange =(selectedOption)=>{
             disabled={
               !amountState.isvalid ||
               !method ||
-              !account
+              !account ||
+              !numberState.isvalid 
             }
             className='add-trans-btn p-3  fw-bold col-10 col-lg-5'>
             Add

@@ -80,28 +80,28 @@ const AddTask = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/client/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/client/").then((res) => {
           setClients(res.data.clients);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/currency/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/status/" ,{ headers: { Authorization: `Bearer ${token}` } }).then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/status/" ,{ headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
         });
         setLoading(false);
@@ -209,7 +209,7 @@ const AddTask = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/task/",
+        " https://smarteduservices.com:5000/api/task/",
         {
           title: titleState.value,
           channel: channel,
@@ -224,7 +224,7 @@ const AddTask = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const responseData = await response;
-      console.log(responseData)
+       
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -255,7 +255,7 @@ const AddTask = () => {
 
       <div className="row p-1">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/' }}><TiArrowBack /> </button>
+          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/yourtasks' }}><TiArrowBack /> </button>
         </div>
         <h2 className="col-12 col-lg-7 text-center system-head p-3  fw-bold">  Add New Task</h2>
       </div>

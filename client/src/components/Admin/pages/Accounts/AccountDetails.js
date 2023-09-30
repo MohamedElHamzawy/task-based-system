@@ -26,24 +26,21 @@ const AccountDetails = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(` http://localhost:5000/api/account/${id}`).then((res) => {
+        await axios.get(` https://smarteduservices.com:5000/api/account/${id}`).then((res) => {
           setAccount(res.data.account);
           setTransactions(res.data.transactions);
-          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/client/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/client/").then((res) => {
           setClients(res.data.clients);
-          console.log(res.data)
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/freelancer/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
-          console.log(res.data)
 
         });
       });    
@@ -170,6 +167,11 @@ const AccountDetails = () => {
          {transaction.transactionType &&  <div className="col-12 col-lg-6 row ">
             <h4 className="col-12 col-md-7 edit-form-lable text-start "> Transaction Type:</h4>
             <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {transaction.transactionType} </p>
+          </div>}
+          
+          {transaction.accountNumber &&  <div className="col-12 col-lg-6 row ">
+            <h4 className="col-12 col-md-7 edit-form-lable text-start "> Account Number:</h4>
+            <p className="d-inline col-12 col-md-5 pt-2 edit-form-p fw-bold text-end"> {transaction.accountNumber} </p>
           </div>}
 
         </div>

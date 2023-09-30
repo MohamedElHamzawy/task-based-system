@@ -21,7 +21,7 @@ const ShareWith = (props) => {
         if (loading) {
             setIsLoading(true);
             timerId = setTimeout(async () => {
-                await axios.get(" http://localhost:5000/api/user/specialistService").then((res) => {
+                await axios.get(" https://smarteduservices.com:5000/api/user/specialistService").then((res) => {
                     setUsers(res.data.users);
                 });
                 setLoading(false);
@@ -45,7 +45,7 @@ const ShareWith = (props) => {
         try {
             setError(null);
             const response = await axios.post(
-                ` http://localhost:5000/api/task/partial/${props.id}`,
+                ` https://smarteduservices.com:5000/api/task/partial/${props.id}`,
                 {
                     statusID:props.statusID,
                     shareWith : user
@@ -53,7 +53,7 @@ const ShareWith = (props) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             const responseData = await response;
-            console.log(responseData)
+             
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.msg);
             }

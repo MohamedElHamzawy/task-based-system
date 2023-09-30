@@ -8,7 +8,6 @@ import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
 import { MdPendingActions } from 'react-icons/md';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
-import { BsCurrencyExchange } from 'react-icons/bs';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
