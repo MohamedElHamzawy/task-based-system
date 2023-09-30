@@ -74,6 +74,56 @@ const FilterTasks = async (req,res,next) => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
+const FilterTasksA = async (req,res,next) => {
+    try {
+        const userID = req.user._id;
+        const {status, speciality, country, start, end, freelancer, client} = req.body;
+        let tasks;
+        if (end && start) {
+            tasks = await taskModel.find({$and: [{created_by: userID}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+        } else {
+            tasks = await taskModel.find({$and: [{created_by: userID}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+        }
+        const tasksCount = tasks.length;
+        let totalCost = 0;
+        let totalGain = 0;
+        let totalProfit = 0;
+        tasks.forEach(task => {
+            task.cost? totalCost += task.cost : totalCost += 0;
+            task.paid? totalGain += (task.paid * task.task_currency.priceToEGP) : totalGain += 0;
+            task.profit_amount? totalProfit += task.profit_amount : totalProfit += 0;
+        });
+        const totalProfitPercentage = totalProfit/totalGain*100;
+        res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+const FilterTasksB = async (req,res,next) => {
+    try {
+        const userID = req.user._id;
+        const {status, speciality, country, start, end, freelancer, client} = req.body;
+        let tasks;
+        if (end && start) {
+            tasks = await taskModel.find({$and: [{accepted_by: userID}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+        } else {
+            tasks = await taskModel.find({$and: [{accepted_by: userID}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+        }
+        const tasksCount = tasks.length;
+        let totalCost = 0;
+        let totalGain = 0;
+        let totalProfit = 0;
+        tasks.forEach(task => {
+            task.cost? totalCost += task.cost : totalCost += 0;
+            task.paid? totalGain += (task.paid * task.task_currency.priceToEGP) : totalGain += 0;
+            task.profit_amount? totalProfit += task.profit_amount : totalProfit += 0;
+        });
+        const totalProfitPercentage = totalProfit/totalGain*100;
+        res.json({tasks: tasks, tasksCount: tasksCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
 
 const getTask = async (req,res,next) => {
     try {
@@ -348,4 +398,4 @@ const deleteTask = async (req,res,next) => {
     }
 }
 
-module.exports = {getMyTasks, getTask, FilterTasks, createTask, partialUpdateTask, updateTask, deleteTask}
+module.exports = {getMyTasks, getTask, FilterTasks, FilterTasksA, FilterTasksB, createTask, partialUpdateTask, updateTask, deleteTask}

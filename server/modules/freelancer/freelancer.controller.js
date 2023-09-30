@@ -2,7 +2,6 @@ const freelancerModel = require("../../DB/freelancer.model");
 const accountModel = require("../../DB/account.model");
 const taskModel = require("../../DB/task.model");
 const HttpError = require("../../common/httpError");
-const statusModel = require("../../DB/status.model");
 
 const getAllFreelancers = async (req,res,next) => {
     try {

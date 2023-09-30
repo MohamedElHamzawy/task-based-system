@@ -5,6 +5,8 @@ const {
     getMyTasks, 
     getTask, 
     FilterTasks,
+    FilterTasksA,
+    FilterTasksB,
     createTask,
     partialUpdateTask, 
     updateTask, 
@@ -14,6 +16,8 @@ const {
 router.get("/", auth(), getMyTasks);
 router.get("/:id", auth(), getTask);
 router.post("/filter/result/", FilterTasks);
+router.post("/filter/result/customer", auth(), FilterTasksA);
+router.post("/filter/result/specialist", auth(), FilterTasksB);
 router.post("/", auth(), createTask);
 router.post("/partial/:id", auth(), partialUpdateTask);
 router.post("/:id", auth(), updateTask);
