@@ -20,4 +20,14 @@ const createCountry = async (req,res,next) => {
     }
 }
 
-module.exports = {getAllCountries, createCountry}
+const deleteCountry = async (req,res,next) => {
+    try {
+        const countryID = req.params.id;
+        await countryModel.findByIdAndDelete({_id: countryID});
+        res.json({message: "country deleted successfully"});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
+module.exports = {getAllCountries, createCountry, deleteCountry}
