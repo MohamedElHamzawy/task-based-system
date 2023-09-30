@@ -27,7 +27,7 @@ const getMyTasks = async (req,res,next) => {
                 task.paid? totalGain += (task.paid * task.task_currency.priceToEGP) : totalGain += 0;
                 task.profit_amount? totalProfit += task.profit_amount : totalProfit += 0;
             });
-            const totalProfitPercentage = totalProfit/totalGain*100;
+            const totalProfitPercentage = (totalProfit/totalGain)*100;
             res.json({tasks: tasks, tasksCount: tasksCount, completedCount: completedCount, totalCost: totalCost, totalGain: totalGain, totalProfit: totalProfit, totalProfitPercentage: totalProfitPercentage.toFixed(2)});
         } else if (role == "customerService") {
             const status1 = await statusModel.find({slug: "offer-submitted"});
