@@ -2,9 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const HttpError = require("./common/httpError");
-const fs = require("fs");
-const https = require("https");
-const http = require("http");
+// const fs = require("fs");
+// const https = require("https");
+// const http = require("http");
 
 // var privateKey  = fs.readFileSync('/etc/letsencrypt/live/smarteduservices.com/privkey.pem', 'utf8');
 // var certificate = fs.readFileSync('/etc/letsencrypt/live/smarteduservices.com/fullchain.pem', 'utf8');
@@ -56,14 +56,25 @@ app.use((error,req,res,next) => {
 })
 const port = parseInt(process.env.PORT);
 // const httpsServer = https.createServer(credentials, app);
-const httpServer = https.createServer(app);
-httpServer.listen(port, async () => {
+// const httpServer = https.createServer(app);
+// httpServer.listen(port, async () => {
+//     try {
+//         await mongoose.connect(process.env.CON_LINK, {
+//             useNewUrlParser: true,
+//             useUnifiedTopology: true,
+//         }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
+//     } catch (error) {
+//         return new HttpError(`Unexpected Error: ${error}`, 500);
+//     }
+// });
+
+const server = app.listen(port, async () => {
     try {
         await mongoose.connect(process.env.CON_LINK, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
     } catch (error) {
-        return new HttpError(`Unexpected Error: ${error}`, 500);
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 });
