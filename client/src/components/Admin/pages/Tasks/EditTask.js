@@ -97,12 +97,12 @@ const EditTask = (props) => {
         if (loading) {
           setIsLoading(true);
           timerId = setTimeout(async () => {
-            await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+            await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
               setSpecialities(res.data.specialities);
             });
           });
           timerId = setTimeout(async () => {
-            await axios.get(" http://localhost:5000/api/currency/").then((res) => {
+            await axios.get(" https://smarteduservices.com:5000/api/currency/").then((res) => {
               setCurrencies(res.data.currencies);
             });
             setLoading(false);
@@ -205,14 +205,14 @@ const [descriptionState, dispatch2] = useReducer(descriptionReducer, {
 
 // edit task handler
   const editTaskHandler = async (event) => {
-    console.log(deadline)
+
     event.preventDefault();
     // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/task/${props.id}`,
+        ` https://smarteduservices.com:5000/api/task/${props.id}`,
         {
             title: titleState.value,
             channel: channelState.value,
@@ -228,7 +228,7 @@ const [descriptionState, dispatch2] = useReducer(descriptionReducer, {
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
-      console.log(responseData)
+       
       setError(responseData.data.message);
       setIsLoading(false);
     } catch (err) {

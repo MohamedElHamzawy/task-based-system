@@ -92,14 +92,14 @@ const AddClient = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/currency/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
         });
         setLoading(false);
@@ -109,7 +109,6 @@ const AddClient = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  console.log(countries)
 
   //currency value
   const [currency, setCurrency] = useState('');
@@ -204,14 +203,13 @@ const AddClient = () => {
 
 
   const newSpecialitySubmitHandler = async (event) => {
-    // console.log(clientNameState.value ,ownerState.value ,currency,numberState.value , clientEmailState.value, countryState.value,)
     event.preventDefault();
     // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/client/",
+        " https://smarteduservices.com:5000/api/client/",
         {
           clientName: clientNameState.value,
           owner: ownerState.value,
@@ -223,7 +221,6 @@ const AddClient = () => {
       );
 
       const responseData = await response;
-      console.log(responseData)
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -292,10 +289,7 @@ const AddClient = () => {
             onChange={clientEmailChangeHandler}
             onBlur={clientEmailTouchHandler}
             isvalid={clientEmailState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!clientEmailState.isvalid &&
-              clientEmailState.isTouched &&
-              "form-control-invalid"
-              }`}
+            className={`col-10 col-lg-7 search p-2 `}
           />
         </div>
 
@@ -339,7 +333,6 @@ const AddClient = () => {
         <div className='col-8 m-3 mt-5 row justify-content-center'>
           <button
             disabled={
-              !clientEmailState.isvalid ||
               !ownerState.isvalid ||
               !clientNameState.isvalid ||
               !numberState.isvalid ||

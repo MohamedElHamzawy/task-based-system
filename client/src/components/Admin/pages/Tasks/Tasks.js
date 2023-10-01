@@ -52,34 +52,34 @@ const Tasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/status/",
+        await axios.get(" https://smarteduservices.com:5000/api/status/",
           { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
             setStatuses(res.data.statuses);
           });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
-          console.log(res.data)
+           
         });
       });      
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/freelancer/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/freelancer/").then((res) => {
           setFreelancers(res.data.freelancers);
         });
       });    
         timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/client/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/client/").then((res) => {
           setClients(res.data.clients);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/task/",
+        await axios.get(" https://smarteduservices.com:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
           setTasks(res.data.tasks);
@@ -91,7 +91,7 @@ const Tasks = () => {
           setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
 
-          console.log(res.data)
+           
         });
         setIsLoading(false);
         setLoading(false);
@@ -124,13 +124,12 @@ const Tasks = () => {
     setAllFilterData(true); 
     setSearchFilterData(false);
     setSearchName('');
-    console.log( speciality,status ,country ,start ,end ,freelancer ,client)
     // send api request to validate data
     setIsLoading(true);
     try {
       setError(null);
       const response = await axios.post(
-        ' http://localhost:5000/api/task/filter/result/',
+        ' https://smarteduservices.com:5000/api/task/filter/result/',
         {
           speciality: speciality,
           status :status ,
@@ -153,7 +152,7 @@ const Tasks = () => {
       setCompletedCount(response.data.completedCount)
       setTotalProfitPercentage(response.data.totalProfitPercentage)
 
-      console.log(response.data)
+       
       setLoading(false);
       setIsLoading(false);
     } catch (err) {

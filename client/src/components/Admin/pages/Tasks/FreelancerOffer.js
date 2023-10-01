@@ -42,7 +42,7 @@ const FreelancerOffer = (props) => {
         if (loading) {
             setIsLoading(true);
             timerId = setTimeout(async () => {
-                await axios.get(" http://localhost:5000/api/freelancer/").then((res) => {
+                await axios.get(" https://smarteduservices.com:5000/api/freelancer/").then((res) => {
                     setFreeLancers(res.data.freelancers);
                 });
                 setLoading(false);
@@ -74,14 +74,14 @@ const FreelancerOffer = (props) => {
 
 //Freelancer offer
     const freeLancerOffer = async (event) => {
-        // console.log(props.id ,freeLancer, costState.value)
+  
         event.preventDefault();
         // send api request to validate data
         setIsLoading(true);
         try {
             setError(null);
             const response = await axios.post(
-                ` http://localhost:5000/api/task/partial/${props.id}`,
+                ` https://smarteduservices.com:5000/api/task/partial/${props.id}`,
                 {
                     statusID:props.statusID,
                     freelancerID: freeLancer,
@@ -90,7 +90,7 @@ const FreelancerOffer = (props) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             const responseData = await response;
-            console.log(responseData)
+             
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.msg);
             }

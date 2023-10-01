@@ -52,14 +52,14 @@ const Paid = (props) => {
 
 //put Paid Handler
     const putPaidHandler = async (event) => {
-        // console.log(props.id ,freeLancer, paidState.value)
+
         event.preventDefault();
         // send api request to validate data
         setIsLoading(true);
         try {
             setError(null);
             const response = await axios.post(
-                ` http://localhost:5000/api/task/partial/${props.id}`,
+                ` https://smarteduservices.com:5000/api/task/partial/${props.id}`,
                 {
                     statusID:props.statusID,
                     paid: paidState.value
@@ -67,7 +67,7 @@ const Paid = (props) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             const responseData = await response;
-            console.log(responseData)
+             
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.msg);
             }

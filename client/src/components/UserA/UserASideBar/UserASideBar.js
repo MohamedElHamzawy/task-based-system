@@ -8,7 +8,7 @@ import { BiLogOut } from 'react-icons/bi';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
-import { BsCurrencyExchange } from 'react-icons/bs';
+import { MdPendingActions } from 'react-icons/md';
 
 
 
@@ -47,7 +47,16 @@ class UserASideBar extends React.Component {
         />
         <SideNav.Nav >
 
-          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/'}}>
+        <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/'}}>
+            <NavIcon>
+                <MdPendingActions className='fs-4' />
+            </NavIcon>
+             <NavText>
+             <p className="fs-3 ">PendingTasks</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/yourtasks'}}>
             <NavIcon>
                 <FaTasks className='fs-4' />
             </NavIcon>

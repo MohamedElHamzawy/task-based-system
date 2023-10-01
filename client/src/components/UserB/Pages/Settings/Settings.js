@@ -38,27 +38,27 @@ const Settings = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(` http://localhost:5000/api/user/${userID}`).then((res) => {
+        await axios.get(` https://smarteduservices.com:5000/api/user/${userID}`).then((res) => {
           setUser(res.data.user);
           setFullName(res.data.user.fullname);
           setUserName(res.data.user.username);
           setCountry(res.data.user.country);
           setPhone(res.data.user.phone);
           setSpeciality(res.data.user.speciality)
-          console.log(res.data)
+           
         });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/country/").then((res) => {
           setCountries(res.data.countries);
-          console.log(res.data)
+           
         });
       });
     }
@@ -79,7 +79,7 @@ const Settings = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/user/${user._id}`,
+        ` https://smarteduservices.com:5000/api/user/${user._id}`,
         {
           fullName: fullName,
           userName: userName,
@@ -88,7 +88,7 @@ const Settings = () => {
         }
       );
       const responseData = await response;
-      console.log(responseData)
+       
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }

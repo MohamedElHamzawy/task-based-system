@@ -99,7 +99,7 @@ const emailSubmitHandler = async event =>{
   try {
     setError(null);
     const response = await axios.post(
-      " http://localhost:5000/api/login",
+      " https://smarteduservices.com:5000/api/login",
       {
         userName : usernameState.value,
         password: passState.value  
@@ -126,7 +126,6 @@ const emailSubmitHandler = async event =>{
 
   } 
   catch (err) {
-    console.log(err);
     setIsLoading(false);
     setError(err.response.data.err || "SomeThing Went Wrong , Please Try Again .");
   }
@@ -141,7 +140,7 @@ const errorHandler =() =>{
       <div>
         <div className=''>
             <h1 className='logo text-white bg-danger col-12 col-xl-5 col-md-7 p-3 '>
-              <SiFreelancer/> FreeLancing System 
+              <SiFreelancer/> SMART
             </h1>
         </div>
       <div className='col-12 p-3'>

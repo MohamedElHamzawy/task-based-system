@@ -99,7 +99,7 @@ const  AddCurrency = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/currency/",
+        " https://smarteduservices.com:5000/api/currency/",
         {
             name: currencyNameState.value,
             price: currencyPriceState.value,
@@ -107,7 +107,7 @@ const  AddCurrency = () => {
       );
 
       const responseData = await response;
-      console.log(responseData)
+  
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }

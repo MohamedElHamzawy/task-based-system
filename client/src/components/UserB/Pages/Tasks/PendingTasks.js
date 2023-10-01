@@ -29,12 +29,6 @@ const getSpecialityFilter = (speciality, tasks) => {
     return tasks;
   } return tasks.filter((tasks) => tasks.speciality.sub_speciality.includes(speciality));
 };
-// Status filter
-// const getStatusFilter = (status, tasks) => {
-//   if (!status) {
-//     return tasks;
-//   } return tasks.filter((tasks) => tasks.taskStatus.statusname.includes(status));
-// };
 
 const PendingTasks = () => {
 
@@ -52,23 +46,23 @@ const PendingTasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/status/",
+        await axios.get(" https://smarteduservices.com:5000/api/status/",
           { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
             setStatuses(res.data.statuses);
           });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/task/",
+        await axios.get(" https://smarteduservices.com:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
           setTasks(res.data.pendingTasks);
 
-          console.log(res.data)
+           
         });
         setIsLoading(false);
         setLoading(false);
@@ -104,16 +98,16 @@ const PendingTasks = () => {
 
       <div className="row p-0 m-0 justify-content-center">
 
-        <div className="col-10 col-md-4 p-2 justify-content-center row">
+        <div className="col-10 col-md-5 p-2 justify-content-center row">
           <input type="name" className="search p-2 col-12" placeholder="Search By Name or Serial Number" value={searchName}
             onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setStatusFilterData(false); setSpeciality(''); setStatus('') }}
           />
         </div>
 
-        <div className="col-10 col-md-8 text-secondary row p-2  ">
+        <div className="col-10 col-md-7 text-secondary row p-2 justify-content-end ">
 
           <label htmlFor="Speciality" className="my-2 col-3 text-end ">Filter:</label>
-          <select id="speciality" name="speciality" className="search col-8 col-md-4 mx-1" value={speciality}
+          <select id="speciality" name="speciality" className="search col-8 col-lg-5 mx-1" value={speciality}
             onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus('') }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (

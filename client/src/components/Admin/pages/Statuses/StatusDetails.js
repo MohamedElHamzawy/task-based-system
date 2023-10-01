@@ -48,7 +48,7 @@ const StatusDetails = () => {
         if (loading) {
             setIsLoading(true);
             timerId = setTimeout(async () => {
-                await axios.get(` http://localhost:5000/api/status/${id}`).then((res) => {
+                await axios.get(` https://smarteduservices.com:5000/api/status/${id}`).then((res) => {
                     setStatus(res.data.message);
                     setName(res.data.message.statusname)
                 });
@@ -82,21 +82,21 @@ const StatusDetails = () => {
 
     //////////////////////////////////////
     const editStatusHandler = async (event) => {
-        // console.log(role , statusNameState.value)
+  
         event.preventDefault();
         // send api request to validate data
         setIsLoading(true);
         try {
             setError(null);
             const response = await axios.post(
-                ` http://localhost:5000/api/status/${status._id}`,
+                ` https://smarteduservices.com:5000/api/status/${status._id}`,
                 {
                     name: statusNameState.value,
                     role: role
                 }
             );
             const responseData = await response;
-            console.log(responseData)
+             
             if (!(response.statusText === "OK")) {
                 throw new Error(responseData.data.message);
             }
@@ -115,7 +115,7 @@ const StatusDetails = () => {
         try {
             setError(null);
             const response = await axios.delete(
-                `  http://localhost:5000/api/status/${id}`
+                `  https://smarteduservices.com:5000/api/status/${id}`
                 //  ,
                 //  { headers :{
                 //     'Authorization':`Bearer ${token}`
@@ -123,7 +123,7 @@ const StatusDetails = () => {
                 // }
             )
             const responseData = await response;
-            console.log(responseData.data)
+             
             setError(responseData.data.message);
             setIsLoading(false);
             window.location.href = '/statuses';

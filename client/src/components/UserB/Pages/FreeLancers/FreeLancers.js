@@ -32,15 +32,15 @@ const FreeLancers = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/freelancer/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
-          console.log(res.data)
+           
           setLoading(false);
           setIsLoading(false);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
 
@@ -66,7 +66,7 @@ const FreeLancers = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/freelancer/${id}`
+        `  https://smarteduservices.com:5000/api/freelancer/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`
@@ -74,7 +74,7 @@ const FreeLancers = () => {
         // }
       )
       const responseData = await response;
-      console.log(responseData)
+       
       setError(responseData.data.message);
       setIsLoading(false);
       window.location.href = '/freelancers';
