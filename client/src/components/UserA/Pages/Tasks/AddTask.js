@@ -167,7 +167,7 @@ const AddTask = () => {
     dispatch4({
       type: "CHANGE",
       taskPrice: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
+      validators: [VALIDATOR_MINLENGTH(1)],
     });
   };
   const taskPriceTouchHandler = () => {

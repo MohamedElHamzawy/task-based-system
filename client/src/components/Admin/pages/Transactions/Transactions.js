@@ -80,7 +80,7 @@ const Transactions = () => {
     dispatch({
       type: "CHANGE",
       amount: event.target.value,
-      validators: [VALIDATOR_MINLENGTH(3)],
+      validators: [VALIDATOR_MINLENGTH(1)],
     });
   };
   const amountTouchHandler = () => {

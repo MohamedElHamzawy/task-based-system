@@ -133,17 +133,17 @@ const FreeLancers = () => {
                 <SiFreelancer className="fs-1 text-danger" />
               </div>
 
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Name : </span>
+              <p className="col-12 col-sm-6 col-md-5 edit-form-p fw-bold"> <span className="edit-form-lable">Name:</span>
                 <a className="text-dark fw-bold" href={`/freeLancer/${freeLancer._id}`}>{freeLancer.freelancername}</a>
               </p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
                 <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality && freeLancer.speciality.sub_speciality}
               </p>
 
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
+               <p className="col-12 col-sm-6 col-md-3 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
+            {/*  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {freeLancer.totalGain}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p> */}
 
             </div>
           </div>
