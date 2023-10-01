@@ -39,7 +39,7 @@ const getMyTasks = async (req,res,next) => {
         } else if (role == "specialistService") {
             var pendingTasksB;
             const specialityName = await specialityModel.find({_id: req.user.speciality}).select("speciality");
-            if (specialityName.speciality == "All") {
+            if (specialityName == "All") {
                 pendingTasksB = await taskModel.find({accepted: false}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             } else {
                 const userSpeciality = await specialityModel.find({$or: [{speciality: specialityName.speciality}, {speciality: "All"}]}).select("_id");
