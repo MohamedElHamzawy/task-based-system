@@ -160,12 +160,6 @@ const PendingTasks = () => {
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
-            {task.freelancer &&
-              <>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
-              </>
-            }
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >
@@ -219,12 +213,6 @@ const PendingTasks = () => {
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
-            {task.freelancer &&
-              <>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
-              </>
-            }
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

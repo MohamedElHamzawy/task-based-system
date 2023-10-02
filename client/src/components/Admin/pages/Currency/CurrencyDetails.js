@@ -23,6 +23,7 @@ const CurrencyDetails = () => {
     const [currency, setCurrency] = useState([]);
     const [currencyName, setCurrencyName] = useState();
     const [currencyPrice, setCurrencyPrice] = useState();
+    const [expired, setExpired] = useState();
 
     useEffect(() => {
         let timerId;
@@ -31,7 +32,7 @@ const CurrencyDetails = () => {
             timerId = setTimeout(async () => {
                 await axios.get(` http://localhost:5000/api/currency/${id}`).then((res) => {
                   setCurrency(res.data.message);
-              
+                  console.log(res.data)
                 });
                 setLoading(false);
                 setIsLoading(false);
@@ -52,6 +53,7 @@ const CurrencyDetails = () => {
                 {
                     name: currencyName,
                     price: currencyPrice,
+                    expired :expired
                 }
             );
             const responseData = await response;
@@ -75,11 +77,6 @@ const CurrencyDetails = () => {
             setError(null);
             const response = await axios.delete(
                 `  http://localhost:5000/api/currency/${id}`
-                //  ,
-                //  { headers :{
-                //     'Authorization':`Bearer ${token}`
-                //   }
-                // }
             )
             const responseData = await response;
        
@@ -110,7 +107,7 @@ const CurrencyDetails = () => {
                 <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">  Currency Details</h2>
             </div>
 
-            <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
+            <div className="row bg-white adduser-form p-1 m-1 justify-content-start">
 
                 <div className="col-12 row p-3 justify-content-end ">
                     <div className="col-4">
@@ -121,22 +118,33 @@ const CurrencyDetails = () => {
                 </div>
                 {/* /////////////////////// */}
                 <div className="col-12 col-xl-6 row ">
-                    <h3 className="col-12 col-md-6  edit-form-lable text-start"> Currency Name:</h3>
-                    <p className={!edit ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold " : 'd-none'}> {currency.currencyname} </p>
-                    <div className={edit ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                    <p className="col-12 col-md-6  edit-form-lable text-start fw-bold"> Currency Name:</p>
+                    <p className={!edit ? "d-inline col-10 col-md-4 pt-2 edit-form-p fw-bold " : 'd-none'}> {currency.currencyname} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4  " : 'd-none'} >
                         <input type="text" onChange={(e) => { setCurrencyName(e.target.value) }} className="search w-100 p-2" />
                     </div>
                 </div> 
                 {/* /////////////////////// */}
 
                <div className="col-12 col-xl-6 row p-2 ">
-                    <h3 className="col-12 col-md-6  edit-form-lable text-start"> Price In EGP:</h3>
-                    <p className={!edit ? "d-inline col-10 col-md-4 py-3 edit-form-p fw-bold" : 'd-none'}> {currency.priceToEGP} </p>
-                    <div className={edit ? "d-inline col-10 col-md-4 py-3 " : 'd-none'} >
+                    <p className="col-12 col-md-6  edit-form-lable text-start fw-bold"> Price In EGP:</p>
+                    <p className={!edit ? "d-inline col-10 col-md-4 pt-2 edit-form-p fw-bold" : 'd-none'}> {currency.priceToEGP} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 " : 'd-none'} >
                         <input type="number" onChange={(e) => { setCurrencyPrice(e.target.value) }} className="search w-100 p-2" />
                     </div>
                 </div> 
-
+                {/* /////////////////////// */}
+                <div className="col-12 col-xl-6 row ">
+                    <p className="col-12 col-md-6  edit-form-lable text-start fw-bold">Expired:</p>
+                    <p className={!edit ? "d-inline col-10 col-md-4 pt-2 edit-form-p fw-bold " : 'd-none'}> {currency.expired ? 'True' : 'False'} </p>
+                    <div className={edit ? "d-inline col-10 col-md-4 " : 'd-none'} >
+                       <select onChange={(e)=>(setExpired(e.target.value))} value={expired} className="search p-2 w-100">
+                        <option value={''} className="text-secondary">Expired</option>
+                        <option value={true}>True</option>
+                        <option value={false}>False</option>
+                       </select>
+                    </div>
+                </div> 
 
                 {/* /////////////////////// */}
 
@@ -155,7 +163,8 @@ const CurrencyDetails = () => {
             <button
               disabled={
                 !currencyName &&
-                !currencyPrice
+                !currencyPrice &&
+                !expired
               }
               className="edit-user-btn p-3 col-8 col-lg-4 fw-bold" 
               onClick={editCurrencyHandler}
