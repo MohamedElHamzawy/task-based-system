@@ -298,16 +298,21 @@ const partialUpdateTask = async (req,res,next) => {
             res.json({msg:"Task set to not available successfully"});
         } else if (currentStatus.slug == "on-going" && role != "customerService") {
             const {freelancerID, cost, shareWith} = req.body;
-            const checkAccepted = await taskModel.findOne({_id: taskID});
-            if (checkAccepted.accepted == false) {
-                await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
-                const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
-                await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
-                res.json({msg});
+            if (freelancerID || cost || shareWith) {
+                const checkAccepted = await taskModel.findOne({_id: taskID});
+                if (checkAccepted.accepted == false) {
+                    await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
+                    const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
+                    await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                    res.json({msg});
+                } else {
+                    const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
+                    await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                    res.json({msg});
+                }
             } else {
-                const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
                 await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
-                res.json({msg});
+                res.json({msg: "Done"});
             }
         } else if (currentStatus.slug == "done" && role != "customerService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
@@ -386,7 +391,8 @@ const updateTask = async (req,res,next) => {
             profit_amount
         } = req.body;
         if (role == "admin") {
-            const getThisStatus = await statusModel.findOne({_id: taskStatus});
+            const theStatus = await taskModel.findOne({_id: taskID});
+            const getThisStatus = await statusModel.findOne({_id: theStatus.taskStatus});
             if ((paid || cost) && getThisStatus.slug == "delivered") {
                 await editTask(taskID, req.user.fullname, req.user._id);
                 await taskModel.findByIdAndUpdate({_id: taskID}, {

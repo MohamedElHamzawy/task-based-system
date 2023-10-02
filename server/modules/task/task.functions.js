@@ -13,9 +13,6 @@ const acceptTask = async (taskID,userName,userID,shareWith) => {
     if (shareWith) {
         await taskModel.findByIdAndUpdate({_id: taskID}, {accepted_by: userID, show_accepted: shareWith});
         const thisTask = await taskModel.findOne({_id: taskID});
-        const userB = await userModel.findById({_id: thisTask.accepted_by});
-        const newuserBTasksCount = userB.tasksCount + 1;
-        await userModel.findByIdAndUpdate({_id: userID}, {tasksCount: newuserBTasksCount});
         
         const date = new Date();
         await new noteModel({content: `${userName} has received task ${taskSerial.serialNumber} in ${date} and now working on it`, user_id: userID, task_id: taskID}).save();
@@ -23,9 +20,6 @@ const acceptTask = async (taskID,userName,userID,shareWith) => {
     } else {
         await taskModel.findByIdAndUpdate({_id: taskID}, {accepted_by: userID});
         const thisTask = await taskModel.findOne({_id: taskID});
-        const userB = await userModel.findById({_id: thisTask.accepted_by});
-        const newuserBTasksCount = userB.tasksCount + 1;
-        await userModel.findByIdAndUpdate({_id: userID}, {tasksCount: newuserBTasksCount});
         
         const date = new Date();
         await new noteModel({content: `${userName} has received task ${taskSerial.serialNumber} in ${date} and now working on it`, user_id: userID, task_id: taskID}).save();
@@ -40,6 +34,9 @@ const confirmTaskB = async (taskID, freelancerID, cost, userName, userID) => {
     const freelancer = await freelancerModel.findById({_id: thisTask.freelancer});
     const newfreelancerTasksCount = freelancer.tasksCount + 1;
     await freelancerModel.findByIdAndUpdate({_id: freelancerID}, {tasksCount: newfreelancerTasksCount});
+    const userB = await userModel.findById({_id: thisTask.accepted_by});
+    const newuserBTasksCount = userB.tasksCount + 1;
+    await userModel.findByIdAndUpdate({_id: userID}, {tasksCount: newuserBTasksCount});
 
     const date = new Date();
     await new noteModel({content: `Task ${taskSerial.serialNumber} has been confirmed by ${userName} in ${date}`, user_id: userID, task_id: taskID}).save();
@@ -110,17 +107,17 @@ const deliverTask = async (taskID,userName,userID) => {
     const newfreelancerTotalProfit = freelancer.totalProfit + profit_amount;
     await freelancerModel.findByIdAndUpdate({_id: thisTask.freelancer}, {completedCount: newfreelancerCompletedCount, totalGain: newfreelancerTotalGain, totalProfit: newfreelancerTotalProfit});
 
-    const userA = await userModel.findById({_id: thisTask.created_by});
+    const userA = await userModel.findOne({_id: thisTask.created_by});
     const newuserACompletedCount = userA.completedCount + 1;
     const newuserATotalGain = userA.totalGain + (thisTask.paid * currencyValue.priceToEGP);
     const newuserATotalProfit = userA.totalProfit + profit_amount;
     await userModel.findByIdAndUpdate({_id: thisTask.created_by}, {completedCount: newuserACompletedCount, totalGain: newuserATotalGain, totalProfit: newuserATotalProfit});
     
-    const userB = await userModel.findById({_id: thisTask.accepted_by});
+    const userB = await userModel.findOne({_id: thisTask.accepted_by});
     const newuserBCompletedCount = userB.completedCount + 1;
     const newuserBTotalGain = userB.totalGain + (thisTask.paid * currencyValue.priceToEGP);
     const newuserBTotalProfit = userB.totalProfit + profit_amount;
-    await userModel.findByIdAndUpdate({_id: thisTask.created_by}, {completedCount: newuserBCompletedCount, totalGain: newuserBTotalGain, totalProfit: newuserBTotalProfit});
+    await userModel.findByIdAndUpdate({_id: thisTask.accepted_by}, {completedCount: newuserBCompletedCount, totalGain: newuserBTotalGain, totalProfit: newuserBTotalProfit});
     
     const date = new Date();
     await new noteModel({content: `Task ${taskSerial.serialNumber} has been delivered to client by ${userName} in ${date}`, user_id: userID, task_id: taskID}).save();
@@ -161,17 +158,17 @@ const editTask = async (taskID,userName,userID) => {
     const newfreelancerTotalProfit = freelancer.totalProfit - thisTask.profit_amount;
     await freelancerModel.findByIdAndUpdate({_id: thisTask.freelancer}, {completedCount: newfreelancerCompletedCount, totalGain: newfreelancerTotalGain, totalProfit: newfreelancerTotalProfit});
 
-    const userA = await userModel.findById({_id: thisTask.created_by});
+    const userA = await userModel.findOne({_id: thisTask.created_by});
     const newuserACompletedCount = userA.completedCount - 1;
     const newuserATotalGain = userA.totalGain - (thisTask.paid * currencyValue.priceToEGP);
     const newuserATotalProfit = userA.totalProfit - thisTask.profit_amount;
     await userModel.findByIdAndUpdate({_id: thisTask.created_by}, {completedCount: newuserACompletedCount, totalGain: newuserATotalGain, totalProfit: newuserATotalProfit});
     
-    const userB = await userModel.findById({_id: thisTask.accepted_by});
+    const userB = await userModel.findOne({_id: thisTask.accepted_by});
     const newuserBCompletedCount = userB.completedCount - 1;
     const newuserBTotalGain = userB.totalGain - (thisTask.paid * currencyValue.priceToEGP);
     const newuserBTotalProfit = userB.totalProfit - thisTask.profit_amount;
-    await userModel.findByIdAndUpdate({_id: thisTask.created_by}, {completedCount: newuserBCompletedCount, totalGain: newuserBTotalGain, totalProfit: newuserBTotalProfit});
+    await userModel.findByIdAndUpdate({_id: thisTask.accepted_by}, {completedCount: newuserBCompletedCount, totalGain: newuserBTotalGain, totalProfit: newuserBTotalProfit});
     
     await taskModel.findByIdAndUpdate({_id: taskID}, {profit_amount: 0});
 
