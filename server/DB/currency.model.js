@@ -6,6 +6,10 @@ const currencySchema = new mongoose.Schema({
     },
     priceToEGP: {
         type: Number
+    },
+    expired: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true});
 
