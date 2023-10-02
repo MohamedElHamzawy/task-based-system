@@ -1,8 +1,12 @@
 const router = require("express").Router();
-const {getProfit, createProfit, updateProfit} = require("./profit.controller");
+const {getCustomerProfit, createCustomerProfit, updateCustomerProfit, getspecialistProfit, createspecialistProfit, updatespecialistProfit} = require("./profit.controller");
 
-router.get("/", getProfit);
-router.post("/", createProfit);
-router.post("/:id", updateProfit);
+router.get("/customer", getCustomerProfit);
+router.post("/customer", createCustomerProfit);
+router.post("/customer/:id", updateCustomerProfit);
+
+router.get("/specialist", getspecialistProfit);
+router.post("/specialist", createspecialistProfit);
+router.post("/specialist/:id", updatespecialistProfit);
 
 module.exports = router;

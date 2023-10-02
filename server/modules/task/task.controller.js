@@ -4,11 +4,11 @@ const currencyModel = require("../../DB/currency.model");
 const noteModel = require("../../DB/note.model");
 const HttpError = require("../../common/httpError");
 const commentModel = require("../../DB/comment.model");
-const profitModel = require("../../DB/profit.model");
+const {customerProfitModel, specialistProfitModel} = require("../../DB/profit.model");
 const userModel = require("../../DB/user.model");
 const clientModel = require("../../DB/client.model");
 
-const {acceptTask, confirmTaskB, makeOffer, confirmTaskA, refuseTask, deliverTask} = require("./task.functions");
+const {acceptTask, confirmTaskB, makeOffer, confirmTaskA, refuseTask, deliverTask, editTask} = require("./task.functions");
 const specialityModel = require("../../DB/speciality.model");
 
 const getMyTasks = async (req,res,next) => {
@@ -33,8 +33,8 @@ const getMyTasks = async (req,res,next) => {
             const status1 = await statusModel.find({slug: "offer-submitted"});
             const status2 = await statusModel.find({slug: "on-going"});
             const status3 = await statusModel.find({slug: "done"});
-            const pendingTasks = await taskModel.find({$or: [{taskStatus: status1._id}, {taskStatus: status2._id}, {taskStatus: status3._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_accepted: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const pendingTasks = await taskModel.find({$and: [{$or: [{created_by: req.user._id}, {show_created: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const tasks = await taskModel.find({$and: [{$or: [{created_by: req.user._id}, {show_created: req.user._id}]}, {taskStatus: {$nin: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({tasks: tasks, pendingTasks: pendingTasks});
         } else if (role == "specialistService") {
             // var pendingTasksB;
@@ -45,8 +45,11 @@ const getMyTasks = async (req,res,next) => {
             //     const userSpeciality = await specialityModel.find({$or: [{speciality: specialityName.speciality}, {speciality: "All"}]}).select("_id");
             //     pendingTasksB = await taskModel.find({$and: [{accepted: false}, {speciality: {$in: userSpeciality}}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             // }
-            const pendingTasks = await taskModel.find({accepted: false}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            const myTasks = await taskModel.find({$and: [{accepted_by: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const status1 = await statusModel.find({slug: "waiting-offer"});
+            const status2 = await statusModel.find({slug: "approved"});
+            const status3 = await statusModel.find({slug: "edit"});
+            const pendingTasks = await taskModel.find({taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const myTasks = await taskModel.find({taskStatus: {$nin: [status1[0]._id, status2[0]._id, status3[0]._id]}}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({myTasks: myTasks, pendingTasks: pendingTasks});
         } else {
             return next(new HttpError("You are not authorized to show tasks!", 401));
@@ -136,19 +139,23 @@ const getTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const mainStatuses = await statusModel.find({changable: false}).select("_id");
-        const getProfit = await profitModel.find({});
+        const getCustomerProfit = await customerProfitModel.find({});
+        const getSpecialistProfit = await specialistProfitModel.find({});
 
-        const profitMinPercentage = getProfit[0].minimum;
-        const profitMaxPercentage = getProfit[0].maximum;
+        const customerProfitMinPercentage = getCustomerProfit[0].minimum;
+        const customerProfitMaxPercentage = getCustomerProfit[0].maximum;
+
+        const specialistProfitMinPercentage = getSpecialistProfit[0].minimum;
+        const specialistProfitMaxPercentage = getSpecialistProfit[0].maximum;
         if (role == "admin") {
             const task = await taskModel
             .findOne({_id: taskID})
             .populate(["client", "country", "show_created", "show_accepted", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
-            const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
-            const customerOfferMax = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
-            const customerOfferMin = (task.paid - (task.paid * profitMaxPercentage/100)) * currencyValue.priceToEGP;
+            const specialistOfferMax = (task.cost + (task.cost * specialistProfitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMin = (task.cost + (task.cost * specialistProfitMinPercentage/100)) / currencyValue.priceToEGP;
+            const customerOfferMax = (task.paid - (task.paid * customerProfitMinPercentage/100)) * currencyValue.priceToEGP;
+            const customerOfferMin = (task.paid - (task.paid * customerProfitMaxPercentage/100)) * currencyValue.priceToEGP;
             const offer = {
                 specialistOfferMin,
                 specialistOfferMax,
@@ -163,8 +170,8 @@ const getTask = async (req,res,next) => {
             .findOne({$and: [{_id: taskID}, {created_by: req.user._id}, {taskStatus: {$in: mainStatuses}}]})
             .populate(["client", "country", "show_created", "show_accepted", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const specialistOfferMin = (task.cost + (task.cost * profitMinPercentage/100)) / currencyValue.priceToEGP;
-            const specialistOfferMax = (task.cost + (task.cost * profitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMax = (task.cost + (task.cost * specialistProfitMaxPercentage/100)) / currencyValue.priceToEGP;
+            const specialistOfferMin = (task.cost + (task.cost * specialistProfitMinPercentage/100)) / currencyValue.priceToEGP;
             const offer = {
                 specialistOfferMin,
                 specialistOfferMax
@@ -177,8 +184,8 @@ const getTask = async (req,res,next) => {
             .findOne({$and: [{_id: taskID}, {$or: [{accepted_by: req.user._id}, {accepted: false}]}, {taskStatus: {$in: mainStatuses}}]})
             .populate(["client", "country", "show_created", "show_accepted", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
             const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
-            const customerOfferMax = (task.paid - (task.paid * profitMinPercentage/100)) * currencyValue.priceToEGP;
-            const customerOfferMin = (task.paid - (task.paid * profitMaxPercentage/100)) * currencyValue.priceToEGP;
+            const customerOfferMax = (task.paid - (task.paid * customerProfitMinPercentage/100)) * currencyValue.priceToEGP;
+            const customerOfferMin = (task.paid - (task.paid * customerProfitMaxPercentage/100)) * currencyValue.priceToEGP;
             const offer = {
                 customerOfferMin,
                 customerOfferMax
@@ -266,6 +273,7 @@ const partialUpdateTask = async (req,res,next) => {
         const role = req.user.user_role;
         const taskID = req.params.id;
         const {statusID} = req.body;
+        const taskSerial = await taskModel.findOne({_id: taskID}).select("serialNumber");
         const currentStatus = await statusModel.findById({_id: statusID});
         if (currentStatus.slug == "working-on" && role != "customerService") {
             const {shareWith} = req.body;
@@ -275,12 +283,12 @@ const partialUpdateTask = async (req,res,next) => {
         } else if (currentStatus.slug == "waiting-offer" && role != "specialistService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
-            await new noteModel({content: `${req.user.fullname} has set task to be waiting offer in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+            await new noteModel({content: `${req.user.fullname} has set task ${taskSerial.serialNumber} to be waiting offer in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to waiting offer successfully"});
         } else if (currentStatus.slug == "not-available" && role != "customerService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
-            await new noteModel({content: `${req.user.fullname} has set task to be unavailable in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+            await new noteModel({content: `${req.user.fullname} has set task ${taskSerial.serialNumber} to be unavailable in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to not available successfully"});
         } else if (currentStatus.slug == "on-going" && role != "customerService") {
             const {freelancerID, cost, shareWith} = req.body;
@@ -291,7 +299,7 @@ const partialUpdateTask = async (req,res,next) => {
         } else if (currentStatus.slug == "done" && role != "customerService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
-            await new noteModel({content: `${req.user.fullname} has set task to be done in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+            await new noteModel({content: `${req.user.fullname} has set task ${taskSerial.serialNumber} to be done in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to done successfully"});
         } else if (currentStatus.slug == "delivered" && role != "specialistService") {
             const msg = await deliverTask(taskID, req.user.fullname, req.user._id);
@@ -306,7 +314,7 @@ const partialUpdateTask = async (req,res,next) => {
         } else if (currentStatus.slug == "pending" && role != "specialistService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
-            await new noteModel({content: `${req.user.fullname} has set task to be pending in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+            await new noteModel({content: `${req.user.fullname} has set task ${taskSerial.serialNumber} to be pending in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to pending successfully"});
         } else if (currentStatus.slug == "approved" && role != "specialistService") {
             const {paid} = req.body;
@@ -318,15 +326,19 @@ const partialUpdateTask = async (req,res,next) => {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
         } else if (currentStatus.slug == "cancel") {
+            const currentStatus = await taskModel.findOne({_id: taskID});
+            const currentStatusSlug = await statusModel.findOne({_id: currentStatus.taskStatus});
+            if (currentStatusSlug.slug == "delivered") {
+                await editTask(taskID, req.user.fullname, req.user._id);
+            }
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
-            await new noteModel({content: `${req.user.fullname} has set task to be cancelled in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+            await new noteModel({content: `${req.user.fullname} has set task ${taskSerial.serialNumber} to be cancelled in ${date}`, user_id: req.user._id, task_id: taskID}).save();
             res.json({msg:"Task set to cancelled successfully"});
         } else if (currentStatus.slug == "edit") {
+            const msg = await editTask(taskID, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
-            const date = new Date();
-            await new noteModel({content: `${req.user.fullname} has set task to need edit in ${date}`, user_id: req.user._id, task_id: taskID}).save();
-            res.json({msg:"Task set to edit successfully"});
+            res.json({msg});
         } else {
             return next(new HttpError("You are not authorized to make this edit", 401));
         }
@@ -352,35 +364,60 @@ const updateTask = async (req,res,next) => {
             accepted_by,
             accepted,
             task_currency,
-            client_offer,
             paid,
             cost,
             profit_percentage,
             profit_amount
         } = req.body;
         if (role == "admin") {
-            await taskModel.findByIdAndUpdate({_id: taskID}, {
-                title,
-                description,
-                channel,
-                client,
-                freelancer,
-                speciality,
-                taskStatus,
-                deadline,
-                created_by,
-                accepted_by,
-                accepted,
-                task_currency,
-                client_offer,
-                paid,
-                cost,
-                profit_percentage,
-                profit_amount
-            });
-            const date = new Date();
-            await new noteModel({content: `Admin: ${req.user.fullname} has updated this task in ${date}`, user_id: req.user._id, task_id: taskID}).save();
-            res.json({message: "Task has been updated successfully"});
+            const getThisStatus = await statusModel.findOne({_id: taskStatus});
+            if ((paid || cost) && getThisStatus.slug == "delivered") {
+                await editTask(taskID, req.user.fullname, req.user._id);
+                await taskModel.findByIdAndUpdate({_id: taskID}, {
+                    title,
+                    description,
+                    channel,
+                    client,
+                    freelancer,
+                    speciality,
+                    taskStatus,
+                    deadline,
+                    created_by,
+                    accepted_by,
+                    accepted,
+                    task_currency,
+                    paid,
+                    cost,
+                    profit_percentage,
+                    profit_amount
+                });
+                const date = new Date();
+                await new noteModel({content: `Admin: ${req.user.fullname} has updated this task in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+                await deliverTask(taskID, req.user.fullname, req.user._id);
+                res.json({message: "Task has been updated successfully"});
+            } else {
+                await taskModel.findByIdAndUpdate({_id: taskID}, {
+                    title,
+                    description,
+                    channel,
+                    client,
+                    freelancer,
+                    speciality,
+                    taskStatus,
+                    deadline,
+                    created_by,
+                    accepted_by,
+                    accepted,
+                    task_currency,
+                    paid,
+                    cost,
+                    profit_percentage,
+                    profit_amount
+                });
+                const date = new Date();
+                await new noteModel({content: `Admin: ${req.user.fullname} has updated this task in ${date}`, user_id: req.user._id, task_id: taskID}).save();
+                res.json({message: "Task has been updated successfully"});
+            }
         } else {
             return next(new HttpError("You are not authorized to full update this task!", 401));
         }
