@@ -84,7 +84,7 @@ const AddFreeLancer = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/currency/").then((res) => {
+        await axios.get(" http://localhost:5000/api/currency/valid/list").then((res) => {
           setCurrencies(res.data.currencies);
         });
         setLoading(false);
