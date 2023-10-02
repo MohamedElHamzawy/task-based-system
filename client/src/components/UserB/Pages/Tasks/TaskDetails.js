@@ -346,21 +346,42 @@ const TaskDetails = () => {
             </select>
           </div>
 
-          {changeStatus == '6517380ae979f2bb0fb8a3db' || changeStatus == '65173822e979f2bb0fb8a3e1' ?
+       {/* // local status conditions */}
+       {changeStatus == '64fdd7c1b19f7955da47eb27' || changeStatus == '64fdd7ccb19f7955da47eb2d' ?
+            <FreelancerOffer id={id} statusID={changeStatus} />
+            :
+            changeStatus == '64fdd400a86587827152ab3c' ?
+              <Paid id={id} statusID={changeStatus} />
+              :
+                <div className="row col-12 p-3 justify-content-center" >
+                  <button
+                    className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                    onClick={changeStatusHandler}
+                  >
+                    Change
+                  </button>
+                </div>
+          }
+
+{/* // server status conditions */}
+          {/* {changeStatus == '6517380ae979f2bb0fb8a3db' || changeStatus == '65173822e979f2bb0fb8a3e1' ?
             <FreelancerOffer id={id} statusID={changeStatus} />
             :
             changeStatus == '6517375de979f2bb0fb8a3cc' ?
               <Paid id={id} statusID={changeStatus} />
               :
-              <div className="row col-12 p-3 justify-content-center" >
-                <button
-                  className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-                  onClick={changeStatusHandler}
-                >
-                  Change
-                </button>
-              </div>
-          }
+              changeStatus == '651737ebe979f2bb0fb8a3d5' ?
+                <ShareWith id={id} statusID={changeStatus} />
+                :
+                <div className="row col-12 p-3 justify-content-center" >
+                  <button
+                    className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                    onClick={changeStatusHandler}
+                  >
+                    Change
+                  </button>
+                </div>
+          } */}
         </div>
 
 

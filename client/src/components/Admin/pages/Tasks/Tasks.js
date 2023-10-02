@@ -10,7 +10,7 @@ import { FaCoins } from 'react-icons/fa';
 import { GiPayMoney } from 'react-icons/gi';
 import { RiWaterPercentFill } from 'react-icons/ri';
 import { AiOutlineFileDone } from 'react-icons/ai';
-
+import { AiOutlineClear } from 'react-icons/ai';
 
 import GetCookie from "../../../../hooks/getCookie";
 
@@ -91,7 +91,7 @@ const Tasks = () => {
           setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
 
-           
+           console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -152,7 +152,6 @@ const Tasks = () => {
       setCompletedCount(response.data.completedCount)
       setTotalProfitPercentage(response.data.totalProfitPercentage)
 
-       
       setLoading(false);
       setIsLoading(false);
     } catch (err) {
@@ -188,11 +187,11 @@ const Tasks = () => {
 
         <div className="col-10 col-md-7 text-secondary row p-2">
           <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end">From:</label>
-          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1" value={start}
             onChange={(e) => {setStart(e.target.value);  }}
           />
           <label htmlFor="Speciality" className="mt-2 col-4 col-sm-2 text-start text-sm-end">To:</label>
-          <input type="date" className="search col-8 col-sm-4  p-2 mt-1"
+          <input type="date" className="search col-8 col-sm-4  p-2 mt-1" value={end}
             onChange={(e) => {setEnd(e.target.value);  }}
           />
         </div>
@@ -241,12 +240,19 @@ const Tasks = () => {
           </select>
         </div>
 
-        <div className="col-4 col-sm-5 p-2 text-start ">
-          <button onClick={filterHandler} className="filter-btn p-2">
+        <div className="col-8 p-2 text-start ">
+          <button onClick={filterHandler} className="filter-btn p-2 mx-1">
             <FiFilter className='fs-3' /> Filter
           </button>
+          <button 
+            onClick={()=> 
+              {setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
+               setSearchName(''); setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') }} 
+            className="clear-filter-btn p-2">
+            <AiOutlineClear className='fs-3' /> Clear
+          </button>
         </div>
-        <div className="col-7 col-sm-6 p-2 text-end">
+        <div className="col-12 col-sm-4 p-2 text-end">
           <button onClick={() => { window.location.href = '/addtask' }} className="new-user p-2">
             <FaTasks className='fs-3' />  Add New Task
           </button>
@@ -330,6 +336,7 @@ const Tasks = () => {
               </button>
             </div>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created At :</span> {task.createdAt.split('T')[0]}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Country :</span> {task.country.countryName}</p>
@@ -387,6 +394,7 @@ const Tasks = () => {
             </div>
 
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created At :</span> {task.createdAt.split('T')[0]}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Country :</span> {task.country.countryName}</p>

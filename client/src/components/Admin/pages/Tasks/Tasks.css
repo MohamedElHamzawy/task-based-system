@@ -19,6 +19,15 @@
 .waiting-offer{
     background-color: #6B5B95;
 }
+.clear-filter-btn{
+    color: white;
+    border: 0px;
+    background-color: rgb(222, 5, 5);
+    border-radius: 10px;
+}
+.clear-filter-btn:hover{
+    background-color: rgb(184, 7, 7);
+}
 .filter-btn {
     color: white;
     border: 0px;
