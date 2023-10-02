@@ -354,7 +354,7 @@ const TaskDetails = () => {
 
 
 {/* // local status conditions */}
-          {changeStatus == '64fdd7c1b19f7955da47eb27' || changeStatus == '64fdd7ccb19f7955da47eb2d' ?
+          {changeStatus == '64fdd7c1b19f7955da47eb27'  || changeStatus == '64fdd7ccb19f7955da47eb2d' ?
             <FreelancerOffer id={id} statusID={changeStatus} />
             :
             changeStatus == '64fdd400a86587827152ab3c' ?
