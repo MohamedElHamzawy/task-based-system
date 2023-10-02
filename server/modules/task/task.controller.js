@@ -277,9 +277,15 @@ const partialUpdateTask = async (req,res,next) => {
         const currentStatus = await statusModel.findById({_id: statusID});
         if (currentStatus.slug == "working-on" && role != "customerService") {
             const {shareWith} = req.body;
-            const msg = await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
-            await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
-            res.json({msg});
+            const checkAccepted = await taskModel.findOne({_id: taskID});
+            if (checkAccepted.accepted == false) {
+                const msg = await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
+                await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                res.json({msg});
+            } else {
+                await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                res.json({msg: "Done"});
+            }
         } else if (currentStatus.slug == "waiting-offer" && role != "specialistService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
@@ -292,10 +298,17 @@ const partialUpdateTask = async (req,res,next) => {
             res.json({msg:"Task set to not available successfully"});
         } else if (currentStatus.slug == "on-going" && role != "customerService") {
             const {freelancerID, cost, shareWith} = req.body;
-            await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
-            const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
-            await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
-            res.json({msg});
+            const checkAccepted = await taskModel.findOne({_id: taskID});
+            if (checkAccepted.accepted == false) {
+                await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
+                const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
+                await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                res.json({msg});
+            } else {
+                const msg = await confirmTaskB(taskID, freelancerID, cost, req.user.fullname, req.user._id);
+                await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                res.json({msg});
+            }
         } else if (currentStatus.slug == "done" && role != "customerService") {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date();
@@ -307,7 +320,10 @@ const partialUpdateTask = async (req,res,next) => {
             res.json({msg});
         } else if (currentStatus.slug == "offer-submitted" && role != "customerService") {
             const {freelancerID, cost, shareWith} = req.body;
-            await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
+            const checkAccepted = await taskModel.findOne({_id: taskID});
+            if (checkAccepted.accepted == false) {
+                await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
+            }
             const msg = await makeOffer(taskID, freelancerID, cost, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             res.json({msg});
