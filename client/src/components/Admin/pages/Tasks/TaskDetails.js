@@ -78,7 +78,7 @@ const TaskDetails = () => {
 
           setNotes(res.data.notes)
           setComments(res.data.comments)
-           
+
         });
         setLoading(false);
         setIsLoading(false);
@@ -86,7 +86,7 @@ const TaskDetails = () => {
       timerId = setTimeout(async () => {
         await axios.get(" http://localhost:5000/api/status/", { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
           setStatuses(res.data.statuses);
-           
+
         });
       });
     }
@@ -109,7 +109,7 @@ const TaskDetails = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const responseData = await response;
-       
+
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.msg);
       }
@@ -138,7 +138,7 @@ const TaskDetails = () => {
         }
       )
       const responseData = await response;
-       
+
       setError(responseData.data.message);
       setIsLoading(false);
       window.location.href = '/tasks';
@@ -185,7 +185,7 @@ const TaskDetails = () => {
         , { headers: { Authorization: `Bearer ${token}` } }
       );
       const responseData = await response;
-       
+
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -326,7 +326,7 @@ const TaskDetails = () => {
               <h5 className="col-8 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Currency:</h5>
               <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center"> {currency.currencyname} </p>
             </div>
-            
+
             {task.freelancer &&
               <>
                 <div className="col-12 col-md-6 row ">
@@ -344,12 +344,12 @@ const TaskDetails = () => {
                 </div>
 
                 <div className='col-12 col-md-6  row'>
-                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Freelancer Offer:</h5>
+                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Suggested offer:</h5>
                   <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({Math.floor(offer.specialistOfferMax)} - {Math.floor(offer.specialistOfferMin)})</p>
                 </div>
               </>
             }
-            
+
             <div className="col-12 col-md-6  row ">
               <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  UserName :</h5>
               <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
@@ -404,7 +404,28 @@ const TaskDetails = () => {
             </select>
           </div>
 
-          {changeStatus == '6517380ae979f2bb0fb8a3db' || changeStatus == '65173822e979f2bb0fb8a3e1' ?
+{/* // local status conditions */}
+          {changeStatus == '64fdd7c1b19f7955da47eb27' || changeStatus == '64fdd7ccb19f7955da47eb2d' ?
+            <FreelancerOffer id={id} statusID={changeStatus} />
+            :
+            changeStatus == '64fdd400a86587827152ab3c' ?
+              <Paid id={id} statusID={changeStatus} />
+              :
+              changeStatus == '64fdd7b6b19f7955da47eb21' ?
+                <ShareWith id={id} statusID={changeStatus} />
+                :
+                <div className="row col-12 p-3 justify-content-center" >
+                  <button
+                    className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
+                    onClick={changeStatusHandler}
+                  >
+                    Change
+                  </button>
+                </div>
+          }
+
+{/* // server status conditions */}
+          {/* {changeStatus == '6517380ae979f2bb0fb8a3db' || changeStatus == '65173822e979f2bb0fb8a3e1' ?
             <FreelancerOffer id={id} statusID={changeStatus} />
             :
             changeStatus == '6517375de979f2bb0fb8a3cc' ?
@@ -421,7 +442,8 @@ const TaskDetails = () => {
                     Change
                   </button>
                 </div>
-          }
+          } */}
+
         </div>
 
 

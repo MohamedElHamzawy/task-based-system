@@ -9,6 +9,7 @@ import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { FaHospitalUser } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
 import { MdPendingActions } from 'react-icons/md';
+import { MdOutlineNotificationsActive} from 'react-icons/md';
 
 
 
@@ -62,6 +63,15 @@ class UserASideBar extends React.Component {
             </NavIcon>
              <NavText>
              <p className="fs-3 "> Tasks</p>
+            </NavText>           
+          </NavItem>
+
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/notifications'}}>
+            <NavIcon>
+                <MdOutlineNotificationsActive className='f5' />
+            </NavIcon>
+             <NavText>
+             <p className="f4"> Notifications</p>
             </NavText>           
           </NavItem>
 

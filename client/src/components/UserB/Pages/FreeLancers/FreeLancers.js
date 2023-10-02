@@ -166,9 +166,9 @@ const FreeLancers = () => {
                 <span className="edit-form-lable">Speciality :</span> {freeLancer.speciality.sub_speciality}
               </p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {freeLancer.tasksCount}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {freeLancer.totalGain}</p>
-              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p>
+              {/* <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {freeLancer.completedCount}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalCost :</span> {freeLancer.totalGain}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {freeLancer.totalProfit}</p> */}
 
             </div>
           </div>

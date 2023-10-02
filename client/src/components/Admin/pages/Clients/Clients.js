@@ -157,16 +157,11 @@ const Clients = () => {
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Website : </span>
                 {client.website}
               </p>
-              {/* { client.speciality && client.speciality.map((speciality) => (
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
-                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
-                  </p>
-                ))
-              } */}
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Currency :</span> {client.currency && client.currency.currencyname}</p>
 
             </div>
           </div>
@@ -192,16 +187,11 @@ const Clients = () => {
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Website : </span>
                 {client.website}
               </p>
-              {/* { client.speciality && client.speciality.map((speciality) => (
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p " key={speciality._id} >
-                    <span className="edit-form-lable">Speciality :</span> {speciality.specialityName}
-                  </p>
-                ))
-              } */}
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TaskCount :</span> {client.tasksCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">CompletedTasks :</span> {client.completedCount}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalGain :</span> {client.totalGain}</p>
               <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">TotalProfit :</span> {client.totalProfit}</p>
+              <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold"> <span className="edit-form-lable">Currency :</span> {client.currency && client.currency.currencyname}</p>
 
             </div>
           </div>

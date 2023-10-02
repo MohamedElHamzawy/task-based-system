@@ -319,7 +319,7 @@ const TaskDetails = () => {
 
           {offer && offer.specialistOfferMax && offer.specialistOfferMin ?
             <div className='col-12 col-md-6  row justify-content-center justify-content-md-start'>
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Freelancer Offer:</h5>
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Suggested Offer:</h5>
               <p className="d-inline col-10 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data">({Math.floor(offer.specialistOfferMax)} - {Math.floor(offer.specialistOfferMin)})</p>
             </div> : ''
           }

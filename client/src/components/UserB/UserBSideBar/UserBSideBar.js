@@ -4,10 +4,11 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 import { FaTasks } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
-import { FaHospitalUser } from 'react-icons/fa';
+import { SiFreelancer } from 'react-icons/si';
 import { AiFillSetting } from 'react-icons/ai';
 import { MdPendingActions } from 'react-icons/md';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
+import { MdOutlineNotificationsActive} from 'react-icons/md';
 
 import RemoveCookie from '../../../hooks/removeCookie';
 
@@ -61,9 +62,18 @@ class UserBSideBar extends React.Component {
             </NavText>           
           </NavItem>
 
+          <NavItem eventKey="tasks" className='nav-link' onClick={()=>{window.location.href = '/notifications'}}>
+            <NavIcon>
+                <MdOutlineNotificationsActive className='f5' />
+            </NavIcon>
+             <NavText>
+             <p className="f4"> Notifications</p>
+            </NavText>           
+          </NavItem>
+
           <NavItem eventKey="tasks" className=' my-4' onClick={()=>{window.location.href = '/freelancers'}}>
             <NavIcon>
-                <FaHospitalUser className='fs-4' />
+                <SiFreelancer className='fs-4' />
             </NavIcon>
              <NavText>
              <p className="fs-3 "> FreeLancers</p>

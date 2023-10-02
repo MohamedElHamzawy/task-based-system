@@ -15,6 +15,7 @@ import ChangePass from './Pages/Settings/ChangePass';
 import Specialities from './Pages/Specialities/Specialities';
 import SpecialityDetails from './Pages/Specialities/specialityDetails';
 import AddSpeciality from './Pages/Specialities/addSpeciality';
+import Notifications from './Pages/Notifications/Notifications';
 
 
 const UserB = () => {
@@ -34,6 +35,8 @@ const UserB = () => {
           <Route path="/specialities" element={<Specialities />} />
           <Route path="/speciality/:id" element={<SpecialityDetails />} />
           <Route path="/addspeciality" element={<AddSpeciality />} />
+
+          <Route path="/notifications" element={<Notifications/>} />
 
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />

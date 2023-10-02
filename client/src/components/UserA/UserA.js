@@ -15,6 +15,7 @@ import SpecialityDetails from '../UserA/Pages/Specialities/specialityDetails';
 import Settings from '../UserA/Pages/Settings/Settings'
 import ChangePass from './Pages/Settings/ChangePass';
 import PendingTasks from './Pages/Tasks/PendingTasks';
+import Notifications from './Pages/Notifications/Notifications';
 
 const UserA = () => {
   return (
@@ -33,6 +34,8 @@ const UserA = () => {
           <Route path="/specialities" element={<Specialities />} />
           <Route path="/speciality/:id" element={<SpecialityDetails />} />
           <Route path="/addspeciality" element={<AddSpeciality />} />
+          <Route path="/notifications" element={<Notifications/>} />
+
           <Route path="/settings" element={<Settings />} />
           <Route path="/changepass" element={<ChangePass />} />
         </Routes>
