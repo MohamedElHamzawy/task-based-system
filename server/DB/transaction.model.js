@@ -8,7 +8,8 @@ const transactionSchema = new mongoose.Schema({
         type: String
     },
     accountNumber: {
-        type: String
+        type: String,
+        default: "0"
     },
     task: {
         type: mongoose.Types.ObjectId,
