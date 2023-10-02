@@ -74,6 +74,7 @@ const TaskDetails = () => {
 
           setNotes(res.data.notes)
           setComments(res.data.comments)
+          console.log(res.data)
            
         });
         setLoading(false);
@@ -317,11 +318,11 @@ const TaskDetails = () => {
             <p className="d-inline col-4 col-sm-6  p-2 edit-form-p details-data fw-bold data"> {currency.currencyname} </p>
           </div>
 
-          {offer && offer.specialistOfferMax && offer.specialistOfferMin ?
+          {!task.paid ? offer && offer.specialistOfferMax && offer.specialistOfferMin ?
             <div className='col-12 col-md-6  row justify-content-center justify-content-md-start'>
               <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Suggested Offer:</h5>
               <p className="d-inline col-10 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data">({Math.floor(offer.specialistOfferMax)} - {Math.floor(offer.specialistOfferMin)})</p>
-            </div> : ''
+            </div> : '' :''
           }
 
           <div className="col-12 row p-0 m-0 justify-content-center justify-content-md-start">
