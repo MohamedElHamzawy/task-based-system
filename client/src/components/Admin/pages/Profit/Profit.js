@@ -19,7 +19,7 @@ const Profit = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/profit/").then((res) => {
+        await axios.get(" http://localhost:5000/api/profit/").then((res) => {
           setProfit(res.data.profitSystem);
            
         });
@@ -43,7 +43,7 @@ const Profit = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` https://smarteduservices.com:5000/api/profit/${profit._id}`,
+        ` http://localhost:5000/api/profit/${profit._id}`,
         {
           minimum:minimum,
           maximum: maximum

@@ -62,7 +62,7 @@ const SpecialityDetails = () => {
         if (loading) {
             setIsLoading(true);
             timerId = setTimeout(async () => {
-                await axios.get(` https://smarteduservices.com:5000/api/speciality/${id}`).then((res) => {
+                await axios.get(` http://localhost:5000/api/speciality/${id}`).then((res) => {
                     setSpeciality(res.data.speciality);
         
                 });
@@ -121,7 +121,7 @@ const SpecialityDetails = () => {
         try {
             setError(null);
             const response = await axios.post(
-                ` https://smarteduservices.com:5000/api/speciality/${speciality._id}`,
+                ` http://localhost:5000/api/speciality/${speciality._id}`,
                 {
                     sub_speciality: specialityNameState.value,
                     speciality: specialitTypeState.value,
@@ -147,7 +147,7 @@ const SpecialityDetails = () => {
         try {
             setError(null);
             const response = await axios.delete(
-                `  https://smarteduservices.com:5000/api/speciality/${id}`
+                `  http://localhost:5000/api/speciality/${id}`
                 //  ,
                 //  { headers :{
                 //     'Authorization':`Bearer ${token}`

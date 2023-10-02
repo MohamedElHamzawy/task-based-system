@@ -26,7 +26,7 @@ const AccountDetails = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(` https://smarteduservices.com:5000/api/account/${id}`).then((res) => {
+        await axios.get(` http://localhost:5000/api/account/${id}`).then((res) => {
           setAccount(res.data.account);
           setTransactions(res.data.transactions);
         });
@@ -34,12 +34,12 @@ const AccountDetails = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/client/").then((res) => {
+        await axios.get(" http://localhost:5000/api/client/").then((res) => {
           setClients(res.data.clients);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/freelancer/").then((res) => {
+        await axios.get(" http://localhost:5000/api/freelancer/").then((res) => {
           setFreeLancers(res.data.freelancers);
 
         });

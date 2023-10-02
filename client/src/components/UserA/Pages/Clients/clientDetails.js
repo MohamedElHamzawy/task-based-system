@@ -130,7 +130,7 @@ const ClientDetails = () => {
         if (loading) {
           setIsLoading(true);
           timerId = setTimeout(async () => {
-            await axios.get(` https://smarteduservices.com:5000/api/client/${id}`).then((res) => {
+            await axios.get(` http://localhost:5000/api/client/${id}`).then((res) => {
               setClient(res.data.client);
     
               setClientTasks(res.data.clientTasks)
@@ -142,12 +142,12 @@ const ClientDetails = () => {
             setIsLoading(false);
           });
           timerId = setTimeout(async () => {
-            await axios.get(" https://smarteduservices.com:5000/api/currency/").then((res) => {
+            await axios.get(" http://localhost:5000/api/currency/").then((res) => {
               setCurrencies(res.data.currencies);
           }); 
         });
           timerId = setTimeout(async () => {
-            await axios.get(" https://smarteduservices.com:5000/api/country/").then((res) => {
+            await axios.get(" http://localhost:5000/api/country/").then((res) => {
               setCountries(res.data.countries);
             });
           });
@@ -252,7 +252,7 @@ const ClientDetails = () => {
         try {
           setError(null);
           const response = await axios.post(
-            ` https://smarteduservices.com:5000/api/client/${client._id}`,
+            ` http://localhost:5000/api/client/${client._id}`,
             {
               clientName: clientNameState.value,
               owner : ownerState.value,
@@ -282,7 +282,7 @@ const ClientDetails = () => {
         try {
             setError(null);
             const response = await axios.delete(
-                `  https://smarteduservices.com:5000/api/client/${id}`
+                `  http://localhost:5000/api/client/${id}`
                 //  ,
                 //  { headers :{
                 //     'Authorization':`Bearer ${token}`

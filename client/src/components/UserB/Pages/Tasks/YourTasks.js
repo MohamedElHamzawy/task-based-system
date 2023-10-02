@@ -39,23 +39,23 @@ const PendingTasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/status/",
+        await axios.get(" http://localhost:5000/api/status/",
           { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
             setStatuses(res.data.statuses);
           });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
+        await axios.get(" http://localhost:5000/api/speciality/").then((res) => {
           setSpecialities(res.data.specialities);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/freelancer/").then((res) => {
+        await axios.get(" http://localhost:5000/api/freelancer/").then((res) => {
           setFreelancers(res.data.freelancers);
         });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/task/",
+        await axios.get(" http://localhost:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
           setTasks(res.data.myTasks);
@@ -96,7 +96,7 @@ const PendingTasks = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ' https://smarteduservices.com:5000/api/task/filter/result/specialist',
+        ' http://localhost:5000/api/task/filter/result/specialist',
         {
           speciality: speciality,
           status: status,
