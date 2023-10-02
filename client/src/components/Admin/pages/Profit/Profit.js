@@ -26,7 +26,7 @@ const Profit = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/profit/customer/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/profit/customer/").then((res) => {
           setCustomerProfit(res.data.profitSystem);
           console.log(res.data)
         });
@@ -34,7 +34,7 @@ const Profit = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/profit/specialist/").then((res) => {
+        await axios.get(" https://smarteduservices.com:5000/api/profit/specialist/").then((res) => {
           setSpecialistProfit(res.data.profitSystem);
           console.log(res.data)
         });
@@ -60,7 +60,7 @@ const Profit = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/profit/customer/${customerProfit._id}`,
+        ` https://smarteduservices.com:5000/api/profit/customer/${customerProfit._id}`,
         {
           minimum: customerminimum,
           maximum: customermaximum
@@ -88,7 +88,7 @@ const Profit = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/profit/specialist/${specialistProfit._id}`,
+        ` https://smarteduservices.com:5000/api/profit/specialist/${specialistProfit._id}`,
         {
           minimum: specialistMinimum,
           maximum: specialistMaximum

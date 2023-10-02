@@ -27,7 +27,7 @@ const Currency = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/currency/").then((res) => {
+        await axios.get("https://smarteduservices.com:5000/api/currency/").then((res) => {
           setCurrencies(res.data.currencies);
         });
         setLoading(false);
@@ -45,7 +45,7 @@ const Currency = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `http://localhost:5000/api/currency/${id}`
+        `https://smarteduservices.com:5000/api/currency/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`

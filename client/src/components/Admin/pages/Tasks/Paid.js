@@ -59,7 +59,7 @@ const Paid = (props) => {
         try {
             setError(null);
             const response = await axios.post(
-                ` http://localhost:5000/api/task/partial/${props.id}`,
+                ` https://smarteduservices.com:5000/api/task/partial/${props.id}`,
                 {
                     statusID:props.statusID,
                     paid: paidState.value
