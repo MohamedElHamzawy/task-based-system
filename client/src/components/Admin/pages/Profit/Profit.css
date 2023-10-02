@@ -1,9 +1,11 @@
 .edit-profit{
     border: 0px;
     border-radius: 10px;
-    color: white;
-    background-color: #FF6F61;
+    color: #FF6F61;
 }
 .edit-profit:hover{
-    background-color: #fc5748;
+    color: #e44637;
+}
+.edit-icon{
+    cursor: pointer;
 }
