@@ -72,12 +72,27 @@ const getMyTasks = async (req,res,next) => {
 
 const FilterTasks = async (req,res,next) => {
     try {
-        const {status, speciality, country, start, end, freelancer, client, customer, specialist} = req.body;
+        const {status, speciality, country, start, end, freelancer, client, user} = req.body;
         let tasks;
-        if (end && start) {
-            tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, customer? {created_by: customer} : {}, specialist? {accepted_by: specialist} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+        const theUser = await userModel.findOne({_id: user});
+        if (theUser.user_role == "customerService") {
+            if (end && start) {
+                tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {created_by: user} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            } else {
+                tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {created_by: user} : {}]}).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            }
+        } else if (theUser.user_role == "specialistService") {
+            if (end && start) {
+                tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {accepted_by: user} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            } else {
+                tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {accepted_by: user} : {}]}).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            }
         } else {
-            tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, customer? {created_by: customer} : {}, specialist? {accepted_by: specialist} : {}]}).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            if (end && start) {
+                tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {$or: [{created_by: user}, {accepted_by: user}]} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            } else {
+                tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {$or: [{created_by: user}, {accepted_by: user}]} : {}]}).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            }
         }
         const tasksCount = tasks.length;
         let totalCost = 0;
