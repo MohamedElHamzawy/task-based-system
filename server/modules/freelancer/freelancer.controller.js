@@ -76,6 +76,7 @@ const updateFreelancer = async (req,res,next) => {
         const tryGetThisFreelancer = await freelancerModel.findById({_id: freelancerID}).populate("speciality");
         if (tryGetThisFreelancer) {
             await freelancerModel.findByIdAndUpdate({_id: freelancerID}, {freelancername: name, phone: phone, email: email, country: country, currency: currency, speciality: speciality});
+            await accountModel.findByIdAndUpdate({owner: freelancerID}, {title: name});
             res.json({message: "Freelancer has been updated successfully"});
         } else {
             return next(new HttpError("This freelancer doesn't exist on system", 400));

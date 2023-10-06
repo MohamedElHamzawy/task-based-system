@@ -91,6 +91,7 @@ const updateClient = async (req,res,next) => {
         const tryGetClient = await clientModel.findOne({_id: clientID});
         if (tryGetClient) {
             await clientModel.findByIdAndUpdate({_id: clientID}, {clientname: clientName, ownerName: owner, phone, website, country, currency});
+            await accountModel.findByIdAndUpdate({owner: clientID}, {title: clientName});
             res.json({message: "Client has been updated successfully"});
         } else {
             return next(new HttpError("Client doesn't exist on system!", 400));
