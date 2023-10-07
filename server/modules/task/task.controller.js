@@ -52,16 +52,16 @@ const getMyTasks = async (req,res,next) => {
             const status2 = await statusModel.find({slug: "approved"});
             const status3 = await statusModel.find({slug: "edit"});
             const status4 = await statusModel.find({slug: "working-on"});
-            const specialityName = await specialityModel.findOne({_id: req.user.speciality}).select("speciality");
-            if (specialityName.speciality == "All") {
-                pendingTasksB = await taskModel.find({$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            } else {
-                const userSpeciality = await specialityModel.find({$or: [{speciality: specialityName.speciality}, {speciality: "All"}]}).select("_id");
-                pendingTasksB = await taskModel.find({$or: [{speciality: {$in: userSpeciality}}, {$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            }
-            // const pendingTasks = await taskModel.find({$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            // const specialityName = await specialityModel.findOne({_id: req.user.speciality}).select("speciality");
+            // if (specialityName.speciality == "All") {
+            //     pendingTasksB = await taskModel.find({$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            // } else {
+            //     const userSpeciality = await specialityModel.find({$or: [{speciality: specialityName.speciality}, {speciality: "All"}]}).select("_id");
+            //     pendingTasksB = await taskModel.find({$or: [{speciality: {$in: userSpeciality}}, {$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            // }
+            const pendingTasks = await taskModel.find({taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             const myTasks = await taskModel.find({$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            res.json({myTasks: myTasks, pendingTasks: pendingTasksB});
+            res.json({myTasks: myTasks, pendingTasks: pendingTasks});
         } else {
             return next(new HttpError("You are not authorized to show tasks!", 401));
         }
