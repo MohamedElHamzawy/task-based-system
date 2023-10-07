@@ -38,6 +38,7 @@ const Tasks = () => {
   const [countries, setCountries] = useState([]);
   const [freelancers, setFreelancers] = useState([]);
   const [clients, setClients] = useState([]);
+  const [users, setUsers] = useState([]);
 
 
   const [tasksCount, setTasksCount] = useState();
@@ -79,6 +80,12 @@ const Tasks = () => {
         });
       });
       timerId = setTimeout(async () => {
+        await axios.get(" https://smarteduservices.com:5000/api/user/").then((res) => {
+          setUsers(res.data.users);
+           
+        });
+      });
+      timerId = setTimeout(async () => {
         await axios.get(" https://smarteduservices.com:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
@@ -91,7 +98,6 @@ const Tasks = () => {
           setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
 
-           console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -109,6 +115,7 @@ const Tasks = () => {
   const [freelancer, setFreelancer] = useState('');
   const [client, setClient] = useState('');
   const [country, setCountry] = useState('');
+  const [user, setUser] = useState('');
 
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [allFilterData, setAllFilterData] = useState(false);
@@ -138,6 +145,7 @@ const Tasks = () => {
           end : end ,
           freelancer :freelancer ,
           client :client ,  
+          user :user
        });
       const responseData = await response;
       if (!(response.statusText === "OK")) {
@@ -181,7 +189,7 @@ const Tasks = () => {
             onChange={(e) => { 
               setSearchName(e.target.value);
               setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
-              setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') }}
+              setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd(''); setUser('') }}
           />
         </div>
 
@@ -199,7 +207,7 @@ const Tasks = () => {
         <div className="col-12  text-secondary row p-2 justify-content-center">
 
 
-          <select id="speciality" name="speciality" className="search col-sm-4 col-md-3 col-lg-2 col-10  m-1 p-2" value={speciality}
+          <select id="speciality" name="speciality" className="search col-sm-4 col-md-3  col-10  m-1 p-2" value={speciality}
             onChange={(e) => {setSpeciality(e.target.value);   }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
@@ -207,7 +215,7 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={status}
+          <select id="status" name="status" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={status}
             onChange={(e) => { setStatus(e.target.value);  }}>
             <option value="" className='text-secondary'>Statuses</option>
             {statuses.map((status) => (
@@ -215,7 +223,7 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={freelancer}
+          <select id="freelancers" name="freelancers" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={freelancer}
             onChange={(e) => { setFreelancer(e.target.value);  }}>
             <option value="" className='text-secondary'>Freelanceres</option>
             {freelancers.map((freelancer) => (
@@ -223,15 +231,23 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={client}
+          <select id="clients" name="clients" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={client}
             onChange={(e) => { setClient(e.target.value);  }}>
             <option value="" className='text-secondary'>Clients</option>
             {clients.map((client) => (
               <option value={client._id} key={client._id}>{client.clientname}</option>
             ))}
           </select>
+
+          <select id="users" name="users" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={user}
+            onChange={(e) => { setUser(e.target.value);  }}>
+            <option value="" className='text-secondary'>Users</option>
+            {users.map((user) => (
+              <option value={user._id} key={user._id}>{user.username}</option>
+            ))}
+          </select>
           
-          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={country}
+          <select id="countries" name="countries" className="search col-sm-4 col-md-3 col-10 p-2 m-1" value={country}
             onChange={(e) => { setCountry(e.target.value);  }}>
             <option value="" className='text-secondary'>Countries</option>
             {countries.map((country) => (
@@ -247,7 +263,7 @@ const Tasks = () => {
           <button 
             onClick={()=> 
               {setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
-               setSearchName(''); setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') }} 
+               setSearchName(''); setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') ; setUser('') }} 
             className="clear-filter-btn p-2">
             <AiOutlineClear className='fs-3' /> Clear
           </button>

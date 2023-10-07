@@ -79,6 +79,7 @@ const TaskDetails = () => {
           setNotes(res.data.notes)
           setComments(res.data.comments)
 
+          console.log(res.data)
         });
         setLoading(false);
         setIsLoading(false);
@@ -227,7 +228,7 @@ const TaskDetails = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 m-0  justify-content-center">
+    <div className="text-center row w-100 m-0 justify-content-center">
       <ErrorModal error={error} onClear={errorHandler} />
       <div className="row  p-2">
         <div className="col-3 text-center">
@@ -338,17 +339,25 @@ const TaskDetails = () => {
                   </p>
                 </div>
 
-                <div className="col-12 col-md-6 row ">
-                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer Price:</h5>
-                  <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center"> {task.cost} </p>
-                </div>
-
                 <div className='col-12 col-md-6  row'>
                   <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">Suggested offer:</h5>
                   <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">({Math.floor(offer.specialistOfferMax)} - {Math.floor(offer.specialistOfferMin)})</p>
                 </div>
+
+                <div className="col-12 col-md-6 row ">
+                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  Freelancer Price:</h5>
+                  <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center"> {task.cost} </p>
+                </div>
               </>
             }
+
+            {task.profit_amount ? 
+            <div className="col-12 col-md-6  row ">
+              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold"> Profit :</h5>
+              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
+                  {task.profit_amount}
+              </p>
+            </div> : ''}
 
             <div className="col-12 col-md-6  row ">
               <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">  UserName :</h5>
@@ -404,7 +413,7 @@ const TaskDetails = () => {
             </select>
           </div>
 
-{/* // server status conditions */}
+          {/* // server status conditions */}
           {changeStatus == '6517380ae979f2bb0fb8a3db' && !task.freelancer || changeStatus == '65173822e979f2bb0fb8a3e1' ?
             <FreelancerOffer id={id} statusID={changeStatus} />
             :
@@ -425,7 +434,6 @@ const TaskDetails = () => {
           }
 
         </div>
-
 
         {/* /////////////////////////////////////////////////////////////////////////*/}
 

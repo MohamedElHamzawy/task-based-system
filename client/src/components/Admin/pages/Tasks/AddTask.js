@@ -96,7 +96,7 @@ const AddTask = () => {
       timerId = setTimeout(async () => {
         await axios.get(" https://smarteduservices.com:5000/api/currency/valid/list").then((res) => {
           setCurrencies(res.data.currencies);
-          console.log(res.data)
+           
         });
         setLoading(false);
         setIsLoading(false);
@@ -285,7 +285,7 @@ const AddTask = () => {
           <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Channel :</label>
           <select id="Channel" name="Channel" className="p-2 px-4 search col-10 col-lg-7" value={channel}
             onChange={(event) => channelChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>clients</option>
+            <option value="" className='text-secondary'>Channels</option>
             <option value="Telegram" className=''>Telegram</option>
             <option value="WhatsApp" className=''>WhatsApp</option>
             <option value="Website" className=''>Website</option>
