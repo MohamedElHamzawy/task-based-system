@@ -32,7 +32,7 @@ const CurrencyDetails = () => {
             timerId = setTimeout(async () => {
                 await axios.get(` https://smarteduservices.com:5000/api/currency/${id}`).then((res) => {
                   setCurrency(res.data.message);
-                  console.log(res.data)
+                   
                 });
                 setLoading(false);
                 setIsLoading(false);

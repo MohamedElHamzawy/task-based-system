@@ -28,7 +28,7 @@ const Profit = () => {
       timerId = setTimeout(async () => {
         await axios.get(" https://smarteduservices.com:5000/api/profit/customer/").then((res) => {
           setCustomerProfit(res.data.profitSystem);
-          console.log(res.data)
+           
         });
         setLoading(false);
         setIsLoading(false);
@@ -36,7 +36,7 @@ const Profit = () => {
       timerId = setTimeout(async () => {
         await axios.get(" https://smarteduservices.com:5000/api/profit/specialist/").then((res) => {
           setSpecialistProfit(res.data.profitSystem);
-          console.log(res.data)
+           
         });
         setLoading(false);
         setIsLoading(false);
