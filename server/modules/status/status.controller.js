@@ -16,6 +16,15 @@ const getAllStatuses = async (req,res,next) => {
     }
 }
 
+const getAllStatusesFilter = async (req,res,next) => {
+    try {
+        statuses = await statusModel.find({});
+        res.json({statuses: statuses});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const getStatus = async (req,res,next) => {
     try {
         const statusID = req.params.id;
@@ -84,4 +93,4 @@ const deleteStatus = async (req,res,next) => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
-module.exports = {getAllStatuses, getStatus, createStatus, updateStatus, deleteStatus}
+module.exports = {getAllStatuses, getAllStatusesFilter, getStatus, createStatus, updateStatus, deleteStatus}

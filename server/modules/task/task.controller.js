@@ -44,7 +44,7 @@ const getMyTasks = async (req,res,next) => {
             const status2 = await statusModel.find({slug: "on-going"});
             const status3 = await statusModel.find({slug: "done"});
             const pendingTasks = await taskModel.find({$and: [{$or: [{created_by: req.user._id}, {show_created: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_created: req.user._id}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_created: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({tasks: tasks, pendingTasks: pendingTasks});
         } else if (role == "specialistService") {
             let pendingTasksB;
@@ -60,7 +60,7 @@ const getMyTasks = async (req,res,next) => {
             //     pendingTasksB = await taskModel.find({$or: [{speciality: {$in: userSpeciality}}, {$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             // }
             const pendingTasks = await taskModel.find({taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            const myTasks = await taskModel.find({$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const myTasks = await taskModel.find({$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({myTasks: myTasks, pendingTasks: pendingTasks});
         } else {
             return next(new HttpError("You are not authorized to show tasks!", 401));
@@ -74,6 +74,7 @@ const FilterTasks = async (req,res,next) => {
     try {
         const {status, speciality, country, start, end, freelancer, client, user} = req.body;
         let tasks;
+        console.log(user);
         if (user) {
             const theUser = await userModel.findOne({_id: user});
             if (theUser.user_role == "customerService") {
@@ -122,7 +123,7 @@ const FilterTasksA = async (req,res,next) => {
         const {status, speciality, country, start, end, freelancer, client} = req.body;
         let tasks;
         if (end && start) {
-            tasks = await taskModel.find({$and: [{$or: [{created_by: userID}, {show_created: userID}]}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            tasks = await taskModel.find({$and: [{$or: [{created_by: userID}, {show_created: userID}]}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('deadline', start).lte('deadline', end).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
         } else {
             tasks = await taskModel.find({$and: [{$or: [{created_by: userID}, {show_created: userID}]}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
         }
@@ -147,7 +148,7 @@ const FilterTasksB = async (req,res,next) => {
         const {status, speciality, country, start, end, freelancer, client} = req.body;
         let tasks;
         if (end && start) {
-            tasks = await taskModel.find({$and: [{$or: [{accepted_by: userID}, {show_accepted: userID}]}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            tasks = await taskModel.find({$and: [{$or: [{accepted_by: userID}, {show_accepted: userID}]}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).gte('deadline', start).lte('deadline', end).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
         } else {
             tasks = await taskModel.find({$and: [{$or: [{accepted_by: userID}, {show_accepted: userID}]}, status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
         }

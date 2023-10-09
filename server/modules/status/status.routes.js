@@ -5,10 +5,12 @@ const {
     getStatus, 
     createStatus, 
     updateStatus,
-    deleteStatus
+    deleteStatus,
+    getAllStatusesFilter
 } = require("./status.controller");
 
 router.get("/", auth(), getAllStatuses);
+router.get("/filter/all/", getAllStatusesFilter);
 router.get("/:id", getStatus);
 router.post("/", createStatus);
 router.post("/:id", updateStatus);
