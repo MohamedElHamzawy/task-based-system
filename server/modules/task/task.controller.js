@@ -74,9 +74,9 @@ const FilterTasks = async (req,res,next) => {
     try {
         const {status, speciality, country, start, end, freelancer, client, user} = req.body;
         let tasks;
-        console.log(user);
         if (user) {
             const theUser = await userModel.findOne({_id: user});
+            console.log(theUser);
             if (theUser.user_role == "customerService") {
                 if (end && start) {
                     tasks = await taskModel.find({$and: [status? {taskStatus: status}: {}, speciality? {speciality: speciality} : {}, country? {country: country} : {}, freelancer? {freelancer: freelancer} : {}, client? {client: client} : {}, user? {created_by: user} : {}]}).gte('createdAt', start).lte('createdAt', end).sort({createdAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
