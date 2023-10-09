@@ -78,7 +78,7 @@ const createClient = async (req,res,next) => {
 }
 
 const updateClient = async (req,res,next) => {
-    try {
+    // try {
         const {
             clientName,
             owner,
@@ -98,9 +98,9 @@ const updateClient = async (req,res,next) => {
         } else {
             return next(new HttpError("Client doesn't exist on system!", 400));
         }
-    } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
-    }
+    // } catch (error) {
+    //     return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    // }
 }
 
 const deleteClient = async (req,res,next) => {
