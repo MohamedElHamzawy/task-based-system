@@ -43,7 +43,7 @@ const getMyTasks = async (req,res,next) => {
             const status1 = await statusModel.find({slug: "offer-submitted"});
             const status2 = await statusModel.find({slug: "on-going"});
             const status3 = await statusModel.find({slug: "done"});
-            const pendingTasks = await taskModel.find({$and: [{$or: [{created_by: req.user._id}, {show_created: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const pendingTasks = await taskModel.find({$and: [{$or: [{created_by: req.user._id}, {show_created: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_created: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({tasks: tasks, pendingTasks: pendingTasks});
         } else if (role == "specialistService") {
@@ -59,7 +59,7 @@ const getMyTasks = async (req,res,next) => {
             //     const userSpeciality = await specialityModel.find({$or: [{speciality: specialityName.speciality}, {speciality: "All"}]}).select("_id");
             //     pendingTasksB = await taskModel.find({$or: [{speciality: {$in: userSpeciality}}, {$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             // }
-            const pendingTasks = await taskModel.find({taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const pendingTasks = await taskModel.find({taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             const myTasks = await taskModel.find({$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({myTasks: myTasks, pendingTasks: pendingTasks});
         } else {
