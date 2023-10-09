@@ -37,7 +37,7 @@ const Tasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/status/",
+        await axios.get(" https://smarteduservices.com:5000/api/status/filter/all/",
           { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
             setStatuses(res.data.statuses);
           });

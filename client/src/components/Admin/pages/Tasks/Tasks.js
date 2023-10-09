@@ -98,6 +98,7 @@ const Tasks = () => {
           setCompletedCount(res.data.completedCount)
           setTotalProfitPercentage(res.data.totalProfitPercentage)
 
+          console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -116,6 +117,7 @@ const Tasks = () => {
   const [client, setClient] = useState('');
   const [country, setCountry] = useState('');
   const [user, setUser] = useState('');
+  const [sort, setSort] = useState('');
 
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [allFilterData, setAllFilterData] = useState(false);
@@ -145,7 +147,8 @@ const Tasks = () => {
           end : end ,
           freelancer :freelancer ,
           client :client ,  
-          user :user
+          user :user ,
+          sort :sort
        });
       const responseData = await response;
       if (!(response.statusText === "OK")) {
@@ -189,7 +192,7 @@ const Tasks = () => {
             onChange={(e) => { 
               setSearchName(e.target.value);
               setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
-              setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd(''); setUser('') }}
+              setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd(''); setUser(''); setSort('') }}
           />
         </div>
 
@@ -207,7 +210,7 @@ const Tasks = () => {
         <div className="col-12  text-secondary row p-2 justify-content-center">
 
 
-          <select id="speciality" name="speciality" className="search col-sm-4 col-md-3  col-10  m-1 p-2" value={speciality}
+          <select id="speciality" name="speciality" className="search col-sm-4 col-md-3 col-lg-2  col-10  m-1 p-2" value={speciality}
             onChange={(e) => {setSpeciality(e.target.value);   }}>
             <option value="" className='text-secondary'>Specialities</option>
             {specialities.map((speciality) => (
@@ -215,7 +218,7 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="status" name="status" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={status}
+          <select id="status" name="status" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={status}
             onChange={(e) => { setStatus(e.target.value);  }}>
             <option value="" className='text-secondary'>Statuses</option>
             {statuses.map((status) => (
@@ -223,7 +226,7 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="freelancers" name="freelancers" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={freelancer}
+          <select id="freelancers" name="freelancers" className="search col-sm-4 col-md-3 col-lg-2  col-10 p-2 m-1" value={freelancer}
             onChange={(e) => { setFreelancer(e.target.value);  }}>
             <option value="" className='text-secondary'>Freelanceres</option>
             {freelancers.map((freelancer) => (
@@ -231,7 +234,7 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="clients" name="clients" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={client}
+          <select id="clients" name="clients" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={client}
             onChange={(e) => { setClient(e.target.value);  }}>
             <option value="" className='text-secondary'>Clients</option>
             {clients.map((client) => (
@@ -239,7 +242,7 @@ const Tasks = () => {
             ))}
           </select>
 
-          <select id="users" name="users" className="search col-sm-4 col-md-3  col-10 p-2 m-1" value={user}
+          <select id="users" name="users" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={user}
             onChange={(e) => { setUser(e.target.value);  }}>
             <option value="" className='text-secondary'>Users</option>
             {users.map((user) => (
@@ -247,13 +250,21 @@ const Tasks = () => {
             ))}
           </select>
           
-          <select id="countries" name="countries" className="search col-sm-4 col-md-3 col-10 p-2 m-1" value={country}
+          <select id="countries" name="countries" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={country}
             onChange={(e) => { setCountry(e.target.value);  }}>
             <option value="" className='text-secondary'>Countries</option>
             {countries.map((country) => (
               <option value={country._id} key={country._id}>{country.countryName}</option>
             ))}
           </select>
+
+          <select id="Sort" name="Sort" className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1" value={sort}
+            onChange={(e) => { setSort(e.target.value);  }}>
+            <option value="" className='text-secondary'>Sort</option>
+            <option value="date" className=''>Date</option>
+            <option value="profit" className=''>Profit</option>
+          </select>
+
         </div>
 
         <div className="col-8 p-2 text-start ">
@@ -263,7 +274,7 @@ const Tasks = () => {
           <button 
             onClick={()=> 
               {setSearchFilterData(true); setAllFilterData(false);setFreelancer('');setClient(''); 
-               setSearchName(''); setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') ; setUser('') }} 
+               setSearchName(''); setCountry(''); setSpeciality(''); setStatus(''); setStart(''); setEnd('') ; setUser(''); setSort('') }} 
             className="clear-filter-btn p-2">
             <AiOutlineClear className='fs-3' /> Clear
           </button>
@@ -352,14 +363,17 @@ const Tasks = () => {
               </button>
             </div>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created At :</span> {task.createdAt.split('T')[0]}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created At :</span> {task.createdAt.split('T')[0]}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Country :</span> {task.country.countryName}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
               <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
+            }
+            {task.profit_amount &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Profit :</span> {task.profit_amount}</p>
             }
 
           </div>
@@ -408,17 +422,20 @@ const Tasks = () => {
                 <BsFillFolderSymlinkFill className="fs-4" /> Details
               </button>
             </div>
-
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Title :</span> {task.title}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created At :</span> {task.createdAt.split('T')[0]}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Speciality :</span> {task.speciality.sub_speciality}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created At :</span> {task.createdAt.split('T')[0]}</p>
+            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Client :</span> {task.client.clientname}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Country :</span> {task.country.countryName}</p>
             <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Created By :</span> {task.created_by && task.created_by.fullname}</p>
-            <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Deadline :</span> {task.deadline.split('T')[0]}</p>
             {task.freelancer &&
               <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
             }
+            {task.profit_amount &&
+              <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Profit :</span> {task.profit_amount}</p>
+            }
+
           </div>
         )) :
           <div className="row  p-3 m-0 text-center" >

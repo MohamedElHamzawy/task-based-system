@@ -40,7 +40,7 @@ const PendingTasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/status/",
+        await axios.get(" https://smarteduservices.com:5000/api/status/filter/all/",
           { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
             setStatuses(res.data.statuses);
           });
@@ -252,7 +252,7 @@ const PendingTasks = () => {
             {task.freelancer &&
               <>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost}EGP </p>
+                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
               </>
             }
           </div>
@@ -311,7 +311,7 @@ const PendingTasks = () => {
             {task.freelancer &&
               <>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer :</span> {task.freelancer.freelancername}</p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost}EGP </p>
+                <p className="col-12 col-sm-6 edit-form-p fw-bold"> <span className="edit-form-lable">Freelancer Price :</span> {task.cost} </p>
               </>
             }
           </div>

@@ -23,18 +23,17 @@ const getSearchFilter = (searchName, tasks) => {
   );
 };
 
-// Speciality filter
-const getSpecialityFilter = (speciality, tasks) => {
-  if (!speciality) {
+// statuses filter
+const getStatusFilter = (status, tasks) => {
+  if (!status) {
     return tasks;
-  } return tasks.filter((tasks) => tasks.speciality.sub_speciality.includes(speciality));
+  } return tasks.filter((tasks) => tasks.taskStatus._id.includes(status));
 };
 
 const PendingTasks = () => {
 
   const token = GetCookie("UserB")
   const [tasks, setTasks] = useState([]);
-  const [specialities, setSpecialities] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,23 +45,17 @@ const PendingTasks = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/status/",
+        await axios.get(" https://smarteduservices.com:5000/api/status/filter/all/",
           { headers: { Authorization: `Bearer ${token}` } }).then((res) => {
             setStatuses(res.data.statuses);
           });
-      });
-      timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
-          setSpecialities(res.data.specialities);
-        });
       });
       timerId = setTimeout(async () => {
         await axios.get(" https://smarteduservices.com:5000/api/task/",
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => {
           setTasks(res.data.pendingTasks);
-
-           
+          console.log(res.data)
         });
         setIsLoading(false);
         setLoading(false);
@@ -71,18 +64,15 @@ const PendingTasks = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-
-  const [speciality, setSpeciality] = useState('');
   const [status, setStatus] = useState('');
 
   const [searchName, setSearchName] = useState('');
   const [searchFilterData, setSearchFilterData] = useState(true);
-  const [SpecialityFilterData, setSpecialityFilterData] = useState(false);
+
   const [statusFilterData, setStatusFilterData] = useState(false);
 
   const searchFilter = getSearchFilter(searchName, tasks);
-  const SpecialityFilter = getSpecialityFilter(speciality, tasks);
-  // const StatusFilter = getStatusFilter(status, tasks);
+  const StatusFilter = getStatusFilter(status, tasks);
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
@@ -100,27 +90,20 @@ const PendingTasks = () => {
 
         <div className="col-10 col-md-5 p-2 justify-content-center row">
           <input type="name" className="search p-2 col-12" placeholder="Search By Name or Serial Number" value={searchName}
-            onChange={(e) => { setSearchName(e.target.value); setSpecialityFilterData(false); setSearchFilterData(true); setStatusFilterData(false); setSpeciality(''); setStatus('') }}
+            onChange={(e) => { setSearchName(e.target.value);  setSearchFilterData(true); setStatusFilterData(false); setStatus('') }}
           />
         </div>
 
         <div className="col-10 col-md-7 text-secondary row p-2 justify-content-end ">
 
           <label htmlFor="Speciality" className="my-2 col-3 text-end ">Filter:</label>
-          <select id="speciality" name="speciality" className="search col-8 col-lg-5 mx-1" value={speciality}
-            onChange={(e) => { setSpeciality(e.target.value); setSpecialityFilterData(true); setSearchFilterData(false); setStatusFilterData(false); setSearchName(''); setStatus('') }}>
-            <option value="" className='text-secondary'>Specialities</option>
-            {specialities.map((speciality) => (
-              <option value={speciality.sub_speciality} key={speciality._id}>{speciality.sub_speciality}</option>
-            ))}
-          </select>
-          {/* <select id="status" name="status" className="search col-4" value={status}
-            onChange={(e) => { setStatus(e.target.value); setStatusFilterData(true); setSpecialityFilterData(false); setSearchFilterData(false); setSearchName(''); setSpeciality('') }}>
+          <select id="status" name="status" className="search col-8 col-lg-5 mx-1" value={status}
+            onChange={(e) => { setStatus(e.target.value); setStatusFilterData(true); setSearchFilterData(false); setSearchName('') }}>
             <option value="" className='text-secondary'>Statuses</option>
             {statuses.map((status) => (
-              <option value={status.statusname} key={status._id}>{status.statusname}</option>
+              <option value={status._id} key={status._id}>{status.statusname}</option>
             ))}
-          </select> */}
+          </select>
         </div>
       </div>
       <div className="row justify-content-center p-0 m-0">
@@ -183,7 +166,7 @@ const PendingTasks = () => {
           </div> : ''
         }
 
-        {SpecialityFilterData ? !SpecialityFilter.length == 0 ? SpecialityFilter.map((task) => (
+        {statusFilterData ? !StatusFilter.length == 0 ? StatusFilter.map((task) => (
           <div key={task._id} className="task-card bg-white p-2 py-3 row users-data col-11 my-1">
 
             <div className="col-12 fw-bold row text-center">
