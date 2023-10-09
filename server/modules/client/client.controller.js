@@ -92,7 +92,7 @@ const updateClient = async (req,res,next) => {
         if (tryGetClient) {
             await clientModel.findByIdAndUpdate({_id: tryGetClient._id}, {clientname: clientName, ownerName: owner, phone, website, country, currency});
             if (clientName) {
-                await accountModel.findByIdAndUpdate({owner: tryGetClient._id}, {title: clientName});
+                await accountModel.findOneAndUpdate({owner: tryGetClient._id}, {title: clientName});
             }
             res.json({message: "Client has been updated successfully"});
         } else {

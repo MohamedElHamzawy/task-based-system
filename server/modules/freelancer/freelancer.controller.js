@@ -77,7 +77,7 @@ const updateFreelancer = async (req,res,next) => {
         if (tryGetThisFreelancer) {
             await freelancerModel.findByIdAndUpdate({_id: tryGetThisFreelancer._id}, {freelancername: name, phone: phone, email: email, country: country, currency: currency, speciality: speciality});
             if (name) {
-                await accountModel.findByIdAndUpdate({owner: tryGetThisFreelancer._id}, {title: name});
+                await accountModel.findOneAndUpdate({owner: tryGetThisFreelancer._id}, {title: name});
             }
             res.json({message: "Freelancer has been updated successfully"});
         } else {
