@@ -118,7 +118,7 @@ const SignIn = () => {
       );
       const responseData = await response;
 
-      if (responseData.data.user.user_role == "admin") {
+      if (responseData.data.user.user_role === "admin") {
         SetCookie("AdminToken", responseData.data.token);
         localStorage.setItem(
           "AdminData",
@@ -126,7 +126,7 @@ const SignIn = () => {
         );
         setIsLoading(false);
         window.location.href = "/";
-      } else if (responseData.data.user.user_role == "customerService") {
+      } else if (responseData.data.user.user_role === "customerService") {
         SetCookie("UserA", responseData.data.token);
         localStorage.setItem(
           "UserAData",
@@ -134,7 +134,7 @@ const SignIn = () => {
         );
         setIsLoading(false);
         window.location.href = "/";
-      } else if (responseData.data.user.user_role == "specialistService") {
+      } else if (responseData.data.user.user_role === "specialistService") {
         SetCookie("UserB", responseData.data.token);
         localStorage.setItem(
           "UserBData",
@@ -160,6 +160,7 @@ const SignIn = () => {
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
       <Grid
+        item
         xs={6}
         height="100vh"
         sx={{
@@ -170,6 +171,7 @@ const SignIn = () => {
         }}
       />
       <Grid
+        item
         container
         xs={6}
         direction="column"
