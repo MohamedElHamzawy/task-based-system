@@ -1,26 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import MiModal from "@mui/material/Modal";
+import { Alert, AlertTitle, Grid } from "@mui/material";
 
-const ErrorModal = props => {
+const ErrorModal = (props) => {
   return (
-    <Modal
-    onHide={props.onClear}
-    header="An Error Occurred!"
-    show={!!props.error} 
-    className="main-content"
-    >    
-      <Modal.Header className='p-4'>
-        <Modal.Title>
-          <p>{props.error}</p> 
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Footer className='row justify-content-center p-4'>
-        <Button onClick={props.onClear} className="col-8 p-3 modal-delete-btn delete-btn rounded text-center ">Okay</Button>
-      </Modal.Footer>
-
-    </Modal>
+    <MiModal open={!!props.error} onClose={props.onClear}>
+      <Grid
+        container
+        height="100vh"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Alert severity="error" onClose={props.onClear}>
+          <AlertTitle>An Error Occurred!</AlertTitle>
+          {props.error}
+        </Alert>
+      </Grid>
+    </MiModal>
   );
 };
 

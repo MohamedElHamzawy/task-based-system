@@ -1,9 +1,7 @@
 import React, { useReducer, useState } from "react";
 import SetCookie from "../../hooks/setCookie";
-import { SiFreelancer } from "react-icons/si";
-import "./Signin.css";
-
-import { Form, Row } from "react-bootstrap";
+import imageBg from "../../assets/signin-bg.png";
+import logo from "../../assets/logo.png";
 
 import {
   validate,
@@ -14,6 +12,15 @@ import {
 import ErrorModal from "../../LoadingSpinner/ErrorModal";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 //EMAIL validation
 const usernameReducer = (state, action) => {
@@ -148,101 +155,95 @@ const SignIn = () => {
     setError(null);
   };
 
-  const Page = () => (
-    <div className="signin p-4 m-0 row justify-content-center w-100">
-      <div>
-        <div className="">
-          <h1 className="logo text-white bg-danger col-12 col-xl-5 col-md-7 p-3 ">
-            <SiFreelancer /> SMART
-          </h1>
-        </div>
-        <div className="col-12 p-3">
-          <h1 className="col-12 text-center text-white m-0 p-0"> Sign In </h1>
-          <div id="header-graphic" className="d-flex justify-content-center ">
-            <div className="creative-break ">
-              <div className="left-diamond diamond text-white "></div>
-              <div className="right-diamond diamond text-white"></div>
-            </div>
-          </div>
-        </div>
-        <Row className="col-12 p-0 m-0 justify-content-center ">
-          <ErrorModal error={error} onClear={errorHandler} />
-          {isLoading && <LoadingSpinner asOverlay />}
-          <Form
-            className="col-12 col-lg-6 m-0 p-0"
-            onSubmit={emailSubmitHandler}
-          >
-            <Row className="w-100 justify-content-center m-0">
-              <Form.Group className=" col-md-10 col-12 text-center p-0">
-                <Form.Label className="lable fw-bold text-white p-3">
-                  {" "}
-                  <span style={{ color: "red" }}>*</span> UserName{" "}
-                  <span style={{ color: "red" }}>*</span>
-                </Form.Label>
-                <Form.Control
-                  controlid="username"
-                  value={usernameState.value}
-                  onChange={usernameChangeHandler}
-                  onBlur={touchHandler}
-                  isvalid={usernameState.isvalid.toString()}
-                  type="name"
-                  placeholder="User Name "
-                  className={`p-3 ${
-                    !usernameState.isvalid &&
-                    usernameState.isTouched &&
-                    "form-control-invalid"
-                  }`}
-                />
-                {!usernameState.isvalid && usernameState.isTouched && (
-                  <p style={{ color: "red" }}>Please Enter A Vaild UserName</p>
-                )}
-              </Form.Group>
-
-              <Form.Group
-                className="mb-3 col-md-10 col-12 text-center p-0"
-                controlId="formGridPassword"
+  return (
+    <Grid container>
+      <ErrorModal error={error} onClear={errorHandler} />
+      {isLoading && <LoadingSpinner asOverlay />}
+      <Grid
+        xs={6}
+        height="100vh"
+        sx={{
+          backgroundImage: `url(${imageBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      <Grid
+        container
+        xs={6}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box sx={{ marginY: 1 }}>
+          <img src={logo} alt="logo" />
+        </Box>
+        <Typography sx={{ marginY: 1 }} variant="h4" fontWeight={700}>
+          Smarteduservices
+        </Typography>
+        <Typography align="center" sx={{ opacity: 0.6, marginY: 1 }}>
+          Hello there! <br /> sign in and start managing your itmes
+        </Typography>
+        <form onSubmit={emailSubmitHandler}>
+          <Grid container direction="column" width={260} sx={{ marginY: 1 }}>
+            <Grid item sx={{ marginY: 1 }}>
+              <FormControl
+                fullWidth
+                controlid="username"
+                value={usernameState.value}
+                onChange={usernameChangeHandler}
+                onBlur={touchHandler}
+                isvalid={usernameState.isvalid.toString()}
+                error={!usernameState.isvalid && usernameState.isTouched}
+                type="name"
               >
-                <Form.Label className="fw-bold text-white p-3">
-                  <span style={{ color: "red" }}>*</span>Password{" "}
-                  <span style={{ color: "red" }}>*</span>
-                </Form.Label>
-                <Form.Control
-                  controlid="password"
-                  value={passState.value}
-                  onChange={passChangeHandler}
-                  onBlur={passtouchHandler}
-                  isvalid={passState.isvalid.toString()}
-                  type="password"
+                <FormLabel>Username</FormLabel>
+                <TextField
+                  id="username"
+                  variant="outlined"
+                  placeholder="Username"
+                  error={!usernameState.isvalid && usernameState.isTouched}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item sx={{ marginY: 1 }}>
+              <FormControl
+                fullWidth
+                controlid="password"
+                value={passState.value}
+                onChange={passChangeHandler}
+                onBlur={passtouchHandler}
+                isvalid={passState.isvalid.toString()}
+                error={!passState.isvalid && passState.isTouched}
+                type="password"
+              >
+                <FormLabel>Password</FormLabel>
+                <TextField
+                  id="password"
+                  variant="outlined"
                   placeholder="Password"
-                  className={`p-3 ${
-                    !passState.isvalid &&
-                    passState.isTouched &&
-                    "form-control-invalid"
-                  }`}
+                  type="password"
+                  error={!passState.isvalid && passState.isTouched}
                 />
-                {!passState.isvalid && passState.isTouched && (
-                  <p style={{ color: "red" }}>Please Enter A Vaild PassWord</p>
-                )}
-              </Form.Group>
-            </Row>
-            <div className="row w-100 justify-content-center m-0">
-              <button
-                className="sign-btn fs-4 rounded col-md-4 col-6 fw-bold text-white p-3 my-3"
-                disabled={!usernameState.isvalid || !passState.isvalid}
+              </FormControl>
+            </Grid>
+            <Grid item sx={{ marginY: 1 }}>
+              <Button
+                sx={{ backgroundColor: "#2185D0" }}
+                fullWidth
+                variant="contained"
                 type="submit"
-                style={{ background: "#007063", cursor: "pointer" }}
+                disabled={!usernameState.isvalid || !passState.isvalid}
               >
-                SIGN IN
-              </button>
-            </div>
-          </Form>
-        </Row>
-      </div>
-    </div>
+                Sign in
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid>
+    </Grid>
   );
-
-  // return Page();
-  return <div>Hello from dev branch</div>;
 };
 
 export default SignIn;
