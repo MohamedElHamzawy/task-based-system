@@ -20,7 +20,7 @@ function App() {
     },
   });
   return (
-    <div className="app">
+    <div>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           {authContext.auth.admin ? (

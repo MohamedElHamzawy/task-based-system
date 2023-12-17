@@ -118,11 +118,17 @@ const SignIn = () => {
       );
       const responseData = await response;
 
+      localStorage.setItem("role", responseData.data.user.user_role);
+
       if (responseData.data.user.user_role === "admin") {
         SetCookie("AdminToken", responseData.data.token);
         localStorage.setItem(
           "AdminData",
           JSON.stringify(responseData.data.user._id)
+        );
+        localStorage.setItem(
+          "AdminName",
+          JSON.stringify(responseData.data.user.fullname)
         );
         setIsLoading(false);
         window.location.href = "/";

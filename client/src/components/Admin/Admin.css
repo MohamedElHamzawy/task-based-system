@@ -1,4 +1,4 @@
- /* .dashboard{
+/* .dashboard{
      --bs-gutter-x: 0rem !important;
 }  */
 
@@ -10,28 +10,27 @@
     width: 240px !important;
     min-height: 100vh;   
 } */
-.sidenav---sidenav---_2tBP{
-    position: fixed !important;
-    background-color: #2a1255 !important;
-    overflow-y: hidden !important;
-    overflow-x: hidden !important;
-    /* min-height: 100vh !important;    */
+.sidenav---sidenav---_2tBP {
+  position: fixed !important;
+  background-color: #2a1255 !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  /* min-height: 100vh !important;    */
 }
-.sidenav---sidenav-nav---3tvij{
-    background-color: #2a1255 !important;   
+.sidenav---sidenav-nav---3tvij {
+  background-color: #2a1255 !important;
+}
 
+.Admin {
+  background-color: #2a1255;
 }
-
-.Admin{
-    background-color: #2a1255 ;
-}
-.Admin-body{
-    margin-left: 60px !important;
-    min-height: 100vh;   
-    background-color: rgba(239, 239, 239, 0.999) !important;   
+.Admin-body {
+  margin-left: 60px !important;
+  min-height: 100vh;
+  background-color: rgba(239, 239, 239, 0.999) !important;
 }
 @media only screen and (max-height: 900px) {
-    .sidenav---sidenav---_2tBP{
-        overflow-y: scroll !important;
-    }
+  .sidenav---sidenav---_2tBP {
+    overflow-y: scroll !important;
+  }
 }
