@@ -6,6 +6,7 @@ import { BsFillFolderSymlinkFill } from "react-icons/bs";
 import { RiUserAddFill } from "react-icons/ri";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FiFilter } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, users) => {
@@ -204,12 +205,12 @@ const Users = () => {
             searchFilter.map((user) => (
               <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
                 <p className="col-5  name-role text-center  ">
-                  <a
+                  <Link
                     className="text-dark text-decoration-none fw-bold"
-                    href={`/user/${user._id}`}
+                    to={`/user/${user._id}`}
                   >
                     {user.fullname}
-                  </a>
+                  </Link>
                 </p>
                 <p className="col-4 name-role">{user.user_role}</p>
                 <p className="col-2">
