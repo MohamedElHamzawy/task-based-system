@@ -1,13 +1,20 @@
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
+import { useNavigate } from "react-router";
 
 const Header = ({}) => {
   const name = JSON.parse(localStorage.getItem("AdminName"));
   const role = localStorage.getItem("role");
+  const navigate = useNavigate();
   return (
     <div className="bg-white w-full h-16 flex items-center px-3 space-x-7 drop-shadow-sm">
-      <h1 className="text-[#3588BA] text-2xl font-bold">Smarteduservices</h1>
+      <h1
+        className="text-[#3588BA] text-2xl font-bold cursor-pointer"
+        onClick={() => navigate("/")}
+      >
+        Smarteduservices
+      </h1>
       <div className="w-full flex items-center justify-between">
         <div className="relative flex-1 rounded-md">
           <input

@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-import { FaUsers } from "react-icons/fa";
-import { FaTasks } from "react-icons/fa";
-import { BiLogOut } from "react-icons/bi";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { FaHospitalUser } from "react-icons/fa";
-import { AiFillSetting } from "react-icons/ai";
+import { FaUsers, FaFlag, FaTasks, FaHospitalUser } from "react-icons/fa";
+import { BiLogOut, BiSolidCategoryAlt } from "react-icons/bi";
+import {
+  AiFillSetting,
+  AiOutlineHome,
+  AiOutlineTransaction,
+} from "react-icons/ai";
 import { BsCurrencyExchange } from "react-icons/bs";
 import { SiFreelancer } from "react-icons/si";
 import { TbStatusChange } from "react-icons/tb";
-import { MdCalculate } from "react-icons/md";
-import { AiOutlineTransaction } from "react-icons/ai";
 import { RiWaterPercentFill } from "react-icons/ri";
-import { FaFlagUsa } from "react-icons/fa";
+import { HiUsers } from "react-icons/hi";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -21,7 +20,8 @@ import RemoveCookie from "../../../hooks/removeCookie";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 
 const navItems = [
-  { navigate: "/", icon: FaUsers, label: "Users" },
+  { navigate: "/", icon: AiOutlineHome, label: "Home" },
+  { navigate: "/users", icon: FaUsers, label: "Users" },
   { navigate: "/tasks", icon: FaTasks, label: "Tasks" },
   {
     navigate: "/notifications",
@@ -30,7 +30,7 @@ const navItems = [
   },
   {
     navigate: "/accounts",
-    icon: MdCalculate,
+    icon: HiUsers,
     label: "Accounts",
   },
   {
@@ -65,7 +65,7 @@ const navItems = [
   },
   {
     navigate: "/country",
-    icon: FaFlagUsa,
+    icon: FaFlag,
     label: "Country",
   },
   {
@@ -81,7 +81,6 @@ const navItems = [
 ];
 
 const SideBar = () => {
-  const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   function logout() {
@@ -98,7 +97,7 @@ const SideBar = () => {
       <SideNav.Nav>
         {navItems.map((item) => (
           <NavItem
-            style={{ height: 43.5 }}
+            style={{ height: 40 }}
             key={item.navigate}
             className={`relative rounded-sm ${
               location.pathname === item.navigate

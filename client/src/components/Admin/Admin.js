@@ -34,6 +34,7 @@ import Country from "./pages/Country/Country";
 import AddCountry from "./pages/Country/AddCountry";
 import Notifications from "./pages/Notifications/Notifications.js";
 import Header from "../Header.js";
+import Home from "./pages/Home";
 
 const Admin = () => {
   return (
@@ -42,7 +43,8 @@ const Admin = () => {
       <div className="ml-60 bg-[#F4F7FC] border">
         <SideBar />
         <Routes>
-          <Route path="/" element={<Users />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<Users />} />
           <Route path="/user/:id" element={<UserDetails />} />
           <Route path="/adduser" element={<AddUser />} />
           <Route path="/tasks" element={<Tasks />} />
