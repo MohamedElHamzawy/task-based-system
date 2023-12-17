@@ -4,7 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
@@ -293,7 +293,7 @@ const UserDetails = () => {
   const [withoutFilterData, setwithoutFilterData] = useState(true);
   const [dateFilterData, setDateFilterData] = useState(false);
   const DateFilter = getDateFilter(start, end, userTasks);
-
+  const navigate = useNavigate();
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -304,9 +304,7 @@ const UserDetails = () => {
         <div className="col-3 text-center">
           <button
             className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/";
-            }}
+            onClick={() => navigate("/")}
           >
             <TiArrowBack />{" "}
           </button>
