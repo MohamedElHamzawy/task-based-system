@@ -2,7 +2,7 @@ import React from "react";
 import { GrSearch } from "react-icons/gr";
 import { useNavigate } from "react-router";
 
-const Header = ({}) => {
+const Header = () => {
   const name = JSON.parse(localStorage.getItem("AdminName"));
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
