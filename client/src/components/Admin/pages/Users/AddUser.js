@@ -4,6 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
 
 //userName validation
 const userNameReducer = (state, action) => {
@@ -84,6 +85,7 @@ const AddUser = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -267,97 +269,81 @@ const AddUser = () => {
     return index === self.findIndex((i) => i.speciality === item.speciality);
   });
   return (
-    <div className="row text-center p-3 w-100 m-0">
+    <div className="flex flex-col items-center w-full p-3">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="row p-1">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-9 col-lg-7 text-center system-head  fw-bold">
-          {" "}
+      <div className="flex flex-row items-center justify-between w-full p-1">
+        <button className="p-2 text-3xl" onClick={() => navigate("/users")}>
+          <TiArrowBack />
+        </button>
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Add New User
         </h2>
       </div>
 
       <form
-        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        className="flex flex-col items-center bg-white p-3 w-full"
         onSubmit={newUserSubmitHandler}
       >
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">
-            Full Name:
-          </label>
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={fullNameState.value}
-            onChange={fullNameChangeHandler}
-            onBlur={fullNameTouchHandler}
-            isvalid={fullNameState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !fullNameState.isvalid &&
-              fullNameState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">
-            User Name:
-          </label>
-          <input
-            type="text"
-            placeholder="User Name"
-            value={userNameState.value}
-            onChange={userNameChangeHandler}
-            onBlur={userNameTouchHandler}
-            isvalid={userNameState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !userNameState.isvalid &&
-              userNameState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
+        {[
+          {
+            label: "Full Name",
+            state: fullNameState,
+            handler: fullNameChangeHandler,
+            touchHandler: fullNameTouchHandler,
+          },
+          {
+            label: "User Name",
+            state: userNameState,
+            handler: userNameChangeHandler,
+            touchHandler: userNameTouchHandler,
+          },
+          {
+            label: "Password",
+            state: passwordState,
+            handler: passwordChangeHandler,
+            touchHandler: passwordTouchHandler,
+            type: "password",
+          },
+          {
+            label: "Phone",
+            state: numberState,
+            handler: numberChangeHandler,
+            touchHandler: numbertouchHandler,
+            type: "number",
+          },
+        ].map((input, index) => (
+          <div
+            key={index}
+            className="flex flex-col lg:flex-row items-center w-full my-1 py-2"
+          >
+            <label className="w-full lg:w-1/5 font-bold">{input.label}:</label>
+            <input
+              type={input.type || "text"}
+              placeholder={input.label}
+              value={input.state.value}
+              onChange={input.handler}
+              onBlur={input.touchHandler}
+              className={`w-full lg:w-4/5 p-2 ${
+                !input.state.isvalid &&
+                input.state.isTouched &&
+                "border-red-500"
+              }`}
+            />
+          </div>
+        ))}
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">
-            Password :
-          </label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={passwordState.value}
-            onChange={passwordChangeHandler}
-            onBlur={passwordTouchHandler}
-            isvalid={passwordState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !passwordState.isvalid &&
-              passwordState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
-
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">Country:</label>
+        <div className="flex flex-col lg:flex-row items-center w-full my-1 py-2">
+          <label className="w-full lg:w-1/5 font-bold">Country:</label>
           <select
             id="country"
             name="country"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full lg:w-4/5 p-2"
             value={country}
             onChange={(event) => countryChangeHandler(event.target.value)}
           >
-            <option value="" className="text-secondary">
+            <option value="" className="text-gray-500">
               Countries
             </option>
             {countries.map((country) => (
@@ -368,19 +354,18 @@ const AddUser = () => {
           </select>
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label htmlFor="role" className=" col-10 col-lg-5 fw-bold add-user-p">
-            {" "}
+        <div className="flex flex-col lg:flex-row items-center w-full my-1 py-2">
+          <label htmlFor="role" className="w-full lg:w-1/5 font-bold">
             Role:
           </label>
           <select
             id="role"
             name="role"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full lg:w-4/5 p-2"
             value={role}
             onChange={(event) => RoleChangeHandler(event.target.value)}
           >
-            <option value="" className="text-secondary">
+            <option value="" className="text-gray-500">
               Roles
             </option>
             <option value="admin">Admin</option>
@@ -389,55 +374,31 @@ const AddUser = () => {
           </select>
         </div>
 
-        <div
-          className={
-            visable ? "d-block col-12 col-lg-5 m-1 py-2 p-0" : "d-none"
-          }
-        >
-          <label
-            htmlFor="speciality"
-            className="col-10 col-lg-5 fw-bold add-user-p"
-          >
-            {" "}
-            Speciality:
-          </label>
-
-          <select
-            id="speciality"
-            name="speciality"
-            className="p-2 px-4 search col-10 col-lg-7"
-            value={speciality}
-            onChange={(event) => specialityChangeHandler(event.target.value)}
-          >
-            <option value="" className="text-secondary">
-              Specialities
-            </option>
-            {uniqueItems.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>
-                {speciality.speciality}
+        {visable && (
+          <div className="flex flex-col lg:flex-row items-center w-full my-1 py-2">
+            <label htmlFor="speciality" className="w-full lg:w-1/5 font-bold">
+              Speciality:
+            </label>
+            <select
+              id="speciality"
+              name="speciality"
+              className="w-full lg:w-4/5 p-2"
+              value={speciality}
+              onChange={(event) => specialityChangeHandler(event.target.value)}
+            >
+              <option value="" className="text-gray-500">
+                Specialities
               </option>
-            ))}
-          </select>
-        </div>
+              {uniqueItems.map((speciality) => (
+                <option value={speciality._id} key={speciality._id}>
+                  {speciality.speciality}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">Phone :</label>
-          <input
-            type="number"
-            placeholder="Phone Number"
-            value={numberState.value}
-            onChange={numberChangeHandler}
-            onBlur={numbertouchHandler}
-            isvalid={numberState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !numberState.isvalid &&
-              numberState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
-
-        <div className="col-8 m-3 mt-5 row justify-content-center">
+        <div className="flex justify-center w-full my-3 mt-5">
           <button
             disabled={
               !visable
@@ -455,7 +416,7 @@ const AddUser = () => {
                   !role ||
                   !speciality
             }
-            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+            className="disabled:opacity-50 p-3 font-bold w-4/5 lg:w-1/5"
           >
             Submit
           </button>
