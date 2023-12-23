@@ -1,5 +1,4 @@
 import React from "react";
-import { IoIosArrowDown } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { useNavigate } from "react-router";
 
