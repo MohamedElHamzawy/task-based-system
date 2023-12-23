@@ -12,15 +12,6 @@ import {
 import ErrorModal from "../../LoadingSpinner/ErrorModal";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 import axios from "axios";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
 
 //EMAIL validation
 const usernameReducer = (state, action) => {
@@ -162,95 +153,80 @@ const SignIn = () => {
   };
 
   return (
-    <Grid container>
+    <div className="flex flex-wrap">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
-      <Grid
-        item
-        xs={6}
-        height="100vh"
-        sx={{
-          backgroundImage: `url(${imageBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
+      <div
+        className="w-full md:w-1/2 h-screen bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${imageBg})` }}
       />
-      <Grid
-        item
-        container
-        xs={6}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Box sx={{ marginY: 1 }}>
-          <img src={logo} alt="logo" />
-        </Box>
-        <Typography sx={{ marginY: 1 }} variant="h4" fontWeight={700}>
-          Smarteduservices
-        </Typography>
-        <Typography align="center" sx={{ opacity: 0.6, marginY: 1 }}>
-          Hello there! <br /> sign in and start managing your itmes
-        </Typography>
-        <form onSubmit={emailSubmitHandler}>
-          <Grid container direction="column" width={260} sx={{ marginY: 1 }}>
-            <Grid item sx={{ marginY: 1 }}>
-              <FormControl
-                fullWidth
-                controlid="username"
-                value={usernameState.value}
-                onChange={usernameChangeHandler}
-                onBlur={touchHandler}
-                isvalid={usernameState.isvalid.toString()}
-                error={!usernameState.isvalid && usernameState.isTouched}
-                type="name"
-              >
-                <FormLabel>Username</FormLabel>
-                <TextField
-                  id="username"
-                  variant="outlined"
-                  placeholder="Username"
-                  error={!usernameState.isvalid && usernameState.isTouched}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item sx={{ marginY: 1 }}>
-              <FormControl
-                fullWidth
-                controlid="password"
-                value={passState.value}
-                onChange={passChangeHandler}
-                onBlur={passtouchHandler}
-                isvalid={passState.isvalid.toString()}
-                error={!passState.isvalid && passState.isTouched}
-                type="password"
-              >
-                <FormLabel>Password</FormLabel>
-                <TextField
-                  id="password"
-                  variant="outlined"
-                  placeholder="Password"
-                  type="password"
-                  error={!passState.isvalid && passState.isTouched}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item sx={{ marginY: 1 }}>
-              <Button
-                sx={{ backgroundColor: "#2185D0" }}
-                fullWidth
-                variant="contained"
-                type="submit"
-                disabled={!usernameState.isvalid || !passState.isvalid}
-              >
-                Sign in
-              </Button>
-            </Grid>
-          </Grid>
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-4">
+        <div className="my-2">
+          <img src={logo} alt="logo" className="mx-auto" />
+        </div>
+        <h4 className="text-2xl font-bold my-2">Smarteduservices</h4>
+        <p className="text-center text-opacity-60 my-2">
+          Hello there! <br /> sign in and start managing your items
+        </p>
+        <form onSubmit={emailSubmitHandler} className="w-full max-w-xs my-2">
+          <div className="my-2">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Username"
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm ${
+                !usernameState.isvalid && usernameState.isTouched
+                  ? "border-red-500"
+                  : ""
+              }`}
+              value={usernameState.value}
+              onChange={usernameChangeHandler}
+              onBlur={touchHandler}
+            />
+          </div>
+          <div className="my-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm ${
+                !passState.isvalid && passState.isTouched
+                  ? "border-red-500"
+                  : ""
+              }`}
+              value={passState.value}
+              onChange={passChangeHandler}
+              onBlur={passtouchHandler}
+            />
+          </div>
+          <div className="my-2">
+            <button
+              className={`w-full rounded bg-blue-600 text-white py-2 px-4 ${
+                !usernameState.isvalid || !passState.isvalid
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              type="submit"
+              disabled={!usernameState.isvalid || !passState.isvalid}
+            >
+              Sign in
+            </button>
+          </div>
         </form>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 
