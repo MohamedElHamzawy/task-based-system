@@ -304,7 +304,7 @@ const UserDetails = () => {
         <div className="col-3 text-center">
           <button
             className="back-btn p-2 px-3 fs-3 "
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/users")}
           >
             <TiArrowBack />{" "}
           </button>

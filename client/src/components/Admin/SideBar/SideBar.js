@@ -92,7 +92,7 @@ const SideBar = () => {
     <SideNav
       defaultExpanded={true}
       style={{ position: "fixed" }}
-      className="bg-white border mt-16 py-4 pr-4"
+      className="bg-white mt-[4.2rem] py-4 pr-4 shadow-sm"
     >
       <SideNav.Nav>
         {navItems.map((item) => (

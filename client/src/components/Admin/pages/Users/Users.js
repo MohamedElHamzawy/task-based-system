@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import "./Users.css";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
-import { RiUserAddFill } from "react-icons/ri";
 import { RiDeleteBinFill } from "react-icons/ri";
-import { FiFilter } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { MdOutlineTune } from "react-icons/md";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 
 //search filter
 const getSearchFilter = (searchName, users) => {
@@ -42,16 +42,14 @@ const Users = () => {
   }, [loading]);
 
   const [searchName, setSearchName] = useState("");
-
-  const [searchRole, setSearchRole] = useState("");
   const [sortedUsers, setSortedUsers] = useState("");
   const [filterRole, setFilterRole] = useState("");
-
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [allFilterData, setAllFilterData] = useState(false);
-
   const searchFilter = getSearchFilter(searchName, users);
   const [filterData, setFilterData] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
 
   const deleteUserHandler = async (id) => {
     setIsLoading(true);
@@ -101,186 +99,149 @@ const Users = () => {
     }
   };
 
-  return isLoading ? (
-    <LoadingSpinner asOverlay />
-  ) : (
-    <div className="row w-100 p-0 m-0 ">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
-        </div>
-        <h1 className="col-12 col-md-6 text-center  fw-bold">System Users</h1>
+  const Filter = ({ children, applyFunction }) => (
+    <div
+      className={`transition-all flex flex-col items-center fixed left-64 top-16 ${
+        filterOpen ? "w-44" : "w-14"
+      } h-full -ml-2.5 bg-white drop-shadow px-2`}
+    >
+      <div className={`flex justify-between items-center w-full mt-4`}>
+        {filterOpen && <h1 className="text-xl">Filters</h1>}
+        <MdOutlineTune
+          onClick={() => setFilterOpen((prev) => !prev)}
+          className={`${
+            !filterOpen && "mx-auto"
+          } cursor-pointer hover:bg-gray-200 rounded-full -mt-1 p-1`}
+          size={30}
+        />
       </div>
-
-      <div className="row p-0 m-0 justify-content-lg-end col-12 ">
-        <div className="col-10 col-sm-8 col-lg-3 p-2 ">
-          <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search Usernames"
-            value={searchName}
-            onChange={(e) => {
-              setSearchName(e.target.value);
-              setAllFilterData(false);
-              setSearchFilterData(true);
-              setFilterRole("");
-              setSortedUsers("");
-            }}
-          />
-        </div>
-
-        <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
-          <label htmlFor="role" className="mt-2 col-4 col-sm-3 text-end">
-            Filter:
-          </label>
-          <select
-            id="role"
-            name="role"
-            className=" search col-8 col-sm-9 p-2"
-            value={filterRole}
-            onChange={(e) => {
-              setFilterRole(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Role
-            </option>
-            <option value="admin">Admin</option>
-            <option value="customerService">Customer Service</option>
-            <option value="specialistService">Specialist Service</option>
-          </select>
-        </div>
-
-        <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
-          <label htmlFor="role" className="mt-2 col-4 col-sm-3 text-end">
-            Sort:
-          </label>
-          <select
-            id="role"
-            name="role"
-            className=" search col-8 col-sm-9 p-2"
-            onChange={(e) => {
-              setSortedUsers(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              sort
-            </option>
-            <option value="completed">Completed</option>
-            <option value="profit">Profit</option>
-          </select>
-        </div>
-
-        <div className="col-5 col-sm-2 col-lg-3  p-2 text-center ">
+      {filterOpen && (
+        <div>
+          <div className="mt-2 mb-4 flex flex-col">{children}</div>
           <button
-            disabled={!filterRole && !sortedUsers}
-            onClick={filterHandler}
-            className="filter-btn p-2"
+            type="button"
+            onClick={() => applyFunction()}
+            className="w-full px-4 py-1 text-sm text-black font-semibold border border-gray-400 hover:text-white hover:bg-gray-100 hover:border-transparent focus:outline-none focus:ring-1 focus:ring-black"
           >
-            <FiFilter className="fs-3" /> Filter
+            APPLY
           </button>
         </div>
-
-        <div className="col-7 col-sm-12 p-2 justify-content-end text-end">
-          <button
-            onClick={() => {
-              window.location.href = "/adduser";
-            }}
-            className="new-user p-2"
-          >
-            <RiUserAddFill className="fs-3" /> Add New User
-          </button>
+      )}
+    </div>
+  );
+  const User = ({ user }) => (
+    <div
+      className="bg-white my-2 drop-shadow px-4 py-2 flex items-center justify-between"
+      key={user._id}
+    >
+      <div className="flex items-center space-x-4 w-1/3">
+        <div className="w-10 h-10 rounded-full bg-teal-300 flex items-center justify-center font-bold">
+          {user.fullname.charAt(0).toUpperCase()}
         </div>
+        <span>{user.fullname}</span>
       </div>
+      <div className="w-1/3 flex justify-center">
+        <p className="m-0 bg-blue-100 rounded-md border w-1/2 text-blue-600 text-center">
+          {user.user_role}
+        </p>
+      </div>
+      <div className="w-1/3 flex items-center justify-end space-x-4">
+        <button onClick={() => navigate(`/user/${user._id}`)}>
+          <FaExternalLinkAlt className="h-5 w-5" color="gray" />
+        </button>
 
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-2">
-          <h4 className="col-5  text-center">FullName</h4>
-          <h4 className="col-4 ">Role</h4>
-          <h4 className="col-2 ">Delete</h4>
-        </div>
-
-        {searchFilterData ? (
-          !searchFilter.length == 0 ? (
-            searchFilter.map((user) => (
-              <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-                <p className="col-5  name-role text-center  ">
-                  <Link
-                    className="text-dark text-decoration-none fw-bold"
-                    to={`/user/${user._id}`}
-                  >
-                    {user.fullname}
-                  </Link>
-                </p>
-                <p className="col-4 name-role">{user.user_role}</p>
-                <p className="col-2">
-                  {user.user_role == "admin" ? (
-                    <button className=" disabled-btn p-2 px-3" disabled>
-                      {" "}
-                      <RiDeleteBinFill />{" "}
-                    </button>
-                  ) : (
-                    <button
-                      className=" delete-btn p-2 px-3"
-                      onClick={() => deleteUserHandler(user._id)}
-                    >
-                      {" "}
-                      <RiDeleteBinFill />{" "}
-                    </button>
-                  )}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Users</h2>
-            </div>
-          )
+        {user.user_role == "admin" ? (
+          <button className="" disabled>
+            <RiDeleteBinFill className="h-6 w-6" color="gray" />
+          </button>
         ) : (
-          ""
-        )}
-
-        {allFilterData ? (
-          !filterData.length == 0 ? (
-            filterData.map((user) => (
-              <div className="table-body row pt-3 p-0 m-0 " key={user._id}>
-                <p className="col-6  name-role text-center  ">
-                  <a
-                    className="text-dark text-decoration-none fw-bold"
-                    href={`/user/${user._id}`}
-                  >
-                    {user.fullname}
-                  </a>
-                </p>
-                <p className="col-4 name-role">{user.user_role}</p>
-                <p className="col-2">
-                  {user.user_role == "admin" ? (
-                    <button className=" disabled-btn p-2 px-3" disabled>
-                      {" "}
-                      <RiDeleteBinFill />{" "}
-                    </button>
-                  ) : (
-                    <button
-                      className=" delete-btn p-2 px-3"
-                      onClick={() => deleteUserHandler(user._id)}
-                    >
-                      {" "}
-                      <RiDeleteBinFill />{" "}
-                    </button>
-                  )}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Users</h2>
-            </div>
-          )
-        ) : (
-          ""
+          <button onClick={() => deleteUserHandler(user._id)}>
+            <RiDeleteBinFill className="h-6 w-6" color="red" />
+          </button>
         )}
       </div>
     </div>
+  );
+
+  return isLoading ? (
+    <LoadingSpinner asOverlay />
+  ) : (
+    <>
+      <Filter applyFunction={filterHandler}>
+        <select
+          id="role"
+          name="role"
+          className="w-full focus:ring-0 focus:border-black"
+          value={filterRole}
+          onChange={(e) => {
+            setFilterRole(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Role
+          </option>
+          <option value="admin">Admin</option>
+          <option value="customerService">Customer Service</option>
+          <option value="specialistService">Specialist Service</option>
+        </select>
+      </Filter>
+      <div className="h-[calc(100vh-100px)] ml-44">
+        <div className="flex justify-between items-center my-8">
+          <h1 className="text-2xl">System Users</h1>
+          <div className="">FILTERS</div>
+        </div>
+        <div className="bg-gray-100 px-8 py-4 rounded-sm drop-shadow">
+          <div className="flex justify-between items-center">Team Members</div>
+          <div className="flex justify-between items-center my-4">
+            <input
+              type="search"
+              className="rounded-sm w-1/3"
+              placeholder="Search Usernames"
+              value={searchName}
+              onChange={(e) => {
+                setSearchName(e.target.value);
+                setAllFilterData(false);
+                setSearchFilterData(true);
+                setFilterRole("");
+                setSortedUsers("");
+              }}
+            />
+
+            <button
+              className="text-white px-4 py-2 flex items-center rounded-sm"
+              style={{ backgroundColor: "#00E38C" }}
+              type="button"
+              onClick={() => navigate("/adduser")}
+            >
+              <IoMdAdd className="text-xl" />
+              Add New User
+            </button>
+          </div>
+          {searchFilterData ? (
+            !searchFilter.length == 0 ? (
+              searchFilter.map((user) => <User user={user} />)
+            ) : (
+              <div className="">
+                <h2>There Is No Users</h2>
+              </div>
+            )
+          ) : (
+            ""
+          )}
+          {allFilterData ? (
+            !filterData.length == 0 ? (
+              filterData.map((user) => <User user={user} />)
+            ) : (
+              <div className="row p-3 m-0 text-center">
+                <h2>There Is No Users</h2>
+              </div>
+            )
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

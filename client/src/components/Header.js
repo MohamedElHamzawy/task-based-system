@@ -8,7 +8,7 @@ const Header = ({}) => {
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
   return (
-    <div className="bg-white w-full h-16 flex items-center px-3 space-x-7 drop-shadow-sm">
+    <div className="bg-white fixed z-50 w-full h-16 flex items-center px-3 space-x-7 drop-shadow">
       <h1
         className="text-[#3588BA] text-2xl font-bold cursor-pointer"
         onClick={() => navigate("/")}

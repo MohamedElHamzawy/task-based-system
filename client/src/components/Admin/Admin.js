@@ -40,41 +40,43 @@ const Admin = () => {
   return (
     <>
       <Header />
-      <div className="ml-60 bg-[#F4F7FC] border">
+      <div className="ml-60 bg-[#F4F7FC]">
         <SideBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/user/:id" element={<UserDetails />} />
-          <Route path="/adduser" element={<AddUser />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/addtask" element={<AddTask />} />
-          <Route path="/task/:id" element={<TaskDetails />} />
-          <Route path="/specialities" element={<Specialities />} />
-          <Route path="/speciality/:id" element={<SpecialityDetails />} />
-          <Route path="/addspeciality" element={<AddSpeciality />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/client/:id" element={<ClientDetails />} />
-          <Route path="/addclient" element={<AddClient />} />
-          <Route path="/currency" element={<Currency />} />
-          <Route path="/currency/:id" element={<CurrencyDetails />} />
-          <Route path="/addcurrency" element={<AddCurrency />} />
-          <Route path="/freelancers" element={<FreeLancers />} />
-          <Route path="/freelancer/:id" element={<FreeLancerDetails />} />
-          <Route path="/addfreelancer" element={<AddFreeLancer />} />
-          <Route path="/statuses" element={<Statuses />} />
-          <Route path="/status/:id" element={<StatusDetails />} />
-          <Route path="/addstatus" element={<AddStatus />} />
-          <Route path="/country" element={<Country />} />
-          <Route path="/addcountry" element={<AddCountry />} />
-          <Route path="/accounts" element={<Accounts />} />
-          <Route path="/account/:id" element={<AccountDetails />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/changepass" element={<ChangePass />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/profit" element={<Profit />} />
-        </Routes>
+        <div className="container pt-16">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/user/:id" element={<UserDetails />} />
+            <Route path="/adduser" element={<AddUser />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/addtask" element={<AddTask />} />
+            <Route path="/task/:id" element={<TaskDetails />} />
+            <Route path="/specialities" element={<Specialities />} />
+            <Route path="/speciality/:id" element={<SpecialityDetails />} />
+            <Route path="/addspeciality" element={<AddSpeciality />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/client/:id" element={<ClientDetails />} />
+            <Route path="/addclient" element={<AddClient />} />
+            <Route path="/currency" element={<Currency />} />
+            <Route path="/currency/:id" element={<CurrencyDetails />} />
+            <Route path="/addcurrency" element={<AddCurrency />} />
+            <Route path="/freelancers" element={<FreeLancers />} />
+            <Route path="/freelancer/:id" element={<FreeLancerDetails />} />
+            <Route path="/addfreelancer" element={<AddFreeLancer />} />
+            <Route path="/statuses" element={<Statuses />} />
+            <Route path="/status/:id" element={<StatusDetails />} />
+            <Route path="/addstatus" element={<AddStatus />} />
+            <Route path="/country" element={<Country />} />
+            <Route path="/addcountry" element={<AddCountry />} />
+            <Route path="/accounts" element={<Accounts />} />
+            <Route path="/account/:id" element={<AccountDetails />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/changepass" element={<ChangePass />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/profit" element={<Profit />} />
+          </Routes>
+        </div>
       </div>
     </>
   );
