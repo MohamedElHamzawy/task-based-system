@@ -311,7 +311,7 @@ const AddUser = () => {
             state: numberState,
             handler: numberChangeHandler,
             touchHandler: numbertouchHandler,
-            type: "number",
+            type: "tel",
           },
         ].map((input, index) => (
           <div
