@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import "./Users.css";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineTune } from "react-icons/md";
