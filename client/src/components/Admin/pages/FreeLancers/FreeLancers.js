@@ -1,9 +1,11 @@
-import "./FreeLancers.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { SiFreelancer } from "react-icons/si";
 import { FiFilter } from "react-icons/fi";
+import Filter from "../../../Filter";
+import { IoMdAdd } from "react-icons/io";
+import { useNavigate } from "react-router";
 
 //search filter
 const getSearchFilter = (searchName, freeLancers) => {
@@ -31,6 +33,7 @@ const FreeLancers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [specialities, setSpecialities] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
     let timerId;
@@ -67,6 +70,7 @@ const FreeLancers = () => {
 
   const searchFilter = getSearchFilter(searchName, freeLancers);
   const SpecialityFilter = getSpecialityFilter(speciality, freeLancers);
+  const navigate = useNavigate();
 
   const sortHandler = async (value) => {
     setIsLoading(true);
@@ -95,285 +99,174 @@ const FreeLancers = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 ">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
-        </div>
-        <h1 className="col-12 col-md-6 text-center  fw-bold">
-          System FreeLancers
-        </h1>
-      </div>
-
-      <div className="row p-0 m-0 ">
-        <div className="col-10 col-sm-6 col-lg-3 p-2">
-          <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search By Name"
-            value={searchName}
-            onChange={(e) => {
-              setSearchName(e.target.value);
-              setSpecialityFilterData(false);
-              setSearchFilterData(true);
-              setSortFilterData(false);
-              setSpeciality("");
-            }}
-          />
-        </div>
-
-        <div className="col-12 col-sm-5 col-lg-3 text-secondary row p-2">
-          <label htmlFor="Speciality" className="mt-2 col-4 col-sm-5 text-end">
-            {" "}
-            <FiFilter className="" /> Filter:
-          </label>
-          <select
-            id="speciality"
-            name="speciality"
-            className="search col-8 col-sm-7 p-2"
-            value={speciality}
-            onChange={(e) => {
-              setSpeciality(e.target.value);
-              setSpecialityFilterData(true);
-              setSearchFilterData(false);
-              setSortFilterData(false);
-              setSearchName("");
-            }}
-          >
-            <option value="" className="text-secondary">
-              Specialities
-            </option>
-            {specialities.map((speciality) => (
+    <>
+      <Filter filterOpen={filterOpen} setFilterOpen={setFilterOpen}>
+        <select
+          id="speciality"
+          name="speciality"
+          className="w-full focus:ring-0 focus:border-black"
+          value={speciality}
+          onChange={(e) => {
+            setSpeciality(e.target.value);
+            setSpecialityFilterData(true);
+            setSearchFilterData(false);
+            setSortFilterData(false);
+            setSearchName("");
+          }}
+        >
+          <option value="" className="text-secondary">
+            Specialities
+          </option>
+          {specialities.map((speciality) => {
+            if (speciality.sub_speciality === "All") return null;
+            return (
               <option value={speciality._id} key={speciality._id}>
                 {speciality.sub_speciality}
               </option>
-            ))}
-          </select>
+            );
+          })}
+        </select>
+        <select
+          id="role"
+          name="role"
+          className="w-full focus:ring-0 focus:border-black"
+          onChange={(e) => {
+            sortHandler(e.target.value);
+            setSearchFilterData(false);
+            setSpecialityFilterData(false);
+            setSortFilterData(true);
+            setSearchName("");
+            setSpeciality("");
+          }}
+        >
+          <option value="" className="text-secondary">
+            sort
+          </option>
+          <option value="completed">Completed</option>
+          <option value="profit">Profit</option>
+        </select>
+      </Filter>
+      <div className="min-h-[calc(100vh-100px)] ml-44">
+        <div className="flex justify-between items-center my-8">
+          <h1 className="text-2xl">System Users</h1>
+          <div className="">FILTERS</div>
         </div>
+        <div className="py-4 rounded-sm">
+          <div className="flex justify-between items-center mb-4">
+            <input
+              type="text"
+              className="rounded-sm w-1/3 drop-shadow-sm"
+              placeholder="Search By Name"
+              value={searchName}
+              onChange={(e) => {
+                setSearchName(e.target.value);
+                setSpecialityFilterData(false);
+                setSearchFilterData(true);
+                setSortFilterData(false);
+                setSpeciality("");
+              }}
+            />
 
-        <div className="col-12 col-sm-7 col-lg-3 text-secondary row p-2">
-          <label htmlFor="role" className="mt-2 col-4 col-sm-5 text-end">
-            {" "}
-            <FiFilter /> Sort:
-          </label>
-          <select
-            id="role"
-            name="role"
-            className=" search col-8 col-sm-7 p-2"
-            onChange={(e) => {
-              sortHandler(e.target.value);
-              setSearchFilterData(false);
-              setSpecialityFilterData(false);
-              setSortFilterData(true);
-              setSearchName("");
-              setSpeciality("");
-            }}
-          >
-            <option value="" className="text-secondary">
-              sort
-            </option>
-            <option value="completed">Completed</option>
-            <option value="profit">Profit</option>
-          </select>
-        </div>
+            <button
+              className="text-white px-4 py-2 flex items-center rounded-sm drop-shadow-sm"
+              style={{ backgroundColor: "#00E38C" }}
+              type="button"
+              onClick={() => navigate("/addfreeLancer")}
+            >
+              <IoMdAdd className="text-xl" />
+              Add New Freelancer
+            </button>
+          </div>
 
-        <div className="col-12 col-sm-5 col-lg-3 p-2 text-center">
-          <button
-            onClick={() => {
-              window.location.href = "/addfreeLancer";
-            }}
-            className="new-user p-2"
-          >
-            <SiFreelancer className="fs-3" /> Add New FreeLancer
-          </button>
+          <table className="transition-all table drop-shadow">
+            <thead>
+              <tr className="text-center">
+                <th>
+                  <p className="text-blue-500 m-0">Freelancer Name</p>
+                </th>
+                <th>
+                  <p className="text-blue-500 m-0">Speciality</p>
+                </th>
+                <th>
+                  <p className="text-blue-500 m-0">Task Count</p>
+                </th>
+                <th>
+                  <p className="text-blue-500 m-0">Completed Tasks</p>
+                </th>
+                <th>
+                  <p className="text-blue-500 m-0">Total Cost</p>
+                </th>
+                <th>
+                  <p className="text-blue-500 m-0">Total Profit</p>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {searchFilterData &&
+                (!searchFilter.length == 0 ? (
+                  searchFilter.map((freelancer) => (
+                    <tr key={freelancer._id}>
+                      <td>{freelancer.freelancername}</td>
+                      <td>
+                        {freelancer.speciality &&
+                          freelancer.speciality.sub_speciality}
+                      </td>
+                      <td>{freelancer.tasksCount}</td>
+                      <td>{freelancer.completedCount}</td>
+                      <td>{freelancer.totalGain}</td>
+                      <td>{freelancer.totalProfit}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">There Is No Users</td>
+                  </tr>
+                ))}
+              {SpecialityFilterData &&
+                (!SpecialityFilter.length == 0 ? (
+                  SpecialityFilter.map((freelancer) => (
+                    <tr key={freelancer._id}>
+                      <td>{freelancer.freelancername}</td>
+                      <td>
+                        {freelancer.speciality &&
+                          freelancer.speciality.sub_speciality}
+                      </td>
+                      <td>{freelancer.tasksCount}</td>
+                      <td>{freelancer.completedCount}</td>
+                      <td>{freelancer.totalGain}</td>
+                      <td>{freelancer.totalProfit}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">There Is No Users</td>
+                  </tr>
+                ))}
+              {sortFilterData &&
+                (!sortedFreelancers.length == 0 ? (
+                  sortedFreelancers.map((freelancer) => (
+                    <tr key={freelancer._id}>
+                      <td>{freelancer.freelancername}</td>
+                      <td>
+                        {freelancer.speciality &&
+                          freelancer.speciality.sub_speciality}
+                      </td>
+                      <td>{freelancer.tasksCount}</td>
+                      <td>{freelancer.completedCount}</td>
+                      <td>{freelancer.totalGain}</td>
+                      <td>{freelancer.totalProfit}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">There Is No Users</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
       </div>
-
-      <div className=" w-100 row p-0 m-0 mt-2 justify-content-center">
-        {searchFilterData ? (
-          !searchFilter.length == 0 ? (
-            searchFilter.map((freeLancer) => (
-              <div
-                key={freeLancer._id}
-                className="task-card bg-white  p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-start">
-                  <div className="col-12 p-2 ">
-                    <SiFreelancer className="fs-1 text-danger" />
-                  </div>
-
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Name : </span>
-                    <a
-                      className="text-dark fw-bold"
-                      href={`/freeLancer/${freeLancer._id}`}
-                    >
-                      {freeLancer.freelancername}
-                    </a>
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
-                    <span className="edit-form-lable">Speciality :</span>{" "}
-                    {freeLancer.speciality &&
-                      freeLancer.speciality.sub_speciality}
-                  </p>
-
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TaskCount :</span>{" "}
-                    {freeLancer.tasksCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">
-                      CompletedTasks :
-                    </span>{" "}
-                    {freeLancer.completedCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalCost :</span>{" "}
-                    {freeLancer.totalGain}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalProfit :</span>{" "}
-                    {freeLancer.totalProfit}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No FreeLancers</h2>
-            </div>
-          )
-        ) : (
-          ""
-        )}
-
-        {SpecialityFilterData ? (
-          !SpecialityFilter.length == 0 ? (
-            SpecialityFilter.map((freeLancer) => (
-              <div
-                key={freeLancer._id}
-                className="task-card bg-white  p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-start">
-                  <div className="col-12 p-2 ">
-                    <SiFreelancer className="fs-1 text-danger" />
-                  </div>
-
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Name : </span>
-                    <a
-                      className="text-dark fw-bold"
-                      href={`/freeLancer/${freeLancer._id}`}
-                    >
-                      {freeLancer.freelancername}
-                    </a>
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
-                    <span className="edit-form-lable">Speciality :</span>{" "}
-                    {freeLancer.speciality &&
-                      freeLancer.speciality.sub_speciality}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TaskCount :</span>{" "}
-                    {freeLancer.tasksCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">
-                      CompletedTasks :
-                    </span>{" "}
-                    {freeLancer.completedCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalCost :</span>{" "}
-                    {freeLancer.totalGain}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalProfit :</span>{" "}
-                    {freeLancer.totalProfit}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No FreeLancers</h2>
-            </div>
-          )
-        ) : (
-          ""
-        )}
-        {sortFilterData ? (
-          !sortedFreelancers.length == 0 ? (
-            sortedFreelancers.map((freeLancer) => (
-              <div
-                key={freeLancer._id}
-                className="task-card bg-white  p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-start">
-                  <div className="col-12 p-2 ">
-                    <SiFreelancer className="fs-1 text-danger" />
-                  </div>
-
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Name : </span>
-                    <a
-                      className="text-dark fw-bold"
-                      href={`/freeLancer/${freeLancer._id}`}
-                    >
-                      {freeLancer.freelancername}
-                    </a>
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
-                    <span className="edit-form-lable">Speciality :</span>{" "}
-                    {freeLancer.speciality &&
-                      freeLancer.speciality.sub_speciality}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TaskCount :</span>{" "}
-                    {freeLancer.tasksCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">
-                      CompletedTasks :
-                    </span>{" "}
-                    {freeLancer.completedCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalCost :</span>{" "}
-                    {freeLancer.totalGain}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalProfit :</span>{" "}
-                    {freeLancer.totalProfit}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No FreeLancers</h2>
-            </div>
-          )
-        ) : (
-          ""
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
