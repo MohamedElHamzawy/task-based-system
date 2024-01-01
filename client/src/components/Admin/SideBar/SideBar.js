@@ -97,7 +97,7 @@ const SideBar = () => {
       <SideNav.Nav>
         {navItems.map((item) => (
           <NavItem
-            style={{ height: 40 }}
+            style={{ height: 36 }}
             key={item.navigate}
             className={`relative rounded-sm ${
               location.pathname === item.navigate
@@ -109,7 +109,7 @@ const SideBar = () => {
           >
             {location.pathname === item.navigate && (
               <div
-                style={{ height: 40 }}
+                style={{ height: 36 }}
                 className="rounded-sm absolute top-0 w-1 bg-[#0058FF]"
               ></div>
             )}
@@ -144,7 +144,7 @@ const SideBar = () => {
         ))}
 
         <NavItem
-          style={{ height: 40 }}
+          style={{ height: 36 }}
           className={`rounded-sm hover:bg-gray-50`}
           eventKey="home"
           onClick={logout}
