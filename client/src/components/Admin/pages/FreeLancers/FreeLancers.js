@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { SiFreelancer } from "react-icons/si";
-import { FiFilter } from "react-icons/fi";
 import Filter from "../../../Filter";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, freeLancers) => {
@@ -206,7 +205,14 @@ const FreeLancers = () => {
                 (!searchFilter.length == 0 ? (
                   searchFilter.map((freelancer) => (
                     <tr key={freelancer._id}>
-                      <td>{freelancer.freelancername}</td>
+                      <td>
+                        <Link
+                          className="text-black no-underline hover:underline"
+                          to={`/freeLancer/${freelancer._id}`}
+                        >
+                          {freelancer.freelancername}
+                        </Link>
+                      </td>
                       <td>
                         {freelancer.speciality &&
                           freelancer.speciality.sub_speciality}
