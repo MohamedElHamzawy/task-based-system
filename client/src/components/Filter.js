@@ -19,7 +19,7 @@ const Filter = ({ children, applyFunction, filterOpen, setFilterOpen }) => (
     </div>
     {filterOpen && (
       <div>
-        <div className="mt-2 mb-4 flex flex-col">{children}</div>
+        <div className="mt-2 mb-4 flex flex-col space-y-2">{children}</div>
         {applyFunction && (
           <button
             type="button"
