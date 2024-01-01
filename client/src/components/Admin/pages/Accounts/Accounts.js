@@ -1,31 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import "./Accounts.css";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { RiDeleteBinFill } from "react-icons/ri";
 import { FiFilter } from "react-icons/fi";
-
-//search filter
-const getSearchFilter = (searchName, accounts) => {
-  if (!searchName) {
-    return accounts;
-  }
-  return accounts.filter((account) =>
-    account.title.toLowerCase().includes(searchName.toLowerCase())
-  );
-};
-// Account Type filter
-const getAccountTypeFilter = (accountType, accounts) => {
-  if (!accounts) {
-    return accounts;
-  }
-  return accounts.filter((account) => account.type.includes(accountType));
-};
+import Filter from "../../../Filter";
+import { useNavigate } from "react-router-dom";
+import { IoMdAdd } from "react-icons/io";
+import Account from "../../../Account";
 
 const Accounts = () => {
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState([
+    { title: "Ziad Gaafar", type: "freelancer", balance: 1000 },
+  ]);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -47,131 +32,115 @@ const Accounts = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  const [searchName, setSearchName] = useState("");
+  //search filter
+  const getSearchFilter = (searchName, accounts) => {
+    if (!searchName) {
+      return accounts;
+    }
+    return accounts.filter(
+      (account) =>
+        account.title &&
+        account.title.toLowerCase().includes(searchName.toLowerCase())
+    );
+  };
+  // Account Type filter
+  const getAccountTypeFilter = (accountType, accounts) => {
+    if (!accounts) {
+      return accounts;
+    }
+    return accounts.filter((account) => account.type.includes(accountType));
+  };
 
+  const [searchName, setSearchName] = useState("");
+  const [filterOpen, setFilterOpen] = useState(false);
   const [accountType, setAccountType] = useState("");
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [accountTypeFilterData, setAccountTypeFilterData] = useState(false);
-
+  const navigate = useNavigate();
   const searchFilter = getSearchFilter(searchName, accounts);
   const accountTypeFilter = getAccountTypeFilter(accountType, accounts);
 
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 ">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
+    <>
+      <Filter filterOpen={filterOpen} setFilterOpen={setFilterOpen}>
+        <select
+          id="accountType"
+          name="accountType"
+          className=""
+          value={accountType}
+          onChange={(e) => {
+            setAccountType(e.target.value);
+            setAccountTypeFilterData(true);
+            setSearchFilterData(false);
+            setSearchName("");
+          }}
+        >
+          <option selected disabled value="" className="">
+            AccountType
+          </option>
+          <option value="freelancer" className="">
+            FreeLancer
+          </option>
+          <option value="client" className="">
+            Client
+          </option>
+        </select>
+      </Filter>
+      <div className="min-h-[calc(100vh-100px)] ml-44">
+        <div className="flex justify-between items-center my-8">
+          <h1 className="text-2xl">System Accounts</h1>
+          <div className="">FILTERS</div>
         </div>
-        <h1 className="col-12 col-md-6 text-center  fw-bold">
-          System Accounts
-        </h1>
-      </div>
-
-      <div className="row p-0 m-0 justify-content-center">
-        <div className="col-10 col-md-4 p-2">
-          <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search By UserName"
-            value={searchName}
-            onChange={(e) => {
-              setSearchName(e.target.value);
-              setAccountTypeFilterData(false);
-              setSearchFilterData(true);
-              setAccountType("");
-            }}
-          />
-        </div>
-
-        <div className="col-12 col-md-5 text-secondary row p-2">
-          <label htmlFor="accountType" className="m-2 col-5 text-end">
-            {" "}
-            <FiFilter className="" /> Filter:
-          </label>
-          <select
-            id="accountType"
-            name="accountType"
-            className="search col-5"
-            value={accountType}
-            onChange={(e) => {
-              setAccountType(e.target.value);
-              setAccountTypeFilterData(true);
-              setSearchFilterData(false);
-              setSearchName("");
-            }}
-          >
-            <option value="" className="text-secondary">
-              AccountType
-            </option>
-            <option value="freelancer" className="">
-              FreeLancer
-            </option>
-            <option value="client" className="">
-              Client
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <h6 className="col-5 accountType-table-head text-center">UserName</h6>
-          <h6 className="col-4 accountType-table-head">Type</h6>
-          <h6 className="col-3  accountType-table-head">Balance</h6>
-        </div>
-
-        {searchFilterData ? (
-          !searchFilter.length == 0 ? (
-            searchFilter.map((account) => (
-              <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
-                <p className="col-5  name-role text-center">
-                  <a
-                    className="text-dark text-decoration-none fw-bold"
-                    href={`/account/${account._id}`}
-                  >
-                    {account.title}{" "}
-                  </a>
-                </p>
-                <p className="col-4  name-role">{account.type}</p>
-                <p className="col-3 ">{Math.floor(account.balance)}</p>
+        <div className="bg-gray-100 px-8 py-4 rounded-sm drop-shadow">
+          <div className="flex justify-between items-center">Team Members</div>
+          <div className="flex justify-between items-center my-4">
+            <input
+              type="text"
+              className=""
+              placeholder="Search By UserName"
+              value={searchName}
+              onChange={(e) => {
+                setSearchName(e.target.value);
+                setAccountTypeFilterData(false);
+                setSearchFilterData(true);
+                setAccountType("");
+              }}
+            />
+            <button
+              className="text-white px-4 py-2 flex items-center rounded-sm"
+              style={{ backgroundColor: "#00E38C" }}
+              type="button"
+              onClick={() => navigate("")}
+            >
+              <IoMdAdd className="text-xl" />
+              Add New User
+            </button>
+          </div>
+          {searchFilterData &&
+            (!searchFilter.length == 0 ? (
+              searchFilter.map((account) => (
+                <Account key={account._id} user={account} />
+              ))
+            ) : (
+              <div className="text-center">
+                <h2>There Is No Accounts</h2>
               </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Accounts</h2>
-            </div>
-          )
-        ) : (
-          ""
-        )}
-        {accountTypeFilterData ? (
-          !accountTypeFilter.length == 0 ? (
-            accountTypeFilter.map((account) => (
-              <div className="table-body row pt-3 p-0 m-0 " key={account._id}>
-                <p className="col-5  name-role text-center">
-                  <a
-                    className="text-dark text-decoration-none fw-bold"
-                    href={`/account/${account._id}`}
-                  >
-                    {account.title}{" "}
-                  </a>
-                </p>
-                <p className="col-4  name-role">{account.type}</p>
-                <p className="col-3 ">{account.balance}</p>
+            ))}
+          {accountTypeFilterData &&
+            (!accountTypeFilter.length == 0 ? (
+              accountTypeFilter.map((account) => (
+                <Account key={account._id} user={account} />
+              ))
+            ) : (
+              <div className="text-center">
+                <h2>There Is No Accounts</h2>
               </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Accounts</h2>
-            </div>
-          )
-        ) : (
-          ""
-        )}
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

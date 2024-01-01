@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { RiDeleteBinFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { MdOutlineTune } from "react-icons/md";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
+import Filter from "../../../Filter.js";
+import User from "../../../User.js";
 
 //search filter
 const getSearchFilter = (searchName, users) => {
@@ -98,75 +97,15 @@ const Users = () => {
     }
   };
 
-  const Filter = ({ children, applyFunction }) => (
-    <div
-      className={`transition-all flex flex-col items-center fixed left-64 top-16 ${
-        filterOpen ? "w-44" : "w-14"
-      } h-full -ml-2.5 bg-white drop-shadow px-2`}
-    >
-      <div className={`flex justify-between items-center w-full mt-4`}>
-        {filterOpen && <h1 className="text-xl">Filters</h1>}
-        <MdOutlineTune
-          onClick={() => setFilterOpen((prev) => !prev)}
-          className={`${
-            !filterOpen && "mx-auto"
-          } cursor-pointer hover:bg-gray-200 rounded-full -mt-1 p-1`}
-          size={30}
-        />
-      </div>
-      {filterOpen && (
-        <div>
-          <div className="mt-2 mb-4 flex flex-col">{children}</div>
-          <button
-            type="button"
-            onClick={() => applyFunction()}
-            className="w-full px-4 py-1 text-sm text-black font-semibold border border-gray-400 hover:text-white hover:bg-gray-100 hover:border-transparent focus:outline-none focus:ring-1 focus:ring-black"
-          >
-            APPLY
-          </button>
-        </div>
-      )}
-    </div>
-  );
-  const User = ({ user }) => (
-    <div
-      className="bg-white my-2 drop-shadow px-4 py-2 flex items-center justify-between"
-      key={user._id}
-    >
-      <div className="flex items-center space-x-4 w-1/3">
-        <div className="w-10 h-10 rounded-full bg-teal-300 flex items-center justify-center font-bold">
-          {user.fullname.charAt(0).toUpperCase()}
-        </div>
-        <span>{user.fullname}</span>
-      </div>
-      <div className="w-1/3 flex justify-center">
-        <p className="m-0 bg-blue-100 rounded-md border w-1/2 text-blue-600 text-center">
-          {user.user_role}
-        </p>
-      </div>
-      <div className="w-1/3 flex items-center justify-end space-x-4">
-        <button onClick={() => navigate(`/user/${user._id}`)}>
-          <FaExternalLinkAlt className="h-5 w-5" color="gray" />
-        </button>
-
-        {user.user_role == "admin" ? (
-          <button className="" disabled>
-            <RiDeleteBinFill className="h-6 w-6" color="gray" />
-          </button>
-        ) : (
-          <button onClick={() => deleteUserHandler(user._id)}>
-            <RiDeleteBinFill className="h-6 w-6" color="red" />
-          </button>
-        )}
-      </div>
-    </div>
-  );
-
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
     <>
-      <Filter applyFunction={filterHandler}>
+      <Filter
+        filterOpen={filterOpen}
+        setFilterOpen={setFilterOpen}
+        applyFunction={filterHandler}
+      >
         <select
           id="role"
           name="role"
@@ -184,7 +123,7 @@ const Users = () => {
           <option value="specialistService">Specialist Service</option>
         </select>
       </Filter>
-      <div className="h-[calc(100vh-100px)] ml-44">
+      <div className="min-h-[calc(100vh-100px)] ml-44">
         <div className="flex justify-between items-center my-8">
           <h1 className="text-2xl">System Users</h1>
           <div className="">FILTERS</div>
@@ -218,7 +157,9 @@ const Users = () => {
           </div>
           {searchFilterData ? (
             !searchFilter.length == 0 ? (
-              searchFilter.map((user) => <User user={user} />)
+              searchFilter.map((user) => (
+                <User deleteUserHandler={deleteUserHandler} user={user} />
+              ))
             ) : (
               <div className="">
                 <h2>There Is No Users</h2>
@@ -229,7 +170,9 @@ const Users = () => {
           )}
           {allFilterData ? (
             !filterData.length == 0 ? (
-              filterData.map((user) => <User user={user} />)
+              filterData.map((user) => (
+                <User deleteUserHandler={deleteUserHandler} user={user} />
+              ))
             ) : (
               <div className="row p-3 m-0 text-center">
                 <h2>There Is No Users</h2>
