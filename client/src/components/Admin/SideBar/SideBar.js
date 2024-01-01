@@ -99,7 +99,7 @@ const SideBar = () => {
           <NavItem
             style={{ height: 36 }}
             key={item.navigate}
-            className={`relative rounded-sm ${
+            className={`relative flex items-center rounded-sm ${
               location.pathname === item.navigate
                 ? "bg-[#F3F8FF] hover:bg-[#F3F8FF]"
                 : "hover:bg-gray-50"
@@ -109,7 +109,7 @@ const SideBar = () => {
           >
             {location.pathname === item.navigate && (
               <div
-                style={{ height: 36 }}
+                style={{ height: 36, marginTop: 7 }}
                 className="rounded-sm absolute top-0 w-1 bg-[#0058FF]"
               ></div>
             )}
@@ -131,7 +131,6 @@ const SideBar = () => {
             </NavIcon>
             <NavText>
               <p
-                className=""
                 style={{
                   color:
                     location.pathname === item.navigate ? "#0058FF" : "#171725",
@@ -145,7 +144,7 @@ const SideBar = () => {
 
         <NavItem
           style={{ height: 36 }}
-          className={`rounded-sm hover:bg-gray-50`}
+          className={`rounded-sm flex items-center hover:bg-gray-50`}
           eventKey="home"
           onClick={logout}
         >
