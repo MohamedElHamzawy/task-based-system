@@ -1,10 +1,8 @@
-import "./Transactions.css";
 import React, { useEffect, useReducer, useState } from "react";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
-import { TiArrowBack } from "react-icons/ti";
 import Select from "react-select";
 
 //amount validation
@@ -153,100 +151,89 @@ const Transactions = () => {
     setError(null);
   };
   return (
-    <div className="row text-center p-3 w-100 m-0">
+    <div className="min-h-[calc(100vh-4em)] flex flex-col text-center p-3 w-full m-0">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="row p-1">
-        <h2 className="col-12 text-center system-head p-3  fw-bold">
-          {" "}
-          Add Transaction{" "}
-        </h2>
+      <div className="flex p-1">
+        <h2 className="w-full text-center p-3 font-bold">Add Transaction</h2>
       </div>
 
       <form
-        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        className="bg-white p-3 items-center m-0 rounded drop-shadow"
         onSubmit={newTransactionSubmitHandler}
       >
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">Amount:</label>
-          <input
-            type="number"
-            placeholder="Amount"
-            value={amountState.value}
-            onChange={amountChangeHandler}
-            onBlur={amountTouchHandler}
-            isvalid={amountState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !amountState.isvalid &&
-              amountState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
+        <div className="flex items-center">
+          <div className="w-full flex items-center lg:w-1/2 m-1 py-2 p-0">
+            <label className="w-4/5 lg:w-1/2 font-bold">Amount:</label>
+            <input
+              type="number"
+              placeholder="Amount"
+              value={amountState.value}
+              onChange={amountChangeHandler}
+              onBlur={amountTouchHandler}
+              isvalid={amountState.isvalid.toString()}
+              className={`w-4/5 lg:w-7/12 p-2 border-black rounded-sm ${
+                !amountState.isvalid &&
+                amountState.isTouched &&
+                "form-control-invalid"
+              }`}
+            />
+          </div>
+
+          <div className="w-full flex items-center lg:w-1/2 m-1 py-2 p-0">
+            <label className="w-4/5 lg:w-1/2 font-bold">Method :</label>
+            <select
+              id="Method"
+              name="Method"
+              className="p-2 px-4 w-4/5 lg:w-7/12 border-black rounded-sm"
+              value={method}
+              onChange={(event) => setMethod(event.target.value)}
+            >
+              <option value="" selected disabled className="text-secondary">
+                Methods
+              </option>
+              <option value="VodafoneCash">VodafoneCash</option>
+              <option value="Visa">Visa</option>
+            </select>
+          </div>
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">method :</label>
-          <select
-            id="Method"
-            name="Method"
-            className="p-2 px-4 search col-10 col-lg-7"
-            value={method}
-            onChange={(event) => setMethod(event.target.value)}
-          >
-            <option value="" className="text-secondary">
-              Methods
-            </option>
-            <option value="VodafoneCash" className="">
-              VodafoneCash
-            </option>
-            <option value="Visa" className="">
-              Visa
-            </option>
-          </select>
+        <div className="flex items-center">
+          <div className="w-full flex items-center lg:w-1/2 m-1 py-2 p-0">
+            <label className="w-4/5 lg:w-1/2 font-bold">Account Number :</label>
+            <input
+              type="text"
+              placeholder="Account Number"
+              value={numberState.value}
+              onChange={numberChangeHandler}
+              onBlur={numberTouchHandler}
+              isvalid={numberState.isvalid.toString()}
+              className={`w-4/5 lg:w-7/12 p-2 border-black rounded-sm ${
+                !numberState.isvalid &&
+                numberState.isTouched &&
+                "form-control-invalid"
+              }`}
+            />
+          </div>
+
+          <div className="w-full flex items-center lg:w-1/2 m-1 py-2 p-0 text-center">
+            <label htmlFor="client" className="w-4/5 lg:w-1/2 font-bold">
+              Account:
+            </label>
+            <Select
+              options={accounts.map((account) => ({
+                label: account.title,
+                value: account._id,
+              }))}
+              onChange={handleChange}
+              className="w-4/5 lg:w-7/12 border border-black rounded-sm"
+              name="account"
+            />
+          </div>
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">
-            Account Number :
-          </label>
-          <input
-            type="text"
-            placeholder="Account Number"
-            value={numberState.value}
-            onChange={numberChangeHandler}
-            onBlur={numberTouchHandler}
-            isvalid={numberState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !numberState.isvalid &&
-              numberState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
-
-        <div className="col-12 col-lg-5 m-1 py-2 p-0 justify-content-lg-end justify-content-center text-center row ">
-          <label
-            htmlFor="client"
-            className="col-10 col-lg-5 fw-bold add-user-p "
-          >
-            {" "}
-            Account:
-          </label>
-          <Select
-            // value={account}
-            options={accounts.map((account) => ({
-              label: account.title,
-              value: account._id,
-            }))}
-            onChange={handleChange}
-            className="basic-single  col-10 col-lg-7 "
-            classNamePrefix="select"
-            name="account"
-          />
-        </div>
-
-        <div className="col-8 m-3 mt-5 row justify-content-center">
+        <div className="w-full mt-5 flex items-center justify-center">
           <button
             disabled={
               !amountState.isvalid ||
@@ -254,7 +241,7 @@ const Transactions = () => {
               !account ||
               !numberState.isvalid
             }
-            className="add-trans-btn p-3  fw-bold col-10 col-lg-5"
+            className="cursor-pointer transition-all bg-cyan-600 hover:bg-cyan-500 px-12 py-0.5 text-white font-medium"
           >
             Add
           </button>
