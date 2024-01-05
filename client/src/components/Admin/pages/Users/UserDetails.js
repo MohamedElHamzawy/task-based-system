@@ -2,17 +2,11 @@ import React, { useEffect, useReducer, useState } from "react";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
-import { FaTasks, FaCoins } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { BsFillFolderSymlinkFill } from "react-icons/bs";
-import { AiOutlineFileDone } from "react-icons/ai";
-import { GiProfit, GiPayMoney } from "react-icons/gi";
-import { FiFilter } from "react-icons/fi";
 
 // Date filter
 const getDateFilter = (start, end, tasks) => {
