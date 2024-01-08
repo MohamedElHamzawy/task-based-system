@@ -9,7 +9,7 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../../../../util/validators";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
@@ -121,6 +121,7 @@ const FreeLancerDetails = () => {
   const [freeLancerAccount, setFreeLancerAccount] = useState();
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -310,601 +311,437 @@ const FreeLancerDetails = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-2 m-0">
+    <div className="flex flex-col space-y-4 text-center w-full p-2 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
-        <div className="col-3 text-center">
+      <div className="relative flex justify-center items-center">
+        <div className="text-center">
           <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/freelancers";
-            }}
+            className="absolute left-0 top-5 p-2 px-3 text-3xl"
+            onClick={() => navigate("/freelancers")}
           >
-            <TiArrowBack />{" "}
+            <TiArrowBack />
           </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4  fw-bold">
-          {" "}
-          Freelancer Details
-        </h2>
+        <h2 className="text-center p-2 pt-4 fw-bold">Freelancer Details</h2>
       </div>
 
-      <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-        <div className="col-12 row p-3 justify-content-end ">
-          <div className="col-4">
-            <button
-              className="delete-btn px-4 p-1 fs-3"
-              onClick={deleteFreeLancerHandler}
-            >
-              <RiDeleteBinFill />
-            </button>
-          </div>
+      <div className="container mx-auto p-4 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-end mb-4">
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75"
+            onClick={deleteFreeLancerHandler}
+          >
+            <RiDeleteBinFill className="w-6 h-6" />
+          </button>
         </div>
 
         {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">
-            Full Name :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.freelancername}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Full Name:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.freelancername}
+            </p>
             <input
               type="text"
+              className={`${
+                editFull
+                  ? "block w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "hidden"
+              } ${
+                !fullNameState.isvalid &&
+                fullNameState.isTouched &&
+                "border-red-500"
+              }`}
               placeholder={freeLancer.freelancername}
               value={fullNameState.value}
               onChange={fullNameChangeHandler}
               onBlur={fullNameTouchHandler}
               isvalid={fullNameState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !fullNameState.isvalid &&
-                fullNameState.isTouched &&
-                "form-control-invalid"
-              }`}
             />
           </div>
-        </div>
-
-        {/* /////////////////////// */}
-
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2  fw-bold">
-            {" "}
-            Email :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.email}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
+          {/* ... other form fields with similar styling ... */}
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900"> Email:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.email}
+            </p>
             <input
               type="email"
+              className={`${
+                editFull
+                  ? "block w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "hidden"
+              } ${
+                !emailState.isvalid && emailState.isTouched && "border-red-500"
+              }`}
               placeholder={freeLancer.email}
               value={emailState.value}
               onChange={emailChangeHandler}
               onBlur={emailTouchHandler}
               isvalid={emailState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !emailState.isvalid &&
-                emailState.isTouched &&
-                "form-control-invalid"
-              }`}
             />
           </div>
-        </div>
-
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">
-            {" "}
-            Phone :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.phone}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Phone:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.phone}
+            </p>
             <input
               type="number"
+              className={`${
+                editFull
+                  ? "block w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "hidden"
+              } ${
+                !numberState.isvalid &&
+                numberState.isTouched &&
+                "border-red-500"
+              }`}
               placeholder={freeLancer.phone}
               value={numberState.value}
               onChange={numberChangeHandler}
               onBlur={numbertouchHandler}
               isvalid={numberState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !numberState.isvalid &&
-                numberState.isTouched &&
-                "form-control-invalid"
-              }`}
             />
           </div>
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Speciality:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.speciality && freeLancer.speciality.sub_speciality}
+            </p>
+            <div className={editFull ? "inline py-2" : "hidden"}>
+              <select
+                id="speciality"
+                name="speciality"
+                className="w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={userSpeciality}
+                onChange={(event) =>
+                  specialityChangeHandler(event.target.value)
+                }
+              >
+                <option selected disabled value="" className="text-secondary">
+                  Previous:{" "}
+                  {freeLancer.speciality &&
+                    freeLancer.speciality.sub_speciality}
+                </option>
+                {specialities.map((speciality) => (
+                  <option value={speciality._id} key={speciality._id}>
+                    {speciality.sub_speciality}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Country:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.country && freeLancer.country.countryName}
+            </p>
+            <div className={editFull ? "inline py-2" : "hidden"}>
+              <select
+                id="speciality"
+                name="speciality"
+                className="w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={country}
+                onChange={(event) => countryChangeHandler(event.target.value)}
+              >
+                <option selected disabled value="" className="text-secondary">
+                  Previous:{" "}
+                  {freeLancer.country && freeLancer.country.countryName}
+                </option>
+                {countries.map((country) => (
+                  <option value={country._id} key={country._id}>
+                    {country.countryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Currency:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.currency && freeLancer.currency.currencyname}
+            </p>
+            <div className={editFull ? "inline py-2" : "hidden"}>
+              <select
+                id="Currency"
+                name="Currency"
+                className="w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={currency}
+                onChange={(event) => setCurreny(event.target.value)}
+              >
+                <option selected disabled value="" className="text-secondary">
+                  Previous:{" "}
+                  {freeLancer.currency && freeLancer.currency.currencyname}
+                </option>
+                {currencies.map((currency) => (
+                  <option value={currency._id} key={currency._id}>
+                    {currency.currencyname}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
         {/* /////////////////////// */}
-        <div className="d-flex col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">
-            Speciality :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {freeLancer.speciality && freeLancer.speciality.sub_speciality}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
-            <select
-              id="speciality"
-              name="speciality"
-              className="p-2 px-4 search col-12"
-              value={userSpeciality}
-              onChange={(event) => specialityChangeHandler(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Specialities
-              </option>
-              {specialities.map((speciality) => (
-                <option value={speciality._id} key={speciality._id}>
-                  {speciality.sub_speciality}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">
-            {" "}
-            Country :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.country && freeLancer.country.countryName}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
-            <select
-              id="country"
-              name="country"
-              className="p-2 search w-100"
-              value={country}
-              onChange={(event) => countryChangeHandler(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Countries
-              </option>
-              {countries.map((country) => (
-                <option value={country._id} key={country._id}>
-                  {country.countryName}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2 fw-bold">
-            {" "}
-            Currency :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.currency && freeLancer.currency.currencyname}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
-            <select
-              id="Currency"
-              name="Currency"
-              className="p-2 px-4 search col-12"
-              value={currency}
-              onChange={(event) => setCurreny(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Currencies
-              </option>
-              {currencies.map((currency) => (
-                <option value={currency._id} key={currency._id}>
-                  {currency.currencyname}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-
-        <div className="col-12  p-3">
-          {!editFull ? (
+        <div className="flex space-x-2 justify-end mt-4">
+          {!editFull && (
             <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-              onClick={() => {
-                setEditFull(!editFull);
-              }}
+              className="inline-flex items-center px-4 py-2 bg-blue-700 text-white font-bold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              onClick={() => setEditFull(!editFull)}
             >
               Edit
             </button>
-          ) : (
-            ""
           )}
-          {editFull ? (
+          {editFull && (
             <>
               <button
                 disabled={
-                  !fullNameState.isvalid &&
-                  !numberState.isvalid &&
-                  !emailState.isvalid &&
-                  !country &&
-                  !currency &&
+                  !fullNameState.isvalid ||
+                  !numberState.isvalid ||
+                  !emailState.isvalid ||
+                  !country ||
+                  !currency ||
                   !userSpeciality
                 }
-                className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
+                className="inline-flex items-center px-4 py-2 bg-green-700 text-white font-bold rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 onClick={editFreeLancerHandler}
               >
                 Submit
               </button>
               <button
-                className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold"
-                onClick={() => {
-                  setEditFull(!editFull);
-                }}
+                className="inline-flex items-center px-4 py-2 bg-red-700 text-white font-bold rounded-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                onClick={() => setEditFull(!editFull)}
               >
-                <ImCancelCircle className="fs-3" />
+                <ImCancelCircle className="w-6 h-6" />
               </button>
             </>
-          ) : (
-            ""
           )}
         </div>
       </div>
 
-      <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Tasks Count{" "}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 rounded-lg bg-white shadow-md">
+        {/* Tasks Count */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <h6 className="text-gray-600 text-sm mb-2 font-medium">
+            Tasks Count
           </h6>
-          <div className="bg-warning col-4 icon p-3">
-            <FaTasks className="fs-3" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <FaTasks className="w-6 h-6 text-yellow-400" />
+              <h4 className="text-xl font-semibold ml-2 mt-1.5">
+                {freeLancer.tasksCount}
+              </h4>
+            </div>
+            <div className="text-sm text-gray-500">View Details</div>
           </div>
-          <h4 className="text-center col-4 fw-bold">{freeLancer.tasksCount}</h4>
         </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Completed Count{" "}
+
+        {/* Completed Count */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <h6 className="text-gray-600 text-sm mb-2 font-medium">
+            Completed Count
           </h6>
-          <div className="bg-info col-4 icon p-3">
-            <AiOutlineFileDone className="fs-3" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <AiOutlineFileDone className="w-6 h-6 text-blue-400" />
+              <h4 className="text-xl font-semibold ml-2 mt-1.5">
+                {freeLancer.completedCount}
+              </h4>
+            </div>
+            <div className="text-sm text-gray-500">View Details</div>
           </div>
-          <h4 className="text-center col-4 fw-bold">
-            {freeLancer.completedCount}
-          </h4>
         </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            FreeLancer Cost{" "}
+
+        {/* FreeLancer Cost */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <h6 className="text-gray-600 text-sm mb-2 font-medium">
+            FreeLancer Cost
           </h6>
-          <div className="bg-success col-4 icon p-3">
-            <FaCoins className="fs-3 " />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <FaCoins className="w-6 h-6 text-green-400" />
+              <h4 className="text-xl font-semibold ml-2 mt-1.5">
+                {freeLancer.totalGain}
+              </h4>
+            </div>
+            <div className="text-sm text-gray-500">View Details</div>
           </div>
-          <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
         </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Total Profit{" "}
+
+        {/* Total Profit */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <h6 className="text-gray-600 text-sm mb-2 font-medium">
+            Total Profit
           </h6>
-          <div className="bg-danger col-4 icon p-3">
-            <GiProfit className="fs-3" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <GiProfit className="w-6 h-6 text-red-400" />
+              <h4 className="text-xl font-semibold ml-2 mt-1.5">
+                {freeLancer.totalProfit}
+              </h4>
+            </div>
+            <div className="text-sm text-gray-500">View Details</div>
           </div>
-          <h4 className="text-center col-4 fw-bold">
-            {freeLancer.totalProfit}
-          </h4>
         </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Account Details:{" "}
+
+        {/* Account Details */}
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <h6 className="text-gray-600 text-sm mb-2 font-medium">
+            Account Details
           </h6>
-          <div className="bg-danger col-4 icon p-3">
-            <FaCcVisa className="fs-3 " />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <FaCcVisa className="w-6 h-6 text-red-400" />
+              {freeLancerAccount &&
+                freeLancerAccount.map((acc) => (
+                  <div key={acc._id} className="ml-4">
+                    <a
+                      href={`/account/${acc._id}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      Click Here
+                    </a>
+                  </div>
+                ))}
+            </div>
+            <div className="text-sm text-gray-500">Manage Accounts</div>
           </div>
-          {freeLancerAccount &&
-            freeLancerAccount.map((acc) => (
-              <div className="text-center col-8 fw-bold" key={acc._id}>
-                <a href={`/account/${acc._id}`} className="text-dark fw-bold">
-                  Click Here{" "}
-                </a>
-              </div>
-            ))}
         </div>
       </div>
 
       {/* /////////////////////////////////////////////////// */}
-      <div className="row p-0 m-0 justify-content-center adduser-form">
-        <div className="col-12 col-md-9 text-secondary row p-2">
-          <h3
-            htmlFor="Speciality"
-            className="my-2 col-12 text-center text-dark fw-bold"
-          >
-            Filter:
-          </h3>
-          <label
-            htmlFor="Speciality"
-            className="mt-2 col-4 col-sm-2 text-start"
-          >
-            {" "}
-            <FiFilter className="" /> From:
-          </label>
-          <input
-            type="date"
-            className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => {
-              setStart(e.target.value);
-              setDateFilterData(true);
-              setwithoutFilterData(false);
-            }}
-          />
-          <label
-            htmlFor="Speciality"
-            className="mt-2 col-4 col-sm-2 text-start"
-          >
-            {" "}
-            <FiFilter className="" />
-            To:
-          </label>
-          <input
-            type="date"
-            className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => {
-              setEnd(e.target.value);
-              setDateFilterData(true);
-              setwithoutFilterData(false);
-            }}
-          />
+      <div className="container mx-auto p-4 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-2xl font-semibold text-gray-900">Filter</h3>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-white rounded-lg shadow-sm p-4">
+            <label
+              htmlFor="startDate"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              <FiFilter className="w-4 h-4 mr-2 text-gray-400" /> From:
+            </label>
+            <input
+              type="date"
+              id="startDate"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => {
+                setStart(e.target.value);
+                setDateFilterData(true);
+                setwithoutFilterData(false);
+              }}
+            />
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-4">
+            <label
+              htmlFor="endDate"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              <FiFilter className="w-4 h-4 mr-2 text-gray-400" /> To:
+            </label>
+            <input
+              type="date"
+              id="endDate"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => {
+                setEnd(e.target.value);
+                setDateFilterData(true);
+                setwithoutFilterData(false);
+              }}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-        {withoutFilterData ? (
-          freeLancerTasks && !freeLancerTasks.length == 0 ? (
-            freeLancerTasks.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start"
-              >
-                <div className="col-12 fw-bold row text-center">
+      <div className="flex flex-col items-center justify-center gap-4 py-4">
+        {withoutFilterData && freeLancerTasks?.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {freeLancerTasks.map((task) => (
+              <div key={task._id} className="bg-white rounded-lg shadow-md p-4">
+                <div className="flex items-center justify-center mb-4">
                   <span
-                    className={
-                      task.taskStatus.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
+                    className={`rounded-full px-4 py-2 text-sm font-medium ${
+                      task.taskStatus.statusname === "pending"
+                        ? "bg-yellow-200 text-yellow-800"
+                        : task.taskStatus.statusname === "waiting offer"
+                        ? "bg-blue-200 text-blue-800"
+                        : task.taskStatus.statusname === "approved"
+                        ? "bg-green-200 text-green-800"
+                        : "bg-gray-200 text-gray-700"
+                    }`}
                   >
                     {task.taskStatus.statusname}
                   </span>
                 </div>
-
-                <div className="col-12 row text-center justify-content-end my-2">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex flex-col mx-auto">
+                    <span className="text-xl font-medium">
                       {task.serialNumber}
                     </span>
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                      onClick={() => navigate(`/task/${task._id}`)}
+                    >
+                      Details
+                    </button>
                   </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
-                    onClick={() => {
-                      window.location.href = `/task/${task._id}`;
-                    }}
-                  >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
                 </div>
-
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
+                <p className="text-lg font-semibold mb-2">
+                  Title: {task.title}
                 </p>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
+                <p className="mb-2">
+                  Speciality: {task.speciality.sub_speciality}
                 </p>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
+                <p className="mb-2">Client: {task.client.clientname}</p>
+                <p className="mb-2">Created By: {task.created_by?.fullname}</p>
                 {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
+                  <p className="mb-2">
+                    Freelancer: {task.freelancer.freelancername}
                   </p>
                 )}
+                <p className="mb-2">Deadline: {task.deadline.split("T")[0]}</p>
               </div>
-            ))
-          ) : (
-            <div className="row col-12  p-2 text-center">
-              <h3 className=" text-danger edit-form-lable">
-                This User Didn't Do Any Tasks Yet
-              </h3>
-            </div>
-          )
+            ))}
+          </div>
         ) : (
-          ""
-        )}
-        {dateFilterData ? (
-          !DateFilter.length == 0 ? (
-            DateFilter.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start"
-              >
-                <div className="col-12 fw-bold row text-center">
-                  <span
-                    className={
-                      task.taskStatus.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
-                  >
-                    {task.taskStatus.statusname}
-                  </span>
-                </div>
-
-                <div className="col-12 row text-center justify-content-end my-2">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
-                      {task.serialNumber}
-                    </span>
-                  </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
-                    onClick={() => {
-                      window.location.href = `/task/${task._id}`;
-                    }}
-                  >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
-                </div>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
-                {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
-                  </p>
-                )}
-              </div>
-            ))
-          ) : (
-            <div className="row col-12  p-2 text-center">
-              <h3 className=" text-danger edit-form-lable">
-                No Tasks With This Date
-              </h3>
-            </div>
-          )
-        ) : (
-          ""
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-gray-700">
+              No tasks found.
+            </h3>
+          </div>
         )}
       </div>
     </div>

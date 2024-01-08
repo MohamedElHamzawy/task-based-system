@@ -8,6 +8,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from "react-icons/ti";
+import { useNavigate } from "react-router";
 
 //fullName validation
 const fullNameReducer = (state, action) => {
@@ -72,6 +73,7 @@ const AddFreeLancer = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -235,9 +237,7 @@ const AddFreeLancer = () => {
         <div className="col-3 text-center">
           <button
             className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/freelancers";
-            }}
+            onClick={() => navigate("/freelancers")}
           >
             <TiArrowBack />{" "}
           </button>
