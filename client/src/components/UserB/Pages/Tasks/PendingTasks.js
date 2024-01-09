@@ -63,7 +63,6 @@ const PendingTasks = () => {
           })
           .then((res) => {
             setTasks(res.data.pendingTasks);
-            console.log(res.data);
           });
         setIsLoading(false);
         setLoading(false);

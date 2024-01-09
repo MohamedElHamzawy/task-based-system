@@ -78,8 +78,6 @@ const TaskDetails = () => {
 
             setNotes(res.data.notes);
             setComments(res.data.comments);
-
-            console.log(res.data);
           });
         setLoading(false);
         setIsLoading(false);

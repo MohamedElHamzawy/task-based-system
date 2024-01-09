@@ -2,17 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import "./Tasks.css";
-import { FaTasks } from "react-icons/fa";
-import { FiFilter } from "react-icons/fi";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
-import { GiProfit } from "react-icons/gi";
-import { FaCoins } from "react-icons/fa";
-import { GiPayMoney } from "react-icons/gi";
-import { RiWaterPercentFill } from "react-icons/ri";
-import { AiOutlineFileDone } from "react-icons/ai";
-import { AiOutlineClear } from "react-icons/ai";
+import { FaSortAmountDownAlt } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
+import Filter from "../../../Filter";
 
 import GetCookie from "../../../../hooks/getCookie";
+import { useNavigate } from "react-router";
 
 //search filter
 const getSearchFilter = (searchName, tasks) => {
@@ -47,6 +42,8 @@ const Tasks = () => {
   const [totalProfit, setTotalProfit] = useState();
   const [completedCount, setCompletedCount] = useState();
   const [totalProfitPercentage, setTotalProfitPercentage] = useState();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -110,8 +107,6 @@ const Tasks = () => {
             setTotalProfit(res.data.totalProfit);
             setCompletedCount(res.data.completedCount);
             setTotalProfitPercentage(res.data.totalProfitPercentage);
-
-            console.log(res.data);
           });
         setIsLoading(false);
         setLoading(false);
@@ -183,555 +178,525 @@ const Tasks = () => {
     }
   };
 
+  const clearFilterHandler = () => {
+    setSearchFilterData(true);
+    setAllFilterData(false);
+    setFreelancer("");
+    setClient("");
+    setSearchName("");
+    setCountry("");
+    setSpeciality("");
+    setStatus("");
+    setStart("");
+    setEnd("");
+    setUser("");
+  };
+
+  function getRowClass(statusname) {
+    switch (statusname) {
+      case "pending":
+        return "bg-yellow-100";
+      case "waiting offer":
+        return "bg-blue-100";
+      case "approved":
+        return "bg-sky-100";
+      case "working on":
+        return "bg-purple-100";
+      case "done":
+        return "bg-green-100";
+      case "delivered":
+        return "bg-gray-100";
+      case "rejected":
+        return "bg-red-100";
+      case "not available":
+        return "bg-slate-100";
+      case "on going":
+        return "bg-teal-100";
+      case "offer submitted":
+        return "bg-orange-100";
+      case "edit":
+        return "bg-indigo-100";
+      case "cancel":
+        return "bg-pink-100";
+      default:
+        return "";
+    }
+  }
+
+  function getStatusClass(statusname) {
+    switch (statusname) {
+      case "pending":
+        return "text-yellow-400";
+      case "waiting offer":
+        return "text-blue-400";
+      case "approved":
+        return "text-sky-400";
+      case "working on":
+        return "text-purple-400";
+      case "done":
+        return "text-green-400";
+      case "delivered":
+        return "text-gray-400";
+      case "rejected":
+        return "text-red-400";
+      case "not available":
+        return "text-slate-400";
+      case "on going":
+        return "text-teal-400";
+      case "offer submitted":
+        return "text-orange-400";
+      case "edit":
+        return "text-indigo-400";
+      case "cancel":
+        return "text-pink-400";
+      default:
+        return "";
+    }
+  }
+
+  const sortHandler = async () => {
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result`,
+        {
+          sort: sort,
+        }
+      );
+      const responseData = await response;
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      console.log(response.data.tasks);
+      setTasks(response.data.tasks);
+      setLoading(false);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 justify-content-center">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
-        </div>
-        <h1 className="col-12 col-md-6 text-center fw-bold">System Tasks</h1>
-      </div>
-
-      <div className="row p-0 m-0 justify-content-center">
-        <label
-          htmlFor="Speciality"
-          className="my-3 col-2 col-md-1 text-start text-muted"
-        >
-          Filter:
-        </label>
-
-        <div className="col-8 col-md-3 p-2">
-          <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder="Search By Name or Serial Number"
-            value={searchName}
-            onChange={(e) => {
-              setSearchName(e.target.value);
-              setSearchFilterData(true);
-              setAllFilterData(false);
-              setFreelancer("");
-              setClient("");
-              setCountry("");
-              setSpeciality("");
-              setStatus("");
-              setStart("");
-              setEnd("");
-              setUser("");
-              setSort("");
-            }}
-          />
-        </div>
-
-        <div className="col-10 col-md-7 text-secondary row p-2">
-          <label
-            htmlFor="Speciality"
-            className="mt-2 col-4 col-sm-2 text-start text-sm-end"
-          >
-            From:
-          </label>
+    <div className="border-red-500 min-h-[calc(100vh-100px)] ml-44 py-4 flex flex-col space-y-2">
+      <Filter
+        filterOpen={filterOpen}
+        setFilterOpen={setFilterOpen}
+        applyFunction={filterHandler}
+        clear={clearFilterHandler}
+      >
+        <div className="flex flex-col w-full">
+          <label className="">From:</label>
           <input
             type="date"
-            className="search col-8 col-sm-4  p-2 mt-1"
+            className="w-full"
             value={start}
             onChange={(e) => {
               setStart(e.target.value);
             }}
           />
-          <label
-            htmlFor="Speciality"
-            className="mt-2 col-4 col-sm-2 text-start text-sm-end"
-          >
-            To:
-          </label>
+          <label className="">To:</label>
           <input
             type="date"
-            className="search col-8 col-sm-4  p-2 mt-1"
+            className="w-full"
             value={end}
             onChange={(e) => {
               setEnd(e.target.value);
             }}
           />
         </div>
+        <select
+          id="speciality"
+          name="speciality"
+          className="w-full"
+          value={speciality}
+          onChange={(e) => {
+            setSpeciality(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Specialities
+          </option>
+          {specialities.map((speciality) => (
+            <option value={speciality._id} key={speciality._id}>
+              {speciality.sub_speciality}
+            </option>
+          ))}
+        </select>
+        <select
+          id="status"
+          name="status"
+          className="w-full"
+          value={status}
+          onChange={(e) => {
+            setStatus(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Statuses
+          </option>
+          {statuses.map((status) => (
+            <option value={status._id} key={status._id}>
+              {status.statusname}
+            </option>
+          ))}
+        </select>
 
-        <div className="col-12  text-secondary row p-2 justify-content-center">
-          <select
-            id="speciality"
-            name="speciality"
-            className="search col-sm-4 col-md-3 col-lg-2  col-10  m-1 p-2"
-            value={speciality}
-            onChange={(e) => {
-              setSpeciality(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Specialities
+        <select
+          id="freelancers"
+          name="freelancers"
+          className="w-full"
+          value={freelancer}
+          onChange={(e) => {
+            setFreelancer(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Freelanceres
+          </option>
+          {freelancers.map((freelancer) => (
+            <option value={freelancer._id} key={freelancer._id}>
+              {freelancer.freelancername}
             </option>
-            {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>
-                {speciality.sub_speciality}
-              </option>
-            ))}
-          </select>
+          ))}
+        </select>
 
-          <select
-            id="status"
-            name="status"
-            className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Statuses
+        <select
+          id="clients"
+          name="clients"
+          className="w-full"
+          value={client}
+          onChange={(e) => {
+            setClient(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Clients
+          </option>
+          {clients.map((client) => (
+            <option value={client._id} key={client._id}>
+              {client.clientname}
             </option>
-            {statuses.map((status) => (
-              <option value={status._id} key={status._id}>
-                {status.statusname}
-              </option>
-            ))}
-          </select>
+          ))}
+        </select>
 
-          <select
-            id="freelancers"
-            name="freelancers"
-            className="search col-sm-4 col-md-3 col-lg-2  col-10 p-2 m-1"
-            value={freelancer}
-            onChange={(e) => {
-              setFreelancer(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Freelanceres
+        <select
+          id="users"
+          name="users"
+          className="w-full"
+          value={user}
+          onChange={(e) => {
+            setUser(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Users
+          </option>
+          {users.map((user) => (
+            <option value={user._id} key={user._id}>
+              {user.username}
             </option>
-            {freelancers.map((freelancer) => (
-              <option value={freelancer._id} key={freelancer._id}>
-                {freelancer.freelancername}
-              </option>
-            ))}
-          </select>
+          ))}
+        </select>
 
-          <select
-            id="clients"
-            name="clients"
-            className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1"
-            value={client}
-            onChange={(e) => {
-              setClient(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Clients
+        <select
+          id="countries"
+          name="countries"
+          className="w-full"
+          value={country}
+          onChange={(e) => {
+            setCountry(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Countries
+          </option>
+          {countries.map((country) => (
+            <option value={country._id} key={country._id}>
+              {country.countryName}
             </option>
-            {clients.map((client) => (
-              <option value={client._id} key={client._id}>
-                {client.clientname}
-              </option>
-            ))}
-          </select>
+          ))}
+        </select>
+      </Filter>
 
-          <select
-            id="users"
-            name="users"
-            className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1"
-            value={user}
-            onChange={(e) => {
-              setUser(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Users
-            </option>
-            {users.map((user) => (
-              <option value={user._id} key={user._id}>
-                {user.username}
-              </option>
-            ))}
-          </select>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl">Tasks</h1>
+        <div className="">FILTERS</div>
+      </div>
 
-          <select
-            id="countries"
-            name="countries"
-            className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1"
-            value={country}
-            onChange={(e) => {
-              setCountry(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Countries
-            </option>
-            {countries.map((country) => (
-              <option value={country._id} key={country._id}>
-                {country.countryName}
-              </option>
-            ))}
-          </select>
+      <div className="flex items-center justify-between">
+        <input
+          type="text"
+          className="w-1/3 p-2 border border-gray-400 rounded-md"
+          placeholder="Search By Name or ID"
+          value={searchName}
+          onChange={(e) => {
+            setSearchName(e.target.value);
+            setSearchFilterData(true);
+            setAllFilterData(false);
+            setFreelancer("");
+            setClient("");
+            setCountry("");
+            setSpeciality("");
+            setStatus("");
+            setStart("");
+            setEnd("");
+            setUser("");
+          }}
+        />
+        <button
+          className="text-white px-4 py-2 flex items-center rounded-sm transition-all duration-100 active:scale-95"
+          style={{ backgroundColor: "#00E38C" }}
+          type="button"
+          onClick={() => navigate("/addtask")}
+        >
+          <IoMdAdd className="text-xl" />
+          Add New Task
+        </button>
+      </div>
 
-          <select
-            id="Sort"
-            name="Sort"
-            className="search col-sm-4 col-md-3 col-lg-2 col-10 p-2 m-1"
-            value={sort}
-            onChange={(e) => {
-              setSort(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Sort
-            </option>
-            <option value="date" className="">
-              Date
-            </option>
-            <option value="profit" className="">
-              Profit
-            </option>
-          </select>
+      <div className="grid grid-cols-3 gap-2">
+        <div className="bg-white drop-shadow rounded flex flex-col justify-center px-4 pt-4 pb-1 border">
+          <div className="flex items-center justify-between space-x-8">
+            <div className="text-center">
+              <h2 className="text-lg text-gray-400 font-semibold">
+                Task Count
+              </h2>
+              <h2 className="text-2xl font-medium">
+                {tasksCount ? tasksCount : "0"}
+              </h2>
+            </div>
+            <div className="text-center">
+              <h2 className="text-lg text-gray-400 font-semibold">
+                Completed Count
+              </h2>
+              <h2 className="text-2xl font-medium">
+                {completedCount ? completedCount : "0"}
+              </h2>
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-center m-0 p-0">
+            <h2 className="text-base text-sky-800 font-semibold m-0 p-0">
+              Task Completion - {(completedCount / tasksCount) * 100} %
+            </h2>
+            <div className="w-2/3 bg-gray-300 rounded-full h-1.5">
+              <div
+                className="bg-green-400 h-1.5 rounded-full"
+                style={{ width: `${(completedCount / tasksCount) * 100}%` }}
+              ></div>
+            </div>
+          </div>
         </div>
 
-        <div className="col-8 p-2 text-start ">
-          <button onClick={filterHandler} className="filter-btn p-2 mx-1">
-            <FiFilter className="fs-3" /> Filter
+        <div className="bg-white drop-shadow rounded col-span-2 flex justify-between p-4">
+          {[
+            { label: "Total Gain", data: totalGain },
+            { label: "Total Cost", data: totalCost },
+            { label: "Total Profit", data: totalProfit },
+            { label: "Profit Percentage", data: totalProfitPercentage },
+          ].map((item, index) => (
+            <div
+              key={item.label}
+              className="relative w-1/4 h-full flex items-center justify-between space-x-0.5"
+            >
+              <div className="text-center h-full">
+                <h2 className="text-lg text-gray-400 font-semibold">
+                  {item.label}
+                </h2>
+                <h2 className="text-2xl font-medium">
+                  {item.label == "Profit Percentage" ? (
+                    <span className="text-green-500">
+                      {item.data ? (item.data * 100).toFixed(2) : "0"} %
+                    </span>
+                  ) : (
+                    <span>{item.data ? item.data : "0"}</span>
+                  )}
+                </h2>
+              </div>
+
+              {index !== 0 && (
+                <div className="absolute top-auto -left-8 w-[1.7px] h-2/3 my bg-black my-6"></div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="w-1/2 flex items-center space-x-2">
+          <button
+            type="button"
+            className="py-1 px-4 border-2 border-blue-600 text-blue-600 rounded transition-all hover:bg-blue-600 hover:text-white active:scale-95"
+          >
+            Details
           </button>
           <button
-            onClick={() => {
-              setSearchFilterData(true);
-              setAllFilterData(false);
-              setFreelancer("");
-              setClient("");
-              setSearchName("");
-              setCountry("");
-              setSpeciality("");
-              setStatus("");
-              setStart("");
-              setEnd("");
-              setUser("");
-              setSort("");
-            }}
-            className="clear-filter-btn p-2"
+            type="button"
+            className="py-1 px-4 border-2 border-blue-600 text-blue-600 rounded transition-all hover:bg-blue-600 hover:text-white active:scale-95"
           >
-            <AiOutlineClear className="fs-3" /> Clear
+            Download
           </button>
         </div>
-        <div className="col-12 col-sm-4 p-2 text-end">
-          <button
-            onClick={() => {
-              window.location.href = "/addtask";
-            }}
-            className="new-user p-2"
-          >
-            <FaTasks className="fs-3" /> Add New Task
-          </button>
+        <div className="w-1/2 flex items-center justify-between space-x-2">
+          <div className="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              name="prioriity"
+              id="prioriity"
+              className="appearance-non"
+            />
+            <label htmlFor="priority">Show High Priority Tasks</label>
+          </div>
+          <div className="w-1/2 flex items-center space-x-1">
+            <FaSortAmountDownAlt />
+            <select
+              id="Sort"
+              name="Sort"
+              className="flex-1"
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                sortHandler();
+              }}
+            >
+              <option value="" selected disabled className="text-secondary">
+                Sort By
+              </option>
+              <option value="date" className="">
+                Date
+              </option>
+              <option value="profit" className="">
+                Profit
+              </option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div className="row analysis adduser-form p-1 justify-content-center col-11">
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Tasks Count{" "}
-          </h6>
-          <div className="bg-info col-4 icon p-3 text-center">
-            <FaTasks className="fs-3" />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {tasksCount ? tasksCount : "0"}
-          </h4>
-        </div>
-
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Completed Count{" "}
-          </h6>
-          <div className="waiting-offer col-4 icon p-3 text-center">
-            <AiOutlineFileDone className="fs-3" />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {completedCount ? completedCount : "0"}
-          </h4>
-        </div>
-
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Total Gain{" "}
-          </h6>
-          <div className="bg-success col-4 icon p-3 text-center">
-            <FaCoins className="fs-3 " />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {totalGain ? totalGain : "0"}
-          </h4>
-        </div>
-
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Total Cost{" "}
-          </h6>
-          <div className="bg-warning col-4 icon p-3 text-center">
-            <GiPayMoney className="fs-3 " />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {totalCost ? totalCost : "0"}
-          </h4>
-        </div>
-
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Total Profit{" "}
-          </h6>
-          <div className="bg-danger col-4 icon p-3 text-center">
-            <GiProfit className="fs-3 " />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {totalProfit ? totalProfit : "0"}
-          </h4>
-        </div>
-
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3  p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Profit Percentage{" "}
-          </h6>
-          <div className="bg-primary col-4 icon p-3 text-center">
-            <RiWaterPercentFill className="fs-3 " />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {totalProfitPercentage ? Math.floor(totalProfitPercentage) : "0"}
-          </h4>
-        </div>
-      </div>
-
-      <div className="row justify-content-center p-0 m-0">
-        {searchFilterData ? (
-          !searchFilter.length == 0 ? (
-            searchFilter.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-center ">
-                  <span
-                    className={
-                      task.taskStatus.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
-                  >
-                    {task.taskStatus.statusname}
-                  </span>
-                </div>
-                <div className="col-12 row text-center justify-content-end my-2 ">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
-                      {task.serialNumber}
-                    </span>
-                  </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
+      {searchFilterData &&
+        (!searchFilter.length == 0 ? (
+          <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+            <thead>
+              <tr className="drop-shadow bg-white text-cyan-600">
+                <th className="px-4 py-3 font-medium text-sm">ID</th>
+                <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                <th className="px-4 py-3 font-medium text-sm">Client</th>
+                <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                <th className="px-4 py-3 font-medium text-sm">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchFilter.map((task, index) => (
+                <tr
+                  key={task._id}
+                  className={`bg-white ${
+                    index !== 0 && "border-t-4 border-[#F4F7FC]"
+                  }`}
+                >
+                  <td
+                    className="cursor-pointer hover:underline px-4 py-3"
                     onClick={() => {
-                      window.location.href = `/task/${task._id}`;
+                      navigate(`/task/${task._id}`);
                     }}
                   >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
-                </div>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created At :</span>{" "}
-                  {task.createdAt.split("T")[0]}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Country :</span>{" "}
-                  {task.country.countryName}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
-                  </p>
-                )}
-                {task.profit_amount && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Profit :</span>{" "}
-                    {task.profit_amount}
-                  </p>
-                )}
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Tasks</h2>
-            </div>
-          )
+                    {task.serialNumber}
+                  </td>
+                  <td className="px-4 py-3">{task.title}</td>
+                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">
+                    {task.freelancer ? task.freelancer.freelancername : "-"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {task.profit_amount || 0}{" "}
+                    {task.task_currency && task.task_currency.currencyname}
+                  </td>
+                  <td className="px-4 py-3">
+                    {new Date(task.deadline).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div
+                      className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                        task.taskStatus.statusname
+                      )} ${getStatusClass(task.taskStatus.statusname)}`}
+                    >
+                      {task.taskStatus.statusname}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         ) : (
-          ""
-        )}
+          <div className="text-center">
+            <h2>There Is No Tasks</h2>
+          </div>
+        ))}
 
-        {allFilterData ? (
-          !filterData.length == 0 ? (
-            filterData.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-center">
-                  <span
-                    className={
-                      task.taskStatus.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
-                  >
-                    {task.taskStatus.statusname}
-                  </span>
-                </div>
-
-                <div className="col-12 row text-center justify-content-end my-2">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
-                      {task.serialNumber}
-                    </span>
-                  </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
+      {allFilterData &&
+        (!filterData.length == 0 ? (
+          <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+            <thead>
+              <tr className="drop-shadow bg-white text-cyan-600">
+                <th className="px-4 py-3 font-medium text-sm">ID</th>
+                <th className="px-4 py-3 font-medium text-sm">Title</th>
+                <th className="px-4 py-3 font-medium text-sm">Client</th>
+                <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                <th className="px-4 py-3 font-medium text-sm">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filterData.map((task, index) => (
+                <tr
+                  key={task._id}
+                  className={`bg-white ${
+                    index !== 0 && "border-t-4 border-[#F4F7FC]"
+                  }`}
+                >
+                  <td
+                    className="cursor-pointer hover:underline px-4 py-3"
                     onClick={() => {
-                      window.location.href = `/task/${task._id}`;
+                      navigate(`/task/${task._id}`);
                     }}
                   >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
-                </div>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created At :</span>{" "}
-                  {task.createdAt.split("T")[0]}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Country :</span>{" "}
-                  {task.country.countryName}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
-                  </p>
-                )}
-                {task.profit_amount && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Profit :</span>{" "}
-                    {task.profit_amount}
-                  </p>
-                )}
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Tasks</h2>
-            </div>
-          )
+                    {task.serialNumber}
+                  </td>
+                  <td className="px-4 py-3">{task.title}</td>
+                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">
+                    {task.freelancer ? task.freelancer.freelancername : "-"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {task.profit_amount || 0}{" "}
+                    {task.task_currency && task.task_currency.currencyname}
+                  </td>
+                  <td className="px-4 py-3">
+                    {new Date(task.deadline).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div
+                      className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                        task.taskStatus.statusname
+                      )} ${getStatusClass(task.taskStatus.statusname)}`}
+                    >
+                      {task.taskStatus.statusname}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         ) : (
-          ""
-        )}
-      </div>
+          <div className="row  p-3 m-0 text-center">
+            <h2>There Is No Tasks</h2>
+          </div>
+        ))}
     </div>
   );
 };

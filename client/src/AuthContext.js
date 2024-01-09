@@ -25,8 +25,6 @@ export function AuthProvider(Props) {
         userb,
       });
     }
-
-    console.log(auth);
   }, []);
 
   return (

@@ -1,7 +1,13 @@
 import React from "react";
 import { MdOutlineTune } from "react-icons/md";
 
-const Filter = ({ children, applyFunction, filterOpen, setFilterOpen }) => (
+const Filter = ({
+  children,
+  applyFunction,
+  filterOpen,
+  setFilterOpen,
+  clear,
+}) => (
   <div
     className={`transition-all flex flex-col items-center fixed left-64 top-16 ${
       filterOpen ? "w-44" : "w-14"
@@ -19,7 +25,7 @@ const Filter = ({ children, applyFunction, filterOpen, setFilterOpen }) => (
     </div>
     {filterOpen && (
       <div>
-        <div className="mt-2 mb-4 flex flex-col space-y-2">{children}</div>
+        <div className="mt-2 mb-4 flex flex-col space-y-2 w-40">{children}</div>
         {applyFunction && (
           <button
             type="button"
@@ -27,6 +33,15 @@ const Filter = ({ children, applyFunction, filterOpen, setFilterOpen }) => (
             className="w-full px-4 py-1 text-sm text-black font-semibold border border-gray-400 hover:text-white hover:bg-gray-100 hover:border-transparent focus:outline-none focus:ring-1 focus:ring-black"
           >
             APPLY
+          </button>
+        )}
+        {clear && (
+          <button
+            type="button"
+            onClick={() => clear()}
+            className="w-full px-4 py-1 bg-red-500 text-sm text-white font-semibold border border-gray-400 hover:bg-red-400 hover:border-transparent focus:outline-none focus:ring-1 focus:ring-red-600"
+          >
+            CLEAR
           </button>
         )}
       </div>
