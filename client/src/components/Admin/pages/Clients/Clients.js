@@ -3,7 +3,9 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import "./Clients.css";
 import { FaHospitalUser } from "react-icons/fa";
-import { FiFilter } from "react-icons/fi";
+import { FaPlus } from "react-icons/fa";
+import Filter from "../../../Filter";
+import { useNavigate } from "react-router";
 
 //search filter
 const getSearchFilter = (searchName, clients) => {
@@ -87,232 +89,276 @@ const Clients = () => {
     }
   };
 
+  const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 justify-content-center">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
-        </div>
-        <h1 className="col-12 col-md-6 text-center fw-bold">System Clients</h1>
+    <div className="justify-center min-h-[calc(100vh-100px)] ml-44">
+      <Filter
+        filterOpen={filterOpen}
+        setFilterOpen={setFilterOpen}
+        applyFunction={sortHandler}
+      >
+        <select
+          id="role"
+          name="role"
+          className=" search  p-2"
+          onChange={(e) => {
+            setSortedClients(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            sort
+          </option>
+          <option value="completed">Completed</option>
+          <option value="profit">Profit</option>
+        </select>
+        <select
+          id="speciality"
+          name="speciality"
+          className="search p-2"
+          value={country}
+          onChange={(e) => {
+            setCountry(e.target.value);
+          }}
+        >
+          <option value="" className="text-secondary">
+            Countries
+          </option>
+          {countries.map((country) => (
+            <option value={country._id} key={country._id}>
+              {country.countryName}
+            </option>
+          ))}
+        </select>
+      </Filter>
+
+      <div className="flex justify-between items-center my-8">
+        <h1 className="text-2xl">System Clients</h1>
+        {/* <div className="">FILTERS</div> */}
       </div>
 
-      <div className="row p-0 m-0 col-10 justify-content-center">
-        <div className="col-10 col-sm-8 col-lg-3 row p-2 mx-1">
-          <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search By Name"
-            onChange={(e) => {
-              setSearchName(e.target.value);
-              setSearchFilterData(true);
-              setSortFilterData(false);
-              setCountry("");
-              setSortedClients("");
-            }}
-          />
-        </div>
-
-        <div className="col-12 col-sm-4 col-lg-3 text-secondary row p-2 mx-1">
-          <select
-            id="role"
-            name="role"
-            className=" search  p-2"
-            onChange={(e) => {
-              setSortedClients(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              sort
-            </option>
-            <option value="completed">Completed</option>
-            <option value="profit">Profit</option>
-          </select>
-        </div>
-
-        <div className="col-12 col-sm-4 col-lg-3 text-secondary row p-2">
-          <select
-            id="speciality"
-            name="speciality"
-            className="search p-2"
-            value={country}
-            onChange={(e) => {
-              setCountry(e.target.value);
-            }}
-          >
-            <option value="" className="text-secondary">
-              Countries
-            </option>
-            {countries.map((country) => (
-              <option value={country._id} key={country._id}>
-                {country.countryName}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="col-5 col-sm-3 col-lg-3  p-2 text-center ">
-          <button
-            disabled={!sortedClients && !country}
-            onClick={sortHandler}
-            className="filter-btn p-2"
-          >
-            <FiFilter className="fs-3" /> Filter
-          </button>
-        </div>
-
-        <div className="col-7 col-sm-12 p-2 justify-content-end text-end">
-          <button
-            onClick={() => {
-              window.location.href = "/addclient";
-            }}
-            className="new-user p-2"
-          >
-            <FaHospitalUser className="fs-3" /> Add New Client
-          </button>
-        </div>
+      <div className="flex items-center justify-between">
+        <input
+          type="text"
+          className="rounded border px-3 py-2 shadow-sm w-1/3"
+          placeholder="Search By Name"
+          onChange={(e) => {
+            setSearchName(e.target.value);
+            setSearchFilterData(true);
+            setSortFilterData(false);
+            setCountry("");
+            setSortedClients("");
+          }}
+        />
+        <button
+          onClick={() => navigate("/addclient")}
+          className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+        >
+          <FaPlus className="mr-2" /> Add New Client
+        </button>
       </div>
 
-      <div className=" w-100 row p-0 m-0 mt-2 justify-content-center">
-        {searchFilterData ? (
-          !searchFilter.length == 0 ? (
-            searchFilter.map((client) => (
-              <div
-                key={client._id}
-                className="task-card bg-white  p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-start">
-                  <div className="col-12 p-2 ">
-                    <FaHospitalUser className="fs-1 text-danger" />
-                  </div>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Name : </span>
-                    <a
-                      className="text-dark fw-bold"
-                      href={`/client/${client._id}`}
-                    >
-                      {client.clientname}
-                    </a>
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Country : </span>
-                    {client.country.countryName}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Website : </span>
-                    {client.website}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TaskCount :</span>{" "}
-                    {client.tasksCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">
-                      CompletedTasks :
-                    </span>{" "}
-                    {client.completedCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalGain :</span>{" "}
-                    {client.totalGain}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalProfit :</span>{" "}
-                    {client.totalProfit}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Currency :</span>{" "}
-                    {client.currency && client.currency.currencyname}
-                  </p>
-                </div>
-              </div>
-            ))
+      <div className="mt-4 overflow-x-auto drop-shadow rounded-sm">
+        {searchFilterData &&
+          (!searchFilter.length == 0 ? (
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50 text-cyan-600">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Country
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Website
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Task Count
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Completed Tasks
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Total Gain
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Total Profit
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                  >
+                    Currency
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {searchFilter.map((client) => (
+                  <tr key={client._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <a
+                        className="text-indigo-600 hover:text-indigo-900 font-medium"
+                        href={`/client/${client._id}`}
+                      >
+                        {client.clientname}
+                      </a>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.country.countryName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.website}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.tasksCount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.completedCount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.totalGain}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.totalProfit}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.currency && client.currency.currencyname}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Clients</h2>
+            <div className="row p-3 m-0 text-center">
+              <h2 className="text-lg font-medium text-gray-900">
+                There Are No Clients
+              </h2>
             </div>
-          )
-        ) : (
-          ""
-        )}
-        {sortFilterData ? (
-          !filterData.length == 0 ? (
-            filterData.map((client) => (
-              <div
-                key={client._id}
-                className="task-card bg-white  p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-start">
-                  <div className="col-12 p-2 ">
-                    <FaHospitalUser className="fs-1 text-danger" />
-                  </div>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Name : </span>
-                    <a
-                      className="text-dark fw-bold"
-                      href={`/client/${client._id}`}
-                    >
-                      {client.clientname}
-                    </a>
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Country : </span>
-                    {client.country.countryName}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Website : </span>
-                    {client.website}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TaskCount :</span>{" "}
-                    {client.tasksCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">
-                      CompletedTasks :
-                    </span>{" "}
-                    {client.completedCount}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalGain :</span>{" "}
-                    {client.totalGain}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">TotalProfit :</span>{" "}
-                    {client.totalProfit}
-                  </p>
-                  <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Currency :</span>{" "}
-                    {client.currency && client.currency.currencyname}
-                  </p>
-                </div>
-              </div>
-            ))
+          ))}
+
+        {sortFilterData &&
+          (!filterData.length == 0 ? (
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Country
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Website
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Task Count
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Completed Tasks
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Total Gain
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Total Profit
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Currency
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filterData.map((client) => (
+                  <tr key={client._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <a
+                        className="text-indigo-600 hover:text-indigo-900 font-medium"
+                        href={`/client/${client._id}`}
+                      >
+                        {client.clientname}
+                      </a>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.country.countryName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.website}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.tasksCount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.completedCount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.totalGain}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.totalProfit}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {client.currency && client.currency.currencyname}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Clients</h2>
+            <div className="row p-3 m-0 text-center">
+              <h2 className="text-lg font-medium text-gray-900">
+                There Are No Clients
+              </h2>
             </div>
-          )
-        ) : (
-          ""
-        )}
+          ))}
       </div>
     </div>
   );
