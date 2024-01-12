@@ -126,7 +126,7 @@ const Users = () => {
       <div className="min-h-[calc(100vh-100px)] ml-44">
         <div className="flex justify-between items-center my-8">
           <h1 className="text-2xl">System Users</h1>
-          <div className="">FILTERS</div>
+          {/* <div className="">FILTERS</div> */}
         </div>
         <div className="bg-gray-100 px-8 py-4 rounded-sm drop-shadow">
           <div className="flex justify-between items-center">Team Members</div>

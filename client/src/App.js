@@ -7,6 +7,8 @@ import { AuthProvider, AuthContext } from "./AuthContext";
 import UserA from "./components/UserA/UserA";
 import UserB from "./components/UserB/UserB";
 
+import "react-datepicker/dist/react-datepicker.css";
+
 function App() {
   const authContext = useContext(AuthContext);
   return (

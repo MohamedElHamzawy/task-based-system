@@ -8,6 +8,7 @@ import Filter from "../../../Filter";
 
 import GetCookie from "../../../../hooks/getCookie";
 import { useNavigate } from "react-router";
+import ReactDatePicker from "react-datepicker";
 
 //search filter
 const getSearchFilter = (searchName, tasks) => {
@@ -119,8 +120,8 @@ const Tasks = () => {
 
   const [speciality, setSpeciality] = useState("");
   const [status, setStatus] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
   const [freelancer, setFreelancer] = useState("");
   const [client, setClient] = useState("");
   const [country, setCountry] = useState("");
@@ -278,6 +279,38 @@ const Tasks = () => {
     }
   };
 
+  const [datePickerOpen] = useState(false);
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setStart(start);
+    setEnd(end);
+  };
+
+  const dateHandler = async () => {
+    setIsLoading(true);
+    try {
+      setError(null);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result`,
+        {
+          start: start,
+          end: end,
+        }
+      );
+      const responseData = await response;
+      if (!(response.statusText === "OK")) {
+        throw new Error(responseData.data.message);
+      }
+      console.log(response.data.tasks);
+      setTasks(response.data.tasks);
+      setLoading(false);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -288,7 +321,7 @@ const Tasks = () => {
         applyFunction={filterHandler}
         clear={clearFilterHandler}
       >
-        <div className="flex flex-col w-full">
+        {/* <div className="flex flex-col w-full">
           <label className="">From:</label>
           <input
             type="date"
@@ -307,7 +340,7 @@ const Tasks = () => {
               setEnd(e.target.value);
             }}
           />
-        </div>
+        </div> */}
         <select
           id="speciality"
           name="speciality"
@@ -424,7 +457,25 @@ const Tasks = () => {
 
       <div className="flex justify-between items-center">
         <h1 className="text-2xl">Tasks</h1>
-        <div className="">FILTERS</div>
+        <div className="">
+          <ReactDatePicker
+            className="relative rounded border border-gray-300 cursor-pointer text-gray-400 w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+            selected={end}
+            selectsEnd={end}
+            onChange={onChange}
+            onCalendarClose={dateHandler}
+            startDate={start}
+            endDate={end}
+            selectsRange
+            showMonthDropdown
+            showYearDropdown
+            inline={datePickerOpen}
+            dateFormat="MMM, yyyy"
+            showIcon
+            toggleCalendarOnIconClick
+            calendarIconClassname="mr-4 cursor-pointer absolute z-10 top-0.5"
+          />
+        </div>
       </div>
 
       <div className="flex items-center justify-between">

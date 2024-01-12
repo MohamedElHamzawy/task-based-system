@@ -6,6 +6,7 @@ import Filter from "../../../Filter";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import Account from "../../../Account";
+import ReactDatePicker from "react-datepicker";
 
 const Accounts = () => {
   const [accounts, setAccounts] = useState([
@@ -60,6 +61,15 @@ const Accounts = () => {
   const searchFilter = getSearchFilter(searchName, accounts);
   const accountTypeFilter = getAccountTypeFilter(accountType, accounts);
 
+  const [datePickerOpen] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
@@ -91,7 +101,22 @@ const Accounts = () => {
       <div className="min-h-[calc(100vh-100px)] ml-44">
         <div className="flex justify-between items-center my-8">
           <h1 className="text-2xl">System Accounts</h1>
-          <div className="">FILTERS</div>
+          <div className="">
+            <ReactDatePicker
+              className="relative rounded border border-gray-300 cursor-pointer text-gray-400 w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+              selected={startDate}
+              onChange={onChange}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+              showMonthDropdown
+              inline={datePickerOpen}
+              dateFormat="MMM, yyyy"
+              showIcon
+              toggleCalendarOnIconClick
+              calendarIconClassname="mr-4 cursor-pointer absolute z-10 top-0.5"
+            />
+          </div>
         </div>
         <div className="bg-gray-100 px-8 py-4 rounded-sm drop-shadow">
           <div className="flex justify-between items-center">Team Members</div>
