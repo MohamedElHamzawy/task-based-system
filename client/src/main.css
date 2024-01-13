@@ -1696,6 +1696,22 @@ input:checked + .toggle-bg {
   max-width: 20rem;
 }
 
+.max-w-lg {
+  max-width: 32rem;
+}
+
+.max-w-xl {
+  max-width: 36rem;
+}
+
+.max-w-2xl {
+  max-width: 42rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -2018,6 +2034,11 @@ input:checked + .toggle-bg {
 .border-red-500 {
   --tw-border-opacity: 1;
   border-color: rgb(240 82 82 / var(--tw-border-opacity));
+}
+
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
 
 .bg-\[\#0058FF\] {
@@ -2844,6 +2865,11 @@ input:checked + .toggle-bg {
   background-color: rgb(5 122 85 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-red-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(200 30 30 / var(--tw-bg-opacity));
+}
+
 .hover\:text-blue-600:hover {
   --tw-text-opacity: 1;
   color: rgb(28 100 242 / var(--tw-text-opacity));
@@ -3001,8 +3027,21 @@ input:checked + .toggle-bg {
   --tw-ring-color: rgb(14 165 233 / var(--tw-ring-opacity));
 }
 
+.disabled\:cursor-not-allowed:disabled {
+  cursor: not-allowed;
+}
+
 .disabled\:opacity-50:disabled {
   opacity: 0.5;
+}
+
+.disabled\:transition-none:disabled {
+  transition-property: none;
+}
+
+.disabled\:hover\:bg-red-500:hover:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 82 82 / var(--tw-bg-opacity));
 }
 
 .group:hover .group-hover\:rotate-180 {
@@ -3119,6 +3158,11 @@ input:checked + .toggle-bg {
 @media (min-width: 640px) {
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 

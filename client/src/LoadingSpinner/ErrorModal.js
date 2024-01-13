@@ -12,9 +12,14 @@ const ErrorModal = (props) => {
         alignItems="center"
         justifyContent="center"
       >
-        <Alert severity="error" onClose={props.onClear}>
-          <AlertTitle>An Error Occurred!</AlertTitle>
-          {props.error}
+        <Alert
+          severity={props.message ? "success" : "error"}
+          onClose={props.onClear}
+        >
+          <AlertTitle>
+            {props.message ? "Success!" : "An Error Occurred!"}
+          </AlertTitle>
+          {props.message ? props.message : props.error}
         </Alert>
       </Grid>
     </MiModal>

@@ -1,10 +1,10 @@
-import "./Country.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 
 import { RiDeleteBinFill } from "react-icons/ri";
-import { FaFlagUsa } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 //search filter
 const getSearchFilter = (searchName, countries) => {
@@ -21,6 +21,7 @@ const Country = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -67,67 +68,77 @@ const Country = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 justify-content-center">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
-        </div>
-        <h1 className="col-12 col-md-6 text-center fw-bold">
-          System Countries
-        </h1>
+    <div className="justify-center min-h-[calc(100vh-100px)]">
+      <div className="flex justify-between items-center my-8">
+        <h1 className="text-2xl">System Countries</h1>
+        {/* <div className="">FILTERS</div> */}
       </div>
-
-      <div className="row p-0 m-0 col-10 justify-content-center">
-        <div className="col-12 col-md-6 p-2">
+      <div className="w-full max-w-3xl mx-auto">
+        <div className="flex items-center justify-between">
           <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search By Country Name"
+            type="text"
+            className="rounded border px-3 py-2 shadow-sm w-1/3"
+            placeholder="Search By Country Name"
             onChange={(e) => {
               setSearchName(e.target.value);
             }}
           />
-        </div>
 
-        <div className="col-12 col-md-5 p-2 text-end">
           <button
-            onClick={() => {
-              window.location.href = "/addcountry";
-            }}
-            className="new-user p-2"
+            onClick={() => navigate("/addcountry")}
+            className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
           >
-            <FaFlagUsa className="fs-3" /> Add New Country
+            <FaPlus className="mr-2" /> Add New Country
           </button>
         </div>
-      </div>
 
-      <div className="bg-white col-12 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-9 text-center">Countries </p>
-          <p className="col-3 speciality-table-head">Delete</p>
-        </div>
-
-        {!searchFilter.length == 0 ? (
-          searchFilter.map((country) => (
-            <div className="table-body row pt-3 p-0 m-0 " key={country._id}>
-              <p className="col-9 text-center">{country.countryName}</p>
-              <p className="col-3">
-                {" "}
-                <button
-                  className=" delete-btn p-2 px-3"
-                  onClick={() => deleteCountryHandler(country._id)}
+        <div className="overflow-x-auto mt-4 shadow-md rounded-lg">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-cyan-600 uppercase tracking-wider"
                 >
-                  {" "}
-                  <RiDeleteBinFill />{" "}
-                </button>
-              </p>
-            </div>
-          ))
-        ) : (
-          <div className="row  p-3 m-0 text-center">
-            <h2>There Is No Countries</h2>
-          </div>
-        )}
+                  Country
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-cyan-600 uppercase tracking-wider"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {!searchFilter.length == 0 ? (
+                searchFilter.map((country) => (
+                  <tr key={country._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {country.countryName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded"
+                        onClick={() => deleteCountryHandler(country._id)}
+                      >
+                        <RiDeleteBinFill />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="px-6 py-4 text-center" colSpan={2}>
+                    <h2 className="text-lg font-medium text-gray-900">
+                      There Are No Countries
+                    </h2>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

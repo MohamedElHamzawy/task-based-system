@@ -1,11 +1,10 @@
-import "./Statuses.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
-import { TbStatusChange } from "react-icons/tb";
 import { RiDeleteBinFill } from "react-icons/ri";
 import GetCookie from "../../../../hooks/getCookie";
+import { useNavigate } from "react-router";
+import { FaPlus } from "react-icons/fa";
 
 //search filter
 const getSearchFilter = (searchName, statuses) => {
@@ -23,6 +22,7 @@ const Statuses = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const token = GetCookie("AdminToken");
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -72,85 +72,92 @@ const Statuses = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 justify-content-center">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-6 col-md-3">
-          <h1 className="logo text-white bg-danger p-2">Admin</h1>
-        </div>
-        <h1 className="col-12 col-md-6 text-center fw-bold">System Statuses</h1>
+    <div className="justify-center min-h-[calc(100vh-100px)]">
+      <div className="flex justify-between items-center my-8">
+        <h1 className="text-2xl">System Statuses</h1>
+        {/* <div className="">FILTERS</div> */}
       </div>
 
-      <div className="row p-0 m-0 col-10 justify-content-center">
-        <div className="col-12 col-md-6 p-2 ">
+      <div className="w-full max-w-3xl mx-auto">
+        <div className="flex items-center justify-between">
           <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search By Status Name"
+            type="text"
+            className="rounded border px-3 py-2 shadow-sm w-1/3"
+            placeholder="Search By Status Name"
             onChange={(e) => {
               setSearchName(e.target.value);
             }}
           />
-        </div>
-
-        <div className="col-12 col-md-6 p-2 text-end">
           <button
-            onClick={() => {
-              window.location.href = "/addstatus";
-            }}
-            className="new-user p-2"
+            onClick={() => navigate("/addstatus")}
+            className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
           >
-            <TbStatusChange className="fs-3" /> Add New Status
+            <FaPlus className="mr-2" /> Add New Status
           </button>
         </div>
-      </div>
 
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2 text-center">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 ">Name</p>
-          <p className="col-4  ">Role</p>
-          <p className="col-3 ">Delete</p>
-        </div>
-
-        {!searchFilter.length == 0 ? (
-          searchFilter.map((status) => (
-            <div className="table-body row pt-3 p-0 m-0 " key={status._id}>
-              <p className="col-5  ">
-                <a
-                  className="text-dark text-decoration-none fw-bold"
-                  href={`/status/${status._id}`}
+        <div className="overflow-x-auto mt-4 shadow-md rounded-lg">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-cyan-600 uppercase tracking-wider"
                 >
-                  {status.statusname}
-                </a>
-              </p>
-              {/* {!status.changable ?
-              <p className="col-4  fs-5 "> <BsFillFolderSymlinkFill className='fs-4 disabled-view-details' /> </p>
-              :
-              <p className="col-4  fs-5 "> <a className="view-details fs-4" href={`/status/${status._id}`}><BsFillFolderSymlinkFill /></a> </p>
-            } */}
-              <p className="col-4  fs-5 "> {status.role} </p>
-              <p className="col-3">
-                {!status.changable ? (
-                  <button className=" disabled-btn p-2 px-3" disabled>
-                    {" "}
-                    <RiDeleteBinFill />{" "}
-                  </button>
-                ) : (
-                  <button
-                    className="delete-btn p-2 px-3"
-                    onClick={() => deleteSpecialityHandler(status._id)}
-                  >
-                    {" "}
-                    <RiDeleteBinFill />{" "}
-                  </button>
-                )}
-              </p>
-            </div>
-          ))
-        ) : (
-          <div className="row  p-3 m-0 text-center">
-            <h2>There Is No Statuses</h2>
-          </div>
-        )}
+                  Name
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-cyan-600 uppercase tracking-wider"
+                >
+                  Role
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-cyan-600 uppercase tracking-wider"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {!searchFilter.length == 0 ? (
+                searchFilter.map((status) => (
+                  <tr key={status._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <a
+                        className="text-indigo-600 hover:text-indigo-900 font-medium"
+                        href={`/status/${status._id}`}
+                      >
+                        {status.statusname}
+                      </a>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {status.role}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <button
+                        disabled={!status.changable}
+                        className="transition-all bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded disabled:opacity-50 disabled:transition-none disabled:hover:bg-red-500 disabled:cursor-not-allowed"
+                        onClick={() => deleteSpecialityHandler(status._id)}
+                      >
+                        <RiDeleteBinFill />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="px-6 py-4 text-center" colSpan={3}>
+                    <h2 className="text-lg font-medium text-gray-900">
+                      There Are No Statuses
+                    </h2>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
