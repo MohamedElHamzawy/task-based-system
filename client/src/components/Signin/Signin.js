@@ -110,6 +110,7 @@ const SignIn = () => {
       const responseData = await response;
 
       localStorage.setItem("role", responseData.data.user.user_role);
+      localStorage.setItem("user", JSON.stringify(responseData.data.user));
 
       if (responseData.data.user.user_role === "admin") {
         SetCookie("AdminToken", responseData.data.token);
