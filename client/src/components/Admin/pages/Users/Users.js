@@ -157,7 +157,11 @@ const Users = () => {
           {searchFilterData ? (
             !searchFilter.length == 0 ? (
               searchFilter.map((user) => (
-                <User deleteUserHandler={deleteUserHandler} user={user} />
+                <User
+                  key={user._id}
+                  deleteUserHandler={deleteUserHandler}
+                  user={user}
+                />
               ))
             ) : (
               <div className="">
@@ -170,7 +174,11 @@ const Users = () => {
           {allFilterData ? (
             !filterData.length == 0 ? (
               filterData.map((user) => (
-                <User deleteUserHandler={deleteUserHandler} user={user} />
+                <User
+                  key={user._id}
+                  deleteUserHandler={deleteUserHandler}
+                  user={user}
+                />
               ))
             ) : (
               <div className="row p-3 m-0 text-center">

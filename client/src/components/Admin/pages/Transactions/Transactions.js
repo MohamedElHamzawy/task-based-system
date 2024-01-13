@@ -109,8 +109,8 @@ const Transactions = () => {
   };
   //////////////////////////////
 
-  const handleChange = (selectedOption) => {
-    setAccount(selectedOption.value);
+  const handleChange = (defaultValueOption) => {
+    setAccount(defaultValueOption.value);
   };
 
   /////////////////////////////////
@@ -190,7 +190,7 @@ const Transactions = () => {
               value={method}
               onChange={(event) => setMethod(event.target.value)}
             >
-              <option value="" selected disabled className="text-secondary">
+              <option value="" defaultValue disabled className="text-secondary">
                 Methods
               </option>
               <option value="VodafoneCash">VodafoneCash</option>

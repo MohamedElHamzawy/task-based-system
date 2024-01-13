@@ -13,8 +13,8 @@ const Users = ({ sectionClasses }) => {
     <div className={`${sectionClasses} w-2/5 font-medium pt-4 px-4`}>
       <p className="text-2xl">System Users</p>
       <div className="">
-        {users.map((user) => (
-          <div key={user.name} className="w-full h-full">
+        {users.map((user, index) => (
+          <div key={user.name + index} className="w-full h-full">
             <div className="w-full flex justify-between py-3">
               <div className="w-3/5 flex items-center space-x-4">
                 <div className="w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center">

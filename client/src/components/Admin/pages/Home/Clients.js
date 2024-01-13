@@ -13,8 +13,8 @@ const Clients = ({ sectionClasses }) => {
     <div className={`${sectionClasses} w-2/5 font-medium pt-4 px-4`}>
       <p className="text-2xl">New Clients</p>
       <div className="">
-        {freelancers.map((freelancer) => (
-          <div key={freelancer.name} className="w-full h-full">
+        {freelancers.map((freelancer, index) => (
+          <div key={freelancer.name + index} className="w-full h-full">
             <div className="w-full flex justify-between py-3">
               <div className="w-3/5 flex items-center space-x-4">
                 <div className="w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center">

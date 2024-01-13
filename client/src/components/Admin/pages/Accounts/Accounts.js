@@ -135,8 +135,8 @@ const Accounts = () => {
           </div>
           {searchFilterData &&
             (!searchFilter.length == 0 ? (
-              searchFilter.map((account) => (
-                <Account key={account._id} user={account} />
+              searchFilter.map((account, index) => (
+                <Account key={index} user={account} />
               ))
             ) : (
               <div className="text-center">
@@ -145,8 +145,8 @@ const Accounts = () => {
             ))}
           {accountTypeFilterData &&
             (!accountTypeFilter.length == 0 ? (
-              accountTypeFilter.map((account) => (
-                <Account key={account._id} user={account} />
+              accountTypeFilter.map((account, index) => (
+                <Account key={index} user={account} />
               ))
             ) : (
               <div className="text-center">

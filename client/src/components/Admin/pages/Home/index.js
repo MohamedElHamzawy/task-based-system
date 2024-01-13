@@ -21,7 +21,7 @@ const Home = ({}) => {
   };
   return (
     <div className="flex flex-col space-y-4">
-      <dix className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <h1 className="text-4xl font-medium mt-4">Overview</h1>
         <div className="mt-2.5">
           <ReactDatePicker
@@ -39,7 +39,7 @@ const Home = ({}) => {
             calendarIconClassname="mr-4 cursor-pointer absolute z-10 top-0.5"
           />
         </div>
-      </dix>
+      </div>
       <div className="flex space-x-4 justify-between">
         <Tasks sectionClasses={sectionClasses} />
         <Totals sectionClasses={sectionClasses} />

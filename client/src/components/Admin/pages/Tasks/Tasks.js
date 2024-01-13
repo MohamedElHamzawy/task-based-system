@@ -612,7 +612,7 @@ const Tasks = () => {
                 sortHandler();
               }}
             >
-              <option value="" selected disabled className="text-secondary">
+              <option value="" defaultValue disabled className="text-secondary">
                 Sort By
               </option>
               <option value="date" className="">
