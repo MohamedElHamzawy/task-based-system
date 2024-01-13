@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
-import { IoMdAdd } from "react-icons/io";
 import Filter from "../../../Filter.js";
 import User from "../../../User.js";
+import { FaPlus } from "react-icons/fa";
 
 //search filter
 const getSearchFilter = (searchName, users) => {
@@ -146,12 +146,11 @@ const Users = () => {
             />
 
             <button
-              className="text-white px-4 py-2 flex items-center rounded-sm"
-              style={{ backgroundColor: "#00E38C" }}
+              className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
               type="button"
               onClick={() => navigate("/adduser")}
             >
-              <IoMdAdd className="text-xl" />
+              <FaPlus className="mr-2" />
               Add New User
             </button>
           </div>

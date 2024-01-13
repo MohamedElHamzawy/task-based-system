@@ -4,6 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from "react-icons/ti";
+import { useNavigate } from "react-router";
 
 //statusName validation
 const statusNameReducer = (state, action) => {
@@ -83,56 +84,51 @@ const AddStatus = () => {
   const errorHandler = () => {
     setError(null);
   };
+  const navigate = useNavigate();
+
   return (
-    <div className="row text-center p-3 w-100 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="row p-1">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/statuses";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3">
-          {" "}
+      <div className="relative flex flex-row justify-center w-full p-1 mb-4">
+        <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/statuses")}
+        >
+          <TiArrowBack />
+        </button>
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Add New Status
         </h2>
       </div>
 
       <form
-        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        className="grid grid-cols-2 gap-4 w-4/5 mx-auto"
         onSubmit={newStatusSubmitHandler}
       >
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">
-            status Name:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full font-bold">Status Name</label>
           <input
             type="text"
-            placeholder="status Name"
+            placeholder="Status Name"
             value={statusNameState.value}
             onChange={statusNameChangeHandler}
             onBlur={statusNameTouchHandler}
             isvalid={statusNameState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
+            className={`w-full ml-2 rounded-sm lg:w-4/5 p-2 ${
               !statusNameState.isvalid &&
               statusNameState.isTouched &&
-              "form-control-invalid"
+              "border-red-500"
             }`}
           />
         </div>
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">Role :</label>
+        <div className="flex flex-col w-full">
+          <label className="w-full font-bold">Role</label>
           <select
             id="role"
             name="role"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={role}
             onChange={(event) => setRole(event.target.value)}
           >
@@ -154,10 +150,10 @@ const AddStatus = () => {
           </select>
         </div>
 
-        <div className="col-8 m-3 mt-5 row justify-content-center">
+        <div className="col-span-2 flex items-center justify-center">
           <button
             disabled={!statusNameState.isvalid || !role}
-            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+            className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
           </button>

@@ -269,12 +269,15 @@ const AddUser = () => {
     return index === self.findIndex((i) => i.speciality === item.speciality);
   });
   return (
-    <div className="flex flex-col items-center w-full p-3">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="flex flex-row items-center justify-between w-full p-1">
-        <button className="p-2 text-3xl" onClick={() => navigate("/users")}>
+      <div className="relative flex flex-row justify-center w-full p-1 mb-4">
+        <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/users")}
+        >
           <TiArrowBack />
         </button>
         <h2 className="text-center text-2xl font-bold lg:text-3xl">
@@ -283,7 +286,7 @@ const AddUser = () => {
       </div>
 
       <form
-        className="flex flex-col items-center bg-white p-3 w-full"
+        className="grid grid-cols-2 gap-4 w-4/5 mx-auto"
         onSubmit={newUserSubmitHandler}
       >
         {[
@@ -314,18 +317,15 @@ const AddUser = () => {
             type: "tel",
           },
         ].map((input, index) => (
-          <div
-            key={index}
-            className="flex flex-col lg:flex-row items-center w-full my-1 py-2"
-          >
-            <label className="w-full lg:w-1/5 font-bold">{input.label}:</label>
+          <div key={index} className="flex flex-col w-full">
+            <label className="w-full lg:w-1/5 font-bold">{input.label}</label>
             <input
               type={input.type || "text"}
               placeholder={input.label}
               value={input.state.value}
               onChange={input.handler}
               onBlur={input.touchHandler}
-              className={`w-full lg:w-4/5 p-2 ${
+              className={`w-full ml-2 rounded-sm lg:w-4/5 p-2 ${
                 !input.state.isvalid &&
                 input.state.isTouched &&
                 "border-red-500"
@@ -334,12 +334,12 @@ const AddUser = () => {
           </div>
         ))}
 
-        <div className="flex flex-col lg:flex-row items-center w-full my-1 py-2">
-          <label className="w-full lg:w-1/5 font-bold">Country:</label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Country</label>
           <select
             id="country"
             name="country"
-            className="w-full lg:w-4/5 p-2"
+            className="rounded-sm ml-2 w-full lg:w-4/5 p-2"
             value={country}
             onChange={(event) => countryChangeHandler(event.target.value)}
           >
@@ -354,14 +354,14 @@ const AddUser = () => {
           </select>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center w-full my-1 py-2">
+        <div className="flex flex-col w-full">
           <label htmlFor="role" className="w-full lg:w-1/5 font-bold">
-            Role:
+            Role
           </label>
           <select
             id="role"
             name="role"
-            className="w-full lg:w-4/5 p-2"
+            className="rounded-sm ml-2 w-full lg:w-4/5 p-2"
             value={role}
             onChange={(event) => RoleChangeHandler(event.target.value)}
           >
@@ -375,14 +375,14 @@ const AddUser = () => {
         </div>
 
         {visable && (
-          <div className="flex flex-col lg:flex-row items-center w-full my-1 py-2">
+          <div className="flex flex-col w-full">
             <label htmlFor="speciality" className="w-full lg:w-1/5 font-bold">
               Speciality:
             </label>
             <select
               id="speciality"
               name="speciality"
-              className="w-full lg:w-4/5 p-2"
+              className="rounded-sm ml-2 w-full lg:w-4/5 p-2"
               value={speciality}
               onChange={(event) => specialityChangeHandler(event.target.value)}
             >
@@ -398,7 +398,7 @@ const AddUser = () => {
           </div>
         )}
 
-        <div className="flex justify-center w-full my-3 mt-5">
+        <div className="col-span-2 flex justify-center w-full">
           <button
             disabled={
               !visable
@@ -416,9 +416,9 @@ const AddUser = () => {
                   !role ||
                   !speciality
             }
-            className="disabled:opacity-50 p-3 font-bold w-4/5 lg:w-1/5"
+            className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit
+            Add
           </button>
         </div>
       </form>

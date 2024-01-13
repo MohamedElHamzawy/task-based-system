@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import "./Tasks.css";
-import { FaSortAmountDownAlt } from "react-icons/fa";
-import { IoMdAdd } from "react-icons/io";
+import { FaPlus, FaSortAmountDownAlt } from "react-icons/fa";
 import Filter from "../../../Filter";
 
 import GetCookie from "../../../../hooks/getCookie";
@@ -498,13 +497,13 @@ const Tasks = () => {
             setUser("");
           }}
         />
+
         <button
-          className="text-white px-4 py-2 flex items-center rounded-sm transition-all duration-100 active:scale-95"
-          style={{ backgroundColor: "#00E38C" }}
+          className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
           type="button"
           onClick={() => navigate("/addtask")}
         >
-          <IoMdAdd className="text-xl" />
+          <FaPlus className="mr-2" />
           Add New Task
         </button>
       </div>

@@ -160,7 +160,7 @@ const Transactions = () => {
       </div>
 
       <form
-        className="bg-white p-3 items-center m-0 rounded drop-shadow"
+        className="p-3 items-center m-0 rounded"
         onSubmit={newTransactionSubmitHandler}
       >
         <div className="flex items-center">
@@ -233,7 +233,7 @@ const Transactions = () => {
           </div>
         </div>
 
-        <div className="w-full mt-5 flex items-center justify-center">
+        <div className="w-full flex items-center justify-center">
           <button
             disabled={
               !amountState.isvalid ||
@@ -241,7 +241,7 @@ const Transactions = () => {
               !account ||
               !numberState.isvalid
             }
-            className="cursor-pointer transition-all bg-cyan-600 hover:bg-cyan-500 px-12 py-0.5 text-white font-medium"
+            className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
           </button>

@@ -4,6 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from "react-icons/ti";
+import { useNavigate } from "react-router";
 
 //countryName validation
 const countryNameReducer = (state, action) => {
@@ -80,55 +81,49 @@ const AddCountry = () => {
   const errorHandler = () => {
     setError(null);
   };
+  const navigate = useNavigate();
   return (
-    <div className="row text-center p-3 w-100 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="row p-1">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/country";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3">
-          {" "}
+      <div className="relative flex flex-row justify-center w-full p-1 mb-4">
+        <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/country")}
+        >
+          <TiArrowBack />
+        </button>
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Add New Country
         </h2>
       </div>
 
       <form
-        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        className="grid grid-cols-2 gap-4 w-4/5 mx-auto"
         onSubmit={newSpecialitySubmitHandler}
       >
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Counrty Name:
-          </label>
+        <div className="col-span-2 flex flex-col items-center justify-center w-full mx-auto">
+          <label className="font-bold">Country Name</label>
           <input
             type="text"
-            placeholder="Counrty Name"
+            placeholder="Country Name"
             value={countryNameState.value}
             onChange={countryNameChangeHandler}
             onBlur={countryNameTouchHandler}
             isvalid={countryNameState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
+            className={`rounded-sm w-1/3 p-2 ${
               !countryNameState.isvalid &&
               countryNameState.isTouched &&
-              "form-control-invalid"
+              "border-red-500"
             }`}
           />
         </div>
 
-        <div className="col-8 m-3 mt-5 row justify-content-center">
+        <div className="col-span-2 flex items-center justify-center">
           <button
             disabled={!countryNameState.isvalid}
-            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+            className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
           </button>

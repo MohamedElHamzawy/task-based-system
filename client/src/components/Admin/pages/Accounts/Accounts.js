@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { FiFilter } from "react-icons/fi";
 import Filter from "../../../Filter";
 import { useNavigate } from "react-router-dom";
-import { IoMdAdd } from "react-icons/io";
 import Account from "../../../Account";
 import ReactDatePicker from "react-datepicker";
+import { FaPlus } from "react-icons/fa";
 
 const Accounts = () => {
   const [accounts, setAccounts] = useState([
@@ -133,15 +132,6 @@ const Accounts = () => {
                 setAccountType("");
               }}
             />
-            <button
-              className="text-white px-4 py-2 flex items-center rounded-sm"
-              style={{ backgroundColor: "#00E38C" }}
-              type="button"
-              onClick={() => navigate("")}
-            >
-              <IoMdAdd className="text-xl" />
-              Add New User
-            </button>
           </div>
           {searchFilterData &&
             (!searchFilter.length == 0 ? (
