@@ -8,7 +8,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
@@ -318,6 +318,8 @@ const ClientDetails = () => {
     window.location.reload(true);
   };
 
+  const navigate = useNavigate();
+
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [withoutFilterData, setwithoutFilterData] = useState(true);
@@ -327,252 +329,165 @@ const ClientDetails = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/clients";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4">
-          {" "}
+      <div className="relative flex items-center justify-between w-full p-1 mb-4">
+        {/* <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/clients")}
+        >
+          <TiArrowBack />
+        </button> */}
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Client Details
         </h2>
+        <div className="">Filter</div>
       </div>
 
-      <div className="row bg-white adduser-form p-1 m-1 justify-content-start">
-        <div className="col-12 row p-3 justify-content-end ">
-          <div className="col-4">
-            <button
-              className="delete-btn px-4 p-1 fs-3"
-              onClick={deleteClientHandler}
-            >
-              <RiDeleteBinFill />
-            </button>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5 edit-form-lable text-start p-2">
-            {" "}
-            Client Name:
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {client.clientname}{" "}
-          </p>
-          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : "d-none"}>
-            <input
-              type="text"
-              placeholder={client.clientname}
-              value={clientNameState.value}
-              onChange={clientNameChangeHandler}
-              onBlur={clientNameTouchHandler}
-              isvalid={clientNameState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !clientNameState.isvalid &&
-                clientNameState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
-          </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5 edit-form-lable text-start p-2">
-            {" "}
-            Owner :
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {client.ownerName}{" "}
-          </p>
-          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : "d-none"}>
-            <input
-              type="text"
-              placeholder={client.ownerName}
-              value={ownerState.value}
-              onChange={ownerChangeHandler}
-              onBlur={ownerTouchHandler}
-              isvalid={ownerState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !ownerState.isvalid &&
-                ownerState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
-          </div>
-        </div>
-        {/* /////////////////////// */}
+      <div className="relative flex items-center justify-betwen border-2 space-x-8 rounded-md shadow pr-4 py-4 bg-[#F4F7FC]">
+        <button
+          className="absolute top-2 right-1.5 w-10 h-10"
+          onClick={deleteClientHandler}
+        >
+          <RiDeleteBinFill className="text-gray-400 w-10 h-10" />
+        </button>
 
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            Website:
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {client.website}{" "}
-          </p>
-          <div className={edit ? "d-inline col-12 col-md-6 py-2" : "d-none"}>
-            <input
-              type="website"
-              placeholder={client.website}
-              value={clientEmailState.value}
-              onChange={clientEmailChangeHandler}
-              onBlur={clientEmailTouchHandler}
-              isvalid={clientEmailState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !clientEmailState.isvalid &&
-                clientEmailState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
+        <div className="w-1/2 grid grid-cols-2 gap-4">
+          <div className="flex flex-col w-full">
+            <label className="w-full font-bold">Client Name</label>
+            <p className={!edit ? "ml-2 text-gray-500 font-medium" : "hidden"}>
+              {client.clientname}
+            </p>
+            {edit && (
+              <input
+                type="text"
+                placeholder={client.clientname}
+                value={clientNameState.value}
+                onChange={clientNameChangeHandler}
+                onBlur={clientNameTouchHandler}
+                isvalid={clientNameState.isvalid.toString()}
+                className={`w-11/12 ml-2 rounded-sm p-2 ${
+                  !clientNameState.isvalid &&
+                  clientNameState.isTouched &&
+                  "border-red-500"
+                }`}
+              />
+            )}
           </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Phone:
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {client.phone}{" "}
-          </p>
-          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : "d-none"}>
-            <input
-              type="number"
-              placeholder={client.phone}
-              value={numberState.value}
-              onChange={numberChangeHandler}
-              onBlur={numbertouchHandler}
-              isvalid={numberState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !numberState.isvalid &&
-                numberState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
+          <div className="flex flex-col w-full">
+            <label className="w-full font-bold">Owner</label>
+            <p className={!edit ? "ml-2 text-gray-500 font-medium" : "hidden"}>
+              {client.ownerName}
+            </p>
+            {edit && (
+              <input
+                type="text"
+                placeholder={client.ownerName}
+                value={ownerState.value}
+                onChange={ownerChangeHandler}
+                onBlur={ownerTouchHandler}
+                isvalid={ownerState.isvalid.toString()}
+                className={`w-11/12 ml-2 rounded-sm p-2 ${
+                  !ownerState.isvalid &&
+                  ownerState.isTouched &&
+                  "border-red-500"
+                }`}
+              />
+            )}
           </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Country:
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {client.country && client.country.countryName}{" "}
-          </p>
-          <div className={edit ? "d-inline col-12 col-md-6 py-2" : "d-none"}>
-            <select
-              id="country"
-              name="country"
-              className="p-2 search w-100"
-              value={country}
-              onChange={(event) => countryChangeHandler(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Countries
-              </option>
-              {countries.map((country) => (
-                <option value={country._id} key={country._id}>
-                  {country.countryName}
+          <div className="flex flex-col w-full">
+            <label className="w-full font-bold">Website</label>
+            <p className={!edit ? "ml-2 text-gray-500 font-medium" : "hidden"}>
+              {client.website}
+            </p>
+            {edit && (
+              <input
+                type="text"
+                placeholder={client.website}
+                value={clientEmailState.value}
+                onChange={clientEmailChangeHandler}
+                onBlur={clientEmailTouchHandler}
+                isvalid={clientEmailState.isvalid.toString()}
+                className={`w-11/12 ml-2 rounded-sm p-2 ${
+                  !clientEmailState.isvalid &&
+                  clientEmailState.isTouched &&
+                  "border-red-500"
+                }`}
+              />
+            )}
+          </div>
+          <div className="flex flex-col w-full">
+            <label className="w-full font-bold">Phone</label>
+            <p className={!edit ? "ml-2 text-gray-500 font-medium" : "hidden"}>
+              {client.phone}
+            </p>
+            {edit && (
+              <input
+                type="text"
+                placeholder={client.phone}
+                value={numberState.value}
+                onChange={numberChangeHandler}
+                onBlur={numbertouchHandler}
+                isvalid={numberState.isvalid.toString()}
+                className={`w-11/12 ml-2 rounded-sm p-2 ${
+                  !numberState.isvalid &&
+                  numberState.isTouched &&
+                  "border-red-500"
+                }`}
+              />
+            )}
+          </div>
+          <div className="flex flex-col w-full">
+            <label className="w-full font-bold">Country</label>
+            <p className={!edit ? "ml-2 text-gray-500 font-medium" : "hidden"}>
+              {client.country && client.country.countryName}
+            </p>
+            {edit && (
+              <select
+                id="country"
+                name="country"
+                className="w-11/12 ml-2 rounded-sm p-2"
+                value={country}
+                onChange={(event) => countryChangeHandler(event.target.value)}
+              >
+                <option disabled defaultValue className="text-secondary">
+                  Countries
                 </option>
-              ))}
-            </select>
+                {countries.map((country) => (
+                  <option value={country._id} key={country._id}>
+                    {country.countryName}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Currency:
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {client.currency && client.currency.currencyname}{" "}
-          </p>
-          <div className={edit ? "d-inline col-12 col-md-6 py-2 " : "d-none"}>
-            <select
-              id="currencies"
-              name="currencies"
-              className="search w-100 p-2"
-              value={currency}
-              onChange={(event) => setCurrency(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                currencies
-              </option>
-              {currencies.map((currency) => (
-                <option value={currency._id} key={currency._id}>
-                  {currency.currencyname}
+          <div className="flex flex-col w-full">
+            <label className="w-full font-bold">Currency</label>
+            <p className={!edit ? "ml-2 text-gray-500 font-medium" : "hidden"}>
+              {client.currency && client.currency.currencyname}
+            </p>
+            {edit && (
+              <select
+                id="currencies"
+                name="currencies"
+                className="w-11/12 ml-2 rounded-sm p-2"
+                value={currency}
+                onChange={(event) => setCurrency(event.target.value)}
+              >
+                <option disabled defaultValue className="text-secondary">
+                  Currencies
                 </option>
-              ))}
-            </select>
+                {currencies.map((currency) => (
+                  <option value={currency._id} key={currency._id}>
+                    {currency.currencyname}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
-        </div>
-        {/* /////////////////////// */}
-
-        <div className="col-12  p-3">
-          {!edit ? (
-            <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-              onClick={() => {
-                setEdit(!edit);
-              }}
-            >
-              Edit
-            </button>
-          ) : (
-            ""
-          )}
-          {edit ? (
-            <>
+          <div className="col-span-2 flex items-center justify-center space-x-2">
+            {edit ? (
               <button
                 disabled={
                   !clientEmailState.isvalid &&
@@ -582,83 +497,96 @@ const ClientDetails = () => {
                   !country &&
                   !currency
                 }
-                className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
+                type="button"
+                className="bg-green-500 rounded-sm transition-all hover:bg-green-400 text-white px-3 py-1"
                 onClick={editClientHandler}
               >
-                Submit
+                Save
               </button>
+            ) : (
               <button
-                className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold"
+                type="button"
+                className="bg-cyan-600 rounded-sm transition-all hover:bg-cyan-400 text-white px-12 py-1"
                 onClick={() => {
                   setEdit(!edit);
                 }}
               >
-                <ImCancelCircle className="fs-3" />
+                Edit
               </button>
-            </>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Tasks Count{" "}
-          </h6>
-          <div className="bg-warning col-4 icon p-3">
-            <FaTasks className="fs-3" />
+            )}
+            {edit && (
+              <button
+                type="button"
+                className="bg-red-500 rounded-sm transition-all hover:bg-red-400 text-white px-3 py-1"
+                onClick={() => {
+                  setEdit(!edit);
+                }}
+              >
+                Cancel
+              </button>
+            )}
           </div>
-          <h4 className="text-center col-4 fw-bold">{client.tasksCount}</h4>
-        </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Completed Count{" "}
-          </h6>
-          <div className="bg-info col-4 icon p-3">
-            <AiOutlineFileDone className="fs-3" />
-          </div>
-          <h4 className="text-center col-4 fw-bold">{client.completedCount}</h4>
-        </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Client Gain{" "}
-          </h6>
-          <div className="bg-success col-4 icon p-3">
-            <FaCoins className="fs-3 " />
-          </div>
-          <h4 className="text-center col-4 fw-bold">{client.totalGain}</h4>
-        </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Total Profit{" "}
-          </h6>
-          <div className="bg-danger col-4 icon p-3">
-            <GiProfit className="fs-3" />
-          </div>
-          <h4 className="text-center col-4 fw-bold">{client.totalProfit}</h4>
         </div>
 
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Account Details:{" "}
-          </h6>
-          <div className="bg-danger col-4 icon p-3">
-            <FaCcVisa className="fs-3 " />
-          </div>
-          {clientAccount &&
-            clientAccount.map((acc) => (
-              <div className="text-center col-8 fw-bold" key={acc._id}>
-                <a href={`/account/${acc._id}`} className="text-dark fw-bold">
-                  Click Here{" "}
-                </a>
+        <div className="w-1/2">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <FaTasks className="bg-blue-100 text-blue-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Tasks Count</h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {client.tasksCount}
+                </h4>
               </div>
-            ))}
+            </div>
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <AiOutlineFileDone className="bg-orange-100 text-orange-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  Completed Count
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {client.completedCount}
+                </h4>
+              </div>
+            </div>
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <FaCoins className="bg-red-100 text-green-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Client Gain</h6>
+                <h4 className="font-light ml-1 my-0 p-0">{client.totalGain}</h4>
+              </div>
+            </div>
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <GiProfit className="bg-green-100 text-green-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Total Profit</h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {client.totalProfit}
+                </h4>
+              </div>
+            </div>
+            <div className="col-span-2 w-1/2 bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2 mx-auto">
+              <FaCcVisa className="bg-purple-100 text-purple-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  Account Details
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {clientAccount &&
+                    clientAccount.map((acc) => (
+                      <div className="text-base" key={acc._id}>
+                        <a href={`/account/${acc._id}`} className="">
+                          Click Here
+                        </a>
+                      </div>
+                    ))}
+                </h4>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* /////////////////////////////////////////////////// */}
 
       <div className="row p-0 m-0 justify-content-center adduser-form">
         <div className="col-12 col-md-9 text-secondary row p-2">
@@ -672,7 +600,6 @@ const ClientDetails = () => {
             htmlFor="Speciality"
             className="mt-2 col-4 col-sm-2 text-start"
           >
-            {" "}
             <FiFilter className="" /> From:
           </label>
           <input
@@ -688,7 +615,6 @@ const ClientDetails = () => {
             htmlFor="Speciality"
             className="mt-2 col-4 col-sm-2 text-start"
           >
-            {" "}
             <FiFilter className="" />
             To:
           </label>
@@ -763,33 +689,27 @@ const ClientDetails = () => {
                 </div>
 
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
                   <span className="edit-form-lable">Title :</span> {task.title}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
+                  <span className="edit-form-lable">Speciality :</span>
                   {task.speciality.sub_speciality}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
+                  <span className="edit-form-lable">Client :</span>
                   {task.client.clientname}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
+                  <span className="edit-form-lable">Created By :</span>
                   {task.created_by && task.created_by.fullname}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
+                  <span className="edit-form-lable">Deadline :</span>
                   {task.deadline.split("T")[0]}
                 </p>
                 {task.freelancer && (
                   <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
+                    <span className="edit-form-lable">Freelancer :</span>
                     {task.freelancer.freelancername}
                   </p>
                 )}
@@ -862,33 +782,27 @@ const ClientDetails = () => {
                   </button>
                 </div>
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
                   <span className="edit-form-lable">Title :</span> {task.title}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
+                  <span className="edit-form-lable">Speciality :</span>
                   {task.speciality.sub_speciality}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
+                  <span className="edit-form-lable">Client :</span>
                   {task.client.clientname}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
+                  <span className="edit-form-lable">Created By :</span>
                   {task.created_by && task.created_by.fullname}
                 </p>
                 <p className="col-12 col-sm-6 edit-form-p  fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
+                  <span className="edit-form-lable">Deadline :</span>
                   {task.deadline.split("T")[0]}
                 </p>
                 {task.freelancer && (
                   <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
+                    <span className="edit-form-lable">Freelancer :</span>
                     {task.freelancer.freelancername}
                   </p>
                 )}

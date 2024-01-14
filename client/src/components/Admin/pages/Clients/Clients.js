@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import "./Clients.css";
-import { FaHospitalUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import Filter from "../../../Filter";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, clients) => {
@@ -221,12 +221,12 @@ const Clients = () => {
                 {searchFilter.map((client) => (
                   <tr key={client._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <a
+                      <Link
                         className="text-indigo-600 hover:text-indigo-900 font-medium"
-                        href={`/client/${client._id}`}
+                        to={`/client/${client._id}`}
                       >
                         {client.clientname}
-                      </a>
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {client.country.countryName}
@@ -320,12 +320,12 @@ const Clients = () => {
                 {filterData.map((client) => (
                   <tr key={client._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <a
+                      <Link
                         className="text-indigo-600 hover:text-indigo-900 font-medium"
-                        href={`/client/${client._id}`}
+                        to={`/client/${client._id}`}
                       >
                         {client.clientname}
-                      </a>
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {client.country.countryName}

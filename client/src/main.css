@@ -1335,6 +1335,14 @@ input:checked + .toggle-bg {
   right: 0.125rem;
 }
 
+.right-2 {
+  right: 0.5rem;
+}
+
+.top-2 {
+  top: 0.5rem;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -1422,6 +1430,11 @@ input:checked + .toggle-bg {
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .-ml-2 {
@@ -1518,6 +1531,10 @@ input:checked + .toggle-bg {
 
 .-mr-1 {
   margin-right: -0.25rem;
+}
+
+.ml-1 {
+  margin-left: 0.25rem;
 }
 
 .block {
@@ -1618,6 +1635,16 @@ input:checked + .toggle-bg {
 
 .h-3 {
   height: 0.75rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.h-fit {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 .min-h-\[calc\(100vh-100px\)\] {
@@ -1730,6 +1757,18 @@ input:checked + .toggle-bg {
 
 .w-3 {
   width: 0.75rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-5\/6 {
+  width: 83.333333%;
+}
+
+.w-11\/12 {
+  width: 91.666667%;
 }
 
 .min-w-full {
@@ -2110,6 +2149,16 @@ input:checked + .toggle-bg {
   border-color: rgb(240 82 82 / var(--tw-border-opacity));
 }
 
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(63 131 248 / var(--tw-border-opacity));
+}
+
+.border-green-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(14 159 110 / var(--tw-border-opacity));
+}
+
 .bg-\[\#0058FF\] {
   --tw-bg-opacity: 1;
   background-color: rgb(0 88 255 / var(--tw-bg-opacity));
@@ -2311,6 +2360,25 @@ input:checked + .toggle-bg {
 .bg-yellow-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(252 233 106 / var(--tw-bg-opacity));
+}
+
+.bg-violet-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(221 214 254 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#f4f7fcb4\] {
+  background-color: #f4f7fcb4;
+}
+
+.bg-\[\#5571a1\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(85 113 161 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#97aed6\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(151 174 214 / var(--tw-bg-opacity));
 }
 
 .bg-cover {
@@ -2535,6 +2603,10 @@ input:checked + .toggle-bg {
   font-weight: 600;
 }
 
+.font-light {
+  font-weight: 300;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -2712,6 +2784,21 @@ input:checked + .toggle-bg {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(114 59 19 / var(--tw-text-opacity));
+}
+
+.text-blue-100 {
+  --tw-text-opacity: 1;
+  color: rgb(225 239 254 / var(--tw-text-opacity));
+}
+
+.text-orange-500 {
+  --tw-text-opacity: 1;
+  color: rgb(255 90 31 / var(--tw-text-opacity));
+}
+
+.text-purple-500 {
+  --tw-text-opacity: 1;
+  color: rgb(144 97 249 / var(--tw-text-opacity));
 }
 
 .text-opacity-60 {
