@@ -1,7 +1,7 @@
 import React from "react";
 import SideBar from "./SideBar/SideBar";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Users from "../Admin/pages/Users/Users";
 import Tasks from "../Admin/pages/Tasks/Tasks";
