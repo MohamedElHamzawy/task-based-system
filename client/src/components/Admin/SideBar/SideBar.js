@@ -85,6 +85,7 @@ const SideBar = () => {
   const location = useLocation();
   function logout() {
     localStorage.removeItem("AdminData");
+    localStorage.removeItem("loggedUserName");
     RemoveCookie("AdminToken");
     window.location.href = "/";
   }

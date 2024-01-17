@@ -111,16 +111,16 @@ const SignIn = () => {
 
       localStorage.setItem("role", responseData.data.user.user_role);
       localStorage.setItem("user", JSON.stringify(responseData.data.user));
+      localStorage.setItem(
+        "loggedUserName",
+        JSON.stringify(responseData.data.user.fullname)
+      );
 
       if (responseData.data.user.user_role === "admin") {
         SetCookie("AdminToken", responseData.data.token);
         localStorage.setItem(
           "AdminData",
           JSON.stringify(responseData.data.user._id)
-        );
-        localStorage.setItem(
-          "AdminName",
-          JSON.stringify(responseData.data.user.fullname)
         );
         setIsLoading(false);
         window.location.href = "/";
@@ -214,7 +214,7 @@ const SignIn = () => {
           </div>
           <div className="my-2">
             <button
-              className={`w-full rounded bg-blue-600 text-white py-2 px-4 ${
+              className={`w-full rounded bg-primary text-white py-2 px-4 ${
                 !usernameState.isvalid || !passState.isvalid
                   ? "opacity-50 cursor-not-allowed"
                   : ""

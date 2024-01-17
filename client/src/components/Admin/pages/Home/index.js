@@ -7,7 +7,7 @@ import FreeFreelancers from "./Free.js";
 import Breakdown from "./Breakdown.js";
 import Clients from "./Clients.js";
 import Users from "./Users.js";
-import ReactDatePicker from "react-datepicker";
+import DateFilter from "../../../DateFilter.js";
 
 const Home = ({}) => {
   const sectionClasses = "bg-white rounded drop-shadow";
@@ -24,19 +24,11 @@ const Home = ({}) => {
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-medium mt-4">Overview</h1>
         <div className="mt-2.5">
-          <ReactDatePicker
-            className="relative rounded border border-gray-300 cursor-pointer text-gray-400 w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-            selected={startDate}
-            onChange={onChange}
+          <DateFilter
+            datePickerOpen={datePickerOpen}
             startDate={startDate}
             endDate={endDate}
-            selectsRange
-            showMonthDropdown
-            inline={datePickerOpen}
-            dateFormat="MMM, yyyy"
-            showIcon
-            toggleCalendarOnIconClick
-            calendarIconClassname="mr-4 cursor-pointer absolute z-10 top-0.5"
+            onChange={onChange}
           />
         </div>
       </div>

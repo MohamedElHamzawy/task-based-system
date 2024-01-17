@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import "./Clients.css";
 import { FaPlus } from "react-icons/fa";
 import Filter from "../../../Filter";
 import { useNavigate } from "react-router";

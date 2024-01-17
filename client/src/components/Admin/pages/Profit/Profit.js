@@ -269,7 +269,7 @@ const Profit = () => {
               disabled={!customerMaximum && !customerMinimum}
               type="button"
               onClick={editCustomerProfitHandler}
-              className="mt-4 inline-flex items-center px-4 py-2 bg-blue-500 text-base font-medium text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="border-2 mt-4 inline-flex items-center px-4 py-2 bg-primary text-base font-medium text-white rounded-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Edit
             </button>
@@ -321,7 +321,7 @@ const Profit = () => {
               disabled={!specialistMaximum && !specialistMinimum}
               type="button"
               onClick={editSpecialistProfitHandler}
-              className="mt-4 inline-flex items-center px-4 py-2 bg-blue-500 text-base font-medium text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="border-2 mt-4 inline-flex items-center px-4 py-2 bg-primary text-base font-medium text-white rounded-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Edit
             </button>

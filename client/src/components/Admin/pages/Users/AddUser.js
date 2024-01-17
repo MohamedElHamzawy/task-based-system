@@ -268,9 +268,10 @@ const AddUser = () => {
   const uniqueItems = specialities.filter((item, index, self) => {
     return index === self.findIndex((i) => i.speciality === item.speciality);
   });
+
   return (
     <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
-      <ErrorModal error={error} onClear={errorHandler} />
+      <ErrorModal error={error} onClear={errorHandler} message={error} />
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="relative flex flex-row justify-center w-full p-1 mb-4">

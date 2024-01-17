@@ -8,6 +8,7 @@ import Filter from "../../../Filter";
 import GetCookie from "../../../../hooks/getCookie";
 import { useNavigate } from "react-router";
 import ReactDatePicker from "react-datepicker";
+import DateFilter from "../../../DateFilter";
 
 //search filter
 const getSearchFilter = (searchName, tasks) => {
@@ -313,7 +314,7 @@ const Tasks = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="border-red-500 min-h-[calc(100vh-100px)] ml-44 py-4 flex flex-col space-y-2">
+    <div className="min-h-[calc(100vh-100px)] ml-44 py-4 flex flex-col space-y-2">
       <Filter
         filterOpen={filterOpen}
         setFilterOpen={setFilterOpen}
@@ -457,22 +458,12 @@ const Tasks = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl">Tasks</h1>
         <div className="">
-          <ReactDatePicker
-            className="relative rounded border border-gray-300 cursor-pointer text-gray-400 w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-            selected={end}
-            selectsEnd={end}
-            onChange={onChange}
-            onCalendarClose={dateHandler}
+          <DateFilter
             startDate={start}
             endDate={end}
-            selectsRange
-            showMonthDropdown
-            showYearDropdown
-            inline={datePickerOpen}
-            dateFormat="MMM, yyyy"
-            showIcon
-            toggleCalendarOnIconClick
-            calendarIconClassname="mr-4 cursor-pointer absolute z-10 top-0.5"
+            onChange={onChange}
+            datePickerOpen={datePickerOpen}
+            dateHandler={dateHandler}
           />
         </div>
       </div>
@@ -590,39 +581,28 @@ const Tasks = () => {
             Download
           </button>
         </div>
-        <div className="w-1/2 flex items-center justify-between space-x-2">
-          <div className="flex items-center space-x-1">
-            <input
-              type="checkbox"
-              name="prioriity"
-              id="prioriity"
-              className="appearance-non"
-            />
-            <label htmlFor="priority">Show High Priority Tasks</label>
-          </div>
-          <div className="w-1/2 flex items-center space-x-1">
-            <FaSortAmountDownAlt />
-            <select
-              id="Sort"
-              name="Sort"
-              className="flex-1"
-              value={sort}
-              onChange={(e) => {
-                setSort(e.target.value);
-                sortHandler();
-              }}
-            >
-              <option value="" defaultValue disabled className="text-secondary">
-                Sort By
-              </option>
-              <option value="date" className="">
-                Date
-              </option>
-              <option value="profit" className="">
-                Profit
-              </option>
-            </select>
-          </div>
+        <div className="w-1/5 flex items-center justify-between space-x-2">
+          <FaSortAmountDownAlt />
+          <select
+            id="Sort"
+            name="Sort"
+            className="flex-1"
+            value={sort}
+            onChange={(e) => {
+              setSort(e.target.value);
+              sortHandler();
+            }}
+          >
+            <option value="" defaultValue disabled className="text-secondary">
+              Sort By
+            </option>
+            <option value="date" className="">
+              Date
+            </option>
+            <option value="profit" className="">
+              Profit
+            </option>
+          </select>
         </div>
       </div>
 

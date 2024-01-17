@@ -9,17 +9,15 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../../../../util/validators";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
-import { TiArrowBack } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
 import { FaCoins } from "react-icons/fa";
 import { FaCcVisa } from "react-icons/fa";
-import { ImCancelCircle } from "react-icons/im";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { GiProfit } from "react-icons/gi";
 import { FiFilter } from "react-icons/fi";
+import DateFilterComponent from "../../../DateFilter";
 
 // Date filter
 
@@ -29,7 +27,8 @@ const getDateFilter = (start, end, tasks) => {
   }
   return tasks.filter(
     (task) =>
-      start <= task.deadline.split("T")[0] && task.deadline.split("T")[0] <= end
+      start <= new Date(task.deadline.split("T")[0]) &&
+      new Date(task.deadline.split("T")[0]) <= end
   );
 };
 
@@ -302,42 +301,116 @@ const FreeLancerDetails = () => {
     window.location.reload(true);
   };
 
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
   const [withoutFilterData, setwithoutFilterData] = useState(true);
   const [dateFilterData, setDateFilterData] = useState(false);
   const DateFilter = getDateFilter(start, end, freeLancerTasks);
 
+  const onDateChange = (dates) => {
+    const [start, end] = dates;
+    setStart(start);
+    setEnd(end);
+    setDateFilterData(true);
+    setwithoutFilterData(false);
+  };
+
+  function getRowClass(statusname) {
+    switch (statusname) {
+      case "pending":
+        return "bg-yellow-100";
+      case "waiting offer":
+        return "bg-blue-100";
+      case "approved":
+        return "bg-sky-100";
+      case "working on":
+        return "bg-purple-100";
+      case "done":
+        return "bg-green-100";
+      case "delivered":
+        return "bg-gray-100";
+      case "rejected":
+        return "bg-red-100";
+      case "not available":
+        return "bg-slate-100";
+      case "on going":
+        return "bg-teal-100";
+      case "offer submitted":
+        return "bg-orange-100";
+      case "edit":
+        return "bg-indigo-100";
+      case "cancel":
+        return "bg-pink-100";
+      default:
+        return "";
+    }
+  }
+
+  function getStatusClass(statusname) {
+    switch (statusname) {
+      case "pending":
+        return "text-yellow-400";
+      case "waiting offer":
+        return "text-blue-500";
+      case "approved":
+        return "text-sky-400";
+      case "working on":
+        return "text-purple-400";
+      case "done":
+        return "text-green-400";
+      case "delivered":
+        return "text-gray-400";
+      case "rejected":
+        return "text-red-400";
+      case "not available":
+        return "text-slate-400";
+      case "on going":
+        return "text-teal-400";
+      case "offer submitted":
+        return "text-orange-400";
+      case "edit":
+        return "text-indigo-400";
+      case "cancel":
+        return "text-pink-400";
+      default:
+        return "";
+    }
+  }
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="flex flex-col space-y-4 text-center w-full p-2 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="relative flex justify-center items-center">
-        <div className="text-center">
-          <button
-            className="absolute left-0 top-5 p-2 px-3 text-3xl"
-            onClick={() => navigate("/freelancers")}
-          >
-            <TiArrowBack />
-          </button>
+      <div className="relative flex items-center justify-between w-full p-1 mb-4">
+        {/* <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/freelancers")}
+        >
+          <TiArrowBack />
+        </button> */}
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
+          Freelancer Details
+        </h2>
+        <div>
+          <DateFilterComponent
+            startDate={start}
+            endDate={end}
+            onChange={onDateChange}
+          />
         </div>
-        <h2 className="text-center p-2 pt-4 fw-bold">Freelancer Details</h2>
       </div>
 
-      <div className="container mx-auto p-4 bg-white rounded-lg shadow-md">
-        <div className="flex items-center justify-end mb-4">
-          <button
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75"
-            onClick={deleteFreeLancerHandler}
-          >
-            <RiDeleteBinFill className="w-6 h-6" />
-          </button>
-        </div>
+      <div className="relative flex items-center justify-betwen border-2 space-x-8 rounded-md shadow pr-4 py-4 bg-[#F4F7FC]">
+        <button
+          className="absolute top-2 right-1.5 w-10 h-10"
+          onClick={deleteFreeLancerHandler}
+        >
+          <RiDeleteBinFill className="text-gray-400 w-10 h-10" />
+        </button>
 
-        {/* /////////////////////// */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="w-1/2 grid grid-cols-2 gap-4">
           <div className="col-span-1">
             <h3 className="text-lg font-medium text-gray-900">Full Name:</h3>
             <p
@@ -510,239 +583,240 @@ const FreeLancerDetails = () => {
               </select>
             </div>
           </div>
-        </div>
 
-        {/* /////////////////////// */}
-        <div className="flex space-x-2 justify-end mt-4">
-          {!editFull && (
-            <button
-              className="inline-flex items-center px-4 py-2 bg-blue-700 text-white font-bold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              onClick={() => setEditFull(!editFull)}
-            >
-              Edit
-            </button>
-          )}
-          {editFull && (
-            <>
+          <div className="col-span-2 flex items-center justify-center space-x-2">
+            {!editFull && (
               <button
-                disabled={
-                  !fullNameState.isvalid ||
-                  !numberState.isvalid ||
-                  !emailState.isvalid ||
-                  !country ||
-                  !currency ||
-                  !userSpeciality
-                }
-                className="inline-flex items-center px-4 py-2 bg-green-700 text-white font-bold rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                onClick={editFreeLancerHandler}
-              >
-                Submit
-              </button>
-              <button
-                className="inline-flex items-center px-4 py-2 bg-red-700 text-white font-bold rounded-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                className="bg-cyan-600 rounded-sm transition-all hover:bg-cyan-400 text-white px-12 py-1"
                 onClick={() => setEditFull(!editFull)}
               >
-                <ImCancelCircle className="w-6 h-6" />
+                Edit
               </button>
-            </>
-          )}
+            )}
+            {editFull && (
+              <>
+                <button
+                  disabled={
+                    !fullNameState.isvalid ||
+                    !numberState.isvalid ||
+                    !emailState.isvalid ||
+                    !country ||
+                    !currency ||
+                    !userSpeciality
+                  }
+                  className="bg-green-500 rounded-sm transition-all hover:bg-green-400 text-white px-3 py-1"
+                  onClick={editFreeLancerHandler}
+                >
+                  Save
+                </button>
+                <button
+                  className="bg-red-500 rounded-sm transition-all hover:bg-red-400 text-white px-3 py-1"
+                  onClick={() => setEditFull(!editFull)}
+                >
+                  Cancel
+                </button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 rounded-lg bg-white shadow-md">
-        {/* Tasks Count */}
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h6 className="text-gray-600 text-sm mb-2 font-medium">
-            Tasks Count
-          </h6>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <FaTasks className="w-6 h-6 text-yellow-400" />
-              <h4 className="text-xl font-semibold ml-2 mt-1.5">
-                {freeLancer.tasksCount}
-              </h4>
+        <div className="w-1/2">
+          <div className="grid grid-cols-2 gap-2">
+            {/* Tasks Count */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <FaTasks className="bg-blue-100 text-blue-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Tasks Count</h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.tasksCount}
+                </h4>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">View Details</div>
-          </div>
-        </div>
 
-        {/* Completed Count */}
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h6 className="text-gray-600 text-sm mb-2 font-medium">
-            Completed Count
-          </h6>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <AiOutlineFileDone className="w-6 h-6 text-blue-400" />
-              <h4 className="text-xl font-semibold ml-2 mt-1.5">
-                {freeLancer.completedCount}
-              </h4>
+            {/* Completed Count */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <AiOutlineFileDone className="bg-orange-100 text-orange-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  Completed Count
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.completedCount}
+                </h4>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">View Details</div>
-          </div>
-        </div>
 
-        {/* FreeLancer Cost */}
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h6 className="text-gray-600 text-sm mb-2 font-medium">
-            FreeLancer Cost
-          </h6>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <FaCoins className="w-6 h-6 text-green-400" />
-              <h4 className="text-xl font-semibold ml-2 mt-1.5">
-                {freeLancer.totalGain}
-              </h4>
+            {/* FreeLancer Cost */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <FaCoins className="bg-red-100 text-red-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  FreeLancer Cost
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.totalGain}
+                </h4>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">View Details</div>
-          </div>
-        </div>
 
-        {/* Total Profit */}
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h6 className="text-gray-600 text-sm mb-2 font-medium">
-            Total Profit
-          </h6>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <GiProfit className="w-6 h-6 text-red-400" />
-              <h4 className="text-xl font-semibold ml-2 mt-1.5">
-                {freeLancer.totalProfit}
-              </h4>
+            {/* Total Profit */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <GiProfit className="bg-green-100 text-green-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Total Profit</h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.totalProfit}
+                </h4>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">View Details</div>
-          </div>
-        </div>
 
-        {/* Account Details */}
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h6 className="text-gray-600 text-sm mb-2 font-medium">
-            Account Details
-          </h6>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <FaCcVisa className="w-6 h-6 text-red-400" />
-              {freeLancerAccount &&
-                freeLancerAccount.map((acc) => (
-                  <div key={acc._id} className="ml-4">
-                    <a
-                      href={`/account/${acc._id}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      Click Here
-                    </a>
-                  </div>
-                ))}
+            {/* Account Details */}
+            <div className="col-span-2 w-1/2 bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2 mx-auto">
+              <FaCcVisa className="bg-purple-100 text-purple-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  Account Details
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancerAccount &&
+                    freeLancerAccount.map((acc) => (
+                      <div className="text-base" key={acc._id}>
+                        <Link to={`/account/${acc._id}`} className="">
+                          Click Here
+                        </Link>
+                      </div>
+                    ))}
+                </h4>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">Manage Accounts</div>
-          </div>
-        </div>
-      </div>
-
-      {/* /////////////////////////////////////////////////// */}
-      <div className="container mx-auto p-4 bg-white rounded-lg shadow-md">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-2xl font-semibold text-gray-900">Filter</h3>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <label
-              htmlFor="startDate"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              <FiFilter className="w-4 h-4 mr-2 text-gray-400" /> From:
-            </label>
-            <input
-              type="date"
-              id="startDate"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => {
-                setStart(e.target.value);
-                setDateFilterData(true);
-                setwithoutFilterData(false);
-              }}
-            />
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <label
-              htmlFor="endDate"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              <FiFilter className="w-4 h-4 mr-2 text-gray-400" /> To:
-            </label>
-            <input
-              type="date"
-              id="endDate"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => {
-                setEnd(e.target.value);
-                setDateFilterData(true);
-                setwithoutFilterData(false);
-              }}
-            />
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center gap-4 py-4">
-        {withoutFilterData && freeLancerTasks?.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {freeLancerTasks.map((task) => (
-              <div key={task._id} className="bg-white rounded-lg shadow-md p-4">
-                <div className="flex items-center justify-center mb-4">
-                  <span
-                    className={`rounded-full px-4 py-2 text-sm font-medium ${
-                      task.taskStatus.statusname === "pending"
-                        ? "bg-yellow-200 text-yellow-800"
-                        : task.taskStatus.statusname === "waiting offer"
-                        ? "bg-blue-200 text-blue-800"
-                        : task.taskStatus.statusname === "approved"
-                        ? "bg-green-200 text-green-800"
-                        : "bg-gray-200 text-gray-700"
+      <div className="py-3 drop-shadow">
+        {withoutFilterData &&
+          (withoutFilterData && freeLancerTasks?.length > 0 ? (
+            <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+              <thead>
+                <tr className="drop-shadow bg-white text-cyan-600">
+                  <th className="px-4 py-3 font-medium text-sm">ID</th>
+                  <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                  <th className="px-4 py-3 font-medium text-sm">Client</th>
+                  <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                  <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                  <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                  <th className="px-4 py-3 font-medium text-sm">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {freeLancerTasks.map((task, index) => (
+                  <tr
+                    key={task._id}
+                    className={`bg-white ${
+                      index !== 0 && "border-t-4 border-[#F4F7FC]"
                     }`}
                   >
-                    {task.taskStatus.statusname}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex flex-col mx-auto">
-                    <span className="text-xl font-medium">
-                      {task.serialNumber}
-                    </span>
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                      onClick={() => navigate(`/task/${task._id}`)}
+                    <td
+                      className="cursor-pointer hover:underline px-4 py-3"
+                      onClick={() => {
+                        navigate(`/task/${task._id}`);
+                      }}
                     >
-                      Details
-                    </button>
-                  </div>
-                </div>
-                <p className="text-lg font-semibold mb-2">
-                  Title: {task.title}
-                </p>
-                <p className="mb-2">
-                  Speciality: {task.speciality.sub_speciality}
-                </p>
-                <p className="mb-2">Client: {task.client.clientname}</p>
-                <p className="mb-2">Created By: {task.created_by?.fullname}</p>
-                {task.freelancer && (
-                  <p className="mb-2">
-                    Freelancer: {task.freelancer.freelancername}
-                  </p>
-                )}
-                <p className="mb-2">Deadline: {task.deadline.split("T")[0]}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-700">
-              No tasks found.
-            </h3>
-          </div>
-        )}
+                      {task.serialNumber}
+                    </td>
+                    <td className="px-4 py-3">{task.title}</td>
+                    <td className="px-4 py-3">{task.client.clientname}</td>
+                    <td className="px-4 py-3">
+                      {task.freelancer ? task.freelancer.freelancername : "-"}
+                    </td>
+                    <td className="px-4 py-3">
+                      {task.profit_amount || 0}{" "}
+                      {task.task_currency && task.task_currency.currencyname}
+                    </td>
+                    <td className="px-4 py-3">
+                      {new Date(task.deadline).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div
+                        className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                          task.taskStatus.statusname
+                        )} ${getStatusClass(task.taskStatus.statusname)}`}
+                      >
+                        {task.taskStatus.statusname}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className="row col-12  p-2 text-center">
+              <h3 className=" text-danger edit-form-lable">
+                This User Didn't Do Any Tasks Yet
+              </h3>
+            </div>
+          ))}
+        {dateFilterData &&
+          (DateFilter?.length > 0 ? (
+            <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+              <thead>
+                <tr className="drop-shadow bg-white text-cyan-600">
+                  <th className="px-4 py-3 font-medium text-sm">ID</th>
+                  <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                  <th className="px-4 py-3 font-medium text-sm">Client</th>
+                  <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                  <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                  <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                  <th className="px-4 py-3 font-medium text-sm">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {DateFilter.map((task, index) => (
+                  <tr
+                    key={task._id}
+                    className={`bg-white ${
+                      index !== 0 && "border-t-4 border-[#F4F7FC]"
+                    }`}
+                  >
+                    <td
+                      className="cursor-pointer hover:underline px-4 py-3"
+                      onClick={() => {
+                        navigate(`/task/${task._id}`);
+                      }}
+                    >
+                      {task.serialNumber}
+                    </td>
+                    <td className="px-4 py-3">{task.title}</td>
+                    <td className="px-4 py-3">{task.client.clientname}</td>
+                    <td className="px-4 py-3">
+                      {task.freelancer ? task.freelancer.freelancername : "-"}
+                    </td>
+                    <td className="px-4 py-3">
+                      {task.profit_amount || 0}{" "}
+                      {task.task_currency && task.task_currency.currencyname}
+                    </td>
+                    <td className="px-4 py-3">
+                      {new Date(task.deadline).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div
+                        className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                          task.taskStatus.statusname
+                        )} ${getStatusClass(task.taskStatus.statusname)}`}
+                      >
+                        {task.taskStatus.statusname}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className="row col-12  p-2 text-center">
+              <h3 className=" text-danger edit-form-lable">
+                This User Didn't Do Any Tasks Yet
+              </h3>
+            </div>
+          ))}
       </div>
     </div>
   );

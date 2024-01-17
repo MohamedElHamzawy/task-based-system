@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { IoIosNotificationsOutline } from "react-icons/io";
 
 const Header = () => {
-  const name = JSON.parse(localStorage.getItem("AdminName"));
+  const name = JSON.parse(localStorage.getItem("loggedUserName"));
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
   return (

@@ -5,6 +5,7 @@ import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from "react-icons/ti";
 import GetCookie from "../../../../hooks/getCookie";
+import { useNavigate } from "react-router";
 
 //Title validation
 const TitleReducer = (state, action) => {
@@ -164,6 +165,8 @@ const AddTask = () => {
     setChannel(newOne);
   };
 
+  const [priority, setPriority] = useState("");
+
   //title validation
   const [titleState, dispatch] = useReducer(TitleReducer, {
     value: "",
@@ -248,6 +251,7 @@ const AddTask = () => {
           paid: taskPriceState.value,
           status: status,
           shareWith: user,
+          priority,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -276,74 +280,55 @@ const AddTask = () => {
   const errorHandler = () => {
     setError(null);
   };
+
+  const navigate = useNavigate();
+
   return (
-    <div className="row text-center p-3 w-100 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="row p-1">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/tasks";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3  fw-bold">
-          {" "}
+      <div className="relative flex flex-row justify-center w-full p-1 mb-4">
+        <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/tasks")}
+        >
+          <TiArrowBack />
+        </button>
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Add New Task
         </h2>
       </div>
 
       <form
-        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        className="grid grid-cols-2 gap-4 w-4/5 mx-auto"
         onSubmit={newTaskSubmitHandler}
       >
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Channel :
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Channel</label>
           <select
             id="Channel"
             name="Channel"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={channel}
             onChange={(event) => channelChangeHandler(event.target.value)}
           >
-            <option value="" className="text-secondary">
+            <option defaultValue disabled className="text-secondary">
               Channels
             </option>
-            <option value="Telegram" className="">
-              Telegram
-            </option>
-            <option value="WhatsApp" className="">
-              WhatsApp
-            </option>
-            <option value="Website" className="">
-              Website
-            </option>
-            <option value="Other" className="">
-              Other
-            </option>
+            <option value="Telegram">Telegram</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Website">Website</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
-        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
-          <label
-            htmlFor="client"
-            className="col-10 col-lg-5 fw-bold add-user-p py-2"
-          >
-            {" "}
-            Clients:
-          </label>
-
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Clients</label>
           <select
             id="clients"
             name="clients"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={client}
             onChange={(event) => clientChangeHandler(event.target.value)}
           >
@@ -358,19 +343,13 @@ const AddTask = () => {
           </select>
         </div>
 
-        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
-          <label
-            htmlFor="speciality"
-            className="col-10 col-lg-5 fw-bold add-user-p py-2"
-          >
-            {" "}
-            Speciality:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Speciality</label>
 
           <select
             id="speciality"
             name="speciality"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={speciality}
             onChange={(event) => specialityChangeHandler(event.target.value)}
           >
@@ -385,49 +364,44 @@ const AddTask = () => {
           </select>
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            DeadLine :
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">DeadLine</label>
           <input
             type="datetime-local"
             id="meeting-time"
             name="meeting-time"
             placeholder="DeadLine"
             onChange={(e) => setDeadline(e.target.value)}
-            className="col-10 col-lg-7 search p-2 "
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
           />
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p">Status :</label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Status</label>
           <select
             id="status"
             name="status"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={status}
             onChange={(event) => setStatus(event.target.value)}
           >
             <option value="" className="text-secondary">
               Status
             </option>
-            {statuses.map((status) =>
-              status.statusname == "approved" ||
-              status.statusname == "waiting offer" ? (
-                <option value={status._id} key={status._id}>
-                  {status.statusname}
-                </option>
-              ) : (
-                ""
-              )
+            {statuses.map(
+              (status) =>
+                status.statusname == "approved" ||
+                (status.statusname == "waiting offer" && (
+                  <option value={status._id} key={status._id}>
+                    {status.statusname}
+                  </option>
+                ))
             )}
           </select>
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Task Price :
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Task Price</label>
           <input
             type="number"
             placeholder="Task Price "
@@ -435,46 +409,36 @@ const AddTask = () => {
             onChange={taskPriceChangeHandler}
             onBlur={taskPriceTouchHandler}
             isvalid={taskPriceState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
+            className={`w-full ml-2 rounded-sm lg:w-4/5 p-2${
               !taskPriceState.isvalid &&
               taskPriceState.isTouched &&
-              "form-control-invalid"
+              "border-red-500"
             }`}
           />
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Title :
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Title</label>
           <input
             type="text"
-            placeholder="Title "
+            placeholder="Title"
             value={titleState.value}
             onChange={titleChangeHandler}
             onBlur={titleTouchHandler}
             isvalid={titleState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !titleState.isvalid &&
-              titleState.isTouched &&
-              "form-control-invalid"
+            className={`w-full ml-2 rounded-sm lg:w-4/5 p-2${
+              !titleState.isvalid && titleState.isTouched && "border-red-500"
             }`}
           />
         </div>
 
-        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
-          <label
-            htmlFor="currency"
-            className="col-10 col-lg-5 fw-bold add-user-p py-2"
-          >
-            {" "}
-            Currency:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Currency</label>
 
           <select
             id="currencies"
             name="currencies"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={currency}
             onChange={(event) => currencyChangeHandler(event.target.value)}
           >
@@ -489,19 +453,13 @@ const AddTask = () => {
           </select>
         </div>
 
-        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
-          <label
-            htmlFor="user"
-            className="col-10 col-lg-5 fw-bold add-user-p py-2"
-          >
-            {" "}
-            Share With:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Share With</label>
 
           <select
             id="user"
             name="user"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={user}
             onChange={(event) => userChangeHandler(event.target.value)}
           >
@@ -516,10 +474,25 @@ const AddTask = () => {
           </select>
         </div>
 
-        <div className="col-12 m-1 py-2 p-0">
-          <label className="col-10 col-lg-2 fw-bold add-user-p py-2 ">
-            Description :
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Priority</label>
+          <select
+            id="priority"
+            name="priority"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
+            value={priority}
+            onChange={(event) => setPriority(event.target.value)}
+          >
+            <option defaultValue disabled className="text-secondary">
+              Priority
+            </option>
+            <option value="WhatsApp">Normal</option>
+            <option value="Telegram">High</option>
+          </select>
+        </div>
+
+        <div className="col-span-2 flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Description</label>
           <textarea
             type="text"
             placeholder="Description"
@@ -528,15 +501,15 @@ const AddTask = () => {
             onChange={descriptionChangeHandler}
             onBlur={descriptionTouchHandler}
             isvalid={descriptionState.isvalid.toString()}
-            className={`col-10 col-lg-8 search p-2 ${
+            className={`w-full ml-2 rounded-sm lg:w-[calc(100%-5.85rem)] p-2 ${
               !descriptionState.isvalid &&
               descriptionState.isTouched &&
-              "form-control-invalid"
+              "border-red-500"
             }`}
           />
         </div>
 
-        <div className="col-8 m-3 mt-5 row justify-content-center">
+        <div className="col-span-2 flex justify-center w-full">
           <button
             disabled={
               status == "64fdd400a86587827152ab3c"
@@ -558,7 +531,7 @@ const AddTask = () => {
                   !deadline ||
                   !status
             }
-            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+            className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
           </button>
