@@ -103,7 +103,7 @@ const Clients = () => {
         <select
           id="role"
           name="role"
-          className=" search  p-2"
+          className=""
           onChange={(e) => {
             setSortedClients(e.target.value);
           }}
@@ -117,7 +117,7 @@ const Clients = () => {
         <select
           id="speciality"
           name="speciality"
-          className="search p-2"
+          className=""
           value={country}
           onChange={(e) => {
             setCountry(e.target.value);

@@ -4,7 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
 import { FaEdit } from "react-icons/fa";
@@ -142,7 +142,7 @@ const TaskDetails = () => {
 
       setError(responseData.data.message);
       setIsLoading(false);
-      window.location.href = "/tasks";
+      window.location.to = "/tasks";
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
@@ -372,9 +372,12 @@ const TaskDetails = () => {
                 Client :
               </h5>
               <p className="d-inline col-8 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                <a className="text-dark fw-bold" href={`/client/${client._id}`}>
+                <Link
+                  className="text-dark fw-bold"
+                  to={`/client/${client._id}`}
+                >
                   {client.clientname}
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -415,12 +418,12 @@ const TaskDetails = () => {
                     Freelancer :
                   </h5>
                   <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                    <a
+                    <Link
                       className="text-dark fw-bold"
-                      href={`/freelancer/${task.freelancer._id}`}
+                      to={`/freelancer/${task.freelancer._id}`}
                     >
                       {task.freelancer.freelancername}
-                    </a>
+                    </Link>
                   </p>
                 </div>
 
@@ -467,12 +470,12 @@ const TaskDetails = () => {
                 UserName :
               </h5>
               <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                <a
+                <Link
                   className="text-dark fw-bold"
-                  href={`/user/${user && user._id}`}
+                  to={`/user/${user && user._id}`}
                 >
                   {user && user.fullname}
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -593,7 +596,7 @@ const TaskDetails = () => {
             {!comments.length == 0 ? (
               comments.map((comment) => (
                 <div
-                  className="comment text-start row p-2 pt-3 my-1 p-0 m-0"
+                  className="comment text-start row p-2 pt-3 my-1 m-0"
                   key={comment._id}
                 >
                   <h6 className="col-12 col-sm-4 edit-form-lable fw-bold ">

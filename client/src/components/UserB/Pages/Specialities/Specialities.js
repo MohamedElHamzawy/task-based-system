@@ -6,6 +6,7 @@ import { BsFillFolderSymlinkFill } from "react-icons/bs";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FiFilter } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, specialities) => {
@@ -122,12 +123,12 @@ const Specialities = () => {
           searchFilter.map((speciality) => (
             <div className="table-body row pt-3 p-0 m-0 " key={speciality._id}>
               <p className="col-5  name-role text-center">
-                <a
+                <Link
                   className="text-dark text-decoration-none fw-bold"
-                  href={`/speciality/${speciality._id}`}
+                  to={`/speciality/${speciality._id}`}
                 >
                   {speciality.sub_speciality}
-                </a>
+                </Link>
               </p>
               <p className="col-4  name-role">{speciality.speciality}</p>
               <p className="col-3">

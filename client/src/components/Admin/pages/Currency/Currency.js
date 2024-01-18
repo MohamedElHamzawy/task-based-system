@@ -4,6 +4,7 @@ import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, currencies) => {
@@ -122,12 +123,12 @@ const Currency = () => {
                 searchFilter.map((currency) => (
                   <tr key={currency._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <a
+                      <Link
                         className="text-indigo-600 hover:text-indigo-900 font-medium"
-                        href={`/currency/${currency._id}`}
+                        to={`/currency/${currency._id}`}
                       >
                         {currency.currencyname}
-                      </a>
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {currency.priceToEGP}

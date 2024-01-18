@@ -191,129 +191,127 @@ const PendingTasks = () => {
         />
       </div>
 
-      <div className="row justify-content-center p-0 m-0">
-        {searchFilterData &&
-          (!searchFilter.length == 0 ? (
-            <table className="table-auto w-full rounded-lg overflow-hidden text-center">
-              <thead>
-                <tr className="drop-shadow bg-white text-cyan-600">
-                  <th className="px-4 py-3 font-medium text-sm">ID</th>
-                  <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
-                  <th className="px-4 py-3 font-medium text-sm">Client</th>
-                  <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
-                  <th className="px-4 py-3 font-medium text-sm">Profit</th>
-                  <th className="px-4 py-3 font-medium text-sm">Deadline</th>
-                  <th className="px-4 py-3 font-medium text-sm">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {searchFilter.map((task, index) => (
-                  <tr
-                    key={task._id}
-                    className={`bg-white ${
-                      index !== 0 && "border-t-4 border-[#F4F7FC]"
-                    }`}
+      {searchFilterData &&
+        (!searchFilter.length == 0 ? (
+          <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+            <thead>
+              <tr className="drop-shadow bg-white text-cyan-600">
+                <th className="px-4 py-3 font-medium text-sm">ID</th>
+                <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                <th className="px-4 py-3 font-medium text-sm">Client</th>
+                <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                <th className="px-4 py-3 font-medium text-sm">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchFilter.map((task, index) => (
+                <tr
+                  key={task._id}
+                  className={`bg-white ${
+                    index !== 0 && "border-t-4 border-[#F4F7FC]"
+                  }`}
+                >
+                  <td
+                    className="cursor-pointer hover:underline px-4 py-3"
+                    onClick={() => {
+                      navigate(`/task/${task._id}`);
+                    }}
                   >
-                    <td
-                      className="cursor-pointer hover:underline px-4 py-3"
-                      onClick={() => {
-                        navigate(`/task/${task._id}`);
-                      }}
+                    {task.serialNumber}
+                  </td>
+                  <td className="px-4 py-3">{task.title}</td>
+                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">
+                    {task.freelancer ? task.freelancer.freelancername : "-"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {task.profit_amount || 0}{" "}
+                    {task.task_currency && task.task_currency.currencyname}
+                  </td>
+                  <td className="px-4 py-3">
+                    {new Date(task.deadline).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div
+                      className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                        task.taskStatus.statusname
+                      )} ${getStatusClass(task.taskStatus.statusname)}`}
                     >
-                      {task.serialNumber}
-                    </td>
-                    <td className="px-4 py-3">{task.title}</td>
-                    <td className="px-4 py-3">{task.client.clientname}</td>
-                    <td className="px-4 py-3">
-                      {task.freelancer ? task.freelancer.freelancername : "-"}
-                    </td>
-                    <td className="px-4 py-3">
-                      {task.profit_amount || 0}{" "}
-                      {task.task_currency && task.task_currency.currencyname}
-                    </td>
-                    <td className="px-4 py-3">
-                      {new Date(task.deadline).toLocaleDateString()}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div
-                        className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
-                          task.taskStatus.statusname
-                        )} ${getStatusClass(task.taskStatus.statusname)}`}
-                      >
-                        {task.taskStatus.statusname}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Tasks</h2>
-            </div>
-          ))}
+                      {task.taskStatus.statusname}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="row  p-3 m-0 text-center">
+            <h2>There Is No Tasks</h2>
+          </div>
+        ))}
 
-        {statusFilterData &&
-          (!StatusFilter.length == 0 ? (
-            <table className="table-auto w-full rounded-lg overflow-hidden text-center">
-              <thead>
-                <tr className="drop-shadow bg-white text-cyan-600">
-                  <th className="px-4 py-3 font-medium text-sm">ID</th>
-                  <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
-                  <th className="px-4 py-3 font-medium text-sm">Client</th>
-                  <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
-                  <th className="px-4 py-3 font-medium text-sm">Profit</th>
-                  <th className="px-4 py-3 font-medium text-sm">Deadline</th>
-                  <th className="px-4 py-3 font-medium text-sm">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {StatusFilter.map((task, index) => (
-                  <tr
-                    key={task._id}
-                    className={`bg-white ${
-                      index !== 0 && "border-t-4 border-[#F4F7FC]"
-                    }`}
+      {statusFilterData &&
+        (!StatusFilter.length == 0 ? (
+          <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+            <thead>
+              <tr className="drop-shadow bg-white text-cyan-600">
+                <th className="px-4 py-3 font-medium text-sm">ID</th>
+                <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                <th className="px-4 py-3 font-medium text-sm">Client</th>
+                <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                <th className="px-4 py-3 font-medium text-sm">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {StatusFilter.map((task, index) => (
+                <tr
+                  key={task._id}
+                  className={`bg-white ${
+                    index !== 0 && "border-t-4 border-[#F4F7FC]"
+                  }`}
+                >
+                  <td
+                    className="cursor-pointer hover:underline px-4 py-3"
+                    onClick={() => {
+                      navigate(`/task/${task._id}`);
+                    }}
                   >
-                    <td
-                      className="cursor-pointer hover:underline px-4 py-3"
-                      onClick={() => {
-                        navigate(`/task/${task._id}`);
-                      }}
+                    {task.serialNumber}
+                  </td>
+                  <td className="px-4 py-3">{task.title}</td>
+                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">
+                    {task.freelancer ? task.freelancer.freelancername : "-"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {task.profit_amount || 0}{" "}
+                    {task.task_currency && task.task_currency.currencyname}
+                  </td>
+                  <td className="px-4 py-3">
+                    {new Date(task.deadline).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div
+                      className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                        task.taskStatus.statusname
+                      )} ${getStatusClass(task.taskStatus.statusname)}`}
                     >
-                      {task.serialNumber}
-                    </td>
-                    <td className="px-4 py-3">{task.title}</td>
-                    <td className="px-4 py-3">{task.client.clientname}</td>
-                    <td className="px-4 py-3">
-                      {task.freelancer ? task.freelancer.freelancername : "-"}
-                    </td>
-                    <td className="px-4 py-3">
-                      {task.profit_amount || 0}{" "}
-                      {task.task_currency && task.task_currency.currencyname}
-                    </td>
-                    <td className="px-4 py-3">
-                      {new Date(task.deadline).toLocaleDateString()}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div
-                        className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
-                          task.taskStatus.statusname
-                        )} ${getStatusClass(task.taskStatus.statusname)}`}
-                      >
-                        {task.taskStatus.statusname}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Tasks</h2>
-            </div>
-          ))}
-      </div>
+                      {task.taskStatus.statusname}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="row  p-3 m-0 text-center">
+            <h2>There Is No Tasks</h2>
+          </div>
+        ))}
     </div>
   );
 };

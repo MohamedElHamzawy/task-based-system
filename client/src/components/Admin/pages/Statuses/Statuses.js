@@ -5,6 +5,7 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import GetCookie from "../../../../hooks/getCookie";
 import { useNavigate } from "react-router";
 import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, statuses) => {
@@ -125,12 +126,12 @@ const Statuses = () => {
                 searchFilter.map((status) => (
                   <tr key={status._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <a
+                      <Link
                         className="text-indigo-600 hover:text-indigo-900 font-medium"
-                        href={`/status/${status._id}`}
+                        to={`/status/${status._id}`}
                       >
                         {status.statusname}
-                      </a>
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {status.role}

@@ -8,7 +8,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaTasks } from "react-icons/fa";
 import { FaCoins } from "react-icons/fa";
@@ -653,9 +653,9 @@ const ClientDetails = () => {
                   {clientAccount &&
                     clientAccount.map((acc) => (
                       <div className="text-base" key={acc._id}>
-                        <a href={`/account/${acc._id}`} className="">
+                        <Link to={`/account/${acc._id}`} className="">
                           Click Here
-                        </a>
+                        </Link>
                       </div>
                     ))}
                 </h4>
@@ -722,8 +722,8 @@ const ClientDetails = () => {
               </tbody>
             </table>
           ) : (
-            <div className="row col-12  p-2 text-center">
-              <h3 className=" text-danger edit-form-lable">
+            <div class="container mx-auto p-4">
+              <h3 class="text-lg font-medium text-center text-red-500">
                 This User Didn't Do Any Tasks Yet
               </h3>
             </div>
@@ -785,9 +785,9 @@ const ClientDetails = () => {
               </tbody>
             </table>
           ) : (
-            <div className="row col-12  p-2 text-center">
-              <h3 className=" text-danger edit-form-lable">
-                No Tasks With This Date
+            <div class="container mx-auto p-4">
+              <h3 class="text-lg font-medium text-center text-red-500">
+                This User Didn't Do Any Tasks Yet
               </h3>
             </div>
           ))}

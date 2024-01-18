@@ -4,7 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
 import { IoMdRemoveCircle } from "react-icons/io";
@@ -338,12 +338,12 @@ const TaskDetails = () => {
                   Freelancer :
                 </h5>
                 <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data">
-                  <a
+                  <Link
                     className="text-dark fw-bold"
-                    href={`/freelancer/${task.freelancer._id}`}
+                    to={`/freelancer/${task.freelancer._id}`}
                   >
                     {task.freelancer.freelancername}
-                  </a>
+                  </Link>
                 </p>
               </div>
 

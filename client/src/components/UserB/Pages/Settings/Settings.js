@@ -5,6 +5,7 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import "./Settings.css";
 import { BiSolidEditAlt } from "react-icons/bi";
 import { TiArrowBack } from "react-icons/ti";
+import { Link } from "react-router-dom";
 
 const Settings = () => {
   const [editFull, setEditFull] = useState(false);
@@ -323,9 +324,9 @@ const Settings = () => {
             {" "}
             *********
           </p>
-          <a href="/changepass" className="col-1 settings-edit-btn fs-2">
+          <Link to="/changepass" className="col-1 settings-edit-btn fs-2">
             <BiSolidEditAlt />
-          </a>
+          </Link>
         </div>
 
         <div className="col-12  p-3">

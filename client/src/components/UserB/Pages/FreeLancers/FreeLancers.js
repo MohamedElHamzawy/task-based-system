@@ -5,6 +5,7 @@ import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { SiFreelancer } from "react-icons/si";
 import { FiFilter } from "react-icons/fi";
 import { RiDeleteBinFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, freeLancers) => {
@@ -173,12 +174,12 @@ const FreeLancers = () => {
                   <p className="col-12 col-sm-6 col-md-5 edit-form-p fw-bold">
                     {" "}
                     <span className="edit-form-lable">Name:</span>
-                    <a
+                    <Link
                       className="text-dark fw-bold"
-                      href={`/freeLancer/${freeLancer._id}`}
+                      to={`/freeLancer/${freeLancer._id}`}
                     >
                       {freeLancer.freelancername}
-                    </a>
+                    </Link>
                   </p>
                   <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
                     <span className="edit-form-lable">Speciality :</span>{" "}
@@ -217,12 +218,12 @@ const FreeLancers = () => {
                   <p className="col-12 col-sm-6 col-md-4 edit-form-p fw-bold">
                     {" "}
                     <span className="edit-form-lable">Name : </span>
-                    <a
+                    <Link
                       className="text-dark fw-bold"
-                      href={`/freeLancer/${freeLancer._id}`}
+                      to={`/freeLancer/${freeLancer._id}`}
                     >
                       {freeLancer.freelancername}
-                    </a>
+                    </Link>
                   </p>
                   <p className="col-12 col-sm-6 col-md-4 edit-form-p ">
                     <span className="edit-form-lable">Speciality :</span>{" "}

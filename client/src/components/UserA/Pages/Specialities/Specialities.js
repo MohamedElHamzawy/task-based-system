@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import "./Specialities.css";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { RiDeleteBinFill } from "react-icons/ri";
-import { FiFilter } from "react-icons/fi";
+import { FaPlus } from "react-icons/fa";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 //search filter
 const getSearchFilter = (searchName, specialities) => {
@@ -72,79 +72,96 @@ const Specialities = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row w-100 p-0 m-0 justify-content-center">
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-12 col-sm-10 col-md-6 ">
-          <h1 className="logo text-white bg-danger p-2">Customer Service </h1>
-        </div>
-        <h1 className="col-12  text-center  fw-bold">System Specialities</h1>
+    <div className="justify-center min-h-[calc(100vh-100px)]">
+      <div className="flex justify-between items-center my-8">
+        <h1 className="text-2xl">System Specialities</h1>
+        {/* <div className="">FILTERS</div> */}
       </div>
 
-      <div className="row p-0 m-0 col-10 justify-content-center">
-        <div className="col-12 col-md-6 p-2">
+      <div className="w-full max-w-3xl mx-auto">
+        <div className="flex items-center justify-between">
           <input
-            type="name"
-            className="search p-2 w-100"
-            placeholder=" Search By Name Or Type"
+            type="text"
+            className="rounded border px-3 py-2 shadow-sm w-1/3"
+            placeholder="Search By Name Or Type"
             onChange={(e) => {
               setSearchName(e.target.value);
             }}
           />
-        </div>
-
-        <div className="col-12 col-md-5 p-2 text-end">
           <button
-            onClick={() => {
-              window.location.href = "/addspeciality";
-            }}
-            className="new-user p-2"
+            onClick={() => navigate("/addspeciality")}
+            className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
           >
-            <BiSolidCategoryAlt className="fs-3" /> Add New Speciality
+            <FaPlus className="mr-2" /> Add New Speciality
           </button>
         </div>
-      </div>
 
-      <div className="bg-white w-100 users-data row p-0 m-0 mt-2">
-        <div className="row fw-bold table-head p-0 m-0 py-3">
-          <p className="col-5 speciality-table-head text-center">
-            Sub-Speciality
-          </p>
-          <p className="col-4 speciality-table-head">Speciality</p>
-          <p className="col-3 ">Delete</p>
+        <div className="overflow-x-auto mt-4 drop-shadow">
+          <table className="w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50 text-cyan-600">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Sub-Speciality
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Speciality
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {!searchFilter.length == 0 ? (
+                searchFilter.map((speciality) => (
+                  <tr key={speciality._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Link
+                        className="text-indigo-600 hover:text-indigo-900 font-medium"
+                        to={`/speciality/${speciality._id}`}
+                      >
+                        {speciality.sub_speciality}
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {speciality.speciality}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={() => deleteSpecialityHandler(speciality._id)}
+                      >
+                        <RiDeleteBinFill />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="px-6 py-4 text-center" colSpan={3}>
+                    <h2 className="text-lg font-medium text-gray-900">
+                      There Are No Specialities
+                    </h2>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-
-        {!searchFilter.length == 0 ? (
-          searchFilter.map((speciality) => (
-            <div className="table-body row pt-3 p-0 m-0 " key={speciality._id}>
-              <p className="col-5  name-role text-center">
-                <a
-                  className="text-dark text-decoration-none fw-bold"
-                  href={`/speciality/${speciality._id}`}
-                >
-                  {speciality.sub_speciality}
-                </a>
-              </p>
-              <p className="col-4  name-role">{speciality.speciality}</p>
-              <p className="col-3">
-                {" "}
-                <button
-                  className=" delete-btn p-2 px-3"
-                  onClick={() => deleteSpecialityHandler(speciality._id)}
-                >
-                  {" "}
-                  <RiDeleteBinFill />{" "}
-                </button>
-              </p>
-            </div>
-          ))
-        ) : (
-          <div className="row  p-3 m-0 text-center">
-            <h2>There Is No Specialities</h2>
-          </div>
-        )}
       </div>
     </div>
   );
