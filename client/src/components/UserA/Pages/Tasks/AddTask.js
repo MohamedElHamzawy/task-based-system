@@ -73,6 +73,7 @@ const AddTask = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState(false);
 
   useEffect(() => {
     let timerId;
@@ -231,16 +232,21 @@ const AddTask = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      const responseData = await response;
+      const responseData = response;
 
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
-      }
-      setError(responseData.data.message);
+      setMessage(responseData.data.message);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      if (error.response) {
+        setError(
+          error.response.data.err || "SomeThing Went Wrong , Please Try Again ."
+        );
+      } else if (error.request) {
+        setError(error.request);
+      } else {
+        setError(error.message || "Error");
+      }
     }
     titleState.value = "";
     descriptionState.value = "";
@@ -254,10 +260,12 @@ const AddTask = () => {
 
   const errorHandler = () => {
     setError(null);
+    setMessage(null);
   };
   return (
     <div className="row text-center p-3 w-100 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
+      <ErrorModal error={message} message={message} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="row p-1">

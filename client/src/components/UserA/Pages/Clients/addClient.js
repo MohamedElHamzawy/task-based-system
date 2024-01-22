@@ -90,6 +90,7 @@ const AddClient = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState(false);
 
   useEffect(() => {
     let timerId;
@@ -226,16 +227,21 @@ const AddClient = () => {
         }
       );
 
-      const responseData = await response;
+      const responseData = response;
 
-      if (!(response.statusText === "OK")) {
-        throw new Error(responseData.data.message);
+      setMessage(responseData.data.message);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response) {
+        setError(
+          error.response.data.err || "SomeThing Went Wrong , Please Try Again ."
+        );
+      } else if (error.request) {
+        setError(error.request);
+      } else {
+        setError(error.message || "Error");
       }
-      setError(responseData.data.message);
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
     clientEmailState.value = "";
     clientNameState.value = "";
@@ -247,6 +253,7 @@ const AddClient = () => {
 
   const errorHandler = () => {
     setError(null);
+    setMessage(null);
   };
 
   const navigate = useNavigate();
@@ -254,6 +261,7 @@ const AddClient = () => {
   return (
     <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
+      <ErrorModal error={message} message={message} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="relative flex flex-row justify-center w-full p-1 mb-4">

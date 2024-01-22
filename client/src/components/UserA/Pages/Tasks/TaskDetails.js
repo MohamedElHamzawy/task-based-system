@@ -133,14 +133,23 @@ const TaskDetails = () => {
           },
         }
       );
-      const responseData = await response;
+      const responseData = response;
 
       setError(responseData.data.message);
       setIsLoading(false);
       window.location.href = "/yourtasks";
-    } catch (err) {
+    } catch (error) {
+      console.log(error);
       setIsLoading(false);
-      setError(err.message || "SomeThing Went Wrong , Please Try Again .");
+      if (error.response) {
+        setError(
+          error.response.data.err || "SomeThing Went Wrong , Please Try Again ."
+        );
+      } else if (error.request) {
+        setError(error.request);
+      } else {
+        setError(error.message || "Error");
+      }
     }
   };
 
