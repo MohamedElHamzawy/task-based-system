@@ -47,6 +47,9 @@ const userSchema = new mongoose.Schema({
     totalProfit: {
         type: Number,
         default: 0
+    },
+    deviceToken:{
+        type:String,
     }
 }, {timestamps: true});
 const userModel = mongoose.model("user", userSchema);

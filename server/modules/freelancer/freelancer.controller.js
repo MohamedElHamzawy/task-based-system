@@ -2,6 +2,10 @@ const freelancerModel = require("../../DB/freelancer.model");
 const accountModel = require("../../DB/account.model");
 const taskModel = require("../../DB/task.model");
 const HttpError = require("../../common/httpError");
+const bcrypt = require("bcrypt");
+const userModel = require("../../DB/user.model");
+const salt = parseInt(process.env.SALT);
+const pepper = process.env.PEPPER;
 
 const getAllFreelancers = async (req,res,next) => {
     try {
@@ -58,12 +62,53 @@ const getFreelancer = async (req, res, next) => {
     }
 }
 
+
+const updateFreelancerPassword = async (req,res,next) => {
+    try {
+        const {
+            password
+        } = req.body;
+        const freelancerID = req.params.id;
+        const tryGetFreelancer = await freelancerModel.findOne({_id: freelancerID});
+        if (tryGetFreelancer) {
+            const hashedPassword = bcrypt.hashSync(password + pepper, salt);
+            await freelancerModel.updateOne({_id: freelancerID}, {password: hashedPassword});
+            res.json({message:"Password has been updated successfully"});
+        } else {
+            return next(new HttpError("User doesn't exist on system!", 400));
+        }
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
+
 const createFreelancer = async (req,res,next) => {
     try {
-        const {name, phone, email, country, speciality, currency} = req.body;
-        const newFreelancer = await new freelancerModel({freelancername: name, phone: phone, email: email, country: country, speciality: speciality, currency}).save();
-        await new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername, type:"freelancer"}).save();
-        res.json({message: "Freelancer has been created successfully"});
+        const {
+            name,
+            phone,
+            email,
+            country,
+            speciality,
+            currency,
+            password
+            } = req.body;
+        const getFreelancer=await freelancerModel.findOne({$or:[{email:email},{freelancername:name}]})
+        const checkName=await userModel.findOne({username:name})
+            if(checkName){
+                return next(new HttpError("This userName already exist on system", 400));
+            }else{
+                if(getFreelancer){
+                    return next(new HttpError("This freelancer already exist on system", 400));
+                }else{
+                    const hashedPassword = bcrypt.hashSync(password + pepper, salt);
+                    const newFreelancer = await new freelancerModel({freelancername: name,password:hashedPassword,phone: phone, email: email, country: country, speciality: speciality, currency:currency}).save();
+                await new accountModel({owner: newFreelancer._id, title: newFreelancer.freelancername, type:"freelancer"}).save();
+                res.json({message: "Freelancer has been created successfully",newFreelancer});
+                }
+            }
+
+       
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
@@ -103,4 +148,4 @@ const deleteFreelancer = async (req,res,next) => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
-module.exports = {getAllFreelancers, getFreelancer, filterSortedFreelancers, createFreelancer, updateFreelancer, deleteFreelancer}
+module.exports = {getAllFreelancers, updateFreelancerPassword,getFreelancer, filterSortedFreelancers, createFreelancer, updateFreelancer, deleteFreelancer}

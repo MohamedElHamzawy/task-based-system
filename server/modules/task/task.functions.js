@@ -6,6 +6,7 @@ const noteModel = require("../../DB/note.model");
 const userModel = require("../../DB/user.model");
 const freelancerModel = require("../../DB/freelancer.model");
 const clientModel = require("../../DB/client.model");
+const fileModel = require("../../DB/file.model");
 
 
 const acceptTask = async (taskID,userName,userID,shareWith) => {
@@ -226,22 +227,67 @@ const deleteDeliveredTask = async (taskID) => {
     await userModel.findByIdAndUpdate({_id: thisTask.accepted_by}, {tasksCount: newuserBTasksCount, completedCount: newuserBCompletedCount, totalGain: newuserBTotalGain, totalProfit: newuserBTotalProfit});    
 }
 
-const deleteNormalTask = async () => {
-    const freelancer = await freelancerModel.findById({_id: thisTask.freelancer});
-    const newfreelancerTasksCount = freelancer.tasksCount - 1;
+const deleteNormalTask = async (taskID) => {
+    const thisTask = await taskModel.findOne({_id: taskID});
+
+    const freelancerFound = await freelancerModel.findById(thisTask.freelancer);
+    if (freelancerFound){
+        console.log(freelancerFound);
+    const newfreelancerTasksCount = freelancerFound.tasksCount - 1;
     await freelancerModel.findByIdAndUpdate({_id: thisTask.freelancer}, {tasksCount: newfreelancerTasksCount});
+    }
+    
 
     const client = await clientModel.findById({_id: thisTask.client});
-    const newClientTasksCount = client.tasksCount - 1;
-    await clientModel.findByIdAndUpdate({_id: thisTask.client}, {tasksCount: newClientTasksCount});
+    if (client) {
+        const newClientTasksCount = client.tasksCount - 1;
+        await clientModel.findByIdAndUpdate({_id: thisTask.client}, {tasksCount: newClientTasksCount});
+    }
+    
 
     const userA = await userModel.findOne({_id: thisTask.created_by});
-    const newuserATasksCount = userA.tasksCount - 1;
+    if(userA){
+        const newuserATasksCount = userA.tasksCount - 1;
     await userModel.findByIdAndUpdate({_id: thisTask.created_by}, {tasksCount: newuserATasksCount});
 
+    }
+    
     const userB = await userModel.findOne({_id: thisTask.accepted_by});
-    const newuserBTasksCount = userB.tasksCount - 1;
-    await userModel.findByIdAndUpdate({_id: thisTask.accepted_by}, {tasksCount: newuserBTasksCount});    
+    if (userB){
+        const newuserBTasksCount = userB.tasksCount - 1;
+        await userModel.findByIdAndUpdate({_id: thisTask.accepted_by}, {tasksCount: newuserBTasksCount}); 
+    }
+       
 }
 
-module.exports = {acceptTask, confirmTaskB, makeOffer, confirmTaskA, refuseTask, deliverTask, editTask, deleteDeliveredTask, deleteNormalTask}
+
+// const fileSizeFormatter = (bytes, decimal) => {
+//     if (bytes === 0) {
+//       return "0 Bytes";
+//     }
+//     const dm = decimal || 2;
+//     const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "YB", "ZB"];
+//     const index = Math.floor(Math.log(bytes) / Math.log(1000));
+//     return (
+//       parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + " " + sizes[index]
+//     );
+//   };
+
+const pushFile=async(fileName,filePath,fileType,fileSize,speciality,taskId)=>{
+    try {
+        await fileModel.findOneAndDelete({ speciality, taskId });
+        const file = new fileModel({
+          speciality:speciality,
+          taskId:taskId,
+          fileName: fileName,
+          filePath: filePath,
+          fileType: fileType,
+          fileSize: fileSize, // 0.00
+        }).save();
+        return file
+      } catch (error) {
+        return console.log(error);
+      }
+}
+
+module.exports = {acceptTask, confirmTaskB, makeOffer, confirmTaskA, refuseTask, deliverTask, editTask, deleteDeliveredTask, deleteNormalTask,pushFile}

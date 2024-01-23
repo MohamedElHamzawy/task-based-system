@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../DB/user.model");
 const HttpError = require("../common/httpError");
+const freelancerModel = require("../DB/freelancer.model");
 
 const auth = (data) => {
     return async (req,res,next) => {
@@ -12,10 +13,15 @@ const auth = (data) => {
                 let token = tokenHeader.split(" ")[1];
                 let {id} = jwt.verify(token, process.env.TOKEN_KEY);
                 let user = await userModel.findOne({_id: id}).select("-password");
+                let freelancer = await freelancerModel.findOne({_id: id}).select("-password");
                 if (user) {
                     req.user = user;
                     next();
-                } else {
+                } else if(freelancer){
+                    req.user = freelancer;
+                    next();
+                }
+                else {
                     return next(new HttpError("User not Found", 404));
                 }
             }

@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const freelancerSchema = new mongoose.Schema({
     freelancername: {
-        type: String
+        type: String,
+        required:true,
+        unique: true
     },
     phone: {
         type: String
@@ -17,6 +19,14 @@ const freelancerSchema = new mongoose.Schema({
     country: {
         type: mongoose.Types.ObjectId,
         ref: "country"
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    user_role:{
+        type:String,
+        default:"freelancer"
     },
     tasksCount: {
         type: Number,
@@ -37,6 +47,9 @@ const freelancerSchema = new mongoose.Schema({
     currency: {
         type: mongoose.Types.ObjectId,
         ref: "currency"
+    },
+    deviceToken:{
+        type:String,
     }
 });
 

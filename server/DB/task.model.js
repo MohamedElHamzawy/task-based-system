@@ -14,6 +14,9 @@ const taskSchema = new mongoose.Schema({
     channel: {
         type: String
     },
+    direct_to: {
+        type: String
+    },
     client: {
         type: mongoose.Types.ObjectId,
         ref: "client"
@@ -60,6 +63,10 @@ const taskSchema = new mongoose.Schema({
     task_currency:{
         type: mongoose.Types.ObjectId,
         ref: "currency"
+    },
+    file:{
+        type: mongoose.Types.ObjectId,
+        ref: "file"
     },
     paid: {
         type: Number
