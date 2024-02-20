@@ -33,7 +33,7 @@ const Settings = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(` http://localhost:5000/api/user/${userID}`)
+          .get(` https://smarteduservices.com:5000/api/user/${userID}`)
           .then((res) => {
             setUser(res.data.user);
             setFullName(res.data.user.fullname);
@@ -47,15 +47,17 @@ const Settings = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/speciality/")
+          .get(" https://smarteduservices.com:5000/api/speciality/")
           .then((res) => {
             setSpecialities(res.data.specialities);
           });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
       });
     }
     return () => clearTimeout(timerId);
@@ -75,7 +77,7 @@ const Settings = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/user/${user._id}`,
+        ` https://smarteduservices.com:5000/api/user/${user._id}`,
         {
           fullName: fullName,
           userName: userName,

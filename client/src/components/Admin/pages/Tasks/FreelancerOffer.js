@@ -43,7 +43,7 @@ const FreelancerOffer = (props) => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/freelancer/")
+          .get(" https://smarteduservices.com:5000/api/freelancer/")
           .then((res) => {
             setFreeLancers(res.data.freelancers);
           });
@@ -82,7 +82,7 @@ const FreelancerOffer = (props) => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/task/partial/${props.id}`,
+        ` https://smarteduservices.com:5000/api/task/partial/${props.id}`,
         {
           statusID: props.statusID,
           freelancerID: freeLancer,

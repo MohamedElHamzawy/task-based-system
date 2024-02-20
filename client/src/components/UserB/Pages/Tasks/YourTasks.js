@@ -23,6 +23,8 @@ const getSearchFilter = (searchName, tasks) => {
 };
 
 const PendingTasks = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const token = GetCookie("UserB");
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ const PendingTasks = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/status/filter/all/", {
+          .get(" https://smarteduservices.com:5000/api/status/filter/all/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -48,23 +50,26 @@ const PendingTasks = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/speciality/")
+          .get(" https://smarteduservices.com:5000/api/speciality/")
           .then((res) => {
             setSpecialities(res.data.specialities);
           });
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/freelancer/")
+          .get(" https://smarteduservices.com:5000/api/freelancer/")
           .then((res) => {
             setFreelancers(res.data.freelancers);
           });
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/task/", {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+          .get(
+            `https://smarteduservices.com:5000/api/task/?limit=${limit}&page=${page}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
           .then((res) => {
             setTasks(res.data.myTasks);
           });
@@ -101,7 +106,7 @@ const PendingTasks = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/task/filter/result/specialist",
+        `https://smarteduservices.com:5000/api/task/filter/result/specialist?limit=${limit}&page=${page}`,
         {
           speciality: speciality,
           status: status,
@@ -492,6 +497,32 @@ const PendingTasks = () => {
         ) : (
           ""
         )}
+        <h3 className="row p-0 m-0 justify-content-center">
+          Current Page: {page}
+        </h3>
+
+        <div className="row p-0 m-0 justify-content-center">
+          <div className="col-12 text-center p-2">
+            <button
+              className="p-2 m-1"
+              onClick={() => {
+                setPage(page - 1 < 1 ? 1 : page - 1);
+                setLoading(true);
+              }}
+            >
+              Prev
+            </button>
+            <button
+              className="p-2 m-1"
+              onClick={() => {
+                setPage(page + 1);
+                setLoading(true);
+              }}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

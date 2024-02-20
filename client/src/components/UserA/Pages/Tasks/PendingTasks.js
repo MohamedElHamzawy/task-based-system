@@ -41,7 +41,7 @@ const PendingTasks = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/status/filter/all/", {
+          .get(" https://smarteduservices.com:5000/api/status/filter/all/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -50,7 +50,7 @@ const PendingTasks = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/task/", {
+          .get(" https://smarteduservices.com:5000/api/task/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {

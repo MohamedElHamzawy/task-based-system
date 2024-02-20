@@ -21,7 +21,7 @@ const Notifications = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/note/", {
+          .get(" https://smarteduservices.com:5000/api/note/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {

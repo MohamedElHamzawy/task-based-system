@@ -27,9 +27,11 @@ const Country = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("http://localhost:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get("https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -45,7 +47,7 @@ const Country = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `http://localhost:5000/api/country/${id}`
+        `https://smarteduservices.com:5000/api/country/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`

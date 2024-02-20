@@ -5,22 +5,22 @@ const HttpError = require("./common/httpError");
 const fs = require("fs");
 const https = require("https");
 
-// var privateKey = fs.readFileSync(
-//   "/etc/letsencrypt/live/smarteduservices.com/privkey.pem",
-//   "utf8"
-// );
-// var certificate = fs.readFileSync(
-//   "/etc/letsencrypt/live/smarteduservices.com/fullchain.pem",
-//   "utf8"
-// );
-// var credentials = { key: privateKey, cert: certificate };
+var privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/smarteduservices.com/privkey.pem",
+  "utf8"
+);
+var certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/smarteduservices.com/fullchain.pem",
+  "utf8"
+);
+var credentials = { key: privateKey, cert: certificate };
 
 require("dotenv").config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-// app.use(cors({ origin: "http://localhost" }));
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "https://smarteduservices.com" }));
+// app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 const {
@@ -63,18 +63,8 @@ app.use((error, req, res, next) => {
     .json({ err: error.message || "Something went wrong!" });
 });
 const port = parseInt(process.env.PORT);
-// const httpsServer = https.createServer(credentials, app);
-// httpsServer.listen(port, async () => {
-//     try {
-//         await mongoose.connect(process.env.CON_LINK, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         }).then(() => console.log("DB conected")).then(() => console.log(`Running on port ${port} ...`));
-//     } catch (error) {
-//         return new HttpError(`Unexpected Error: ${error}`, 500);
-//     }
-// });
-app.listen(port, async () => {
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(port, async () => {
   try {
     await mongoose
       .connect(process.env.CON_LINK, {
@@ -87,3 +77,16 @@ app.listen(port, async () => {
     return new HttpError(`Unexpected Error: ${error}`, 500);
   }
 });
+// app.listen(port, async () => {
+//   try {
+//     await mongoose
+//       .connect(process.env.CON_LINK, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//       })
+//       .then(() => console.log("DB conected"))
+//       .then(() => console.log(`Running on port ${port} ...`));
+//   } catch (error) {
+//     return new HttpError(`Unexpected Error: ${error}`, 500);
+//   }
+// });

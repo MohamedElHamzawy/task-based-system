@@ -102,10 +102,13 @@ const SignIn = () => {
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.post("http://localhost:5000/api/login", {
-        userName: usernameState.value,
-        password: passState.value,
-      });
+      const response = await axios.post(
+        "https://smarteduservices.com:5000/api/login",
+        {
+          userName: usernameState.value,
+          password: passState.value,
+        }
+      );
       const responseData = await response;
 
       if (responseData.data.user.user_role == "admin") {

@@ -79,7 +79,7 @@ const AddFreeLancer = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/speciality/")
+          .get(" https://smarteduservices.com:5000/api/speciality/")
           .then((res) => {
             setSpecialities(res.data.specialities);
           });
@@ -88,7 +88,7 @@ const AddFreeLancer = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/currency/valid/list")
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
           .then((res) => {
             setCurrencies(res.data.currencies);
           });
@@ -96,9 +96,11 @@ const AddFreeLancer = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -189,7 +191,7 @@ const AddFreeLancer = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/freelancer/",
+        " https://smarteduservices.com:5000/api/freelancer/",
         {
           name: fullNameState.value,
           speciality: speciality,

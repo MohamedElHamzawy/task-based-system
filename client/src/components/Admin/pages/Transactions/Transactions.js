@@ -71,9 +71,11 @@ const Transactions = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/account/").then((res) => {
-          setAccounts(res.data.accounts);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/account/")
+          .then((res) => {
+            setAccounts(res.data.accounts);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -141,7 +143,7 @@ const Transactions = () => {
       });
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/transaction/",
+        " https://smarteduservices.com:5000/api/transaction/",
         {
           amount: amountState.value,
           method: method,

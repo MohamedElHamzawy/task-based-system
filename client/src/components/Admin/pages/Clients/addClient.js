@@ -96,7 +96,7 @@ const AddClient = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/currency/valid/list")
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
           .then((res) => {
             setCurrencies(res.data.currencies);
           });
@@ -104,9 +104,11 @@ const AddClient = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -210,14 +212,17 @@ const AddClient = () => {
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.post(" http://localhost:5000/api/client/", {
-        clientName: clientNameState.value,
-        owner: ownerState.value,
-        website: clientEmailState.value,
-        country: country,
-        phone: numberState.value,
-        currency: currency,
-      });
+      const response = await axios.post(
+        " https://smarteduservices.com:5000/api/client/",
+        {
+          clientName: clientNameState.value,
+          owner: ownerState.value,
+          website: clientEmailState.value,
+          country: country,
+          phone: numberState.value,
+          currency: currency,
+        }
+      );
 
       const responseData = await response;
       if (!(response.statusText === "OK")) {

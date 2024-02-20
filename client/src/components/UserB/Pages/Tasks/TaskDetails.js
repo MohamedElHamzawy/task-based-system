@@ -61,7 +61,7 @@ const TaskDetails = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(` http://localhost:5000/api/task/${id}`, {
+          .get(` https://smarteduservices.com:5000/api/task/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -81,7 +81,7 @@ const TaskDetails = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/status/", {
+          .get(" https://smarteduservices.com:5000/api/status/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -101,7 +101,7 @@ const TaskDetails = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/task/partial/${id}`,
+        ` https://smarteduservices.com:5000/api/task/partial/${id}`,
         {
           statusID: changeStatus,
         },
@@ -127,7 +127,7 @@ const TaskDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/task/${id}`,
+        `  https://smarteduservices.com:5000/api/task/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -173,7 +173,7 @@ const TaskDetails = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/comment/`,
+        ` https://smarteduservices.com:5000/api/comment/`,
         {
           content: commentState.value,
           task_id: task._id,
@@ -199,7 +199,7 @@ const TaskDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/comment/`,
+        `  https://smarteduservices.com:5000/api/comment/`,
         {
           headers: { Authorization: `Bearer ${token}` },
           data: { commentID: commentId },

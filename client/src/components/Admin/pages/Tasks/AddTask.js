@@ -81,7 +81,7 @@ const AddTask = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/speciality/")
+          .get(" https://smarteduservices.com:5000/api/speciality/")
           .then((res) => {
             setSpecialities(res.data.specialities);
           });
@@ -89,15 +89,17 @@ const AddTask = () => {
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/client/").then((res) => {
-          setClients(res.data.clients);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/client/")
+          .then((res) => {
+            setClients(res.data.clients);
+          });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/currency/valid/list")
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
           .then((res) => {
             setCurrencies(res.data.currencies);
           });
@@ -106,7 +108,7 @@ const AddTask = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/user/customerService")
+          .get(" https://smarteduservices.com:5000/api/user/customerService")
           .then((res) => {
             setUsers(res.data.users);
           });
@@ -115,7 +117,7 @@ const AddTask = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/status/", {
+          .get(" https://smarteduservices.com:5000/api/status/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -230,7 +232,7 @@ const AddTask = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/task/",
+        " https://smarteduservices.com:5000/api/task/",
         {
           title: titleState.value,
           channel: channel,

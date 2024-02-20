@@ -58,10 +58,13 @@ const AddStatus = () => {
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.post(" http://localhost:5000/api/status/", {
-        name: statusNameState.value,
-        role: role,
-      });
+      const response = await axios.post(
+        " https://smarteduservices.com:5000/api/status/",
+        {
+          name: statusNameState.value,
+          role: role,
+        }
+      );
 
       const responseData = await response;
 

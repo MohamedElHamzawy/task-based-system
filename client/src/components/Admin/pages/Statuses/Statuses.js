@@ -30,7 +30,7 @@ const Statuses = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/status/", {
+          .get(" https://smarteduservices.com:5000/api/status/", {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -51,7 +51,7 @@ const Statuses = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/status/${id}`
+        `  https://smarteduservices.com:5000/api/status/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`

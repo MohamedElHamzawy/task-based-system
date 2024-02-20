@@ -47,7 +47,7 @@ const StatusDetails = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(` http://localhost:5000/api/status/${id}`)
+          .get(` https://smarteduservices.com:5000/api/status/${id}`)
           .then((res) => {
             setStatus(res.data.message);
             setName(res.data.message.statusname);
@@ -88,7 +88,7 @@ const StatusDetails = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/status/${status._id}`,
+        ` https://smarteduservices.com:5000/api/status/${status._id}`,
         {
           name: statusNameState.value,
           role: role,
@@ -113,7 +113,7 @@ const StatusDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/status/${id}`
+        `  https://smarteduservices.com:5000/api/status/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`

@@ -97,7 +97,7 @@ const getMyTasks = async (req, res, next) => {
         .find({
           taskStatus: {
             $in: [status1[0]._id, status2[0]._id, status3[0]._id],
-          }
+          },
         })
         .skip(skip)
         .limit(limit)
@@ -217,6 +217,7 @@ const FilterTasks = async (req, res, next) => {
       sort,
     } = req.body;
     let tasks;
+    let getTasksCount;
     if (sort == "date") {
       if (user) {
         const theUser = await userModel.findOne({ _id: user });
@@ -250,7 +251,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-            let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -303,7 +304,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -358,7 +359,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -411,7 +412,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -471,7 +472,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -534,7 +535,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -594,7 +595,7 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
-            let getTasksCount = await taskModel
+          getTasksCount = await taskModel
             .find({
               $and: [
                 status ? { taskStatus: status } : {},
@@ -645,7 +646,7 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
-            let getTasksCount = await taskModel
+          getTasksCount = await taskModel
             .find({
               $and: [
                 status ? { taskStatus: status } : {},
@@ -703,7 +704,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -756,7 +757,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -811,7 +812,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -864,7 +865,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -924,7 +925,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -987,7 +988,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1047,7 +1048,7 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
-            let getTasksCount = await taskModel
+          getTasksCount = await taskModel
             .find({
               $and: [
                 status ? { taskStatus: status } : {},
@@ -1098,7 +1099,7 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
-            let getTasksCount = await taskModel
+          getTasksCount = await taskModel
             .find({
               $and: [
                 status ? { taskStatus: status } : {},
@@ -1156,7 +1157,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1209,7 +1210,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1264,7 +1265,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1317,7 +1318,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1377,7 +1378,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1440,7 +1441,7 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
-              let getTasksCount = await taskModel
+            getTasksCount = await taskModel
               .find({
                 $and: [
                   status ? { taskStatus: status } : {},
@@ -1500,7 +1501,7 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
-            let getTasksCount = await taskModel
+          getTasksCount = await taskModel
             .find({
               $and: [
                 status ? { taskStatus: status } : {},
@@ -1551,7 +1552,7 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
-            let getTasksCount = await taskModel
+          getTasksCount = await taskModel
             .find({
               $and: [
                 status ? { taskStatus: status } : {},
@@ -1577,7 +1578,7 @@ const FilterTasks = async (req, res, next) => {
         }
       }
     }
-    const getTasksCount = tasks.length;
+    const tasksCount = getTasksCount.length;
     let totalCost = 0;
     let totalGain = 0;
     let totalProfit = 0;
@@ -1611,6 +1612,7 @@ const FilterTasksA = async (req, res, next) => {
     const { status, speciality, country, start, end, freelancer, client } =
       req.body;
     let tasks;
+    let getTasksCount;
     if (end && start) {
       tasks = await taskModel
         .find({
@@ -1627,6 +1629,32 @@ const FilterTasksA = async (req, res, next) => {
         .lte("deadline", end)
         .skip(skip)
         .limit(limit)
+        .sort({ deadline: 1 })
+        .populate([
+          "client",
+          "country",
+          "freelancer",
+          "speciality",
+          "taskStatus",
+          "created_by",
+          "accepted_by",
+          "task_currency",
+          "show_created",
+          "show_accepted",
+        ]);
+      getTasksCount = await taskModel
+        .find({
+          $and: [
+            { $or: [{ created_by: userID }, { show_created: userID }] },
+            status ? { taskStatus: status } : {},
+            speciality ? { speciality: speciality } : {},
+            country ? { country: country } : {},
+            freelancer ? { freelancer: freelancer } : {},
+            client ? { client: client } : {},
+          ],
+        })
+        .gte("deadline", start)
+        .lte("deadline", end)
         .sort({ deadline: 1 })
         .populate([
           "client",
@@ -1667,12 +1695,36 @@ const FilterTasksA = async (req, res, next) => {
           "show_created",
           "show_accepted",
         ]);
+      getTasksCount = await taskModel
+        .find({
+          $and: [
+            { $or: [{ created_by: userID }, { show_created: userID }] },
+            status ? { taskStatus: status } : {},
+            speciality ? { speciality: speciality } : {},
+            country ? { country: country } : {},
+            freelancer ? { freelancer: freelancer } : {},
+            client ? { client: client } : {},
+          ],
+        })
+        .sort({ deadline: 1 })
+        .populate([
+          "client",
+          "country",
+          "freelancer",
+          "speciality",
+          "taskStatus",
+          "created_by",
+          "accepted_by",
+          "task_currency",
+          "show_created",
+          "show_accepted",
+        ]);
     }
-    const tasksCount = tasks.length;
+    const tasksCount = getTasksCount.length;
     let totalCost = 0;
     let totalGain = 0;
     let totalProfit = 0;
-    tasks.forEach((task) => {
+    getTasksCount.forEach((task) => {
       task.cost ? (totalCost += task.cost) : (totalCost += 0);
       task.paid
         ? (totalGain += task.paid * task.task_currency.priceToEGP)
@@ -1702,6 +1754,7 @@ const FilterTasksB = async (req, res, next) => {
     const { status, speciality, country, start, end, freelancer, client } =
       req.body;
     let tasks;
+    let getTasksCount;
     if (end && start) {
       tasks = await taskModel
         .find({
@@ -1718,6 +1771,32 @@ const FilterTasksB = async (req, res, next) => {
         .lte("deadline", end)
         .skip(skip)
         .limit(limit)
+        .sort({ deadline: 1 })
+        .populate([
+          "client",
+          "country",
+          "freelancer",
+          "speciality",
+          "taskStatus",
+          "created_by",
+          "accepted_by",
+          "task_currency",
+          "show_created",
+          "show_accepted",
+        ]);
+      getTasksCount = await taskModel
+        .find({
+          $and: [
+            { $or: [{ accepted_by: userID }, { show_accepted: userID }] },
+            status ? { taskStatus: status } : {},
+            speciality ? { speciality: speciality } : {},
+            country ? { country: country } : {},
+            freelancer ? { freelancer: freelancer } : {},
+            client ? { client: client } : {},
+          ],
+        })
+        .gte("deadline", start)
+        .lte("deadline", end)
         .sort({ deadline: 1 })
         .populate([
           "client",
@@ -1758,12 +1837,36 @@ const FilterTasksB = async (req, res, next) => {
           "show_created",
           "show_accepted",
         ]);
+      getTasksCount = await taskModel
+        .find({
+          $and: [
+            { $or: [{ accepted_by: userID }, { show_accepted: userID }] },
+            status ? { taskStatus: status } : {},
+            speciality ? { speciality: speciality } : {},
+            country ? { country: country } : {},
+            freelancer ? { freelancer: freelancer } : {},
+            client ? { client: client } : {},
+          ],
+        })
+        .sort({ deadline: 1 })
+        .populate([
+          "client",
+          "country",
+          "freelancer",
+          "speciality",
+          "taskStatus",
+          "created_by",
+          "accepted_by",
+          "task_currency",
+          "show_created",
+          "show_accepted",
+        ]);
     }
-    const tasksCount = tasks.length;
+    const tasksCount = getTasksCount.length;
     let totalCost = 0;
     let totalGain = 0;
     let totalProfit = 0;
-    tasks.forEach((task) => {
+    getTasksCount.forEach((task) => {
       task.cost ? (totalCost += task.cost) : (totalCost += 0);
       task.paid
         ? (totalGain += task.paid * task.task_currency.priceToEGP)

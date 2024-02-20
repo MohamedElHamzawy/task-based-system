@@ -126,7 +126,7 @@ const FreeLancerDetails = () => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(` http://localhost:5000/api/freeLancer/${id}`)
+          .get(` https://smarteduservices.com:5000/api/freeLancer/${id}`)
           .then((res) => {
             setFreeLancer(res.data.freelancer);
             setFreeLancerTasks(res.data.freelancerTasks);
@@ -136,22 +136,24 @@ const FreeLancerDetails = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/speciality/")
+          .get(" https://smarteduservices.com:5000/api/speciality/")
           .then((res) => {
             setSpecialities(res.data.specialities);
           });
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/currency/valid/list")
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
           .then((res) => {
             setCurrencies(res.data.currencies);
           });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
       });
     }
     return () => clearTimeout(timerId);
@@ -243,7 +245,7 @@ const FreeLancerDetails = () => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/freelancer/${freeLancer._id}`,
+        ` https://smarteduservices.com:5000/api/freelancer/${freeLancer._id}`,
         {
           name: fullNameState.value,
           speciality: userSpeciality,
@@ -271,7 +273,7 @@ const FreeLancerDetails = () => {
     try {
       setError(null);
       const response = await axios.delete(
-        `  http://localhost:5000/api/freelancer/${id}`
+        `  https://smarteduservices.com:5000/api/freelancer/${id}`
         //  ,
         //  { headers :{
         //     'Authorization':`Bearer ${token}`

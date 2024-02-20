@@ -119,14 +119,14 @@ const EditTask = (props) => {
       setIsLoading(true);
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/speciality/")
+          .get(" https://smarteduservices.com:5000/api/speciality/")
           .then((res) => {
             setSpecialities(res.data.specialities);
           });
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/currency/valid/list")
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
           .then((res) => {
             setCurrencies(res.data.currencies);
           });
@@ -261,7 +261,7 @@ const EditTask = (props) => {
     try {
       setError(null);
       const response = await axios.post(
-        ` http://localhost:5000/api/task/${props.id}`,
+        ` https://smarteduservices.com:5000/api/task/${props.id}`,
         {
           title: titleState.value,
           channel: channel,

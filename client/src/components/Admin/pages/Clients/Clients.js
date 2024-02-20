@@ -28,16 +28,20 @@ const Clients = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/client/").then((res) => {
-          setClients(res.data.clients);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/client/")
+          .then((res) => {
+            setClients(res.data.clients);
+          });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" http://localhost:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -64,7 +68,7 @@ const Clients = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/client/sort/filter/",
+        " https://smarteduservices.com:5000/api/client/sort/filter/",
         {
           sort: sortedClients,
           country: country,
