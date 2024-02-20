@@ -27,7 +27,7 @@ const getMyTasks = async (req, res, next) => {
   try {
     console.log(req.query);
     const { page, limit } = req.query;
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * limit || 0;
     const role = req.user.user_role;
     if (role == "admin") {
       const tasks = await taskModel
@@ -204,7 +204,7 @@ const getMyTasks = async (req, res, next) => {
 const FilterTasks = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * limit || 0;
     const {
       status,
       speciality,
@@ -1607,7 +1607,7 @@ const FilterTasks = async (req, res, next) => {
 const FilterTasksA = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * limit || 0;
     const userID = req.user._id;
     const { status, speciality, country, start, end, freelancer, client } =
       req.body;
@@ -1749,7 +1749,7 @@ const FilterTasksA = async (req, res, next) => {
 const FilterTasksB = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * limit || 0;
     const userID = req.user._id;
     const { status, speciality, country, start, end, freelancer, client } =
       req.body;
