@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from "react";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
@@ -100,14 +100,15 @@ const descriptionReducer = (state, action) => {
 };
 
 const EditTask = (props) => {
-
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const [userSpeciality, setUserSpeciality] = useState(props.task.speciality._id);
+  const [userSpeciality, setUserSpeciality] = useState(
+    props.task.speciality._id
+  );
   const [currency, setCurrency] = useState(props.task.task_currency._id);
-  const [deadline, setDeadline] = useState(props.task.deadline)
+  const [deadline, setDeadline] = useState(props.task.deadline);
 
   const [specialities, setSpecialities] = useState([]);
   const [currencies, setCurrencies] = useState([]);
@@ -117,14 +118,18 @@ const EditTask = (props) => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/speciality/").then((res) => {
-          setSpecialities(res.data.specialities);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/speciality/")
+          .then((res) => {
+            setSpecialities(res.data.specialities);
+          });
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/currency/valid/list").then((res) => {
-          setCurrencies(res.data.currencies);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
+          .then((res) => {
+            setCurrencies(res.data.currencies);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -250,7 +255,6 @@ const EditTask = (props) => {
 
   // edit task handler
   const editTaskHandler = async (event) => {
-
     event.preventDefault();
     // send api request to validate data
     setIsLoading(true);
@@ -294,127 +298,191 @@ const EditTask = (props) => {
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
       <div className="col-12 col-md-6 row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Title :</h5>
+        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
+          {" "}
+          Title :
+        </h5>
         <div className="d-inline col-12 col-sm-6  pt-3  text-start">
-          <input type='text'
+          <input
+            type="text"
             value={titleState.value}
             onChange={titleChangeHandler}
             onBlur={titleTouchHandler}
             isvalid={titleState.isvalid.toString()}
-            className={`search w-100 p-2 ${!titleState.isvalid &&
+            className={`search w-100 p-2 ${
+              !titleState.isvalid &&
               titleState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
       </div>
 
       <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">  Speciality :</h5>
+        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
+          {" "}
+          Speciality :
+        </h5>
         <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <select id="speciality" name="speciality" className="p-2 px-4 search col-12" value={userSpeciality}
-            onChange={(event) => specialityChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>Specialities</option>
+          <select
+            id="speciality"
+            name="speciality"
+            className="p-2 px-4 search col-12"
+            value={userSpeciality}
+            onChange={(event) => specialityChangeHandler(event.target.value)}
+          >
+            <option value="" className="text-secondary">
+              Specialities
+            </option>
             {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>{speciality.sub_speciality}</option>
+              <option value={speciality._id} key={speciality._id}>
+                {speciality.sub_speciality}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data ">  Channel :</h5>
+        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data ">
+          {" "}
+          Channel :
+        </h5>
         <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <select id="Channel" name="Channel" className="p-2 px-4 search col-12" value={channel}
-            onChange={(event) => channelChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>Channels</option>
-            <option value="Telegram" className=''>Telegram</option>
-            <option value="WhatsApp" className=''>WhatsApp</option>
-            <option value="Website" className=''>Website</option>
-            <option value="Other" className=''>Other</option>
+          <select
+            id="Channel"
+            name="Channel"
+            className="p-2 px-4 search col-12"
+            value={channel}
+            onChange={(event) => channelChangeHandler(event.target.value)}
+          >
+            <option value="" className="text-secondary">
+              Channels
+            </option>
+            <option value="Telegram" className="">
+              Telegram
+            </option>
+            <option value="WhatsApp" className="">
+              WhatsApp
+            </option>
+            <option value="Website" className="">
+              Website
+            </option>
+            <option value="Other" className="">
+              Other
+            </option>
           </select>
         </div>
       </div>
 
-      <div className='col-12 col-md-6 row'>
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Currency:</h5>
+      <div className="col-12 col-md-6 row">
+        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
+          Currency:
+        </h5>
         <div className="d-inline col-12 col-sm-6  pt-3  text-start">
-          <select id="currencies" name="currencies" className="p-2 px-4 search col-12" value={currency}
-            onChange={(event) => currencyChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>currencies</option>
+          <select
+            id="currencies"
+            name="currencies"
+            className="p-2 px-4 search col-12"
+            value={currency}
+            onChange={(event) => currencyChangeHandler(event.target.value)}
+          >
+            <option value="" className="text-secondary">
+              currencies
+            </option>
             {currencies.map((currency) => (
-              <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+              <option value={currency._id} key={currency._id}>
+                {currency.currencyname}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3 data">Client Price:</h5>
+        <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3 data">
+          Client Price:
+        </h5>
         <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <input type='number'
+          <input
+            type="number"
             value={priceState.value}
             onChange={priceChangeHandler}
             onBlur={pricetouchHandler}
             isvalid={priceState.isvalid.toString()}
-            className={`search w-100 p-2 ${!priceState.isvalid &&
+            className={`search w-100 p-2 ${
+              !priceState.isvalid &&
               priceState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
       </div>
 
       <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3 data">Freelancer Price:</h5>
+        <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3 data">
+          Freelancer Price:
+        </h5>
         <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <input type='number'
+          <input
+            type="number"
             value={freelancerPriceState.value}
             onChange={freelancerPriceChangeHandler}
             onBlur={freelancerPricetouchHandler}
             isvalid={freelancerPriceState.isvalid.toString()}
-            className={`search w-100 p-2 ${!freelancerPriceState.isvalid &&
+            className={`search w-100 p-2 ${
+              !freelancerPriceState.isvalid &&
               freelancerPriceState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
       </div>
 
       <div className="col-12 col-md-6 row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">Dead Line :</h5>
+        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
+          Dead Line :
+        </h5>
         <div className="d-inline col-12 col-sm-6  pt-3  text-start">
-          <input type="datetime-local"
+          <input
+            type="datetime-local"
             id="meeting-time"
             name="meeting-time"
-            placeholder='DeadLine'
-            onChange={(e) => (setDeadline(e.target.value))}
-            className='col-12 search p-2 px-4'
+            placeholder="DeadLine"
+            onChange={(e) => setDeadline(e.target.value)}
+            className="col-12 search p-2 px-4"
           />
         </div>
       </div>
 
       <div className="col-12 row ">
-        <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3">  Description :</h5>
+        <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3">
+          {" "}
+          Description :
+        </h5>
         <div className="d-inline col-md-8 col-12  pt-3  text-start">
-          <textarea type='text' placeholder='Description' rows="4"
+          <textarea
+            type="text"
+            placeholder="Description"
+            rows="4"
             value={descriptionState.value}
             onChange={descriptionChangeHandler}
             onBlur={descriptionTouchHandler}
             isvalid={descriptionState.isvalid.toString()}
-            className={`col-12 col-lg-8 search p-2 ${!descriptionState.isvalid &&
+            className={`col-12 col-lg-8 search p-2 ${
+              !descriptionState.isvalid &&
               descriptionState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
       </div>
 
-      <div className="row col-12 p-3 justify-content-center" >
+      <div className="row col-12 p-3 justify-content-center">
         <button
           disabled={
             !titleState.isvalid &&
-            !channel&&
+            !channel &&
             !descriptionState.isvalid &&
             !priceState.isvalid &&
             !deadline &&
@@ -428,9 +496,8 @@ const EditTask = (props) => {
           Edit Task
         </button>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default EditTask
+export default EditTask;

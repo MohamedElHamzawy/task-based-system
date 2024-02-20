@@ -1,19 +1,20 @@
-import './Country.css'
+import "./Country.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 
-import { RiDeleteBinFill } from 'react-icons/ri';
-import { FaFlagUsa } from 'react-icons/fa';
+import { RiDeleteBinFill } from "react-icons/ri";
+import { FaFlagUsa } from "react-icons/fa";
 
-//search filter 
+//search filter
 const getSearchFilter = (searchName, countries) => {
   if (!searchName) {
     return countries;
-  } return countries.filter(
-    (country) => country.countryName.toLowerCase().includes(searchName.toLowerCase()));
+  }
+  return countries.filter((country) =>
+    country.countryName.toLowerCase().includes(searchName.toLowerCase())
+  );
 };
-
 
 const Country = () => {
   const [countries, setCountries] = useState([]);
@@ -26,10 +27,11 @@ const Country = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get("https://smarteduservices.com:5000/api/country/").then((res) => {
+        await axios
+          .get("https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
             setCountries(res.data.countries);
-  
-        });
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -37,7 +39,7 @@ const Country = () => {
     return () => clearTimeout(timerId);
   }, [loading]);
 
-  const [searchName, setSearchName] = useState('');
+  const [searchName, setSearchName] = useState("");
   const searchFilter = getSearchFilter(searchName, countries);
 
   const deleteCountryHandler = async (id) => {
@@ -51,44 +53,52 @@ const Country = () => {
         //     'Authorization':`Bearer ${token}`
         //   }
         // }
-      )
+      );
       const responseData = await response;
 
       setError(responseData.data.message);
       setIsLoading(false);
-      window.location.href = '/country';
+      window.location.href = "/country";
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
-    };
-  }
+    }
+  };
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
     <div className="row w-100 p-0 m-0 justify-content-center">
-
-
       <div className="col-12 row text-center system-head p-2">
         <div className="col-6 col-md-3">
-          <h1 className='logo text-white bg-danger p-2'>Admin</h1>
+          <h1 className="logo text-white bg-danger p-2">Admin</h1>
         </div>
-        <h1 className="col-12 col-md-6 text-center fw-bold">System Countries</h1>
+        <h1 className="col-12 col-md-6 text-center fw-bold">
+          System Countries
+        </h1>
       </div>
 
       <div className="row p-0 m-0 col-10 justify-content-center">
-
         <div className="col-12 col-md-6 p-2">
-          <input type="name" className="search p-2 w-100" placeholder=" Search By Country Name"
-            onChange={(e) => { setSearchName(e.target.value) }}
+          <input
+            type="name"
+            className="search p-2 w-100"
+            placeholder=" Search By Country Name"
+            onChange={(e) => {
+              setSearchName(e.target.value);
+            }}
           />
         </div>
 
         <div className="col-12 col-md-5 p-2 text-end">
-          <button onClick={() => { window.location.href = '/addcountry' }} className="new-user p-2">
-            <FaFlagUsa className='fs-3' />  Add New Country
+          <button
+            onClick={() => {
+              window.location.href = "/addcountry";
+            }}
+            className="new-user p-2"
+          >
+            <FaFlagUsa className="fs-3" /> Add New Country
           </button>
         </div>
-
       </div>
 
       <div className="bg-white col-12 users-data row p-0 m-0 mt-2">
@@ -97,23 +107,30 @@ const Country = () => {
           <p className="col-3 speciality-table-head">Delete</p>
         </div>
 
-        {!searchFilter.length == 0 ? searchFilter.map((country) => (
-          <div className="table-body row pt-3 p-0 m-0 " key={country._id}>
-            <p className="col-9 text-center">{country.countryName}</p> 
-            <p className="col-3"> <button className=" delete-btn p-2 px-3" onClick={() => deleteCountryHandler(country._id)}> <RiDeleteBinFill /> </button></p>
+        {!searchFilter.length == 0 ? (
+          searchFilter.map((country) => (
+            <div className="table-body row pt-3 p-0 m-0 " key={country._id}>
+              <p className="col-9 text-center">{country.countryName}</p>
+              <p className="col-3">
+                {" "}
+                <button
+                  className=" delete-btn p-2 px-3"
+                  onClick={() => deleteCountryHandler(country._id)}
+                >
+                  {" "}
+                  <RiDeleteBinFill />{" "}
+                </button>
+              </p>
+            </div>
+          ))
+        ) : (
+          <div className="row  p-3 m-0 text-center">
+            <h2>There Is No Countries</h2>
           </div>
-        )) :
-          <div className="row  p-3 m-0 text-center" >
-            <h2>
-              There Is No Countries
-            </h2>
-          </div>
-        }
-
-
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Country
+export default Country;

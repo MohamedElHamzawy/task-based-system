@@ -1,9 +1,9 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useState } from "react";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
-import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
-import { TiArrowBack } from 'react-icons/ti';
+import { TiArrowBack } from "react-icons/ti";
 
 //specialityName validation
 const specialityNameReducer = (state, action) => {
@@ -42,9 +42,7 @@ const specialitTypeReducer = (state, action) => {
   }
 };
 
-
 const AddSpeciality = () => {
-
   //specialityName validation
   const [specialityNameState, dispatch] = useReducer(specialityNameReducer, {
     value: "",
@@ -85,7 +83,6 @@ const AddSpeciality = () => {
     });
   };
 
-
   /////////////////////////////////
 
   const [loading, setLoading] = useState(true);
@@ -107,78 +104,99 @@ const AddSpeciality = () => {
       );
 
       const responseData = await response;
-       
+
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
       setError(responseData.data.message);
       setIsLoading(false);
-
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
-    specialitTypeState.value = ''
-    specialityNameState.value = ''
+    specialitTypeState.value = "";
+    specialityNameState.value = "";
   };
 
   const errorHandler = () => {
     setError(null);
   };
   return (
-    <div className='row text-center p-3 w-100 m-0'>
+    <div className="row text-center p-3 w-100 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="row p-1">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/specialities' }}><TiArrowBack /> </button>
+          <button
+            className="back-btn p-2 px-3 fs-3 "
+            onClick={() => {
+              window.location.href = "/specialities";
+            }}
+          >
+            <TiArrowBack />{" "}
+          </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3  fw-bold">  Add New Speciality</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3  fw-bold">
+          {" "}
+          Add New Speciality
+        </h2>
       </div>
 
-      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newSpecialitySubmitHandler}>
-
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Sub-Speciality:</label>
-       <input type='text' placeholder='Sub-Speciality'
-          value={specialityNameState.value}
-          onChange={specialityNameChangeHandler}
-          onBlur={specialityNameTouchHandler}
-          isvalid={specialityNameState.isvalid.toString()}
-          className={`col-10 col-lg-7 search p-2 ${!specialityNameState.isvalid &&
-            specialityNameState.isTouched &&
-            "form-control-invalid"
+      <form
+        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        onSubmit={newSpecialitySubmitHandler}
+      >
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Sub-Speciality:
+          </label>
+          <input
+            type="text"
+            placeholder="Sub-Speciality"
+            value={specialityNameState.value}
+            onChange={specialityNameChangeHandler}
+            onBlur={specialityNameTouchHandler}
+            isvalid={specialityNameState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${
+              !specialityNameState.isvalid &&
+              specialityNameState.isTouched &&
+              "form-control-invalid"
             }`}
-        />
+          />
         </div>
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Speciality:</label>
-          <input type='text' placeholder='Speciality'
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Speciality:
+          </label>
+          <input
+            type="text"
+            placeholder="Speciality"
             value={specialitTypeState.value}
             onChange={specialitTypeChangeHandler}
             onBlur={specialitTypeTouchHandler}
             isvalid={specialitTypeState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!specialitTypeState.isvalid &&
+            className={`col-10 col-lg-7 search p-2 ${
+              !specialitTypeState.isvalid &&
               specialitTypeState.isTouched &&
               "form-control-invalid"
-              }`}
-          />  
+            }`}
+          />
         </div>
 
-        <div className='col-8 m-3 mt-5 row justify-content-center'>
+        <div className="col-8 m-3 mt-5 row justify-content-center">
           <button
             disabled={
-              !specialitTypeState.isvalid ||
-              !specialityNameState.isvalid
+              !specialitTypeState.isvalid || !specialityNameState.isvalid
             }
-            className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
+            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+          >
             Add
           </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddSpeciality
+export default AddSpeciality;
