@@ -1,9 +1,9 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useState } from "react";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
-import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
-import { TiArrowBack } from 'react-icons/ti';
+import { TiArrowBack } from "react-icons/ti";
 
 //statusName validation
 const statusNameReducer = (state, action) => {
@@ -24,9 +24,7 @@ const statusNameReducer = (state, action) => {
   }
 };
 
-
 const AddStatus = () => {
-
   //statusName validation
   const [statusNameState, dispatch] = useReducer(statusNameReducer, {
     value: "",
@@ -47,13 +45,12 @@ const AddStatus = () => {
     });
   };
 
-
   /////////////////////////////////
 
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [role ,setRole] = useState('')
+  const [role, setRole] = useState("");
 
   const newStatusSubmitHandler = async (event) => {
     event.preventDefault();
@@ -61,84 +58,110 @@ const AddStatus = () => {
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.post(
-        " https://smarteduservices.com:5000/api/status/",
-        {
-          name: statusNameState.value,
-          role : role
-        }
-      );
+      const response = await axios.post(" http://localhost:5000/api/status/", {
+        name: statusNameState.value,
+        role: role,
+      });
 
       const responseData = await response;
-       
+
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
       setError(responseData.data.message);
       setIsLoading(false);
-
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
-    statusNameState.value = ''
+    statusNameState.value = "";
   };
 
   const errorHandler = () => {
     setError(null);
   };
   return (
-    <div className='row text-center p-3 w-100 m-0'>
+    <div className="row text-center p-3 w-100 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="row p-1">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/statuses' }}><TiArrowBack /> </button>
+          <button
+            className="back-btn p-2 px-3 fs-3 "
+            onClick={() => {
+              window.location.href = "/statuses";
+            }}
+          >
+            <TiArrowBack />{" "}
+          </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3">  Add New Status</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3">
+          {" "}
+          Add New Status
+        </h2>
       </div>
 
-      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newStatusSubmitHandler}>
-
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>status Name:</label>
-       <input type='text' placeholder='status Name'
-          value={statusNameState.value}
-          onChange={statusNameChangeHandler}
-          onBlur={statusNameTouchHandler}
-          isvalid={statusNameState.isvalid.toString()}
-          className={`col-10 col-lg-7 search p-2 ${!statusNameState.isvalid &&
-            statusNameState.isTouched &&
-            "form-control-invalid"
+      <form
+        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        onSubmit={newStatusSubmitHandler}
+      >
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p">
+            status Name:
+          </label>
+          <input
+            type="text"
+            placeholder="status Name"
+            value={statusNameState.value}
+            onChange={statusNameChangeHandler}
+            onBlur={statusNameTouchHandler}
+            isvalid={statusNameState.isvalid.toString()}
+            className={`col-10 col-lg-7 search p-2 ${
+              !statusNameState.isvalid &&
+              statusNameState.isTouched &&
+              "form-control-invalid"
             }`}
-        />
+          />
         </div>
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p'>Role :</label>
-          <select id="role" name="role" className="p-2 px-4 search col-10 col-lg-7" value={role}
-            onChange={(event) => setRole(event.target.value)}>
-            <option value="" className='text-secondary'>Roles</option>
-            <option value="admin" className=''>Admin</option>
-            <option value="specialistService" className=''>SpecialistService</option>
-            <option value="customerService" className=''>CustomerService</option>
-            <option value="all" className=''>All</option>        
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p">Role :</label>
+          <select
+            id="role"
+            name="role"
+            className="p-2 px-4 search col-10 col-lg-7"
+            value={role}
+            onChange={(event) => setRole(event.target.value)}
+          >
+            <option value="" className="text-secondary">
+              Roles
+            </option>
+            <option value="admin" className="">
+              Admin
+            </option>
+            <option value="specialistService" className="">
+              SpecialistService
+            </option>
+            <option value="customerService" className="">
+              CustomerService
+            </option>
+            <option value="all" className="">
+              All
+            </option>
           </select>
         </div>
 
-        <div className='col-8 m-3 mt-5 row justify-content-center'>
+        <div className="col-8 m-3 mt-5 row justify-content-center">
           <button
-            disabled={
-              !statusNameState.isvalid ||
-              !role
-            }
-            className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
+            disabled={!statusNameState.isvalid || !role}
+            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+          >
             Add
           </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddStatus
+export default AddStatus;
