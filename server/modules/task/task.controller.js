@@ -25,6 +25,7 @@ const {
 
 const getMyTasks = async (req, res, next) => {
   try {
+    console.log(req.query);
     const { page, limit } = req.query;
     const skip = (page - 1) * limit;
     const role = req.user.user_role;

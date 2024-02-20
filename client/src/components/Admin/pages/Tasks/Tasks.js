@@ -27,6 +27,8 @@ const getSearchFilter = (searchName, tasks) => {
 };
 
 const Tasks = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const token = GetCookie("AdminToken");
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +94,7 @@ const Tasks = () => {
       });
       timerId = setTimeout(async () => {
         await axios
-          .get(" http://localhost:5000/api/task?limit=5&page=1", {
+          .get(`http://localhost:5000/api/task?limit=${limit}&page=${page}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
@@ -143,7 +145,7 @@ const Tasks = () => {
     try {
       setError(null);
       const response = await axios.post(
-        " http://localhost:5000/api/task/filter/result/",
+        `http://localhost:5000/api/task/filter/result?limit=${limit}&page=${page}`,
         {
           speciality: speciality,
           status: status,
@@ -496,7 +498,6 @@ const Tasks = () => {
           </h4>
         </div>
       </div>
-
       <div className="row justify-content-center p-0 m-0">
         {searchFilterData &&
           (!searchFilter.length == 0 ? (
@@ -720,6 +721,33 @@ const Tasks = () => {
               <h2>There Is No Tasks</h2>
             </div>
           ))}
+      </div>
+
+      <h3 className="row p-0 m-0 justify-content-center">
+        Current Page: {page}
+      </h3>
+
+      <div className="row p-0 m-0 justify-content-center">
+        <div className="col-12 text-center p-2">
+          <button
+            className="p-2 m-1"
+            onClick={() => {
+              setPage(page - 1 < 1 ? 1 : page - 1);
+              setLoading(true);
+            }}
+          >
+            Prev
+          </button>
+          <button
+            className="p-2 m-1"
+            onClick={() => {
+              setPage(page + 1);
+              setLoading(true);
+            }}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

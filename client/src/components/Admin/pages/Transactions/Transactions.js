@@ -46,12 +46,25 @@ const numberReducer = (state, action) => {
 };
 
 const Transactions = () => {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const accountId =
+    urlParams.get("account") === "" ? null : urlParams.get("account");
+
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [method, setMethod] = useState("");
   const [accounts, setAccounts] = useState([]);
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState({});
+
+  useEffect(() => {
+    setAccount({
+      label: accounts.find((account) => account._id === accountId)?.title,
+      value: accountId,
+      value: accountId,
+    });
+  }, [accounts]);
 
   useEffect(() => {
     let timerId;
@@ -110,7 +123,7 @@ const Transactions = () => {
   //////////////////////////////
 
   const handleChange = (selectedOption) => {
-    setAccount(selectedOption.value);
+    setAccount({ label: selectedOption.label, value: selectedOption.value });
   };
 
   /////////////////////////////////
@@ -120,13 +133,19 @@ const Transactions = () => {
     // send api request to validate data
     setIsLoading(true);
     try {
+      console.log({
+        amount: amountState.value,
+        method: method,
+        account_id: account.value,
+        accountNumber: numberState.value,
+      });
       setError(null);
       const response = await axios.post(
         " http://localhost:5000/api/transaction/",
         {
           amount: amountState.value,
           method: method,
-          account_id: account,
+          account_id: account.value,
           accountNumber: numberState.value,
         }
       );
@@ -143,7 +162,7 @@ const Transactions = () => {
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
     amountState.value = "";
-    setAccount("");
+    setAccount(null);
     setMethod("");
   };
 
@@ -231,14 +250,15 @@ const Transactions = () => {
             {" "}
             Account:
           </label>
+
           <Select
-            // value={account}
+            value={account}
             options={accounts.map((account) => ({
               label: account.title,
               value: account._id,
             }))}
             onChange={handleChange}
-            className="basic-single  col-10 col-lg-7 "
+            className="basic-single col-10 col-lg-7 "
             classNamePrefix="select"
             name="account"
           />

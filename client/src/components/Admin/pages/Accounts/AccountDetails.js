@@ -128,7 +128,7 @@ const AccountDetails = () => {
         <button
           className="add_trans p-2 fw-bold"
           onClick={() => {
-            window.location.href = "/transactions";
+            window.location.href = `/transactions?account=${id}`;
           }}
         >
           <AiOutlineTransaction className="fs-4" />
