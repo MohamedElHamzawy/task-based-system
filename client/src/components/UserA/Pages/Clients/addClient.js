@@ -1,9 +1,13 @@
-import React, { useEffect, useReducer, useState } from 'react'
-import { validate, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../../../util/validators";
+import React, { useEffect, useReducer, useState } from "react";
+import {
+  validate,
+  VALIDATOR_EMAIL,
+  VALIDATOR_MINLENGTH,
+} from "../../../../util/validators";
 import axios from "axios";
-import LoadingSpinner from '../../../../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
-import { TiArrowBack } from 'react-icons/ti';
+import { TiArrowBack } from "react-icons/ti";
 
 //clientName validation
 const clientNameReducer = (state, action) => {
@@ -60,7 +64,6 @@ const clientEmailReducer = (state, action) => {
   }
 };
 
-
 //number validation
 const numberReducer = (state, action) => {
   switch (action.type) {
@@ -80,7 +83,6 @@ const numberReducer = (state, action) => {
   }
 };
 
-
 const AddClient = () => {
   const [currencies, setCurrencies] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -93,16 +95,20 @@ const AddClient = () => {
     if (loading) {
       setIsLoading(true);
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/currency/valid/list").then((res) => {
-          setCurrencies(res.data.currencies);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/currency/valid/list")
+          .then((res) => {
+            setCurrencies(res.data.currencies);
+          });
         setLoading(false);
         setIsLoading(false);
       });
       timerId = setTimeout(async () => {
-        await axios.get(" https://smarteduservices.com:5000/api/country/").then((res) => {
-          setCountries(res.data.countries);
-        });
+        await axios
+          .get(" https://smarteduservices.com:5000/api/country/")
+          .then((res) => {
+            setCountries(res.data.countries);
+          });
         setLoading(false);
         setIsLoading(false);
       });
@@ -111,7 +117,7 @@ const AddClient = () => {
   }, [loading]);
 
   //currency value
-  const [currency, setCurrency] = useState('');
+  const [currency, setCurrency] = useState("");
 
   //clientName validation
   const [clientNameState, dispatch] = useReducer(clientNameReducer, {
@@ -172,7 +178,6 @@ const AddClient = () => {
     });
   };
 
-
   //Number validation
   const [numberState, dispatch5] = useReducer(numberReducer, {
     value: "",
@@ -194,7 +199,7 @@ const AddClient = () => {
   };
 
   //country value
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState("");
   const countryChangeHandler = (newOne) => {
     setCountry(newOne);
   };
@@ -219,120 +224,176 @@ const AddClient = () => {
       );
 
       const responseData = await response;
-       
+
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
       setError(responseData.data.message);
       setIsLoading(false);
-
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");
     }
-    clientEmailState.value = ''
-    clientNameState.value = ''
-    ownerState.value = ''
-    setCountry('')
-    numberState.value = ''
-    setCurrency('')
+    clientEmailState.value = "";
+    clientNameState.value = "";
+    ownerState.value = "";
+    setCountry("");
+    numberState.value = "";
+    setCurrency("");
   };
 
   const errorHandler = () => {
     setError(null);
   };
   return (
-    <div className='row text-center p-3 w-100 m-0'>
+    <div className="row text-center p-3 w-100 m-0">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
       <div className="row p-1">
         <div className="col-3 text-center">
-          <button className="back-btn p-2 px-3 fs-3 " onClick={() => { window.location.href = '/clients' }}><TiArrowBack /> </button>
+          <button
+            className="back-btn p-2 px-3 fs-3 "
+            onClick={() => {
+              window.location.href = "/clients";
+            }}
+          >
+            <TiArrowBack />{" "}
+          </button>
         </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-3 fw-bold">  Add New Client</h2>
+        <h2 className="col-12 col-lg-7 text-center system-head p-3 fw-bold">
+          {" "}
+          Add New Client
+        </h2>
       </div>
 
-      <form className='adduser-form bg-white p-3 row justify-content-center m-0' onSubmit={newSpecialitySubmitHandler}>
-
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Client Name:</label>
-          <input type='text' placeholder='Client Name'
+      <form
+        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        onSubmit={newSpecialitySubmitHandler}
+      >
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Client Name:
+          </label>
+          <input
+            type="text"
+            placeholder="Client Name"
             value={clientNameState.value}
             onChange={clientNameChangeHandler}
             onBlur={clientNameTouchHandler}
             isvalid={clientNameState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!clientNameState.isvalid &&
+            className={`col-10 col-lg-7 search p-2 ${
+              !clientNameState.isvalid &&
               clientNameState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Owner :</label>
-          <input type='text' placeholder='Owner'
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Owner :
+          </label>
+          <input
+            type="text"
+            placeholder="Owner"
             value={ownerState.value}
             onChange={ownerChangeHandler}
             onBlur={ownerTouchHandler}
             isvalid={ownerState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!ownerState.isvalid &&
+            className={`col-10 col-lg-7 search p-2 ${
+              !ownerState.isvalid &&
               ownerState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Website :</label>
-          <input type='website' placeholder='Client Website'
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Website :
+          </label>
+          <input
+            type="website"
+            placeholder="Client Website"
             value={clientEmailState.value}
             onChange={clientEmailChangeHandler}
             onBlur={clientEmailTouchHandler}
             isvalid={clientEmailState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!clientEmailState.isvalid &&
+            className={`col-10 col-lg-7 search p-2 ${
+              !clientEmailState.isvalid &&
               clientEmailState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Country:</label>
-          <select id="country" name="country" className="p-2 px-4 search col-10 col-lg-7" value={country}
-            onChange={(event) => countryChangeHandler(event.target.value)}>
-            <option value="" className='text-secondary'>Countries</option>
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Country:
+          </label>
+          <select
+            id="country"
+            name="country"
+            className="p-2 px-4 search col-10 col-lg-7"
+            value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}
+          >
+            <option value="" className="text-secondary">
+              Countries
+            </option>
             {countries.map((country) => (
-              <option value={country._id} key={country._id}>{country.countryName}</option>
+              <option value={country._id} key={country._id}>
+                {country.countryName}
+              </option>
             ))}
           </select>
         </div>
 
-        <div className='col-12 col-lg-5 m-1 py-2 p-0'>
-          <label className='col-10 col-lg-5 fw-bold add-user-p py-2'>Phone :</label>
-          <input type='number' placeholder='Phone Number'
+        <div className="col-12 col-lg-5 m-1 py-2 p-0">
+          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
+            Phone :
+          </label>
+          <input
+            type="number"
+            placeholder="Phone Number"
             value={numberState.value}
             onChange={numberChangeHandler}
             onBlur={numbertouchHandler}
             isvalid={numberState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${!numberState.isvalid &&
+            className={`col-10 col-lg-7 search p-2 ${
+              !numberState.isvalid &&
               numberState.isTouched &&
               "form-control-invalid"
-              }`}
+            }`}
           />
         </div>
-        <div className='d-block col-12 col-lg-5 m-1 py-2 p-0'>
-          <label htmlFor="currency" className="col-10 col-lg-5 fw-bold add-user-p py-2"> Currency:</label>
+        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
+          <label
+            htmlFor="currency"
+            className="col-10 col-lg-5 fw-bold add-user-p py-2"
+          >
+            {" "}
+            Currency:
+          </label>
 
-          <select id="currencies" name="currencies" className="p-2 px-4 search col-10 col-lg-7" value={currency}
-            onChange={(event) => setCurrency(event.target.value)}>
-            <option value="" className='text-secondary'>currencies</option>
+          <select
+            id="currencies"
+            name="currencies"
+            className="p-2 px-4 search col-10 col-lg-7"
+            value={currency}
+            onChange={(event) => setCurrency(event.target.value)}
+          >
+            <option value="" className="text-secondary">
+              currencies
+            </option>
             {currencies.map((currency) => (
-              <option value={currency._id} key={currency._id}>{currency.currencyname}</option>
+              <option value={currency._id} key={currency._id}>
+                {currency.currencyname}
+              </option>
             ))}
           </select>
-
         </div>
 
-        <div className='col-8 m-3 mt-5 row justify-content-center'>
+        <div className="col-8 m-3 mt-5 row justify-content-center">
           <button
             disabled={
               !clientEmailState.isvalid ||
@@ -341,15 +402,15 @@ const AddClient = () => {
               !numberState.isvalid ||
               !country ||
               !currency
-
             }
-            className='add-user-btn p-3  fw-bold col-10 col-lg-5'>
+            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+          >
             Add
           </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddClient
+export default AddClient;
