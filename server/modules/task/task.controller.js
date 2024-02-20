@@ -46,7 +46,22 @@ const getMyTasks = async (req, res, next) => {
           "show_created",
           "show_accepted",
         ]);
-      const tasksCount = tasks.length;
+      const getTasksCount = await taskModel
+        .find({})
+        .sort({ updatedAt: -1 })
+        .populate([
+          "client",
+          "country",
+          "freelancer",
+          "speciality",
+          "taskStatus",
+          "created_by",
+          "accepted_by",
+          "task_currency",
+          "show_created",
+          "show_accepted",
+        ]);
+      const tasksCount = getTasksCount.length;
       const completedTasks = await taskModel.find({
         taskStatus: "651737dce979f2bb0fb8a3d2",
       });
@@ -54,7 +69,7 @@ const getMyTasks = async (req, res, next) => {
       let totalCost = 0;
       let totalGain = 0;
       let totalProfit = 0;
-      tasks.forEach((task) => {
+      getTasksCount.forEach((task) => {
         task.cost ? (totalCost += task.cost) : (totalCost += 0);
         task.paid
           ? (totalGain += task.paid * task.task_currency.priceToEGP)
@@ -244,6 +259,32 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+            let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { created_by: theUser._id } : {},
+                ],
+              })
+              .gte("deadline", start)
+              .lte("deadline", end)
+              .sort({ deadline: 1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -258,6 +299,30 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ deadline: 1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { created_by: theUser._id } : {},
+                ],
+              })
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -302,6 +367,32 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { accepted_by: theUser._id } : {},
+                ],
+              })
+              .gte("deadline", start)
+              .lte("deadline", end)
+              .sort({ deadline: 1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -316,6 +407,30 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ deadline: 1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { accepted_by: theUser._id } : {},
+                ],
+              })
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -365,6 +480,37 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  {
+                    $or: [
+                      { created_by: theUser._id },
+                      { accepted_by: theUser._id },
+                    ],
+                  },
+                ],
+              })
+              .gte("deadline", start)
+              .lte("deadline", end)
+              .sort({ deadline: 1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -384,6 +530,35 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ deadline: 1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  {
+                    $or: [
+                      { created_by: theUser._id },
+                      { accepted_by: theUser._id },
+                    ],
+                  },
+                ],
+              })
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -428,6 +603,31 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
+            let getTasksCount = await taskModel
+            .find({
+              $and: [
+                status ? { taskStatus: status } : {},
+                speciality ? { speciality: speciality } : {},
+                country ? { country: country } : {},
+                freelancer ? { freelancer: freelancer } : {},
+                client ? { client: client } : {},
+              ],
+            })
+            .gte("deadline", start)
+            .lte("deadline", end)
+            .sort({ deadline: 1 })
+            .populate([
+              "client",
+              "country",
+              "freelancer",
+              "speciality",
+              "taskStatus",
+              "created_by",
+              "accepted_by",
+              "task_currency",
+              "show_created",
+              "show_accepted",
+            ]);
         } else {
           tasks = await taskModel
             .find({
@@ -441,6 +641,29 @@ const FilterTasks = async (req, res, next) => {
             })
             .skip(skip)
             .limit(limit)
+            .sort({ deadline: 1 })
+            .populate([
+              "client",
+              "country",
+              "freelancer",
+              "speciality",
+              "taskStatus",
+              "created_by",
+              "accepted_by",
+              "task_currency",
+              "show_created",
+              "show_accepted",
+            ]);
+            let getTasksCount = await taskModel
+            .find({
+              $and: [
+                status ? { taskStatus: status } : {},
+                speciality ? { speciality: speciality } : {},
+                country ? { country: country } : {},
+                freelancer ? { freelancer: freelancer } : {},
+                client ? { client: client } : {},
+              ],
+            })
             .sort({ deadline: 1 })
             .populate([
               "client",
@@ -489,6 +712,32 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { created_by: theUser._id } : {},
+                ],
+              })
+              .gte("createdAt", start)
+              .lte("createdAt", end)
+              .sort({ profit_amount: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -503,6 +752,30 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ profit_amount: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { created_by: theUser._id } : {},
+                ],
+              })
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -547,6 +820,32 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { accepted_by: theUser._id } : {},
+                ],
+              })
+              .gte("createdAt", start)
+              .lte("createdAt", end)
+              .sort({ profit_amount: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -561,6 +860,30 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ profit_amount: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { accepted_by: theUser._id } : {},
+                ],
+              })
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -610,6 +933,37 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  {
+                    $or: [
+                      { created_by: theUser._id },
+                      { accepted_by: theUser._id },
+                    ],
+                  },
+                ],
+              })
+              .gte("createdAt", start)
+              .lte("createdAt", end)
+              .sort({ profit_amount: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -629,6 +983,35 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ profit_amount: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  {
+                    $or: [
+                      { created_by: theUser._id },
+                      { accepted_by: theUser._id },
+                    ],
+                  },
+                ],
+              })
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -673,6 +1056,31 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
+            let getTasksCount = await taskModel
+            .find({
+              $and: [
+                status ? { taskStatus: status } : {},
+                speciality ? { speciality: speciality } : {},
+                country ? { country: country } : {},
+                freelancer ? { freelancer: freelancer } : {},
+                client ? { client: client } : {},
+              ],
+            })
+            .gte("createdAt", start)
+            .lte("createdAt", end)
+            .sort({ profit_amount: -1 })
+            .populate([
+              "client",
+              "country",
+              "freelancer",
+              "speciality",
+              "taskStatus",
+              "created_by",
+              "accepted_by",
+              "task_currency",
+              "show_created",
+              "show_accepted",
+            ]);
         } else {
           tasks = await taskModel
             .find({
@@ -686,6 +1094,29 @@ const FilterTasks = async (req, res, next) => {
             })
             .skip(skip)
             .limit(limit)
+            .sort({ profit_amount: -1 })
+            .populate([
+              "client",
+              "country",
+              "freelancer",
+              "speciality",
+              "taskStatus",
+              "created_by",
+              "accepted_by",
+              "task_currency",
+              "show_created",
+              "show_accepted",
+            ]);
+            let getTasksCount = await taskModel
+            .find({
+              $and: [
+                status ? { taskStatus: status } : {},
+                speciality ? { speciality: speciality } : {},
+                country ? { country: country } : {},
+                freelancer ? { freelancer: freelancer } : {},
+                client ? { client: client } : {},
+              ],
+            })
             .sort({ profit_amount: -1 })
             .populate([
               "client",
@@ -734,6 +1165,32 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { created_by: theUser._id } : {},
+                ],
+              })
+              .gte("createdAt", start)
+              .lte("createdAt", end)
+              .sort({ createdAt: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -748,6 +1205,30 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ createdAt: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { created_by: theUser._id } : {},
+                ],
+              })
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -792,6 +1273,32 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { accepted_by: theUser._id } : {},
+                ],
+              })
+              .gte("createdAt", start)
+              .lte("createdAt", end)
+              .sort({ createdAt: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -806,6 +1313,30 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ createdAt: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  user ? { accepted_by: theUser._id } : {},
+                ],
+              })
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -855,6 +1386,37 @@ const FilterTasks = async (req, res, next) => {
                 "show_created",
                 "show_accepted",
               ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  {
+                    $or: [
+                      { created_by: theUser._id },
+                      { accepted_by: theUser._id },
+                    ],
+                  },
+                ],
+              })
+              .gte("createdAt", start)
+              .lte("createdAt", end)
+              .sort({ createdAt: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
           } else {
             tasks = await taskModel
               .find({
@@ -874,6 +1436,35 @@ const FilterTasks = async (req, res, next) => {
               })
               .skip(skip)
               .limit(limit)
+              .sort({ createdAt: -1 })
+              .populate([
+                "client",
+                "country",
+                "freelancer",
+                "speciality",
+                "taskStatus",
+                "created_by",
+                "accepted_by",
+                "task_currency",
+                "show_created",
+                "show_accepted",
+              ]);
+              let getTasksCount = await taskModel
+              .find({
+                $and: [
+                  status ? { taskStatus: status } : {},
+                  speciality ? { speciality: speciality } : {},
+                  country ? { country: country } : {},
+                  freelancer ? { freelancer: freelancer } : {},
+                  client ? { client: client } : {},
+                  {
+                    $or: [
+                      { created_by: theUser._id },
+                      { accepted_by: theUser._id },
+                    ],
+                  },
+                ],
+              })
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -918,6 +1509,31 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
+            let getTasksCount = await taskModel
+            .find({
+              $and: [
+                status ? { taskStatus: status } : {},
+                speciality ? { speciality: speciality } : {},
+                country ? { country: country } : {},
+                freelancer ? { freelancer: freelancer } : {},
+                client ? { client: client } : {},
+              ],
+            })
+            .gte("createdAt", start)
+            .lte("createdAt", end)
+            .sort({ createdAt: -1 })
+            .populate([
+              "client",
+              "country",
+              "freelancer",
+              "speciality",
+              "taskStatus",
+              "created_by",
+              "accepted_by",
+              "task_currency",
+              "show_created",
+              "show_accepted",
+            ]);
         } else {
           tasks = await taskModel
             .find({
@@ -944,14 +1560,37 @@ const FilterTasks = async (req, res, next) => {
               "show_created",
               "show_accepted",
             ]);
+            let getTasksCount = await taskModel
+            .find({
+              $and: [
+                status ? { taskStatus: status } : {},
+                speciality ? { speciality: speciality } : {},
+                country ? { country: country } : {},
+                freelancer ? { freelancer: freelancer } : {},
+                client ? { client: client } : {},
+              ],
+            })
+            .sort({ createdAt: -1 })
+            .populate([
+              "client",
+              "country",
+              "freelancer",
+              "speciality",
+              "taskStatus",
+              "created_by",
+              "accepted_by",
+              "task_currency",
+              "show_created",
+              "show_accepted",
+            ]);
         }
       }
     }
-    const tasksCount = tasks.length;
+    const getTasksCount = tasks.length;
     let totalCost = 0;
     let totalGain = 0;
     let totalProfit = 0;
-    tasks.forEach((task) => {
+    getTasksCount.forEach((task) => {
       task.cost ? (totalCost += task.cost) : (totalCost += 0);
       task.paid
         ? (totalGain += task.paid * task.task_currency.priceToEGP)
