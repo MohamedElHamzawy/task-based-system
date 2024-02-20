@@ -25,10 +25,14 @@ const {
 
 const getMyTasks = async (req, res, next) => {
   try {
+    const { page, limit } = req.query;
+    const skip = (page - 1) * limit;
     const role = req.user.user_role;
     if (role == "admin") {
       const tasks = await taskModel
         .find({})
+        .skip(skip)
+        .limit(limit)
         .sort({ updatedAt: -1 })
         .populate([
           "client",
@@ -89,6 +93,8 @@ const getMyTasks = async (req, res, next) => {
             },
           ],
         })
+        .skip(skip)
+        .limit(limit)
         .sort({ updatedAt: -1 })
         .populate([
           "client",
@@ -106,6 +112,8 @@ const getMyTasks = async (req, res, next) => {
         .find({
           $or: [{ created_by: req.user._id }, { show_created: req.user._id }],
         })
+        .skip(skip)
+        .limit(limit)
         .sort({ updatedAt: -1 })
         .populate([
           "client",
@@ -144,6 +152,8 @@ const getMyTasks = async (req, res, next) => {
             ],
           },
         })
+        .skip(skip)
+        .limit(limit)
         .sort({ updatedAt: -1 })
         .populate([
           "client",
@@ -161,6 +171,8 @@ const getMyTasks = async (req, res, next) => {
         .find({
           $or: [{ accepted_by: req.user._id }, { show_accepted: req.user._id }],
         })
+        .skip(skip)
+        .limit(limit)
         .sort({ updatedAt: -1 })
         .populate([
           "client",
@@ -185,6 +197,8 @@ const getMyTasks = async (req, res, next) => {
 
 const FilterTasks = async (req, res, next) => {
   try {
+    const { page, limit } = req.query;
+    const skip = (page - 1) * limit;
     const {
       status,
       speciality,
@@ -215,6 +229,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("deadline", start)
               .lte("deadline", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -240,6 +256,8 @@ const FilterTasks = async (req, res, next) => {
                   user ? { created_by: theUser._id } : {},
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -269,6 +287,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("deadline", start)
               .lte("deadline", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -294,6 +314,8 @@ const FilterTasks = async (req, res, next) => {
                   user ? { accepted_by: theUser._id } : {},
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -328,6 +350,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("deadline", start)
               .lte("deadline", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -358,6 +382,8 @@ const FilterTasks = async (req, res, next) => {
                   },
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ deadline: 1 })
               .populate([
                 "client",
@@ -387,6 +413,8 @@ const FilterTasks = async (req, res, next) => {
             })
             .gte("deadline", start)
             .lte("deadline", end)
+            .skip(skip)
+            .limit(limit)
             .sort({ deadline: 1 })
             .populate([
               "client",
@@ -411,6 +439,8 @@ const FilterTasks = async (req, res, next) => {
                 client ? { client: client } : {},
               ],
             })
+            .skip(skip)
+            .limit(limit)
             .sort({ deadline: 1 })
             .populate([
               "client",
@@ -444,6 +474,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("createdAt", start)
               .lte("createdAt", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -469,6 +501,8 @@ const FilterTasks = async (req, res, next) => {
                   user ? { created_by: theUser._id } : {},
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -498,6 +532,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("createdAt", start)
               .lte("createdAt", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -523,6 +559,8 @@ const FilterTasks = async (req, res, next) => {
                   user ? { accepted_by: theUser._id } : {},
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -557,6 +595,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("createdAt", start)
               .lte("createdAt", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -587,6 +627,8 @@ const FilterTasks = async (req, res, next) => {
                   },
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ profit_amount: -1 })
               .populate([
                 "client",
@@ -616,6 +658,8 @@ const FilterTasks = async (req, res, next) => {
             })
             .gte("createdAt", start)
             .lte("createdAt", end)
+            .skip(skip)
+            .limit(limit)
             .sort({ profit_amount: -1 })
             .populate([
               "client",
@@ -640,6 +684,8 @@ const FilterTasks = async (req, res, next) => {
                 client ? { client: client } : {},
               ],
             })
+            .skip(skip)
+            .limit(limit)
             .sort({ profit_amount: -1 })
             .populate([
               "client",
@@ -673,6 +719,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("createdAt", start)
               .lte("createdAt", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -698,6 +746,8 @@ const FilterTasks = async (req, res, next) => {
                   user ? { created_by: theUser._id } : {},
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -727,6 +777,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("createdAt", start)
               .lte("createdAt", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -752,6 +804,8 @@ const FilterTasks = async (req, res, next) => {
                   user ? { accepted_by: theUser._id } : {},
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -786,6 +840,8 @@ const FilterTasks = async (req, res, next) => {
               })
               .gte("createdAt", start)
               .lte("createdAt", end)
+              .skip(skip)
+              .limit(limit)
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -816,6 +872,8 @@ const FilterTasks = async (req, res, next) => {
                   },
                 ],
               })
+              .skip(skip)
+              .limit(limit)
               .sort({ createdAt: -1 })
               .populate([
                 "client",
@@ -845,6 +903,8 @@ const FilterTasks = async (req, res, next) => {
             })
             .gte("createdAt", start)
             .lte("createdAt", end)
+            .skip(skip)
+            .limit(limit)
             .sort({ createdAt: -1 })
             .populate([
               "client",
@@ -869,6 +929,8 @@ const FilterTasks = async (req, res, next) => {
                 client ? { client: client } : {},
               ],
             })
+            .skip(skip)
+            .limit(limit)
             .sort({ createdAt: -1 })
             .populate([
               "client",
@@ -913,6 +975,8 @@ const FilterTasks = async (req, res, next) => {
 };
 const FilterTasksA = async (req, res, next) => {
   try {
+    const { page, limit } = req.query;
+    const skip = (page - 1) * limit;
     const userID = req.user._id;
     const { status, speciality, country, start, end, freelancer, client } =
       req.body;
@@ -931,6 +995,8 @@ const FilterTasksA = async (req, res, next) => {
         })
         .gte("deadline", start)
         .lte("deadline", end)
+        .skip(skip)
+        .limit(limit)
         .sort({ deadline: 1 })
         .populate([
           "client",
@@ -956,6 +1022,8 @@ const FilterTasksA = async (req, res, next) => {
             client ? { client: client } : {},
           ],
         })
+        .skip(skip)
+        .limit(limit)
         .sort({ deadline: 1 })
         .populate([
           "client",
@@ -998,6 +1066,8 @@ const FilterTasksA = async (req, res, next) => {
 };
 const FilterTasksB = async (req, res, next) => {
   try {
+    const { page, limit } = req.query;
+    const skip = (page - 1) * limit;
     const userID = req.user._id;
     const { status, speciality, country, start, end, freelancer, client } =
       req.body;
@@ -1016,6 +1086,8 @@ const FilterTasksB = async (req, res, next) => {
         })
         .gte("deadline", start)
         .lte("deadline", end)
+        .skip(skip)
+        .limit(limit)
         .sort({ deadline: 1 })
         .populate([
           "client",
@@ -1041,6 +1113,8 @@ const FilterTasksB = async (req, res, next) => {
             client ? { client: client } : {},
           ],
         })
+        .skip(skip)
+        .limit(limit)
         .sort({ deadline: 1 })
         .populate([
           "client",
