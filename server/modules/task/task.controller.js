@@ -7,6 +7,7 @@ const commentModel = require("../../DB/comment.model");
 const {customerProfitModel, specialistProfitModel} = require("../../DB/profit.model");
 const userModel = require("../../DB/user.model");
 const clientModel = require("../../DB/client.model");
+const sendNotification = require("../notification/notification.controller");
 
 const {
     acceptTask, 
@@ -17,14 +18,21 @@ const {
     deliverTask, 
     editTask,
     deleteDeliveredTask,
-    deleteNormalTask
+    deleteNormalTask,
+    pushFile
+    
 } = require("./task.functions");
+const fileModel = require("../../DB/file.model");
 
 const getMyTasks = async (req,res,next) => {
     try {
-        const role = req.user.user_role;
+        const { page, limit } = req.query; // Default values for page and limit
+
+    const skip = (page - 1) * limit;
+   const role ="admin";
+        
         if (role == "admin") {
-            const tasks = await taskModel.find({}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const tasks = await taskModel.find({}).skip(skip).limit(limit).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             const tasksCount = tasks.length;
             const completedTasks = await taskModel.find({taskStatus: "651737dce979f2bb0fb8a3d2"});
             const completedCount = completedTasks.length;
@@ -43,7 +51,8 @@ const getMyTasks = async (req,res,next) => {
             const status2 = await statusModel.find({slug: "on-going"});
             const status3 = await statusModel.find({slug: "done"});
             const pendingTasks = await taskModel.find({$and: [{$or: [{created_by: req.user._id}, {show_created: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id]}}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_created: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const tasks = await taskModel.find({$or: [{created_by: req.user._id}, {show_created: req.user._id}]}).skip(skip).limit(limit).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+                    
             res.json({tasks: tasks, pendingTasks: pendingTasks});
         } else if (role == "specialistService") {
             let pendingTasksB;
@@ -59,15 +68,27 @@ const getMyTasks = async (req,res,next) => {
             //     pendingTasksB = await taskModel.find({$or: [{speciality: {$in: userSpeciality}}, {$and: [{$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}, {taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}]}]}).sort({deadline: 1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             // }
             const pendingTasks = await taskModel.find({taskStatus: {$in: [status1[0]._id, status2[0]._id, status3[0]._id, status4[0]._id]}}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
-            const myTasks = await taskModel.find({$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
+            const myTasks = await taskModel.find({$or: [{accepted_by: req.user._id}, {show_accepted: req.user._id}]}).skip(skip)
+            .limit(limit).sort({updatedAt: -1}).populate(["client", "country", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency", "show_created", "show_accepted"]);
             res.json({myTasks: myTasks, pendingTasks: pendingTasks});
-        } else {
+
+        } else if (role == "freelancer") {
+            console.log(req.user._id);
+            const myTasks = await taskModel.find( { $and: [ {direct_to: role} ,{speciality: req.user.speciality} ] } ).skip(skip)
+            .limit(limit).sort({updatedAt: -1})
+
+            res.json(myTasks)
+        } 
+
+        else {
             return next(new HttpError("You are not authorized to show tasks!", 401));
         }
-    } catch (error) {
+    } 
+    catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
+
 
 const FilterTasks = async (req,res,next) => {
     try {
@@ -296,7 +317,7 @@ const getTask = async (req,res,next) => {
 const createTask = async (req,res,next) => {
     try {
         const role = req.user.user_role;
-        if (role != "specialistService") {
+        if (role != "specialistService" && role != "freelancer") {
             const {
                 title,
                 description,
@@ -307,7 +328,8 @@ const createTask = async (req,res,next) => {
                 deadline,
                 task_currency,
                 paid,
-                status
+                status,
+                direct_to
             } = req.body;
             const clientCounrty = await clientModel.findById({_id: client}).select("country");
             let newTask;
@@ -325,7 +347,8 @@ const createTask = async (req,res,next) => {
                     paid,
                     created_by: req.user._id,
                     show_created: shareWith,
-                    taskStatus: status
+                    taskStatus: status,
+                    direct_to
                 }).save();
             } else {
                 newTask = await new taskModel({
@@ -340,7 +363,8 @@ const createTask = async (req,res,next) => {
                     task_currency,
                     paid,
                     created_by: req.user._id,
-                    taskStatus: status
+                    taskStatus: status,
+                    direct_to
                 }).save();
             }
             const date = new Date().toLocaleString("en-US", {timeZone: "Africa/Cairo"})
@@ -360,6 +384,18 @@ const createTask = async (req,res,next) => {
     }
 }
 
+const fileSizeFormatter = (bytes, decimal) => {
+    if (bytes === 0) {
+      return "0 Bytes";
+    }
+    const dm = decimal || 2;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "YB", "ZB"];
+    const index = Math.floor(Math.log(bytes) / Math.log(1000));
+    return (
+      parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + " " + sizes[index]
+    );
+  };
+
 const partialUpdateTask = async (req,res,next) => {
     try {
         const role = req.user.user_role;
@@ -372,7 +408,10 @@ const partialUpdateTask = async (req,res,next) => {
             const checkAccepted = await taskModel.findOne({_id: taskID});
             if (checkAccepted.accepted == false) {
                 const msg = await acceptTask(taskID, req.user.fullname, req.user._id, shareWith);
-                await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                const task=await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+                const customer= await userModel.findById(task.created_by._id)
+              //  await sendNotification(customer.deviceToken,"Task is",currentStatus.slug)
+
                 res.json({msg});
             } else {
                 await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
@@ -410,7 +449,9 @@ const partialUpdateTask = async (req,res,next) => {
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
             const date = new Date().toLocaleString("en-US", {timeZone: "Africa/Cairo"})
             await new noteModel({content: `${req.user.fullname} has set task ${taskSerial.serialNumber} to be done in ${date}`, user_id: req.user._id, task_id: taskID}).save();
-            res.json({msg:"Task set to done successfully"});
+           const file= await pushFile(req.file.originalname,req.file.path,req.file.mimetype,fileSizeFormatter(req.file.size, 2),taskSerial.speciality,taskID )
+           await taskModel.findByIdAndUpdate({_id: taskID}, {file: file._id});
+            res.json({msg:"Task set to done successfully",file});
         } else if (currentStatus.slug == "delivered" && role != "specialistService") {
             const msg = await deliverTask(taskID, req.user.fullname, req.user._id);
             await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
@@ -541,10 +582,10 @@ const updateTask = async (req,res,next) => {
 }
 
 const deleteTask = async (req,res,next) => {
-    try {
+   try {
         const role = req.user.user_role;
         const taskID = req.params.id;
-        if (role != "specialistService") {
+        if (role != "specialistService" && role != "freelancer") {
             const currentStatus = await taskModel.findOne({_id: taskID});
             const currentStatusSlug = await statusModel.findOne({_id: currentStatus.taskStatus});
             if (currentStatusSlug.slug == "delivered") {
@@ -562,4 +603,15 @@ const deleteTask = async (req,res,next) => {
     }
 }
 
-module.exports = {getMyTasks, getTask, FilterTasks, FilterTasksA, FilterTasksB, createTask, partialUpdateTask, updateTask, deleteTask}
+
+const downloadFile = async (req, res, next) => {
+    const found = await fileModel.find({ _id: req.params.id });
+    if (found) {
+      let file = __dirname + "../../../" + found[0].filePath;
+      res.download(file)
+    } else {
+      return next(new HttpError("file not found", 404));
+    }
+  };
+
+module.exports = {getMyTasks, getTask, FilterTasks, FilterTasksA, FilterTasksB, createTask, partialUpdateTask, updateTask, deleteTask,downloadFile}
