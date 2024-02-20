@@ -94,19 +94,9 @@ const getMyTasks = async (req, res, next) => {
       const status3 = await statusModel.find({ slug: "done" });
       const pendingTasks = await taskModel
         .find({
-          $and: [
-            {
-              $or: [
-                { created_by: req.user._id },
-                { show_created: req.user._id },
-              ],
-            },
-            {
-              taskStatus: {
-                $in: [status1[0]._id, status2[0]._id, status3[0]._id],
-              },
-            },
-          ],
+          taskStatus: {
+            $in: [status1[0]._id, status2[0]._id, status3[0]._id],
+          }
         })
         .skip(skip)
         .limit(limit)
