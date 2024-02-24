@@ -24,7 +24,7 @@ const getSearchFilter = (searchName, tasks) => {
 
 const Tasks = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
   const token = GetCookie("UserA");
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
