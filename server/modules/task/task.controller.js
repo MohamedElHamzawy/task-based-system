@@ -115,9 +115,7 @@ const getMyTasks = async (req, res, next) => {
           "show_accepted",
         ]);
       const tasks = await taskModel
-        .find({
-          $or: [{ created_by: req.user._id }, { show_created: req.user._id }],
-        })
+        .find({})
         .skip(skip)
         .limit(limit)
         .sort({ updatedAt: -1 })
@@ -174,9 +172,7 @@ const getMyTasks = async (req, res, next) => {
           "show_accepted",
         ]);
       const myTasks = await taskModel
-        .find({
-          $or: [{ accepted_by: req.user._id }, { show_accepted: req.user._id }],
-        })
+        .find({})
         .skip(skip)
         .limit(limit)
         .sort({ updatedAt: -1 })
