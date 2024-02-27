@@ -44,17 +44,17 @@ const Tasks = () => {
       return tasks;
     }
 
-    const { data } = await axios.get(
-      `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${searchName}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return data.tasks;
-
-    // return tasks.filter(
-    //   (task) =>
-    //     task.title.toLowerCase().includes(searchName.toLowerCase()) ||
-    //     task.serialNumber.includes(searchName)
+    // const { data } = await axios.get(
+    //   `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${searchName}`,
+    //   { headers: { Authorization: `Bearer ${token}` } }
     // );
+    // return data.tasks;
+
+    return tasks.filter(
+      (task) =>
+        task.title.toLowerCase().includes(searchName.toLowerCase()) ||
+        task.serialNumber.includes(searchName)
+    );
   };
 
   useEffect(() => {
