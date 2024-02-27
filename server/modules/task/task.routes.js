@@ -10,10 +10,12 @@ const {
     createTask,
     partialUpdateTask, 
     updateTask, 
-    deleteTask
+    deleteTask,
+    searchTask
 } = require("./task.controller");
 
 router.get("/", auth(), getMyTasks);
+router.get("/search/result/", auth(), searchTask);
 router.get("/:id", auth(), getTask);
 router.post("/filter/result/", FilterTasks);
 router.post("/filter/result/customer", auth(), FilterTasksA);

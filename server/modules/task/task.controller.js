@@ -197,6 +197,38 @@ const getMyTasks = async (req, res, next) => {
   }
 };
 
+const searchTask = async (req,res,next) => {
+    // Get the search value from the request
+    const searchValue = req.body;
+    // Construct the query using $or
+    const query = {
+      $or: [
+        { serialNumber: { $regex: searchValue, $options: 'i' } }, // Case-insensitive search
+        { title: { $regex: searchValue, $options: 'i' } }
+      ]
+    };
+  
+    try {
+      const tasks = await taskModel
+      .find(query)
+      .populate([
+        "client",
+        "country",
+        "freelancer",
+        "speciality",
+        "taskStatus",
+        "created_by",
+        "accepted_by",
+        "task_currency",
+        "show_created",
+        "show_accepted",
+      ]);
+      res.json(tasks);
+    } catch (error) {
+      res.status(400).send('Error fetching tasks');
+    }
+}
+
 const FilterTasks = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
@@ -2487,4 +2519,5 @@ module.exports = {
   partialUpdateTask,
   updateTask,
   deleteTask,
+  searchTask
 };
