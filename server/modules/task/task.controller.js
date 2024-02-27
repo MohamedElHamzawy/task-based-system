@@ -25,7 +25,6 @@ const {
 
 const getMyTasks = async (req, res, next) => {
   try {
-    console.log(req.query);
     const { page, limit } = req.query;
     const skip = (page - 1) * limit || 0;
     const role = req.user.user_role;
@@ -199,7 +198,8 @@ const getMyTasks = async (req, res, next) => {
 
 const searchTask = async (req,res,next) => {
     // Get the search value from the request
-    const {searchValue} = req.body;
+    const { page, limit, searchValue} = req.query;
+    const skip = (page - 1) * limit || 0;
     // Construct the query using $or
     const query = {
       $or: [
@@ -211,6 +211,8 @@ const searchTask = async (req,res,next) => {
     try {
       const tasks = await taskModel
       .find(query)
+      .skip(skip)
+      .limit(limit)
       .populate([
         "client",
         "country",
