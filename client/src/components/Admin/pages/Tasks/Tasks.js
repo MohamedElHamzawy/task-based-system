@@ -14,18 +14,6 @@ import { AiOutlineClear } from "react-icons/ai";
 
 import GetCookie from "../../../../hooks/getCookie";
 
-//search filter
-const getSearchFilter = (searchName, tasks) => {
-  if (!searchName) {
-    return tasks;
-  }
-  return tasks.filter(
-    (task) =>
-      task.title.toLowerCase().includes(searchName.toLowerCase()) ||
-      task.serialNumber.includes(searchName)
-  );
-};
-
 const Tasks = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
@@ -49,6 +37,25 @@ const Tasks = () => {
   const [totalProfit, setTotalProfit] = useState();
   const [completedCount, setCompletedCount] = useState();
   const [totalProfitPercentage, setTotalProfitPercentage] = useState();
+
+  //search filter
+  const getSearchFilter = async (searchName, tasks) => {
+    if (!searchName) {
+      return tasks;
+    }
+
+    const { data } = await axios.get(
+      `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${searchName}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return data.tasks;
+
+    // return tasks.filter(
+    //   (task) =>
+    //     task.title.toLowerCase().includes(searchName.toLowerCase()) ||
+    //     task.serialNumber.includes(searchName)
+    // );
+  };
 
   useEffect(() => {
     let timerId;
