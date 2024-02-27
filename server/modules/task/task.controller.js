@@ -1974,17 +1974,7 @@ const getTask = async (req, res, next) => {
       res.json({ task: task, comments: comments, notes: notes, offer: offer });
     } else if (role == "customerService") {
       const task = await taskModel
-        .findOne({
-          $and: [
-            { _id: taskID },
-            {
-              $or: [
-                { created_by: req.user._id },
-                { show_created: req.user._id },
-              ],
-            },
-          ],
-        })
+        .findOne({_id: taskID })
         .populate([
           "client",
           "country",
@@ -2019,18 +2009,7 @@ const getTask = async (req, res, next) => {
       res.json({ task: task, comments: comments, notes: notes, offer: offer });
     } else if (role == "specialistService") {
       const task = await taskModel
-        .findOne({
-          $and: [
-            { _id: taskID },
-            {
-              $or: [
-                { accepted_by: req.user._id },
-                { show_accepted: req.user._id },
-                { accepted: false },
-              ],
-            },
-          ],
-        })
+        .findOne({_id: taskID })
         .populate([
           "client",
           "country",
