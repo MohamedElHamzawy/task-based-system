@@ -199,7 +199,7 @@ const getMyTasks = async (req, res, next) => {
 
 const searchTask = async (req,res,next) => {
     // Get the search value from the request
-    const searchValue = req.body;
+    const {searchValue} = req.body;
     // Construct the query using $or
     const query = {
       $or: [
