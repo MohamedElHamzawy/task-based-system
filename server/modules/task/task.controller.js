@@ -225,7 +225,7 @@ const searchTask = async (req,res,next) => {
         "show_created",
         "show_accepted",
       ]);
-      res.json(tasks);
+      res.json({tasks: tasks});
     } catch (error) {
       res.status(400).send('Error fetching tasks');
     }
