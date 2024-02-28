@@ -530,7 +530,7 @@ const Tasks = () => {
         {isSearchLoading ? (
           <div
             style={{
-              widthL: "100%",
+              width: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
