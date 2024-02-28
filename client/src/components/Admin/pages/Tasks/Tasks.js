@@ -528,7 +528,16 @@ const Tasks = () => {
       </div>
       <div className="row justify-content-center p-0 m-0">
         {isSearchLoading ? (
-          <LoadingSpinner />
+          <div
+            style={{
+              widthL: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <LoadingSpinner />
+          </div>
         ) : (
           <>
             {searchFilterData &&
