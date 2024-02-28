@@ -72,7 +72,7 @@ const PendingTasks = () => {
           )
           .then((res) => {
             setTasks(res.data.myTasks);
-            setSearchFilter(res.data.tasks);
+            setSearchFilter(res.data.myTasks);
           });
         setIsLoading(false);
         setLoading(false);
