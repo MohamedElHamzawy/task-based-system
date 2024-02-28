@@ -108,6 +108,7 @@ const Tasks = () => {
           )
           .then((res) => {
             setTasks(res.data.tasks);
+            setSearchFilter(res.data.tasks);
             setTasksCount(res.data.tasksCount);
             setTotalCost(res.data.totalCost);
             setTotalGain(res.data.totalGain);
@@ -189,8 +190,10 @@ const Tasks = () => {
       setSearchFilterData(tasks);
     }
     try {
+      // loading
+      setIsLoading(true);
       const { data } = await axios.get(
-        `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${searchName}`,
+        `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${e.target.value}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSearchFilter(data.tasks);
@@ -201,6 +204,7 @@ const Tasks = () => {
         console.log(error.message);
       }
     } finally {
+      setIsLoading(false);
       setSearchFilterData(true);
       setAllFilterData(false);
       setFreelancer("");
