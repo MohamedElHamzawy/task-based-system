@@ -139,6 +139,7 @@ const Tasks = () => {
   const [allFilterData, setAllFilterData] = useState(false);
 
   const [searchFilter, setSearchFilter] = useState([]);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   const [filterData, setFilterData] = useState([]);
 
@@ -186,12 +187,13 @@ const Tasks = () => {
   };
 
   const searchHandler = async (e) => {
+    setSearchName(e.target.value);
     if (e.target.value === "") {
       setSearchFilterData(tasks);
     }
     try {
       // loading
-      setIsLoading(true);
+      setIsSearchLoading(true);
       const { data } = await axios.get(
         `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${e.target.value}`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -204,7 +206,7 @@ const Tasks = () => {
         console.log(error.message);
       }
     } finally {
-      setIsLoading(false);
+      setIsSearchLoading(false);
       setSearchFilterData(true);
       setAllFilterData(false);
       setFreelancer("");
@@ -240,6 +242,7 @@ const Tasks = () => {
 
         <div className="col-8 col-md-3 p-2">
           <input
+            value={searchName}
             type="name"
             className="search p-2 w-100"
             placeholder="Search By Name or Serial Number"
@@ -524,116 +527,125 @@ const Tasks = () => {
         </div>
       </div>
       <div className="row justify-content-center p-0 m-0">
-        {searchFilterData &&
-          (!searchFilter.length == 0 ? (
-            searchFilter.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1"
-              >
-                <div className="col-12 fw-bold row text-center ">
-                  <span
-                    className={
-                      task.taskStatus?.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus?.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus?.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus?.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus?.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus?.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
+        {isSearchLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {searchFilterData &&
+              (!searchFilter.length == 0 ? (
+                searchFilter.map((task) => (
+                  <div
+                    key={task._id}
+                    className="task-card bg-white p-2 py-3 row users-data col-11 my-1"
                   >
-                    {task.taskStatus?.statusname}
-                  </span>
-                </div>
-                <div className="col-12 row text-center justify-content-end my-2 ">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
-                      {task.serialNumber}
-                    </span>
+                    <div className="col-12 fw-bold row text-center ">
+                      <span
+                        className={
+                          task.taskStatus?.statusname == "pending"
+                            ? "bg-warning p-3 status col-12 "
+                            : task.taskStatus?.statusname == "waiting offer"
+                            ? "waiting-offer   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "approved"
+                            ? "bg-info   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "working on"
+                            ? "bg-primary   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "done"
+                            ? "bg-success  p-3 status col-12 "
+                            : task.taskStatus?.statusname == "delivered"
+                            ? "bg-secondary  p-3 status col-12"
+                            : task.taskStatus?.statusname == "rejected"
+                            ? "bg-danger   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "not available"
+                            ? "bg-dark   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "on going"
+                            ? "on-going  p-3 status col-12 "
+                            : task.taskStatus?.statusname == "offer submitted"
+                            ? " offer-submitted   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "edit"
+                            ? "edit   p-3 status col-12 "
+                            : task.taskStatus?.statusname == "cancel"
+                            ? "cancel   p-3 status col-12 "
+                            : "anystatus  p-3 status col-12 "
+                        }
+                      >
+                        {task.taskStatus?.statusname}
+                      </span>
+                    </div>
+                    <div className="col-12 row text-center justify-content-end my-2 ">
+                      <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
+                        <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                          {task.serialNumber}
+                        </span>
+                      </div>
+                      <button
+                        className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
+                        onClick={() => {
+                          window.location.href = `/task/${task._id}`;
+                        }}
+                      >
+                        <BsFillFolderSymlinkFill className="fs-4" /> Details
+                      </button>
+                    </div>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Title :</span>{" "}
+                      {task.title}
+                    </p>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Speciality :</span>{" "}
+                      {task.speciality.sub_speciality}
+                    </p>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Created At :</span>{" "}
+                      {task.createdAt.split("T")[0]}
+                    </p>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Deadline :</span>{" "}
+                      {task.deadline.split("T")[0]}
+                    </p>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Client :</span>{" "}
+                      {task.client?.clientname}
+                    </p>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Country :</span>{" "}
+                      {task.country.countryName}
+                    </p>
+                    <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                      {" "}
+                      <span className="edit-form-lable">Created By :</span>{" "}
+                      {task.created_by && task.created_by.fullname}
+                    </p>
+                    {task.freelancer && (
+                      <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                        {" "}
+                        <span className="edit-form-lable">
+                          Freelancer :
+                        </span>{" "}
+                        {task.freelancer.freelancername}
+                      </p>
+                    )}
+                    {task.profit_amount && (
+                      <p className="col-12 col-sm-6 edit-form-p fw-bold">
+                        {" "}
+                        <span className="edit-form-lable">Profit :</span>{" "}
+                        {task.profit_amount}
+                      </p>
+                    )}
                   </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
-                    onClick={() => {
-                      window.location.href = `/task/${task._id}`;
-                    }}
-                  >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
+                ))
+              ) : (
+                <div className="row  p-3 m-0 text-center">
+                  <h2>There Is No Tasks</h2>
                 </div>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created At :</span>{" "}
-                  {task.createdAt.split("T")[0]}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client?.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Country :</span>{" "}
-                  {task.country.countryName}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
-                  </p>
-                )}
-                {task.profit_amount && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Profit :</span>{" "}
-                    {task.profit_amount}
-                  </p>
-                )}
-              </div>
-            ))
-          ) : (
-            <div className="row  p-3 m-0 text-center">
-              <h2>There Is No Tasks</h2>
-            </div>
-          ))}
+              ))}{" "}
+          </>
+        )}
 
         {allFilterData &&
           (!filterData.length == 0 ? (
