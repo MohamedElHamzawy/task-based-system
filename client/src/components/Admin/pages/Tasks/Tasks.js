@@ -39,16 +39,16 @@ const Tasks = () => {
   const [totalProfitPercentage, setTotalProfitPercentage] = useState();
 
   //search filter
-  const getSearchFilter = async (searchName, tasks) => {
-    if (!searchName) {
-      return tasks;
-    }
-    return tasks.filter(
-      (task) =>
-        task.title.toLowerCase().includes(searchName.toLowerCase()) ||
-        task.serialNumber.includes(searchName)
-    );
-  };
+  // const getSearchFilter = async (searchName, tasks) => {
+  //   if (!searchName) {
+  //     return tasks;
+  //   }
+  //   return tasks.filter(
+  //     (task) =>
+  //       task.title.toLowerCase().includes(searchName.toLowerCase()) ||
+  //       task.serialNumber.includes(searchName)
+  //   );
+  // };
 
   useEffect(() => {
     let timerId;
