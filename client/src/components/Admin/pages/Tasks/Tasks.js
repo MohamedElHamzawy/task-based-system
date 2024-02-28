@@ -43,13 +43,6 @@ const Tasks = () => {
     if (!searchName) {
       return tasks;
     }
-
-    // const { data } = await axios.get(
-    //   `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${searchName}`,
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
-    // return data.tasks;
-
     return tasks.filter(
       (task) =>
         task.title.toLowerCase().includes(searchName.toLowerCase()) ||
@@ -115,7 +108,6 @@ const Tasks = () => {
           )
           .then((res) => {
             setTasks(res.data.tasks);
-
             setTasksCount(res.data.tasksCount);
             setTotalCost(res.data.totalCost);
             setTotalGain(res.data.totalGain);
@@ -145,7 +137,7 @@ const Tasks = () => {
   const [searchFilterData, setSearchFilterData] = useState(true);
   const [allFilterData, setAllFilterData] = useState(false);
 
-  const searchFilter = getSearchFilter(searchName, tasks);
+  const [searchFilter, setSearchFilter] = useState([]);
 
   const [filterData, setFilterData] = useState([]);
 
@@ -177,7 +169,6 @@ const Tasks = () => {
         throw new Error(responseData.data.message);
       }
       setFilterData(response.data.tasks);
-
       setTasksCount(response.data.tasksCount);
       setTotalCost(response.data.totalCost);
       setTotalGain(response.data.totalGain);
@@ -190,6 +181,37 @@ const Tasks = () => {
     } catch (err) {
       setIsLoading(false);
       setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+    }
+  };
+
+  const searchHandler = async (e) => {
+    if (e.target.value === "") {
+      setSearchFilterData(tasks);
+    }
+    try {
+      const { data } = await axios.get(
+        `https://smarteduservices.com:5000/api/task/search/result?limit=${limit}&page=${page}&searchValue=${searchName}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSearchFilter(data.tasks);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data.message);
+      } else {
+        console.log(error.message);
+      }
+    } finally {
+      setSearchFilterData(true);
+      setAllFilterData(false);
+      setFreelancer("");
+      setClient("");
+      setCountry("");
+      setSpeciality("");
+      setStatus("");
+      setStart("");
+      setEnd("");
+      setUser("");
+      setSort("");
     }
   };
 
@@ -218,20 +240,7 @@ const Tasks = () => {
             className="search p-2 w-100"
             placeholder="Search By Name or Serial Number"
             value={searchName}
-            onChange={(e) => {
-              setSearchName(e.target.value);
-              setSearchFilterData(true);
-              setAllFilterData(false);
-              setFreelancer("");
-              setClient("");
-              setCountry("");
-              setSpeciality("");
-              setStatus("");
-              setStart("");
-              setEnd("");
-              setUser("");
-              setSort("");
-            }}
+            onChange={searchHandler}
           />
         </div>
 
