@@ -239,7 +239,6 @@ const Tasks = () => {
             type="name"
             className="search p-2 w-100"
             placeholder="Search By Name or Serial Number"
-            value={searchName}
             onChange={searchHandler}
           />
         </div>
