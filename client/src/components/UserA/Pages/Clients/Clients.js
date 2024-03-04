@@ -117,12 +117,11 @@ const Clients = () => {
 
       <div className="flex justify-between items-center my-8">
         <h1 className="text-2xl">System Clients</h1>
-        {/* <div className="">FILTERS</div> */}
       </div>
 
       <div className="flex items-center justify-between">
         <input
-          type="name"
+          type="search"
           className="rounded border px-3 py-2 shadow-sm w-1/3"
           placeholder=" Search By Name"
           onChange={(e) => {
