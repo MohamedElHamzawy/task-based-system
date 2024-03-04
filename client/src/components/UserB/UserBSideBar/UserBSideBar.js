@@ -1,24 +1,15 @@
 import React, { useState } from "react";
-import "./UserBSidebar.css";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
-import { FaTasks } from "react-icons/fa";
-import { BiLogOut } from "react-icons/bi";
-import { SiFreelancer } from "react-icons/si";
-import { AiFillSetting } from "react-icons/ai";
-import { MdPendingActions } from "react-icons/md";
-import { BiSolidCategoryAlt } from "react-icons/bi";
 import { MdOutlineNotificationsActive } from "react-icons/md";
+import { FaUsers, FaFlag, FaTasks, FaHospitalUser } from "react-icons/fa";
+import { BiLogOut, BiSolidCategoryAlt } from "react-icons/bi";
+import { AiFillSetting, AiOutlineHome } from "react-icons/ai";
 
 import RemoveCookie from "../../../hooks/removeCookie";
 
-import SideNav, {
-  Toggle,
-  Nav,
-  NavItem,
-  NavIcon,
-  NavText,
-} from "@trendmicro/react-sidenav";
+import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
+import { useLocation, useNavigate } from "react-router";
 
 function logout() {
   localStorage.removeItem("UserBData");
@@ -27,124 +18,114 @@ function logout() {
   window.location.href = "/";
 }
 
-class UserBSideBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isVisible: true,
-    };
-  }
+const navItems = [
+  { navigate: "/", icon: AiOutlineHome, label: "Pending Tasks" },
+  { navigate: "/yourtasks", icon: FaUsers, label: "Tasks" },
+  {
+    navigate: "/notifications",
+    icon: MdOutlineNotificationsActive,
+    label: "Notifications",
+  },
+  {
+    navigate: "/freelancers",
+    icon: FaHospitalUser,
+    label: "Freelancers",
+  },
+  {
+    navigate: "/specialities",
+    icon: BiSolidCategoryAlt,
+    label: "Specialities",
+  },
+  {
+    navigate: "/settings",
+    icon: AiFillSetting,
+    label: "Settings",
+  },
+];
 
-  render() {
-    return (
-      <SideNav defaultExpanded={!this.state.isVisible} className="sidebar">
-        <SideNav.Toggle
-          onClick={() => {
-            this.setState({ isVisible: !this.state.isVisible });
-          }}
-        />
-        <SideNav.Nav>
+const UserBSideBar = () => {
+  const [isVisible, setIsVisible] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  return (
+    <SideNav
+      defaultExpanded={true}
+      style={{ position: "fixed" }}
+      className="bg-white mt-[4.2rem] py-4 pr-4 shadow-sm"
+    >
+      <SideNav.Nav>
+        {navItems.map((item) => (
           <NavItem
-            eventKey="tasks"
-            className=" my-4"
-            onClick={() => {
-              window.location.href = "/";
+            style={{ height: 36 }}
+            key={item.navigate}
+            className={`relative flex items-center rounded-sm ${
+              location.pathname === item.navigate
+                ? "bg-[#F3F8FF] hover:bg-[#F3F8FF]"
+                : "hover:bg-gray-50"
+            }`}
+            eventKey="users"
+            onClick={() => navigate(item.navigate)}
+          >
+            {location.pathname === item.navigate && (
+              <div
+                style={{ height: 36, marginTop: 7 }}
+                className="rounded-sm absolute top-0 w-1 bg-[#0058FF]"
+              ></div>
+            )}
+
+            <NavIcon
+              style={{
+                display: "flex",
+                alignItems: "center",
+                height: 20,
+                marginTop: 14,
+              }}
+            >
+              <item.icon
+                className="mx-auto"
+                color={
+                  location.pathname === item.navigate ? "#0058FF" : "#171725"
+                }
+              />
+            </NavIcon>
+            <NavText>
+              <p
+                style={{
+                  color:
+                    location.pathname === item.navigate ? "#0058FF" : "#171725",
+                }}
+              >
+                {item.label}
+              </p>
+            </NavText>
+          </NavItem>
+        ))}
+        <NavItem
+          style={{ height: 36 }}
+          className={`rounded-sm flex items-center hover:bg-gray-50`}
+          eventKey="home"
+          onClick={logout}
+        >
+          <NavIcon
+            style={{
+              display: "flex",
+              alignItems: "center",
+              height: 20,
+              marginTop: 14,
             }}
           >
-            <NavIcon>
-              <MdPendingActions className="fs-4" />
-            </NavIcon>
-            <NavText>
-              <p className="fs-3 ">PendingTasks</p>
-            </NavText>
-          </NavItem>
-          <NavItem
-            eventKey="tasks"
-            className=" my-4"
-            onClick={() => {
-              window.location.href = "/yourtasks";
-            }}
-          >
-            <NavIcon>
-              <FaTasks className="fs-4" />
-            </NavIcon>
-            <NavText>
-              <p className="fs-3 "> Your Tasks</p>
-            </NavText>
-          </NavItem>
-
-          <NavItem
-            eventKey="tasks"
-            className="nav-link"
-            onClick={() => {
-              window.location.href = "/notifications";
-            }}
-          >
-            <NavIcon>
-              <MdOutlineNotificationsActive className="f5" />
-            </NavIcon>
-            <NavText>
-              <p className="f4"> Notifications</p>
-            </NavText>
-          </NavItem>
-
-          <NavItem
-            eventKey="tasks"
-            className=" my-4"
-            onClick={() => {
-              window.location.href = "/freelancers";
-            }}
-          >
-            <NavIcon>
-              <SiFreelancer className="fs-4" />
-            </NavIcon>
-            <NavText>
-              <p className="fs-3 "> FreeLancers</p>
-            </NavText>
-          </NavItem>
-
-          <NavItem
-            eventKey="tasks"
-            className="my-4"
-            onClick={() => {
-              window.location.href = "/specialities";
-            }}
-          >
-            <NavIcon>
-              <BiSolidCategoryAlt className="fs-4" />
-            </NavIcon>
-            <NavText>
-              <p className="fs-3 "> Specialities</p>
-            </NavText>
-          </NavItem>
-
-          <NavItem
-            eventKey="tasks"
-            className=" my-4"
-            onClick={() => {
-              window.location.href = "/settings";
-            }}
-          >
-            <NavIcon>
-              <AiFillSetting className="fs-4" />
-            </NavIcon>
-            <NavText>
-              <p className="fs-3 "> Settings</p>
-            </NavText>
-          </NavItem>
-
-          <NavItem eventKey="home" className="log-out mt-5" onClick={logout}>
-            <NavIcon>
-              <BiLogOut className="fs-4" />
-            </NavIcon>
-            <NavText>
-              <p className="fs-4">LOG OUT</p>
-            </NavText>
-          </NavItem>
-        </SideNav.Nav>
-      </SideNav>
-    );
-  }
-}
+            <BiLogOut className="mx-auto" color="#171725" />
+          </NavIcon>
+          <NavText>
+            <p className="" style={{ color: "#171725" }}>
+              LOGOUT
+            </p>
+          </NavText>
+        </NavItem>
+      </SideNav.Nav>
+    </SideNav>
+  );
+};
 
 export default UserBSideBar;
