@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import "./Tasks.css";
-
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
-
 import GetCookie from "../../../../hooks/getCookie";
-import DateFilter from "../../../DateFilter";
 import Filter from "../../../Filter";
 import { useNavigate } from "react-router";
 
