@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from "react";
-
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
@@ -9,15 +8,15 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../../../../util/validators";
 
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
-import { TiArrowBack } from "react-icons/ti";
 import { FaTasks } from "react-icons/fa";
 import { FaCoins } from "react-icons/fa";
-import { ImCancelCircle } from "react-icons/im";
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
+import { FaCcVisa } from "react-icons/fa";
 import { AiOutlineFileDone } from "react-icons/ai";
+import { GiProfit } from "react-icons/gi";
 import { FiFilter } from "react-icons/fi";
+import DateFilterComponent from "../../../DateFilter";
 
 // Date filter
 
@@ -27,7 +26,8 @@ const getDateFilter = (start, end, tasks) => {
   }
   return tasks.filter(
     (task) =>
-      start <= task.deadline.split("T")[0] && task.deadline.split("T")[0] <= end
+      start <= new Date(task.deadline.split("T")[0]) &&
+      new Date(task.deadline.split("T")[0]) <= end
   );
 };
 
@@ -119,6 +119,7 @@ const FreeLancerDetails = () => {
   const [specialities, setSpecialities] = useState([]);
   const [freeLancerTasks, setFreeLancerTasks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -298,586 +299,502 @@ const FreeLancerDetails = () => {
     window.location.reload(true);
   };
 
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
   const [withoutFilterData, setwithoutFilterData] = useState(true);
   const [dateFilterData, setDateFilterData] = useState(false);
   const DateFilter = getDateFilter(start, end, freeLancerTasks);
 
+  const onDateChange = (dates) => {
+    const [start, end] = dates;
+    setStart(start);
+    setEnd(end);
+    setDateFilterData(true);
+    setwithoutFilterData(false);
+  };
+
+  function getRowClass(statusname) {
+    switch (statusname) {
+      case "pending":
+        return "bg-yellow-100";
+      case "waiting offer":
+        return "bg-blue-100";
+      case "approved":
+        return "bg-sky-100";
+      case "working on":
+        return "bg-purple-100";
+      case "done":
+        return "bg-green-100";
+      case "delivered":
+        return "bg-gray-100";
+      case "rejected":
+        return "bg-red-100";
+      case "not available":
+        return "bg-slate-100";
+      case "on going":
+        return "bg-teal-100";
+      case "offer submitted":
+        return "bg-orange-100";
+      case "edit":
+        return "bg-indigo-100";
+      case "cancel":
+        return "bg-pink-100";
+      default:
+        return "";
+    }
+  }
+
+  function getStatusClass(statusname) {
+    switch (statusname) {
+      case "pending":
+        return "text-yellow-400";
+      case "waiting offer":
+        return "text-blue-500";
+      case "approved":
+        return "text-sky-400";
+      case "working on":
+        return "text-purple-400";
+      case "done":
+        return "text-green-400";
+      case "delivered":
+        return "text-gray-400";
+      case "rejected":
+        return "text-red-400";
+      case "not available":
+        return "text-slate-400";
+      case "on going":
+        return "text-teal-400";
+      case "offer submitted":
+        return "text-orange-400";
+      case "edit":
+        return "text-indigo-400";
+      case "cancel":
+        return "text-pink-400";
+      default:
+        return "";
+    }
+  }
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-2 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/freelancers";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4 fw-bold">
-          {" "}
+      <div className="relative flex items-center justify-between w-full p-1 mb-4">
+        {/* <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/freelancers")}
+        >
+          <TiArrowBack />
+        </button> */}
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Freelancer Details
         </h2>
+        <div>
+          <DateFilterComponent
+            startDate={start}
+            endDate={end}
+            onChange={onDateChange}
+          />
+        </div>
       </div>
 
-      <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-        <div className="col-12 row p-3 justify-content-end ">
-          <div className="col-4">
-            <button
-              className="delete-btn px-4 p-1 fs-3"
-              onClick={deleteFreeLancerHandler}
-            >
-              <RiDeleteBinFill />
-            </button>
-          </div>
-        </div>
+      <div className="relative flex items-center justify-betwen border-2 space-x-8 rounded-md shadow pr-4 py-4 bg-[#F4F7FC]">
+        <button
+          className="absolute top-2 right-1.5 w-10 h-10"
+          onClick={deleteFreeLancerHandler}
+        >
+          <RiDeleteBinFill className="text-gray-400 w-10 h-10" />
+        </button>
 
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            Full Name :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.freelancername}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
+        <div className="w-1/2 grid grid-cols-2 gap-4">
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Full Name:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.freelancername}
+            </p>
             <input
               type="text"
+              className={`${
+                editFull
+                  ? "block w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "hidden"
+              } ${
+                !fullNameState.isvalid &&
+                fullNameState.isTouched &&
+                "border-red-500"
+              }`}
               placeholder={freeLancer.freelancername}
               value={fullNameState.value}
               onChange={fullNameChangeHandler}
               onBlur={fullNameTouchHandler}
               isvalid={fullNameState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !fullNameState.isvalid &&
-                fullNameState.isTouched &&
-                "form-control-invalid"
-              }`}
             />
           </div>
-        </div>
-
-        {/* /////////////////////// */}
-
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Email :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.email}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
+          {/* ... other form fields with similar styling ... */}
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900"> Email:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.email}
+            </p>
             <input
               type="email"
+              className={`${
+                editFull
+                  ? "block w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "hidden"
+              } ${
+                !emailState.isvalid && emailState.isTouched && "border-red-500"
+              }`}
               placeholder={freeLancer.email}
               value={emailState.value}
               onChange={emailChangeHandler}
               onBlur={emailTouchHandler}
               isvalid={emailState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !emailState.isvalid &&
-                emailState.isTouched &&
-                "form-control-invalid"
-              }`}
             />
           </div>
-        </div>
-
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Phone :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.phone}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Phone:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.phone}
+            </p>
             <input
               type="number"
+              className={`${
+                editFull
+                  ? "block w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "hidden"
+              } ${
+                !numberState.isvalid &&
+                numberState.isTouched &&
+                "border-red-500"
+              }`}
               placeholder={freeLancer.phone}
               value={numberState.value}
               onChange={numberChangeHandler}
               onBlur={numbertouchHandler}
               isvalid={numberState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !numberState.isvalid &&
-                numberState.isTouched &&
-                "form-control-invalid"
-              }`}
             />
           </div>
-        </div>
-
-        {/* /////////////////////// */}
-        <div className="d-flex col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            Speciality :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {freeLancer.speciality && freeLancer.speciality.sub_speciality}
-          </p>
-
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
-            <select
-              id="speciality"
-              name="speciality"
-              className="p-2 px-4 search col-12"
-              value={userSpeciality}
-              onChange={(event) => specialityChangeHandler(event.target.value)}
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Speciality:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
             >
-              <option value="" className="text-secondary">
-                Specialities
-              </option>
-              {specialities.map((speciality) => (
-                <option value={speciality._id} key={speciality._id}>
-                  {speciality.sub_speciality}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Country :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {freeLancer.country && freeLancer.country.countryName}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
-            <select
-              id="country"
-              name="country"
-              className="p-2 search w-100"
-              value={country}
-              onChange={(event) => countryChangeHandler(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Countries
-              </option>
-              {countries.map((country) => (
-                <option value={country._id} key={country._id}>
-                  {country.countryName}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-lg-6 row p-2 ">
-          <h3 className="col-10 col-md-5  edit-form-lable text-start p-2">
-            {" "}
-            Currency :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-12 col-md-6 py-2 edit-form-p details-data fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {freeLancer.currency && freeLancer.currency.currencyname}{" "}
-          </p>
-          <div
-            className={editFull ? "d-inline col-12 col-md-6 py-2 " : "d-none"}
-          >
-            <select
-              id="Currency"
-              name="Currency"
-              className="p-2 px-4 search col-12"
-              value={currency}
-              onChange={(event) => setCurreny(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Currencies
-              </option>
-              {currencies.map((currency) => (
-                <option value={currency._id} key={currency._id}>
-                  {currency.currencyname}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* /////////////////////// */}
-
-        <div className="col-12  p-3">
-          {!editFull ? (
-            <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-              onClick={() => {
-                setEditFull(!editFull);
-              }}
-            >
-              Edit
-            </button>
-          ) : (
-            ""
-          )}
-          {editFull ? (
-            <>
-              <button
-                disabled={
-                  !fullNameState.isvalid &&
-                  !numberState.isvalid &&
-                  !emailState.isvalid &&
-                  !country &&
-                  !currency &&
-                  !userSpeciality
+              {freeLancer.speciality && freeLancer.speciality.sub_speciality}
+            </p>
+            <div className={editFull ? "inline py-2" : "hidden"}>
+              <select
+                id="speciality"
+                name="speciality"
+                className="w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={userSpeciality}
+                onChange={(event) =>
+                  specialityChangeHandler(event.target.value)
                 }
-                className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
-                onClick={editFreeLancerHandler}
               >
-                Submit
-              </button>
+                <option selected disabled value="" className="text-secondary">
+                  Previous:{" "}
+                  {freeLancer.speciality &&
+                    freeLancer.speciality.sub_speciality}
+                </option>
+                {specialities.map((speciality) => (
+                  <option value={speciality._id} key={speciality._id}>
+                    {speciality.sub_speciality}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Country:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.country && freeLancer.country.countryName}
+            </p>
+            <div className={editFull ? "inline py-2" : "hidden"}>
+              <select
+                id="speciality"
+                name="speciality"
+                className="w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={country}
+                onChange={(event) => countryChangeHandler(event.target.value)}
+              >
+                <option selected disabled value="" className="text-secondary">
+                  Previous:{" "}
+                  {freeLancer.country && freeLancer.country.countryName}
+                </option>
+                {countries.map((country) => (
+                  <option value={country._id} key={country._id}>
+                    {country.countryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="col-span-1">
+            <h3 className="text-lg font-medium text-gray-900">Currency:</h3>
+            <p
+              className={
+                !editFull ? "text-lg font-medium text-gray-700" : "hidden"
+              }
+            >
+              {freeLancer.currency && freeLancer.currency.currencyname}
+            </p>
+            <div className={editFull ? "inline py-2" : "hidden"}>
+              <select
+                id="Currency"
+                name="Currency"
+                className="w-full rounded-md border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={currency}
+                onChange={(event) => setCurreny(event.target.value)}
+              >
+                <option selected disabled value="" className="text-secondary">
+                  Previous:{" "}
+                  {freeLancer.currency && freeLancer.currency.currencyname}
+                </option>
+                {currencies.map((currency) => (
+                  <option value={currency._id} key={currency._id}>
+                    {currency.currencyname}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="col-span-2 flex items-center justify-center space-x-2">
+            {!editFull && (
               <button
-                className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold"
-                onClick={() => {
-                  setEditFull(!editFull);
-                }}
+                className="bg-cyan-600 rounded-sm transition-all hover:bg-cyan-400 text-white px-12 py-1"
+                onClick={() => setEditFull(!editFull)}
               >
-                <ImCancelCircle className="fs-3" />
+                Edit
               </button>
-            </>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      <div className="row analysis adduser-form p-1 py-3 m-1 justify-content-center">
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Tasks Count{" "}
-          </h6>
-          <div className="bg-warning col-4 icon p-3">
-            <FaTasks className="fs-3" />
+            )}
+            {editFull && (
+              <>
+                <button
+                  disabled={
+                    !fullNameState.isvalid ||
+                    !numberState.isvalid ||
+                    !emailState.isvalid ||
+                    !country ||
+                    !currency ||
+                    !userSpeciality
+                  }
+                  className="bg-green-500 rounded-sm transition-all hover:bg-green-400 text-white px-3 py-1"
+                  onClick={editFreeLancerHandler}
+                >
+                  Save
+                </button>
+                <button
+                  className="bg-red-500 rounded-sm transition-all hover:bg-red-400 text-white px-3 py-1"
+                  onClick={() => setEditFull(!editFull)}
+                >
+                  Cancel
+                </button>
+              </>
+            )}
           </div>
-          <h4 className="text-center col-4 fw-bold">{freeLancer.tasksCount}</h4>
         </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            Completed Count{" "}
-          </h6>
-          <div className="bg-info col-4 icon p-3">
-            <AiOutlineFileDone className="fs-3" />
-          </div>
-          <h4 className="text-center col-4 fw-bold">
-            {freeLancer.completedCount}
-          </h4>
-        </div>
-        <div className="bg-white adduser-form col-11 col-sm-5 col-lg-3 col-xl-2 p-2 row m-2">
-          <h6 className="text-secondary fw-bold col-8 pt-3 text-start">
-            FreeLancer Cost{" "}
-          </h6>
-          <div className="bg-success col-4 icon p-3">
-            <FaCoins className="fs-3 " />
-          </div>
-          <h4 className="text-center col-4 fw-bold">{freeLancer.totalGain}</h4>
-        </div>
-      </div>
-
-      {/* /////////////////////////////////////////////////// */}
-
-      <div className="row p-0 m-0 justify-content-center adduser-form">
-        <div className="col-12 col-md-9 text-secondary row p-2">
-          <h3
-            htmlFor="Speciality"
-            className="my-2 col-12 text-center text-dark fw-bold"
-          >
-            Filter:
-          </h3>
-          <label
-            htmlFor="Speciality"
-            className="mt-2 col-4 col-sm-2 text-start"
-          >
-            {" "}
-            <FiFilter className="" /> From:
-          </label>
-          <input
-            type="date"
-            className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => {
-              setStart(e.target.value);
-              setDateFilterData(true);
-              setwithoutFilterData(false);
-            }}
-          />
-          <label
-            htmlFor="Speciality"
-            className="mt-2 col-4 col-sm-2 text-start"
-          >
-            {" "}
-            <FiFilter className="" />
-            To:
-          </label>
-          <input
-            type="date"
-            className="search col-8 col-sm-4  p-2 mt-1"
-            onChange={(e) => {
-              setEnd(e.target.value);
-              setDateFilterData(true);
-              setwithoutFilterData(false);
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="row analysis-tasks adduser-form p-1 py-3 m-1 justify-content-center">
-        {withoutFilterData ? (
-          freeLancerTasks && !freeLancerTasks.length == 0 ? (
-            freeLancerTasks.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start"
-              >
-                <div className="col-12 fw-bold row text-center">
-                  <span
-                    className={
-                      task.taskStatus.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
-                  >
-                    {task.taskStatus.statusname}
-                  </span>
-                </div>
-
-                <div className="col-12 row text-center justify-content-end my-2">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
-                      {task.serialNumber}
-                    </span>
-                  </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
-                    onClick={() => {
-                      window.location.href = `/task/${task._id}`;
-                    }}
-                  >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
-                </div>
-
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
-                {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
-                  </p>
-                )}
+        <div className="w-1/2">
+          <div className="grid grid-cols-2 gap-2">
+            {/* Tasks Count */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <FaTasks className="bg-blue-100 text-blue-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Tasks Count</h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.tasksCount}
+                </h4>
               </div>
-            ))
+            </div>
+
+            {/* Completed Count */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <AiOutlineFileDone className="bg-orange-100 text-orange-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  Completed Count
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.completedCount}
+                </h4>
+              </div>
+            </div>
+
+            {/* FreeLancer Cost */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <FaCoins className="bg-red-100 text-red-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">
+                  FreeLancer Cost
+                </h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.totalGain}
+                </h4>
+              </div>
+            </div>
+
+            {/* Total Profit */}
+            <div className="bg-white rounded drop-shadow flex items-center space-x-2 px-4 py-2.5">
+              <GiProfit className="bg-green-100 text-green-500 w-10 h-10 p-2 rounded" />
+              <div>
+                <h6 className="m-0 p-0 text-sm font-semibold">Total Profit</h6>
+                <h4 className="font-light ml-1 my-0 p-0">
+                  {freeLancer.totalProfit}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="py-3 drop-shadow">
+        {withoutFilterData &&
+          (withoutFilterData && freeLancerTasks?.length > 0 ? (
+            <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+              <thead>
+                <tr className="drop-shadow bg-white text-cyan-600">
+                  <th className="px-4 py-3 font-medium text-sm">ID</th>
+                  <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                  <th className="px-4 py-3 font-medium text-sm">Client</th>
+                  <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                  <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                  <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                  <th className="px-4 py-3 font-medium text-sm">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {freeLancerTasks.map((task, index) => (
+                  <tr
+                    key={task._id}
+                    className={`bg-white ${
+                      index !== 0 && "border-t-4 border-[#F4F7FC]"
+                    }`}
+                  >
+                    <td
+                      className="cursor-pointer hover:underline px-4 py-3"
+                      onClick={() => {
+                        navigate(`/task/${task._id}`);
+                      }}
+                    >
+                      {task.serialNumber}
+                    </td>
+                    <td className="px-4 py-3">{task.title}</td>
+                    <td className="px-4 py-3">{task.client.clientname}</td>
+                    <td className="px-4 py-3">
+                      {task.freelancer ? task.freelancer.freelancername : "-"}
+                    </td>
+                    <td className="px-4 py-3">
+                      {task.profit_amount || 0}{" "}
+                      {task.task_currency && task.task_currency.currencyname}
+                    </td>
+                    <td className="px-4 py-3">
+                      {new Date(task.deadline).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div
+                        className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                          task.taskStatus.statusname
+                        )} ${getStatusClass(task.taskStatus.statusname)}`}
+                      >
+                        {task.taskStatus.statusname}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <div className="row col-12  p-2 text-center">
               <h3 className=" text-danger edit-form-lable">
                 This User Didn't Do Any Tasks Yet
               </h3>
             </div>
-          )
-        ) : (
-          ""
-        )}
-        {dateFilterData ? (
-          DateFilter && !DateFilter.length == 0 ? (
-            DateFilter.map((task) => (
-              <div
-                key={task._id}
-                className="task-card bg-white p-2 py-3 row users-data col-11 my-1 text-start"
-              >
-                <div className="col-12 fw-bold row text-center">
-                  <span
-                    className={
-                      task.taskStatus.statusname == "pending"
-                        ? "bg-warning p-3 status col-12 "
-                        : task.taskStatus.statusname == "waiting offer"
-                        ? "waiting-offer   p-3 status col-12 "
-                        : task.taskStatus.statusname == "approved"
-                        ? "bg-info   p-3 status col-12 "
-                        : task.taskStatus.statusname == "working on"
-                        ? "bg-primary   p-3 status col-12 "
-                        : task.taskStatus.statusname == "done"
-                        ? "bg-success  p-3 status col-12 "
-                        : task.taskStatus.statusname == "delivered"
-                        ? "bg-secondary  p-3 status col-12"
-                        : task.taskStatus.statusname == "rejected"
-                        ? "bg-danger   p-3 status col-12 "
-                        : task.taskStatus.statusname == "not available"
-                        ? "bg-dark   p-3 status col-12 "
-                        : task.taskStatus.statusname == "on going"
-                        ? "on-going  p-3 status col-12 "
-                        : task.taskStatus.statusname == "offer submitted"
-                        ? " offer-submitted   p-3 status col-12 "
-                        : task.taskStatus.statusname == "edit"
-                        ? "edit   p-3 status col-12 "
-                        : task.taskStatus.statusname == "cancel"
-                        ? "cancel   p-3 status col-12 "
-                        : "anystatus  p-3 status col-12 "
-                    }
+          ))}
+        {dateFilterData &&
+          (DateFilter?.length > 0 ? (
+            <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+              <thead>
+                <tr className="drop-shadow bg-white text-cyan-600">
+                  <th className="px-4 py-3 font-medium text-sm">ID</th>
+                  <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+                  <th className="px-4 py-3 font-medium text-sm">Client</th>
+                  <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+                  <th className="px-4 py-3 font-medium text-sm">Profit</th>
+                  <th className="px-4 py-3 font-medium text-sm">Deadline</th>
+                  <th className="px-4 py-3 font-medium text-sm">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {DateFilter.map((task, index) => (
+                  <tr
+                    key={task._id}
+                    className={`bg-white ${
+                      index !== 0 && "border-t-4 border-[#F4F7FC]"
+                    }`}
                   >
-                    {task.taskStatus.statusname}
-                  </span>
-                </div>
-
-                <div className="col-12 row text-center justify-content-end my-2">
-                  <div className="fw-bold col-5 col-sm-7 col-md-8 col-lg-10 text-center row p-0 m-0">
-                    <span className="col-11 col-sm-7 col-md-4 col-lg-2 serial-number p-3">
+                    <td
+                      className="cursor-pointer hover:underline px-4 py-3"
+                      onClick={() => {
+                        navigate(`/task/${task._id}`);
+                      }}
+                    >
                       {task.serialNumber}
-                    </span>
-                  </div>
-                  <button
-                    className="details-btn p-3 fw-bold col-7 col-sm-5 col-md-4 col-lg-2"
-                    onClick={() => {
-                      window.location.href = `/task/${task._id}`;
-                    }}
-                  >
-                    <BsFillFolderSymlinkFill className="fs-4" /> Details
-                  </button>
-                </div>
-
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Title :</span> {task.title}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Speciality :</span>{" "}
-                  {task.speciality.sub_speciality}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Client :</span>{" "}
-                  {task.client.clientname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Created By :</span>{" "}
-                  {task.created_by && task.created_by.fullname}
-                </p>
-                <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                  {" "}
-                  <span className="edit-form-lable">Deadline :</span>{" "}
-                  {task.deadline.split("T")[0]}
-                </p>
-                {task.freelancer && (
-                  <p className="col-12 col-sm-6 edit-form-p fw-bold">
-                    {" "}
-                    <span className="edit-form-lable">Freelancer :</span>{" "}
-                    {task.freelancer.freelancername}
-                  </p>
-                )}
-              </div>
-            ))
+                    </td>
+                    <td className="px-4 py-3">{task.title}</td>
+                    <td className="px-4 py-3">{task.client.clientname}</td>
+                    <td className="px-4 py-3">
+                      {task.freelancer ? task.freelancer.freelancername : "-"}
+                    </td>
+                    <td className="px-4 py-3">
+                      {task.profit_amount || 0}{" "}
+                      {task.task_currency && task.task_currency.currencyname}
+                    </td>
+                    <td className="px-4 py-3">
+                      {new Date(task.deadline).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div
+                        className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
+                          task.taskStatus.statusname
+                        )} ${getStatusClass(task.taskStatus.statusname)}`}
+                      >
+                        {task.taskStatus.statusname}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <div className="row col-12  p-2 text-center">
               <h3 className=" text-danger edit-form-lable">
                 This User Didn't Do Any Tasks Yet
               </h3>
             </div>
-          )
-        ) : (
-          ""
-        )}
+          ))}
       </div>
     </div>
   );
