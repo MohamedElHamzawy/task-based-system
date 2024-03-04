@@ -9,6 +9,7 @@ import GetCookie from "../../../../hooks/getCookie";
 import { useNavigate } from "react-router";
 import ReactDatePicker from "react-datepicker";
 import DateFilter from "../../../DateFilter";
+import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
 //search filter
 const getSearchFilter = (searchName, tasks) => {
@@ -95,22 +96,28 @@ const Tasks = () => {
           });
       });
       timerId = setTimeout(async () => {
-        await axios
-          .get(`${process.env.REACT_APP_BACKEND_URL}:5000/api/task/`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((res) => {
-            setTasks(res.data.tasks);
+        try {
+          await axios
+            .get(`${process.env.REACT_APP_BACKEND_URL}:5000/api/task/`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((res) => {
+              setTasks(res.data.tasks);
 
-            setTasksCount(res.data.tasksCount);
-            setTotalCost(res.data.totalCost);
-            setTotalGain(res.data.totalGain);
-            setTotalProfit(res.data.totalProfit);
-            setCompletedCount(res.data.completedCount);
-            setTotalProfitPercentage(res.data.totalProfitPercentage);
-          });
-        setIsLoading(false);
-        setLoading(false);
+              setTasksCount(res.data.tasksCount);
+              setTotalCost(res.data.totalCost);
+              setTotalGain(res.data.totalGain);
+              setTotalProfit(res.data.totalProfit);
+              setCompletedCount(res.data.completedCount);
+              setTotalProfitPercentage(res.data.totalProfitPercentage);
+            });
+          setIsLoading(false);
+          setLoading(false);
+        } catch (error) {
+          setError(error.response.data.err);
+          setIsLoading(false);
+          setLoading(false);
+        }
       });
     }
     return () => clearTimeout(timerId);
@@ -269,7 +276,6 @@ const Tasks = () => {
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
-      console.log(response.data.tasks);
       setTasks(response.data.tasks);
       setLoading(false);
       setIsLoading(false);
@@ -301,7 +307,6 @@ const Tasks = () => {
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
-      console.log(response.data.tasks);
       setTasks(response.data.tasks);
       setLoading(false);
       setIsLoading(false);
@@ -311,10 +316,15 @@ const Tasks = () => {
     }
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="min-h-[calc(100vh-100px)] ml-44 py-4 flex flex-col space-y-2">
+    <div className="min-h-[calc(100vh-65px)] ml-44 py-4 flex flex-col space-y-2">
+      <ErrorModal error={error} onClear={errorHandler} />
       <Filter
         filterOpen={filterOpen}
         setFilterOpen={setFilterOpen}
@@ -411,7 +421,7 @@ const Tasks = () => {
           </option>
           {clients.map((client) => (
             <option value={client._id} key={client._id}>
-              {client.clientname}
+              {client?.clientname}
             </option>
           ))}
         </select>
@@ -608,7 +618,7 @@ const Tasks = () => {
 
       {searchFilterData &&
         (!searchFilter.length == 0 ? (
-          <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+          <table className="table-auto w-full rounded-lg overflow-hidden text-center drop-shadow">
             <thead>
               <tr className="drop-shadow bg-white text-cyan-600">
                 <th className="px-4 py-3 font-medium text-sm">ID</th>
@@ -637,7 +647,7 @@ const Tasks = () => {
                     {task.serialNumber}
                   </td>
                   <td className="px-4 py-3">{task.title}</td>
-                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">{task.client?.clientname}</td>
                   <td className="px-4 py-3">
                     {task.freelancer ? task.freelancer.freelancername : "-"}
                   </td>
@@ -669,7 +679,7 @@ const Tasks = () => {
 
       {allFilterData &&
         (!filterData.length == 0 ? (
-          <table className="table-auto w-full rounded-lg overflow-hidden text-center">
+          <table className="table-auto w-full rounded-lg overflow-hidden text-center drop-shadow">
             <thead>
               <tr className="drop-shadow bg-white text-cyan-600">
                 <th className="px-4 py-3 font-medium text-sm">ID</th>
@@ -698,7 +708,7 @@ const Tasks = () => {
                     {task.serialNumber}
                   </td>
                   <td className="px-4 py-3">{task.title}</td>
-                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">{task.client?.clientname}</td>
                   <td className="px-4 py-3">
                     {task.freelancer ? task.freelancer.freelancername : "-"}
                   </td>
