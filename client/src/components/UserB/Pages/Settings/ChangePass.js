@@ -2,8 +2,8 @@ import React, { useReducer, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
-import "./Settings.css";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
+import { useNavigate } from "react-router";
 
 //password validation
 const passwordReducer = (state, action) => {
@@ -82,52 +82,73 @@ const ChangePass = () => {
     window.location.reload(true);
   };
 
+  const navigate = useNavigate();
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="min-h-[calc(100vh-68px)] container mx-auto p-4 flex flex-col items-center">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-12 col-sm-10 col-md-6 ">
-          <h1 className="logo text-white bg-danger p-2">Specialist Service</h1>
-        </div>
-        <h1 className="col-12 text-center fw-bold">Change Password</h1>
-      </div>
-
-      <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            Password :
-          </h3>
-
-          <div className="d-inline col-12 col-md-7 ">
-            <input
-              type="password"
-              placeholder="Enter New Password"
-              value={passwordState.value}
-              onChange={passwordChangeHandler}
-              onBlur={passwordTouchHandler}
-              isvalid={passwordState.isvalid.toString()}
-              className={`col-12 col-md-10  search p-2 ${
-                !passwordState.isvalid &&
-                passwordState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
-          </div>
-        </div>
-
-        <div className="col-12  p-3">
+      <div className="relative w-full flex items-center justify-center">
+        <div className="absolute top-0 left-0">
           <button
-            disabled={!passwordState.isvalid}
-            className="settings-edit-user-btn p-3 col-8 col-lg-2 fw-bold"
-            onClick={editUserHandler}
+            type="button"
+            className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 text-gray-600 focus:outline-none"
+            onClick={() => navigate("/settings")}
           >
-            Change
+            <svg
+              className="h-6 w-6 fill-current"
+              viewBox="0 0 256 512"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M169.5 445.1l-22.2 22.2c-4.7 4.7-12.3 4.7-17 0l-176-176c-4.7-4.7-4.7-12.3 
+                0-17l176-176c4.7-4.7 12.3-4.7 
+                17 0l22.2 22.2c4.7 4.7 4.7 12.3 
+                0 17L59.7 256l109.8 109.8c4.7 4.7 
+                4.7 12.3 0 17z"
+              />
+            </svg>
           </button>
         </div>
+        <h2 className="text-2xl font-semibold text-gray-500">
+          Change Password
+        </h2>
+      </div>
+
+      <div className="rounded-lg p-4 md:p-8">
+        <div className="mb-4">
+          <label
+            htmlFor="password"
+            className="block text-gray-400 font-medium mb-2"
+          >
+            Password:
+          </label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter New Password"
+            value={passwordState.value}
+            onChange={passwordChangeHandler}
+            onBlur={passwordTouchHandler}
+            className={`border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              !passwordState.isvalid &&
+              passwordState.isTouched &&
+              "border-red-500"
+            }`}
+          />
+        </div>
+
+        <button
+          type="button"
+          disabled={!passwordState.isvalid}
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md disabled:bg-gray-400 transition-all active:scale-95"
+          onClick={editUserHandler}
+        >
+          Change
+        </button>
       </div>
     </div>
   );
