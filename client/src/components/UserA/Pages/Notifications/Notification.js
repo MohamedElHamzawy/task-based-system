@@ -1,5 +1,5 @@
 import React from "react";
-import { FaBell } from "react-icons/fa"; // Import the desired icon
+import { FaBell } from "react-icons/fa";
 
 const NotificationCard = ({ content, createdAt }) => {
   return (
