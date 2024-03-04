@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import "./Notifications.css";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import GetCookie from "../../../../hooks/getCookie";
 import { MdOutlineNotificationsActive } from "react-icons/md";
+import NotificationCard from "./Notification";
 
 const Notifications = () => {
   const token = GetCookie("UserB");
@@ -43,34 +43,29 @@ const Notifications = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row justify-content-center w-100 p-0 m-0">
+    <div className="justify-center min-h-[calc(100vh-100px)]">
       <ErrorModal error={error} onClear={errorHandler} />
-      <div className="row notes-component col-12 col-md-10 row bg-white adduser-form p-1 m-1 justify-content-center">
-        <div>
-          <h1 className="edit-form-lable p-4 fw-bold text-center ">
-            <MdOutlineNotificationsActive className="" />
-            Notifications
-          </h1>
-          <div className="row p-0 m-0">
-            <div className="p-0 m-0 row justify-content-center">
-              {!notifications.length == 0 ? (
-                notifications.map((note) => (
-                  <div
-                    className="col-11 col-md-5 col-lg-3 note m-2 fw-bold p-3 text-start"
-                    key={note._id}
-                  >
-                    <p className="">{note.content.split("GMT")[0]}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="col-12 note my-2 fw-bold p-3 ">
-                  <p className="">There Is No Notes </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+      <div className="flex justify-center items-center my-8">
+        <MdOutlineNotificationsActive className="text-3xl mr-2" />
+        <h1 className="text-2xl m-0 p-0">Notifications</h1>
+        {/* <div className="">FILTERS</div> */}
       </div>
+
+      {notifications.length === 0 ? (
+        <div className="flex justify-center items-center">
+          <h1 className="text-2xl">No Notifications</h1>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {notifications.map((notification) => (
+            <NotificationCard
+              key={notification._id}
+              content={notification.content}
+              createdAt={notification.createdAt}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
