@@ -7,7 +7,6 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
-import { ImCancelCircle } from "react-icons/im";
 
 //specialityName validation
 const specialityNameReducer = (state, action) => {
