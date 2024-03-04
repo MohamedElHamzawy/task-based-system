@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
-import "./Settings.css";
 import { BiSolidEditAlt } from "react-icons/bi";
-import { TiArrowBack } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 const Settings = () => {
   const [editFull, setEditFull] = useState(false);
@@ -27,6 +27,7 @@ const Settings = () => {
   const [specialities, setSpecialities] = useState([]);
 
   const userID = JSON.parse(localStorage.getItem("UserBData"));
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     let timerId;
@@ -105,238 +106,175 @@ const Settings = () => {
     window.location.reload(true);
   };
 
+  const navigate = useNavigate();
+
+  const editAll = () => {
+    setEditFull(true);
+    setEditUser(true);
+    setEditNumber(true);
+    setEditCountry(true);
+    setEditPassword(true);
+  };
+
+  const cancelEdit = () => {
+    setEditFull(false);
+    setEditUser(false);
+    setEditNumber(false);
+    setEditCountry(false);
+    setEditPassword(false);
+  };
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="container justify-center min-h-[calc(100vh-100px)]">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="col-12 row text-center system-head p-2">
-        <div className="col-12 col-sm-10 col-md-6 ">
-          <h1 className="logo text-white bg-danger p-2">Specialist Service</h1>
+      <div className="p-4">
+        <div className="flex justify-between items-center my-8">
+          <h1 className="text-2xl font-semibold">User Settings</h1>
         </div>
-        <h1 className="col-12 text-center fw-bold">User Settings</h1>
+
+        <h2 className="text-3xl font-medium">Profile</h2>
+
+        <div className="flex items-center justify-between">
+          <div className="ml-2">
+            <h2 className="text-xl font-semibold">
+              Change your profile picture
+            </h2>
+            <p className="text-gray-400 font-medium m-0 p-0">
+              Signed in as {loggedUser.fullname}
+            </p>
+          </div>
+
+          <div className="bg-green-200 w-24 h-24 rounded-full relative">
+            <FaPlus className="text-2xl rounded-full p-1 absolute bottom-1 right-1.5 cursor-pointer transition-all hover:bg-black hover:text-white" />
+          </div>
+        </div>
       </div>
 
-      <div className="row bg-dark m-1 adduser-form p-1 py-5 justify-content-center">
-        <div className="col-12 col-xl-6 row ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            Full Name :
-          </h3>
-          <p
-            className={
-              !editFull
-                ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {user.fullname}{" "}
+      <div className="bg-gray-400 h-0.5 w-full rounded-full"></div>
+
+      <h2 className="p-4 text-3xl font-medium">You Account</h2>
+
+      <div className="pl-8 pb-4 justify-center grid grid-cols-2 gap-y-4">
+        <div>
+          <h5 className="text-lg">Full Name</h5>
+          <p className={!editFull ? "text-sm ml-2" : "hidden"}>
+            {user.fullname}
           </p>
-          <div
-            className={editFull ? "d-inline col-10 col-md-4 py-3 " : "d-none"}
-          >
-            <input
-              type="text"
-              onChange={(e) => {
-                setFullName(e.target.value);
-              }}
-              className="search w-100 p-2"
-            />
-          </div>
-          <div className="col-1 ">
-            <button
-              onClick={() => {
-                setEditFull(!editFull);
-              }}
-              className="settings-edit-btn fs-2"
-            >
-              <BiSolidEditAlt />
-            </button>
-          </div>
+
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => {
+              setFullName(e.target.value);
+            }}
+            className={editFull ? "w-3/5 text-sm ml-2 rounded" : "hidden"}
+          />
         </div>
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            User Name :
-          </h3>
-          <p
-            className={
-              !editUser
-                ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {user.username}{" "}
+        <div>
+          <h5 className="text-lg">Username</h5>
+          <p className={!editFull ? "text-sm ml-2" : "hidden"}>
+            {user.username}
           </p>
-          <div
-            className={editUser ? "d-inline col-10 col-md-4 py-3 " : "d-none"}
-          >
-            <input
-              type="text"
-              onChange={(e) => {
-                setUserName(e.target.value);
-              }}
-              className="search w-100 p-2"
-            />
-          </div>
-          <div className="col-1 ">
-            <button
-              onClick={() => {
-                setEditUser(!editUser);
-              }}
-              className="settings-edit-btn fs-2"
-            >
-              <BiSolidEditAlt />
-            </button>
-          </div>
+          <input
+            type="text"
+            value={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+            className={editFull ? "w-3/5 text-sm ml-2 rounded" : "hidden"}
+          />
         </div>
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            Phone :
-          </h3>
-          <p
-            className={
-              !editNumber
-                ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {user.phone}{" "}
-          </p>
-          <div
-            className={editNumber ? "d-inline col-10 col-md-4 py-3 " : "d-none"}
-          >
-            <input
-              type="text"
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
-              className="search w-100 p-2"
-            />
-          </div>
-          <div className="col-1 ">
-            <button
-              onClick={() => {
-                setEditNumber(!editNumber);
-              }}
-              className="settings-edit-btn fs-2"
-            >
-              <BiSolidEditAlt />
-            </button>
-          </div>
+        {/* Phone */}
+        <div>
+          <h5 className="text-lg">Phone</h5>
+          <p className={!editFull ? "text-sm ml-2" : "hidden"}>{user.phone}</p>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => {
+              setPhone(e.target.value);
+            }}
+            className={editFull ? "w-3/5 text-sm ml-2 rounded" : "hidden"}
+          />
         </div>
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            Country :
-          </h3>
-          <p
-            className={
-              !editCountry
-                ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {user.country && user.country.countryName}{" "}
+        {/* Country */}
+        <div>
+          <h5 className="text-lg">Country</h5>
+          <p className={!editFull ? "text-sm ml-2" : "hidden"}>
+            {user.country && user.country.countryName}
           </p>
-          <div
-            className={
-              editCountry ? "d-inline col-10 col-md-4 py-3 " : "d-none"
-            }
+          <select
+            id="country"
+            name="country"
+            className={editFull ? "w-3/5 text-sm ml-2 rounded" : "hidden"}
+            value={country}
+            onChange={(event) => countryChangeHandler(event.target.value)}
           >
-            <select
-              id="country"
-              name="country"
-              className="p-2 search w-100"
-              value={country}
-              onChange={(event) => countryChangeHandler(event.target.value)}
-            >
-              <option value="" className="text-secondary">
-                Countries
+            <option value="" className="text-secondary">
+              Countries
+            </option>
+            {countries.map((country) => (
+              <option value={country._id} key={country._id}>
+                {country.countryName}
               </option>
-              {countries.map((country) => (
-                <option value={country._id} key={country._id}>
-                  {country.countryName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-1 ">
+            ))}
+          </select>
+        </div>
+
+        {/* User Role */}
+        <div>
+          <h5 className="text-lg">User Role</h5>
+          <p className={"text-sm ml-2"}>{user.user_role}</p>
+        </div>
+
+        {/* Password */}
+        <div>
+          <h5 className="text-lg">Password</h5>
+          <div className="text-sm ml-2">
+            *********
             <button
-              onClick={() => {
-                setEditCountry(!editCountry);
-              }}
-              className="settings-edit-btn fs-2"
+              type="button"
+              className="0 px-3 py-1 underline text-blue-500 transition-all hover:text-blue-400"
+              onClick={() => navigate("/changepass")}
             >
-              <BiSolidEditAlt />
+              Change Pass
             </button>
           </div>
         </div>
 
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            User Role :
-          </h3>
-          <p className="col-10 col-md-4 py-3 text-warning fw-bold">
-            {" "}
-            {user.user_role}{" "}
-          </p>
-        </div>
-        {specialities.map((spy) =>
-          spy._id == speciality._id ? (
-            <div className="col-12 col-xl-6 row p-2 " key={spy._id}>
-              <h3 className="col-8 col-md-5  settings-form-lable text-start">
-                {" "}
-                Speciality :
-              </h3>
-              <p className="col-10 col-md-4 py-3 text-warning fw-bold">
-                {" "}
-                {spy.sub_speciality}{" "}
-              </p>
-            </div>
+        <div className="col-span-2 flex items-center justify-center space-x-2">
+          {editFull ? (
+            <button
+              type="button"
+              className="bg-green-500 rounded-sm transition-all hover:bg-green-400 text-white px-3 py-1"
+              onClick={editUserHandler}
+            >
+              Save
+            </button>
           ) : (
-            ""
-          )
-        )}
-
-        <div className="col-12 col-xl-6 row p-2 ">
-          <h3 className="col-8 col-md-5  settings-form-lable text-start">
-            {" "}
-            PassWord :
-          </h3>
-          <p
-            className={
-              !editPassword
-                ? "d-inline col-10 col-md-4 py-3 text-warning fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            *********
-          </p>
-          <Link to="/changepass" className="col-1 settings-edit-btn fs-2">
-            <BiSolidEditAlt />
-          </Link>
-        </div>
-
-        <div className="col-12  p-3">
-          <button
-            disabled={!editFull && !editUser && !editNumber && !editCountry}
-            className="settings-edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-            onClick={editUserHandler}
-          >
-            Edit
-          </button>
+            <button
+              type="button"
+              className="bg-cyan-600 rounded-sm transition-all hover:bg-cyan-400 text-white px-12 py-1"
+              onClick={editAll}
+            >
+              Edit
+            </button>
+          )}
+          {editFull && (
+            <button
+              type="button"
+              className="bg-red-500 rounded-sm transition-all hover:bg-red-400 text-white px-3 py-1"
+              onClick={cancelEdit}
+            >
+              Cancel
+            </button>
+          )}
         </div>
       </div>
     </div>
