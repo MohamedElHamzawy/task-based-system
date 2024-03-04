@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import "./Tasks.css";
-import { FaPlus, FaTasks } from "react-icons/fa";
-import { FiFilter } from "react-icons/fi";
-
-import { BsFillFolderSymlinkFill } from "react-icons/bs";
-import { AiOutlineClear } from "react-icons/ai";
+import { FaPlus } from "react-icons/fa";
 
 import GetCookie from "../../../../hooks/getCookie";
 import DateFilter from "../../../DateFilter";
@@ -151,7 +147,7 @@ const Tasks = () => {
     try {
       setError(null);
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result`,
+        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result/customer`,
         {
           start: start,
           end: end,
@@ -181,68 +177,6 @@ const Tasks = () => {
     setStart("");
     setEnd("");
   };
-
-  function getRowClass(statusname) {
-    switch (statusname) {
-      case "pending":
-        return "bg-yellow-100";
-      case "waiting offer":
-        return "bg-blue-100";
-      case "approved":
-        return "bg-sky-100";
-      case "working on":
-        return "bg-purple-100";
-      case "done":
-        return "bg-green-100";
-      case "delivered":
-        return "bg-gray-100";
-      case "rejected":
-        return "bg-red-100";
-      case "not available":
-        return "bg-slate-100";
-      case "on going":
-        return "bg-teal-100";
-      case "offer submitted":
-        return "bg-orange-100";
-      case "edit":
-        return "bg-indigo-100";
-      case "cancel":
-        return "bg-pink-100";
-      default:
-        return "";
-    }
-  }
-
-  function getStatusClass(statusname) {
-    switch (statusname) {
-      case "pending":
-        return "text-yellow-400";
-      case "waiting offer":
-        return "text-blue-400";
-      case "approved":
-        return "text-sky-400";
-      case "working on":
-        return "text-purple-400";
-      case "done":
-        return "text-green-400";
-      case "delivered":
-        return "text-gray-400";
-      case "rejected":
-        return "text-red-400";
-      case "not available":
-        return "text-slate-400";
-      case "on going":
-        return "text-teal-400";
-      case "offer submitted":
-        return "text-orange-400";
-      case "edit":
-        return "text-indigo-400";
-      case "cancel":
-        return "text-pink-400";
-      default:
-        return "";
-    }
-  }
 
   const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
@@ -371,7 +305,7 @@ const Tasks = () => {
           </option>
           {clients.map((client) => (
             <option value={client._id} key={client._id}>
-              {client.clientname}
+              {client?.clientname}
             </option>
           ))}
         </select>
@@ -410,7 +344,7 @@ const Tasks = () => {
 
       <div className="flex items-center justify-between">
         <input
-          type="name"
+          type="text"
           className="w-1/3 p-2 border border-gray-400 rounded-md"
           placeholder="Search By Name or Serial Number"
           value={searchName}
@@ -466,7 +400,7 @@ const Tasks = () => {
                     {task.serialNumber}
                   </td>
                   <td className="px-4 py-3">{task.title}</td>
-                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">{task?.client?.clientname}</td>
                   <td className="px-4 py-3">
                     {task.freelancer ? task.freelancer.freelancername : "-"}
                   </td>
@@ -527,7 +461,7 @@ const Tasks = () => {
                     {task.serialNumber}
                   </td>
                   <td className="px-4 py-3">{task.title}</td>
-                  <td className="px-4 py-3">{task.client.clientname}</td>
+                  <td className="px-4 py-3">{task?.client?.clientname}</td>
                   <td className="px-4 py-3">
                     {task.freelancer ? task.freelancer.freelancername : "-"}
                   </td>
@@ -552,7 +486,7 @@ const Tasks = () => {
             </tbody>
           </table>
         ) : (
-          <div className="row  p-3 m-0 text-center">
+          <div className="row p-3 m-0 text-center">
             <h2>There Is No Tasks</h2>
           </div>
         ))}
