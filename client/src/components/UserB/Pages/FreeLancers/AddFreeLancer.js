@@ -8,6 +8,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { TiArrowBack } from "react-icons/ti";
+import { useNavigate } from "react-router";
 
 //fullName validation
 const fullNameReducer = (state, action) => {
@@ -72,6 +73,7 @@ const AddFreeLancer = () => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timerId;
@@ -227,36 +229,28 @@ const AddFreeLancer = () => {
     setError(null);
   };
   return (
-    <div className="row text-center p-3 w-100 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
 
-      <div className="row p-1">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/freelancers";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head py-4 fw-bold">
-          {" "}
+      <div className="relative flex flex-row justify-center w-full p-1 mb-4">
+        <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/freelancers")}
+        >
+          <TiArrowBack />
+        </button>
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Add New FreeLancer
         </h2>
       </div>
 
       <form
-        className="adduser-form bg-white p-3 row justify-content-center m-0"
+        className="grid grid-cols-2 gap-4 w-4/5 mx-auto"
         onSubmit={newFreeLancerSubmitHandler}
       >
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            {" "}
-            Name:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Name</label>
           <input
             type="text"
             placeholder="Full Name"
@@ -264,18 +258,16 @@ const AddFreeLancer = () => {
             onChange={fullNameChangeHandler}
             onBlur={fullNameTouchHandler}
             isvalid={fullNameState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
+            className={`w-full ml-2 rounded-sm lg:w-4/5 p-2 ${
               !fullNameState.isvalid &&
               fullNameState.isTouched &&
-              "form-control-invalid"
+              "border-red-500"
             }`}
           />
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Phone :
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Phone</label>
           <input
             type="number"
             placeholder="Phone Number"
@@ -283,18 +275,14 @@ const AddFreeLancer = () => {
             onChange={numberChangeHandler}
             onBlur={numbertouchHandler}
             isvalid={numberState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !numberState.isvalid &&
-              numberState.isTouched &&
-              "form-control-invalid"
+            className={`w-full ml-2 rounded-sm lg:w-4/5 p-2 ${
+              !numberState.isvalid && numberState.isTouched && "border-red-500"
             }`}
           />
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Email:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Email</label>
           <input
             type="email"
             placeholder="Email"
@@ -302,26 +290,20 @@ const AddFreeLancer = () => {
             onChange={emailChangeHandler}
             onBlur={emailTouchHandler}
             isvalid={emailState.isvalid.toString()}
-            className={`col-10 col-lg-7 search p-2 ${
-              !emailState.isvalid &&
-              emailState.isTouched &&
-              "form-control-invalid"
-            }`}
+            className={`w-full ml-2 rounded-sm lg:w-4/5 p-2 `}
           />
         </div>
 
-        <div className="col-12 col-lg-5 m-1 py-2 p-0">
-          <label className="col-10 col-lg-5 fw-bold add-user-p py-2">
-            Country:
-          </label>
+        <div className="flex flex-col w-full">
+          <label className="w-full lg:w-1/5 font-bold">Country</label>
           <select
             id="country"
             name="country"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={country}
             onChange={(event) => countryChangeHandler(event.target.value)}
           >
-            <option value="" className="text-secondary">
+            <option value="" className="text-gray-400">
               Countries
             </option>
             {countries.map((country) => (
@@ -332,23 +314,19 @@ const AddFreeLancer = () => {
           </select>
         </div>
 
-        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
-          <label
-            htmlFor="currency"
-            className="col-10 col-lg-5 fw-bold add-user-p py-2"
-          >
-            {" "}
-            Currency:
+        <div className="flex flex-col w-full">
+          <label htmlFor="currency" className="w-full lg:w-1/5 font-bold">
+            Currency
           </label>
 
           <select
             id="currencies"
             name="currencies"
-            className="p-2 px-4 search col-10 col-lg-7"
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             value={currency}
             onChange={(event) => currencyChangeHandler(event.target.value)}
           >
-            <option value="" className="text-secondary">
+            <option value="" className="text-gray-400">
               currencies
             </option>
             {currencies.map((currency) => (
@@ -359,19 +337,15 @@ const AddFreeLancer = () => {
           </select>
         </div>
 
-        <div className="d-block col-12 col-lg-5 m-1 py-2 p-0">
-          <label
-            htmlFor="speciality"
-            className="col-10 col-lg-5 fw-bold add-user-p py-2"
-          >
-            {" "}
-            Speciality:
+        <div className="flex flex-col w-full">
+          <label htmlFor="speciality" className="w-full lg:w-1/5 font-bold">
+            Speciality
           </label>
           <select
-            className="px-4 p-2 search col-10 col-lg-7 "
+            className="w-full ml-2 rounded-sm lg:w-4/5 p-2"
             onChange={(event) => setSpeciality(event.target.value)}
           >
-            <option value="" className="text-secondary">
+            <option value="" className="text-gray-400">
               Specialities
             </option>
             {specialities.map((speciality) => (
@@ -382,17 +356,16 @@ const AddFreeLancer = () => {
           </select>
         </div>
 
-        <div className="col-8 m-3 mt-5 row justify-content-center">
+        <div className="col-span-2 w-full flex items-center justify-center">
           <button
             disabled={
               !fullNameState.isvalid ||
               !numberState.isvalid ||
-              !emailState.isvalid ||
               !country ||
               !speciality ||
               !currency
             }
-            className="add-user-btn p-3  fw-bold col-10 col-lg-5"
+            className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add
           </button>
