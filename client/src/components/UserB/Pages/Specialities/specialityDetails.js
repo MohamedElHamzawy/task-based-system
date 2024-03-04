@@ -4,10 +4,9 @@ import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
-import { ImCancelCircle } from "react-icons/im";
 
 //specialityName validation
 const specialityNameReducer = (state, action) => {
@@ -112,6 +111,7 @@ const SpecialityDetails = () => {
       type: "TOUCH",
     });
   };
+
   //////////////////////////////////////
   const editSpecialityHandler = async (event) => {
     event.preventDefault();
@@ -168,144 +168,119 @@ const SpecialityDetails = () => {
     window.location.reload(true);
   };
 
+  const navigate = useNavigate();
+
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="text-center row w-100 p-4 m-0">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
       <ErrorModal error={error} onClear={errorHandler} />
 
-      <div className="row mb-4">
-        <div className="col-3 text-center">
-          <button
-            className="back-btn p-2 px-3 fs-3 "
-            onClick={() => {
-              window.location.href = "/specialities";
-            }}
-          >
-            <TiArrowBack />{" "}
-          </button>
-        </div>
-        <h2 className="col-12 col-lg-7 text-center system-head p-2 pt-4 fw-bold">
-          {" "}
+      <div className="relative flex flex-row justify-center w-full p-1 mb-4">
+        <button
+          className="absolute top-0 left-0 p-2 text-3xl"
+          onClick={() => navigate("/specialities")}
+        >
+          <TiArrowBack />
+        </button>
+        <h2 className="text-center text-2xl font-bold lg:text-3xl">
           Speciality Details
         </h2>
       </div>
 
-      <div className="row bg-white adduser-form p-1 m-1 justify-content-center">
-        <div className="col-12 row p-3 justify-content-end ">
-          <div className="col-4">
-            <button
-              className="delete-btn px-4 p-1 fs-3"
-              onClick={deleteSpecialityHandler}
+      <div className="container mx-auto p-4 bg-white rounded-lg shadow-md">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">Speciality Details</h2>
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            onClick={deleteSpecialityHandler}
+          >
+            <RiDeleteBinFill className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="subSpeciality"
+              className="block text-gray-700 font-bold mb-2"
             >
-              <RiDeleteBinFill />
-            </button>
+              Sub-Speciality:
+            </label>
+            {!edit ? (
+              <p className="text-lg font-medium">{speciality.sub_speciality}</p>
+            ) : (
+              <input
+                type="text"
+                id="subSpeciality"
+                placeholder={speciality.sub_speciality}
+                value={specialityNameState.value}
+                onChange={specialityNameChangeHandler}
+                onBlur={specialityNameTouchHandler}
+                isvalid={specialityNameState.isvalid.toString()}
+                className={`rounded-md shadow-sm border border-gray-300 p-2 text-lg ${
+                  !specialityNameState.isvalid &&
+                  specialityNameState.isTouched &&
+                  "border-red-500"
+                }`}
+              />
+            )}
           </div>
-        </div>
-        {/* /////////////////////// */}
-        <div className="col-12 col-xl-6 row ">
-          <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3">
-            {" "}
-            Sub-Speciality:
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold "
-                : "d-none"
-            }
-          >
-            {" "}
-            {speciality.sub_speciality}{" "}
-          </p>
-          <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : "d-none"}>
-            <input
-              type="text"
-              placeholder={speciality.sub_speciality}
-              value={specialityNameState.value}
-              onChange={specialityNameChangeHandler}
-              onBlur={specialityNameTouchHandler}
-              isvalid={specialityNameState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !specialityNameState.isvalid &&
-                specialityNameState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
-          </div>
-        </div>
-        {/* /////////////////////// */}
 
-        <div className="col-12 col-xl-6 row ">
-          <h3 className="col-12 col-md-5  edit-form-lable text-start pt-3">
-            {" "}
-            Speciality :
-          </h3>
-          <p
-            className={
-              !edit
-                ? "d-inline col-10 col-md-4 pt-4 edit-form-p fw-bold"
-                : "d-none"
-            }
-          >
-            {" "}
-            {speciality.speciality}{" "}
-          </p>
-          <div className={edit ? "d-inline col-10 col-md-4 pt-3 " : "d-none"}>
-            <input
-              type="text"
-              placeholder={speciality.speciality}
-              value={specialitTypeState.value}
-              onChange={specialitTypeChangeHandler}
-              onBlur={specialitTypeTouchHandler}
-              isvalid={specialitTypeState.isvalid.toString()}
-              className={`search w-100 p-2 ${
-                !specialitTypeState.isvalid &&
-                specialitTypeState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
+          <div>
+            <label
+              htmlFor="speciality"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Speciality:
+            </label>
+            {!edit ? (
+              <p className="text-lg font-medium">{speciality.speciality}</p>
+            ) : (
+              <input
+                type="text"
+                id="speciality"
+                placeholder={speciality.speciality}
+                value={specialitTypeState.value}
+                onChange={specialitTypeChangeHandler}
+                onBlur={specialitTypeTouchHandler}
+                isvalid={specialitTypeState.isvalid.toString()}
+                className={`rounded-md shadow-sm border border-gray-300 p-2 text-lg ${
+                  !specialitTypeState.isvalid &&
+                  specialitTypeState.isTouched &&
+                  "border-red-500"
+                }`}
+              />
+            )}
           </div>
         </div>
 
-        {/* /////////////////////// */}
-
-        <div className="col-12  p-3">
+        <div className="flex justify-end mt-4 space-x-1">
           {!edit ? (
             <button
-              className="edit-user-btn p-3 col-10 col-lg-4 fw-bold"
-              // onClick={editUserHandler}
-              onClick={() => {
-                setEdit(!edit);
-              }}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setEdit(true)}
             >
               Edit
             </button>
           ) : (
-            ""
-          )}
-          {edit ? (
             <>
               <button
                 disabled={
                   !specialitTypeState.isvalid && !specialityNameState.isvalid
                 }
-                className="edit-user-btn p-3 col-8 col-lg-4 fw-bold"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={editSpecialityHandler}
               >
                 Submit
               </button>
               <button
-                className="bg-danger cancel-btn p-3 col-3 col-md-1 mx-2 fw-bold"
-                onClick={() => {
-                  setEdit(!edit);
-                }}
+                className="bg-gray-400 hover:bg-gray-600 text-gray-800 font-bold py-2 px-4 rounded"
+                onClick={() => setEdit(false)}
               >
-                <ImCancelCircle className="fs-3" />
+                Cancel
               </button>
             </>
-          ) : (
-            ""
           )}
         </div>
       </div>
