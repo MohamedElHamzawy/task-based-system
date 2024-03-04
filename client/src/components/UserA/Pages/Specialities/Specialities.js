@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
-import { BiSolidCategoryAlt } from "react-icons/bi";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
