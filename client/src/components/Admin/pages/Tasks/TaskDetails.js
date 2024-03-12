@@ -7,8 +7,9 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { TiArrowBack } from "react-icons/ti";
-import { FaEdit } from "react-icons/fa";
+import { FaBell, FaEdit } from "react-icons/fa";
 import { IoMdRemoveCircle } from "react-icons/io";
+import { MdCancel, MdEdit } from "react-icons/md";
 
 import GetCookie from "../../../../hooks/getCookie";
 import FreelancerOffer from "./FreelancerOffer";
@@ -286,10 +287,15 @@ const TaskDetails = () => {
     window.location.reload(true);
   };
 
-  return isLoading ? (
+  useEffect(() => {
+    if (!task) return;
+    console.log(task);
+  }, [task]);
+
+  return isLoading || !task || task.length === 0 ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
+    <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)] space-y-2">
       <ErrorModal error={error} onClear={errorHandler} />
 
       <div className="relative flex flex-row justify-center w-full p-1 mb-4">
@@ -299,13 +305,11 @@ const TaskDetails = () => {
         >
           <TiArrowBack />
         </button>
-        <h2 className="text-center text-2xl font-bold lg:text-3xl">
-          Task Details
-        </h2>
+        <h2 className=" text-2xl font-bold lg:text-3xl">Task Details</h2>
       </div>
 
-      <div className="w-full max-w-3xl mx-auto">
-        <div className="flex items-center justify-between bg-white rounded px-8 py-3 border-2">
+      <div className="w-full max-w-5xl 2xl:max-w-6xl mx-auto">
+        <div className="flex items-center justify-between bg-white rounded px-8 py-3">
           <div className="font-bold">{task.serialNumber}</div>
           <div
             className={`rounded-md px-4 py-2 text-xs font-bold ${getRowClass(
@@ -314,238 +318,295 @@ const TaskDetails = () => {
           >
             {status.statusname}
           </div>
-          <button onClick={deleteTaskHandler}>
-            <RiDeleteBinFill className="text-red-500 w-6 h-6" />
+          <div className="space-x-2">
+            {editTask ? (
+              <button onClick={() => setEditTask(false)}>
+                <MdCancel className="w-6 h-6" />
+              </button>
+            ) : (
+              <button onClick={() => setEditTask(true)}>
+                <MdEdit className="w-6 h-6" />
+              </button>
+            )}
+            <button onClick={deleteTaskHandler}>
+              <RiDeleteBinFill className="text-red-500 w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex w-full max-w-5xl 2xl:max-w-6xl mx-auto space-x-2">
+        <div className="w-2/3 bg-white rounded px-8 py-3 drop-shadow">
+          {!editTask ? (
+            <div className="grid grid-cols-3 gap-2">
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Title
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {task.title}
+                </p>
+              </div>
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Speciality
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {speciality && speciality.sub_speciality}
+                </p>
+              </div>
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Channel
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {task.channel}
+                </p>
+              </div>
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Country
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {task.country && task.country.countryName}
+                </p>
+              </div>
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Client
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  <Link
+                    className="text-dark fw-bold"
+                    to={`/client/${client._id}`}
+                  >
+                    {client.clientname}
+                  </Link>
+                </p>
+              </div>
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Client Offer
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  ({offer.customerOfferMax} - {offer.customerOfferMin})
+                </p>
+              </div>
+              {task.paid && (
+                <div className="">
+                  <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                    Client Price
+                  </h5>
+                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    {task.paid}
+                  </p>
+                </div>
+              )}
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Currency
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {currency.currencyname}
+                </p>
+              </div>
+              {task.freelancer && (
+                <>
+                  <div className="">
+                    <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                      Freelancer
+                    </h5>
+                    <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                      <Link
+                        className="text-dark fw-bold"
+                        to={`/freelancer/${task.freelancer._id}`}
+                      >
+                        {task.freelancer.freelancername}
+                      </Link>
+                    </p>
+                  </div>
+                  <div className="">
+                    <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                      Suggested offer
+                    </h5>
+                    <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                      ({Math.floor(offer.specialistOfferMax)} -{" "}
+                      {Math.floor(offer.specialistOfferMin)})
+                    </p>
+                  </div>
+                  <div className="">
+                    <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                      Freelancer Price
+                    </h5>
+                    <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                      {task.cost}
+                    </p>
+                  </div>
+                </>
+              )}
+              {task.profit_amount ? (
+                <div className="">
+                  <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                    Profit
+                  </h5>
+                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    {task.profit_amount}
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  UserName
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  <Link
+                    className="text-dark fw-bold"
+                    to={`/user/${user && user._id}`}
+                  >
+                    {user && user.fullname}
+                  </Link>
+                </p>
+              </div>
+              <div className="">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  UserRole
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {user && user.user_role}
+                </p>
+              </div>
+              {task.show_created && (
+                <div className="">
+                  <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                    SharedWith
+                  </h5>
+                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    {task.show_created.fullname}
+                  </p>
+                </div>
+              )}
+              {task.show_accepted && (
+                <div className="">
+                  <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                    AcceptedWith
+                  </h5>
+                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    {task.show_accepted.fullname}
+                  </p>
+                </div>
+              )}
+              <div className="col-span-3">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  DeadLine
+                </h5>
+                <div className="flex space-x-2 items-center justify-between">
+                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    <span className="text-danger">Date:</span>
+                    {task.deadline && task.deadline.split("T")[0]}
+                  </p>
+                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    <span className="text-danger">Time:</span>
+                    {task.deadline && task.deadline.split("T")[1].split(".")[0]}
+                  </p>
+                </div>
+              </div>
+              <div className="col-span-3">
+                <h5 className="m-0 p-0 font-semibold text-base text-gray-400">
+                  Description
+                </h5>
+                <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                  {task.description}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <EditTask id={id} token={token} task={task} />
+          )}
+        </div>
+        <div className="w-1/3 bg-white drop-shadow rounded p-2 overflow-y-auto max-h-[410px]">
+          <h1 className="font-semibold">Notes</h1>
+          <div className="row p-0 m-0">
+            <div className="p-0 m-0 space-y-2">
+              {!notes.length == 0 ? (
+                notes.map((note) => (
+                  <div
+                    key={note._id}
+                    className="p-4 rounded-lg shadow-md bg-white"
+                  >
+                    <div className="flex items-start">
+                      <p className="text-base font-medium text-gray-900">
+                        {note.content.split("GMT")[0]}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-12 note my-2 fw-bold p-3">
+                  <p className="">There Is No Notes </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full max-w-5xl 2xl:max-w-6xl mx-auto bg-white drop-shadow rounded p-2">
+        <h1 className="font-semibold">Comments</h1>
+        <div className="space-y-1.5">
+          {!comments.length == 0 ? (
+            comments.map((comment) => (
+              <div key={comment._id}>
+                <h6 className="m-0 p-0 text-xs text-gray-400">
+                  {comment.user_id && comment.user_id.fullname}
+                </h6>
+                <div className="flex items-center space-x-1">
+                  {comment.user_id && comment.user_id._id == userId && (
+                    <button
+                      onClick={() => deleteCommentHandler(comment._id)}
+                      className=""
+                    >
+                      <IoMdRemoveCircle className="text-red-500" />
+                    </button>
+                  )}
+                  <p className="my-0 ml-2 p-0">{comment.content}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="">
+              <p className="">There Is No Comments </p>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-8 flex items-center space-x-2 justify-between">
+          <textarea
+            type="text"
+            placeholder="Add Comment"
+            value={commentState.value}
+            onChange={commentChangeHandler}
+            onBlur={commentTouchHandler}
+            isvalid={commentState.isvalid.toString()}
+            className={`flex-1 p-2 ${
+              !commentState.isvalid && commentState.isTouched && "text-red-500"
+            }`}
+          />
+          <button
+            onClick={addCommentHandler}
+            disabled={!commentState.isvalid}
+            className="w-1/5 py-3.5 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Add Comment
           </button>
         </div>
       </div>
 
-      <div className="row col-12 col-lg-8 justify-content-center p-1 mx-1 h-100">
-        {!editTask ? (
-          <div className="row bg-white adduser-form p-0 m-0 justify-content-start ">
-            {/* /////////////////////// */}
-            <div className="col-12 col-md-6 row ">
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                {" "}
-                Title :
-              </h5>
-              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                {" "}
-                {task.title}{" "}
-              </p>
-            </div>
-            <div className="col-12 col-md-6  row ">
-              <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">
-                {" "}
-                Speciality :
-              </h5>
-              <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center">
-                {" "}
-                {speciality && speciality.sub_speciality}{" "}
-              </p>
-            </div>
-
-            <div className="col-12 col-md-6  row ">
-              <h5 className="col-6 edit-form-lable text-start pt-2 data  fw-bold">
-                {" "}
-                Channel :
-              </h5>
-              <p className="d-inline col-6  p-2 edit-form-p details-data fw-bold data text-center">
-                {" "}
-                {task.channel}{" "}
-              </p>
-            </div>
-
-            <div className="col-12 col-md-6 row">
-              <h5 className="col-4 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                Country:
-              </h5>
-              <p className="d-inline col-8 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                {" "}
-                {task.country && task.country.countryName}{" "}
-              </p>
-            </div>
-
-            <div className="col-12 col-md-6  row ">
-              <h5 className="col-4 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                {" "}
-                Client :
-              </h5>
-              <p className="d-inline col-8 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                <Link
-                  className="text-dark fw-bold"
-                  to={`/client/${client._id}`}
-                >
-                  {client.clientname}
-                </Link>
-              </p>
-            </div>
-
-            <div className="col-12 col-md-6  row">
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                Client Offer:
-              </h5>
-              <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">
-                ({offer.customerOfferMax} - {offer.customerOfferMin})
-              </p>
-            </div>
-
-            {task.paid && (
-              <div className="col-12 col-md-6  row ">
-                <h5 className="col-7 col-sm-6  edit-form-lable text-start pt-2 data  fw-bold">
-                  Client Price:
-                </h5>
-                <p className="d-inline col-5 col-sm-6  p-2 edit-form-p details-data fw-bold text-danger data text-center">
-                  {task.paid}{" "}
-                </p>
-              </div>
-            )}
-            <div className="col-12 col-md-6 row">
-              <h5 className="col-7 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                Currency:
-              </h5>
-              <p className="d-inline col-5 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                {" "}
-                {currency.currencyname}{" "}
-              </p>
-            </div>
-
-            {task.freelancer && (
-              <>
-                <div className="col-12 col-md-6 row ">
-                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                    {" "}
-                    Freelancer :
-                  </h5>
-                  <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                    <Link
-                      className="text-dark fw-bold"
-                      to={`/freelancer/${task.freelancer._id}`}
-                    >
-                      {task.freelancer.freelancername}
-                    </Link>
-                  </p>
-                </div>
-
-                <div className="col-12 col-md-6  row">
-                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                    Suggested offer:
-                  </h5>
-                  <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">
-                    ({Math.floor(offer.specialistOfferMax)} -{" "}
-                    {Math.floor(offer.specialistOfferMin)})
-                  </p>
-                </div>
-
-                <div className="col-12 col-md-6 row ">
-                  <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                    {" "}
-                    Freelancer Price:
-                  </h5>
-                  <p className="d-inline col-12 col-sm-6 p-2 edit-form-p details-data fw-bold text-danger data text-center">
-                    {" "}
-                    {task.cost}{" "}
-                  </p>
-                </div>
-              </>
-            )}
-
-            {task.profit_amount ? (
-              <div className="col-12 col-md-6  row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                  {" "}
-                  Profit :
-                </h5>
-                <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                  {task.profit_amount}
-                </p>
-              </div>
-            ) : (
-              ""
-            )}
-
-            <div className="col-12 col-md-6  row ">
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                {" "}
-                UserName :
-              </h5>
-              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                <Link
-                  className="text-dark fw-bold"
-                  to={`/user/${user && user._id}`}
-                >
-                  {user && user.fullname}
-                </Link>
-              </p>
-            </div>
-
-            <div className="col-12 col-md-6  row ">
-              <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                {" "}
-                UserRole :
-              </h5>
-              <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                {" "}
-                {user && user.user_role}{" "}
-              </p>
-            </div>
-
-            {task.show_created && (
-              <div className="col-12 col-md-6  row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                  {" "}
-                  SharedWith:
-                </h5>
-                <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                  {" "}
-                  {task.show_created.fullname}{" "}
-                </p>
-              </div>
-            )}
-            {task.show_accepted && (
-              <div className="col-12 col-md-6  row ">
-                <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-2 data  fw-bold">
-                  {" "}
-                  AcceptedWith:
-                </h5>
-                <p className="d-inline col-12 col-sm-6  p-2 edit-form-p details-data fw-bold data text-center">
-                  {" "}
-                  {task.show_accepted.fullname}{" "}
-                </p>
-              </div>
-            )}
-
-            <div className="col-12 row p-0 m-0 justify-content-center justify-content-md-start">
-              <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2 data  fw-bold">
-                DeadLine :
-              </h5>
-              <p className="d-inline col-md-4 col-6 p-2 edit-form-p details-data fw-bold date data text-center">
-                <span className="text-danger">Date:</span>
-                {task.deadline && task.deadline.split("T")[0]}{" "}
-              </p>
-              <p className="d-inline col-md-4 col-6  p-2 edit-form-p details-data fw-bold date data text-center">
-                <span className="text-danger">Time:</span>{" "}
-                {task.deadline && task.deadline.split("T")[1].split(".")[0]}
-              </p>
-            </div>
-            <div className="col-12 row justify-content-center justify-content-md-start p-0 m-0">
-              <h5 className="col-md-3 col-12 edit-form-lable text-start pt-2  fw-bold">
-                {" "}
-                Description :
-              </h5>
-              <p className="d-inline col-md-8 col-12 p-2 edit-form-p details-data fw-bold text-center">
-                {" "}
-                {task.description}{" "}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <EditTask id={id} token={token} task={task} />
-        )}
-
+      <div className="flex max-w-5xl mx-auto space-x-2">
         {/* ///on status approved */}
 
-        <div className=" bg-white adduser-form pt-5 p-4 m-1">
+        {/* <div className=" bg-white adduser-form pt-5 p-4 m-1">
           <div className="row justify-content-center">
             <h4 className="col-12 col-lg-5 fw-bold add-user-p text-start py-2">
               Change Status :
@@ -566,10 +627,11 @@ const TaskDetails = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
-          {/* // server status conditions */}
-          {(changeStatus == "6517380ae979f2bb0fb8a3db" && !task.freelancer) ||
+        {/* // server status conditions */}
+
+        {/* {(changeStatus == "6517380ae979f2bb0fb8a3db" && !task.freelancer) ||
           changeStatus == "65173822e979f2bb0fb8a3e1" ? (
             <FreelancerOffer id={id} statusID={changeStatus} />
           ) : changeStatus == "6517375de979f2bb0fb8a3cc" ? (
@@ -586,75 +648,11 @@ const TaskDetails = () => {
               </button>
             </div>
           )}
-        </div>
-
-        {/* /////////////////////////////////////////////////////////////////////////*/}
-
-        <div className="row bg-white adduser-form p-3 my-2 justify-content-center">
-          <h1 className="edit-form-lable  fw-bold">Comments</h1>
-          <div className="row w-100 p-0 m-0">
-            {!comments.length == 0 ? (
-              comments.map((comment) => (
-                <div
-                  className="comment text-start row p-2 pt-3 my-1 m-0"
-                  key={comment._id}
-                >
-                  <h6 className="col-12 col-sm-4 edit-form-lable fw-bold ">
-                    {comment.user_id && comment.user_id.fullname} :{" "}
-                  </h6>
-                  <p className="col-12 col-sm-7 fw-bold text-sm-start text-center">
-                    {comment.content}{" "}
-                  </p>
-                  {comment.user_id && comment.user_id._id == userId ? (
-                    <div className="col-2 col-sm-1">
-                      <button
-                        onClick={() => deleteCommentHandler(comment._id)}
-                        className="delete-comment-btn p-0"
-                      >
-                        <IoMdRemoveCircle className="fs-2" />
-                      </button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              ))
-            ) : (
-              <div className="col-12 comment my-2 fw-bold p-3 ">
-                <p className="">There Is No Comments </p>
-              </div>
-            )}
-          </div>
-
-          <div className="row w-100 p-0 m-0 my-3 justify-content-center">
-            <textarea
-              type="text"
-              placeholder="Add Comment"
-              rows="2"
-              value={commentState.value}
-              onChange={commentChangeHandler}
-              onBlur={commentTouchHandler}
-              isvalid={commentState.isvalid.toString()}
-              className={`col-12 col-md-8 search p-2 ${
-                !commentState.isvalid &&
-                commentState.isTouched &&
-                "form-control-invalid"
-              }`}
-            />
-            <div className="col-8 col-md-4 my-2">
-              <button
-                onClick={addCommentHandler}
-                disabled={!commentState.isvalid}
-                className="comment-btn p-3 fw-bold"
-              >
-                Add Comment
-              </button>
-            </div>
-          </div>
-        </div>
+        </div> */}
       </div>
+
       {/* /////////////////////////////////////////////// */}
-      <div className="row notes-component col-11 col-lg-3 row bg-white adduser-form p-1  m-1 justify-content-center">
+      {/* <div className="">
         <div>
           <h1 className="edit-form-lable p-4 fw-bold">Notes</h1>
           <div className="row p-0 m-0">
@@ -676,7 +674,7 @@ const TaskDetails = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* /////////////////////////////////////////////// */}
     </div>
   );

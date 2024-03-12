@@ -296,191 +296,167 @@ const EditTask = (props) => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="row bg-white adduser-form p-0 m-0 justify-content-start py-3 w-100">
+    <div className="grid grid-cols-3 gap-2">
       <ErrorModal error={error} onClear={errorHandler} />
       {isLoading && <LoadingSpinner asOverlay />}
-      <div className="col-12 col-md-6 row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
-          {" "}
-          Title :
+      <div className="">
+        <h5 className="m-0 p-0 w-2/3 font-semibold text-base text-gray-400">
+          Title
         </h5>
-        <div className="d-inline col-12 col-sm-6  pt-3  text-start">
-          <input
-            type="text"
-            value={titleState.value}
-            onChange={titleChangeHandler}
-            onBlur={titleTouchHandler}
-            isvalid={titleState.isvalid.toString()}
-            className={`search w-100 p-2 ${
-              !titleState.isvalid &&
-              titleState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
+        <input
+          type="text"
+          value={titleState.value}
+          onChange={titleChangeHandler}
+          onBlur={titleTouchHandler}
+          isvalid={titleState.isvalid.toString()}
+          className={`font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm ${
+            !titleState.isvalid && titleState.isTouched && "text-red-500"
+          }`}
+        />
       </div>
 
-      <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
-          {" "}
-          Speciality :
+      <div className="">
+        <h5 className="m-0 p-0 w-2/3 font-semibold text-base text-gray-400">
+          Speciality
         </h5>
-        <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <select
-            id="speciality"
-            name="speciality"
-            className="p-2 px-4 search col-12"
-            value={userSpeciality}
-            onChange={(event) => specialityChangeHandler(event.target.value)}
-          >
-            <option value="" className="text-secondary">
-              Specialities
+        <select
+          id="speciality"
+          name="speciality"
+          className="font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm"
+          value={userSpeciality}
+          onChange={(event) => specialityChangeHandler(event.target.value)}
+        >
+          <option value="" className="text-secondary">
+            Specialities
+          </option>
+          {specialities.map((speciality) => (
+            <option value={speciality._id} key={speciality._id}>
+              {speciality.sub_speciality}
             </option>
-            {specialities.map((speciality) => (
-              <option value={speciality._id} key={speciality._id}>
-                {speciality.sub_speciality}
-              </option>
-            ))}
-          </select>
-        </div>
+          ))}
+        </select>
       </div>
 
-      <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data ">
-          {" "}
-          Channel :
+      <div className="">
+        <h5 className="m-0 p-0 w-2/3 font-semibold text-base text-gray-400">
+          Channel
         </h5>
-        <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <select
-            id="Channel"
-            name="Channel"
-            className="p-2 px-4 search col-12"
-            value={channel}
-            onChange={(event) => channelChangeHandler(event.target.value)}
-          >
-            <option value="" className="text-secondary">
-              Channels
-            </option>
-            <option value="Telegram" className="">
-              Telegram
-            </option>
-            <option value="WhatsApp" className="">
-              WhatsApp
-            </option>
-            <option value="Website" className="">
-              Website
-            </option>
-            <option value="Other" className="">
-              Other
-            </option>
-          </select>
-        </div>
+        <select
+          id="Channel"
+          name="Channel"
+          className="font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm"
+          value={channel}
+          onChange={(event) => channelChangeHandler(event.target.value)}
+        >
+          <option value="" className="text-secondary">
+            Channels
+          </option>
+          <option value="Telegram" className="">
+            Telegram
+          </option>
+          <option value="WhatsApp" className="">
+            WhatsApp
+          </option>
+          <option value="Website" className="">
+            Website
+          </option>
+          <option value="Other" className="">
+            Other
+          </option>
+        </select>
       </div>
 
-      <div className="col-12 col-md-6 row">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
-          Currency:
+      <div className="">
+        <h5 className="m-0 p-0 w-2/3 font-semibold text-base text-gray-400">
+          Currency
         </h5>
-        <div className="d-inline col-12 col-sm-6  pt-3  text-start">
-          <select
-            id="currencies"
-            name="currencies"
-            className="p-2 px-4 search col-12"
-            value={currency}
-            onChange={(event) => currencyChangeHandler(event.target.value)}
-          >
-            <option value="" className="text-secondary">
-              currencies
+        <select
+          id="currencies"
+          name="currencies"
+          className="font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm"
+          value={currency}
+          onChange={(event) => currencyChangeHandler(event.target.value)}
+        >
+          <option value="" className="text-secondary">
+            currencies
+          </option>
+          {currencies.map((currency) => (
+            <option value={currency._id} key={currency._id}>
+              {currency.currencyname}
             </option>
-            {currencies.map((currency) => (
-              <option value={currency._id} key={currency._id}>
-                {currency.currencyname}
-              </option>
-            ))}
-          </select>
-        </div>
+          ))}
+        </select>
       </div>
 
-      <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3 data">
-          Client Price:
+      <div className="">
+        <h5 className="m-0 p-0 w-2/3 font-semibold text-base text-gray-400">
+          Client Price
         </h5>
-        <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <input
-            type="number"
-            value={priceState.value}
-            onChange={priceChangeHandler}
-            onBlur={pricetouchHandler}
-            isvalid={priceState.isvalid.toString()}
-            className={`search w-100 p-2 ${
-              !priceState.isvalid &&
-              priceState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
+        <input
+          type="number"
+          value={priceState.value}
+          onChange={priceChangeHandler}
+          onBlur={pricetouchHandler}
+          isvalid={priceState.isvalid.toString()}
+          className={`font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm ${
+            !priceState.isvalid && priceState.isTouched && "text-red-500"
+          }`}
+        />
       </div>
 
-      <div className="col-12 col-md-6  row ">
-        <h5 className="col-12 col-sm-6  edit-form-lable text-start pt-3 data">
-          Freelancer Price:
+      <div className="">
+        <h5 className="m-0 p-0 w-2/3 font-semibold text-base text-gray-400">
+          Freelancer Price
         </h5>
-        <div className="d-inline col-12 col-sm-6 pt-3  text-start">
-          <input
-            type="number"
-            value={freelancerPriceState.value}
-            onChange={freelancerPriceChangeHandler}
-            onBlur={freelancerPricetouchHandler}
-            isvalid={freelancerPriceState.isvalid.toString()}
-            className={`search w-100 p-2 ${
-              !freelancerPriceState.isvalid &&
-              freelancerPriceState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
+        <input
+          type="number"
+          value={freelancerPriceState.value}
+          onChange={freelancerPriceChangeHandler}
+          onBlur={freelancerPricetouchHandler}
+          isvalid={freelancerPriceState.isvalid.toString()}
+          className={`font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm ${
+            !freelancerPriceState.isvalid &&
+            freelancerPriceState.isTouched &&
+            "text-red-500"
+          }`}
+        />
       </div>
 
-      <div className="col-12 col-md-6 row ">
-        <h5 className="col-12 col-sm-6 edit-form-lable text-start pt-3 data">
-          Dead Line :
+      <div className="col-span-3">
+        <h5 className="m-0 p-0 w-1/4 font-semibold text-base text-gray-400">
+          Dead Line
         </h5>
-        <div className="d-inline col-12 col-sm-6  pt-3  text-start">
-          <input
-            type="datetime-local"
-            id="meeting-time"
-            name="meeting-time"
-            placeholder="DeadLine"
-            onChange={(e) => setDeadline(e.target.value)}
-            className="col-12 search p-2 px-4"
-          />
-        </div>
+        <input
+          type="datetime-local"
+          id="meeting-time"
+          name="meeting-time"
+          placeholder="DeadLine"
+          onChange={(e) => setDeadline(e.target.value)}
+          className="font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm"
+        />
       </div>
 
-      <div className="col-12 row ">
-        <h5 className="col-md-4 col-12 edit-form-lable text-start pt-3">
-          {" "}
-          Description :
+      <div className="col-span-3">
+        <h5 className="m-0 p-0 w-1/4 font-semibold text-base text-gray-400">
+          Description
         </h5>
-        <div className="d-inline col-md-8 col-12  pt-3  text-start">
-          <textarea
-            type="text"
-            placeholder="Description"
-            rows="4"
-            value={descriptionState.value}
-            onChange={descriptionChangeHandler}
-            onBlur={descriptionTouchHandler}
-            isvalid={descriptionState.isvalid.toString()}
-            className={`col-12 col-lg-8 search p-2 ${
-              !descriptionState.isvalid &&
-              descriptionState.isTouched &&
-              "form-control-invalid"
-            }`}
-          />
-        </div>
+        <textarea
+          type="text"
+          placeholder="Description"
+          rows="2"
+          value={descriptionState.value}
+          onChange={descriptionChangeHandler}
+          onBlur={descriptionTouchHandler}
+          isvalid={descriptionState.isvalid.toString()}
+          className={`font-medium border w-full rounded my-0 mr-0 py-2 px-0 text-center drop-shadow-sm ${
+            !descriptionState.isvalid &&
+            descriptionState.isTouched &&
+            "text-red-500"
+          }`}
+        />
       </div>
 
-      <div className="row col-12 p-3 justify-content-center">
+      <div className="col-span-3 flex items-center justify-center">
         <button
           disabled={
             !titleState.isvalid &&
@@ -492,7 +468,7 @@ const EditTask = (props) => {
             !userSpeciality &&
             !freelancerPriceState.isvalid
           }
-          className="edit-task-btn p-3 col-10 col-lg-4 fw-bold"
+          className="border bg-blue-500 text-white p-2.5 rounded-md font-semibold w-1/3"
           onClick={editTaskHandler}
         >
           Edit Task
