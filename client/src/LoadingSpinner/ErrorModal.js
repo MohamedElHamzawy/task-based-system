@@ -3,7 +3,7 @@ import React from "react";
 import MiModal from "@mui/material/Modal";
 import { Alert, AlertTitle, Grid } from "@mui/material";
 
-const ErrorModal = ({ message, onClear }) => {
+const ErrorModal = ({ message, onClear = () => {} }) => {
   return (
     <MiModal open={message} onClose={onClear}>
       <Grid
@@ -13,11 +13,11 @@ const ErrorModal = ({ message, onClear }) => {
         justifyContent="center"
       >
         <Alert
-          severity={message.type === "error" ? "error" : "success"}
+          severity={message?.type === "error" ? "error" : "success"}
           onClose={onClear}
         >
-          <AlertTitle className="capitalize">{message.type}</AlertTitle>
-          {message.message}
+          <AlertTitle className="capitalize">{message?.type}</AlertTitle>
+          {message?.message}
         </Alert>
       </Grid>
     </MiModal>

@@ -229,18 +229,17 @@ const AddClient = () => {
 
       const responseData = response;
 
-      setMessage(responseData.data.message);
+      setMessage({ type: "success", message: responseData.data.message });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       if (error.response) {
-        setError(
-          error.response.data.err || "SomeThing Went Wrong , Please Try Again ."
-        );
-      } else if (error.request) {
-        setError(error.request);
+        setError({
+          type: "error",
+          message: error.response.data.err || "Error",
+        });
       } else {
-        setError(error.message || "Error");
+        setError({ type: "error", message: error.message || "Error" });
       }
     }
     clientEmailState.value = "";

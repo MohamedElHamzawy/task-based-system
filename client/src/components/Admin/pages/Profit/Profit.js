@@ -79,12 +79,14 @@ const Profit = () => {
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
-      setMessage(responseData.data.message);
-      setError(responseData.data.message);
+      setMessage({ type: "success", message: responseData.data.message });
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+      setError({
+        type: "error",
+        message: err.message || "SomeThing Went Wrong , Please Try Again .",
+      });
     }
   };
 
@@ -107,12 +109,14 @@ const Profit = () => {
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
-      setError(responseData.data.message);
-      setMessage(responseData.data.message);
+      setMessage({ type: "success", message: responseData.data.message });
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.message && "SomeThing Went Wrong , Please Try Again .");
+      setError({
+        type: "error",
+        message: err.message || "SomeThing Went Wrong , Please Try Again .",
+      });
     }
   };
   //error message
