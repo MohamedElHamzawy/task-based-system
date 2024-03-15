@@ -1,11 +1,32 @@
 const bankModel = require("../../DB/bank.model");
+const accountModel = require("../../DB/account.model");
 const bankTransactionModel = require("../../DB/bank.transactions.model");
 const HttpError = require("../../common/httpError");
 
 const getAllBankTransactions = async (req, res) => {
     try {
-        const bankTransactions = await bankTransactionModel.find({$or: [{from: req.params.id}, {to: req.params.id}]}).populate(["from", "to"]);
-        res.status(200).json(bankTransactions);
+        const bankTransactions = await bankTransactionModel.find({$or: [{from: req.params.id}, {to: req.params.id}]});
+        let transactions = [];
+        bankTransactions.forEach(trans => {
+            let getFrom = bankModel.findById(trans.from);
+            if (!getFrom) {
+                getFrom = accountModel.findById(trans.from);
+            }
+            let getTo = bankModel.findById(trans.to);
+            if (!getTo) {
+                getTo = accountModel.findById(trans.to);
+            }
+            let transaction = {
+                id: trans._id,
+                from: getFrom,
+                to: getTo,
+                amount: trans.amount,
+                exchangeRate: trans.exchangeRate,
+                createdAt: trans.createdAt
+            }
+            transactions.push(transaction);
+        });
+        res.status(200).json(transactions);
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
