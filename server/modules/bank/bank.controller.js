@@ -1,4 +1,5 @@
 const bankModel = require("../../DB/bank.model");
+const HttpError = require("../../common/httpError");
 
 const getAllBanks = async (req, res, next) => {
     try {
