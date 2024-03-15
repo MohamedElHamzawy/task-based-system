@@ -7,7 +7,8 @@ const bankSchema = new mongoose.Schema({
     },
     currency: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "currency"
     },
     balance: {
         type: Number,
