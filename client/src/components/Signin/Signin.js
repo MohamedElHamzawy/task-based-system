@@ -109,6 +109,10 @@ const SignIn = () => {
       );
       const responseData = await response;
 
+      console.log(responseData);
+      console.log(`${process.env.REACT_APP_BACKEND_URL}:5000/api/login`);
+      console.log(response.data);
+
       localStorage.setItem("role", responseData.data.user.user_role);
       localStorage.setItem("user", JSON.stringify(responseData.data.user));
       localStorage.setItem(
