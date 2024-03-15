@@ -12,6 +12,9 @@ const commentRoutes = require("../modules/comment/comment.routes");
 const profitRoutes = require("../modules/profit/profit.routes");
 const notesRouter = require("../modules/note/note.routes");
 const countryRouter = require("../modules/country/country.routes");
+const bankRouter = require("../modules/bank/bank.routes");
+const bankTransactionRouter = require("../modules/bankTransaction/bankTransaction.routes");
+
 const notificationRouter = require("../modules/notification/notification.routes");
 
 module.exports = {
@@ -29,6 +32,8 @@ module.exports = {
     profitRoutes,
     notesRouter,
     countryRouter,
-    notificationRouter
+    notificationRouter,
+    bankRouter,
+    bankTransactionRouter
     
 }
