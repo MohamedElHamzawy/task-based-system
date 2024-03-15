@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "../../../../axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
 const AddBankAccount = () => {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currencies, setCurrencies] = useState([]);
   useEffect(() => {
@@ -16,9 +19,9 @@ const AddBankAccount = () => {
         setCurrencies(data.currencies);
       } catch (error) {
         if (error.response) {
-          console.log(error.response.data.err);
+          setMessage({ type: "error", message: error.response.data.err });
         } else {
-          console.log(error.message);
+          setMessage({ type: "error", message: error.message });
         }
       } finally {
         setIsLoading(false);
@@ -27,26 +30,28 @@ const AddBankAccount = () => {
   }, []);
 
   const onSubmit = async (values) => {
-    // Handle form submission here
     try {
       setIsLoading(true);
       console.log(values);
       const { data } = await axios.post("/bank", values);
       console.log(data);
     } catch (error) {
-      console.log(error);
       if (error.response) {
-        console.log(error.response.data.err);
+        setMessage({ type: "error", message: error.response.data.err });
       } else {
-        console.log(error.message);
+        setMessage({ type: "error", message: error.message });
       }
     } finally {
       setIsLoading(false);
+      navigate("/bank");
     }
   };
 
   return (
     <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
+      {message && (
+        <ErrorModal message={message} onClear={() => setMessage(null)} />
+      )}
       <div className="relative flex flex-row justify-center w-full p-1 mb-4">
         <Link to="/bank" className="absolute top-0 left-0 p-2 text-3xl">
           <TiArrowBack />
@@ -110,7 +115,7 @@ const AddBankAccount = () => {
               >
                 <option value="">Select Currency</option>
                 {currencies.map((currency) => (
-                  <option key={currency.id} value={currency._id}>
+                  <option key={currency._id} value={currency._id}>
                     {currency.currencyname}
                   </option>
                 ))}

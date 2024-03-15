@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import axios from "../../../../axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
+import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
 const Bank = ({}) => {
+  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [accounts, setAccounts] = useState([]);
 
@@ -14,12 +16,12 @@ const Bank = ({}) => {
       try {
         setIsLoading(true);
         const { data } = await axios.get("/bank");
-        console.log(data);
         setAccounts(data);
       } catch (error) {
         if (error.response) {
-          console.log(error.response.data.err);
+          setMessage({ type: "error", message: error.response.data.err });
         } else {
+          setMessage({ type: "error", message: error.message });
           console.log(error.message);
         }
       } finally {
@@ -30,6 +32,9 @@ const Bank = ({}) => {
 
   return (
     <div className="min-h-[calc(100vh-65px)] p-4 flex flex-col space-y-2">
+      {message && (
+        <ErrorModal message={message} onClear={() => setMessage(null)} />
+      )}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Bank Accounts</h1>
         <Link
