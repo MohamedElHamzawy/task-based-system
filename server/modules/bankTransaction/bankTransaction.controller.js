@@ -1,4 +1,4 @@
-const bankTransactionModel = require("./bank.transactions.model");
+const bankTransactionModel = require("../../DB/bank.transactions.model");
 
 const getAllBankTransactions = async (req, res) => {
     const bankTransactions = await bankTransactionModel.find();

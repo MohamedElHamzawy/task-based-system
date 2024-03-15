@@ -1,4 +1,4 @@
-const bankModel = require("./bank.model");
+const bankModel = require("../../DB/bank.model");
 
 const getAllBanks = async (req, res, next) => {
     try {
