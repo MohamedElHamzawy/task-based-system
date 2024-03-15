@@ -35,6 +35,7 @@ import AddCountry from "./pages/Country/AddCountry";
 import Notifications from "./pages/Notifications/Notifications.js";
 import Header from "../Header.js";
 import Home from "./pages/Home";
+import Bank from "./pages/Bank/Bank";
 
 const Admin = () => {
   return (
@@ -70,6 +71,7 @@ const Admin = () => {
             <Route path="/addcountry" element={<AddCountry />} />
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/account/:id" element={<AccountDetails />} />
+            <Route path="/bank" element={<Bank />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/changepass" element={<ChangePass />} />

@@ -14,6 +14,7 @@ import { RiWaterPercentFill } from "react-icons/ri";
 import { HiUsers } from "react-icons/hi";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
+import { HiMiniBanknotes } from "react-icons/hi2";
 
 import RemoveCookie from "../../../hooks/removeCookie";
 
@@ -32,6 +33,11 @@ const navItems = [
     navigate: "/accounts",
     icon: HiUsers,
     label: "Accounts",
+  },
+  {
+    navigate: "/bank",
+    icon: HiMiniBanknotes,
+    label: "Bank",
   },
   {
     navigate: "/transactions",
