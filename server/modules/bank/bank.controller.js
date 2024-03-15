@@ -12,7 +12,7 @@ const getAllBanks = async (req, res, next) => {
 
 const getBank = async (req, res, next) => {
     try {
-        const bank = await bankModel.findById(req.params.id).populate();
+        const bank = await bankModel.findById(req.params.id).populate("currency");
         res.status(200).json(bank);
     } catch (err) {
         return next(new HttpError(`Unexpected Error: ${err}`, 500));
