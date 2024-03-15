@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "../../../../axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 
-const AddBankAccount = () => {
+const AddBankAccount = ({ edit }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currencies, setCurrencies] = useState([]);
+  const [account, setAccount] = useState(null);
+
   useEffect(() => {
     (async () => {
       try {
         setIsLoading(true);
+        if (edit) {
+          const { data } = await axios.get(`/bank/${id}`);
+          setAccount(data);
+        }
         const { data } = await axios.get("/currency");
         setCurrencies(data.currencies);
       } catch (error) {
@@ -32,9 +39,13 @@ const AddBankAccount = () => {
   const onSubmit = async (values) => {
     try {
       setIsLoading(true);
-      console.log(values);
-      await axios.post("/bank", values);
-      navigate("/bank");
+      if (edit) {
+        await axios.post(`/bank/${id}`, values);
+        navigate(`/bank/${id}`);
+      } else {
+        await axios.post("/bank", values);
+        navigate("/bank");
+      }
     } catch (error) {
       if (error.response) {
         setMessage({ type: "error", message: error.response.data.err });
@@ -56,7 +67,7 @@ const AddBankAccount = () => {
           <TiArrowBack />
         </Link>
         <h2 className="text-center text-2xl font-bold lg:text-3xl">
-          Add New Bank Account
+          {edit ? "Edit" : "Add New"} Bank Account
         </h2>
       </div>
       {isLoading ? (
@@ -64,9 +75,9 @@ const AddBankAccount = () => {
       ) : (
         <Formik
           initialValues={{
-            title: "",
-            balance: "",
-            currency: "",
+            title: account?.title || "",
+            balance: account?.balance || "",
+            currency: account?.currency?._id || "",
           }}
           onSubmit={onSubmit}
         >
@@ -124,7 +135,7 @@ const AddBankAccount = () => {
               type="submit"
               className="px-4 py-2 text-lg font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
             >
-              Create Account
+              {edit ? "Edit" : "Create"} Account
             </button>
           </Form>
         </Formik>

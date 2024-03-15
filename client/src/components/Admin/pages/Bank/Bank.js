@@ -56,10 +56,9 @@ const Bank = ({}) => {
             <BankCard
               key={account._id}
               owner={account.title}
-              type="Freelancer"
               balance={account.balance}
               currency={account.currency.currencyname}
-              detailsLink="/details"
+              detailsLink={`/bank/${account._id}`}
             />
           ))
         )}

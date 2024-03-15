@@ -1,27 +1,38 @@
 import React from "react";
+import { NumericFormat } from "react-number-format";
+import { FaInfoCircle } from "react-icons/fa";
+import { MdModeEdit } from "react-icons/md";
+
 import { Link } from "react-router-dom";
 
-const BankCard = ({ owner, type, balance, detailsLink, currency }) => {
+const BankCard = ({ owner, balance, detailsLink, currency, edit }) => {
   return (
-    <div className="bg-white rounded-lg drop-shadow-lg p-6 w-full mx-auto">
-      <div className="flex justify-between items-center">
+    <div className="text-base font-bold p-4 bg-gray-700 text-white rounded-lg space-y-2">
+      <h2 className="text-2xl font-bold m-0 p-0">{owner}</h2>
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold">{owner}</h2>
-          <p className="text-gray-500">{type}</p>
+          <p className="text-base text-gray-400 font-semibold p-0 m-0">
+            Balance amount
+          </p>
+          <NumericFormat
+            className="text-lg font-bold"
+            displayType={"text"}
+            value={balance}
+            suffix={` ${currency}`}
+            thousandSeparator
+          />
         </div>
-        <div>
-          <p className="text-gray-500">Balance</p>
-          <h2 className="text-xl font-bold">
-            {balance} {currency}
-          </h2>
-        </div>
+        <Link
+          to={detailsLink}
+          className="no-underline text-white bg-gray-400 inline-block p-2 rounded active:scale-95"
+        >
+          {edit ? (
+            <MdModeEdit className="text-xl" />
+          ) : (
+            <FaInfoCircle className="text-xl" />
+          )}
+        </Link>
       </div>
-      <Link
-        to={detailsLink}
-        className="text-blue-500 hover:underline mt-4 inline-block"
-      >
-        View Details
-      </Link>
     </div>
   );
 };
