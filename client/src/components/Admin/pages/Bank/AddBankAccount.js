@@ -33,8 +33,8 @@ const AddBankAccount = () => {
     try {
       setIsLoading(true);
       console.log(values);
-      const { data } = await axios.post("/bank", values);
-      console.log(data);
+      await axios.post("/bank", values);
+      navigate("/bank");
     } catch (error) {
       if (error.response) {
         setMessage({ type: "error", message: error.response.data.err });
@@ -43,7 +43,6 @@ const AddBankAccount = () => {
       }
     } finally {
       setIsLoading(false);
-      navigate("/bank");
     }
   };
 
