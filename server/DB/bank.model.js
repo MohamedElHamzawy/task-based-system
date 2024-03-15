@@ -6,7 +6,7 @@ const bankSchema = new mongoose.Schema({
         required: true
     },
     currency: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true
     },
     balance: {

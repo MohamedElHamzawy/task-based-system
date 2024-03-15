@@ -2,7 +2,7 @@ const bankModel = require("../../DB/bank.model");
 
 const getAllBanks = async (req, res, next) => {
     try {
-        const banks = await bankModel.find();
+        const banks = await bankModel.find().populate(["currency"]);
         res.status(200).json(banks);
     } catch (err) {
         next(err);
@@ -11,7 +11,7 @@ const getAllBanks = async (req, res, next) => {
 
 const getBank = async (req, res, next) => {
     try {
-        const bank = await bankModel.findById(req.params.id);
+        const bank = await bankModel.findById(req.params.id).populate(["currency"]);
         res.status(200).json(bank);
     } catch (err) {
         next(err);
