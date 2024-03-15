@@ -36,6 +36,8 @@ import Notifications from "./pages/Notifications/Notifications.js";
 import Header from "../Header.js";
 import Home from "./pages/Home";
 import Bank from "./pages/Bank/Bank";
+import NotFound from "./pages/NotFound.js";
+import AddBankAccount from "./pages/Bank/AddBankAccount.js";
 
 const Admin = () => {
   return (
@@ -72,11 +74,13 @@ const Admin = () => {
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/account/:id" element={<AccountDetails />} />
             <Route path="/bank" element={<Bank />} />
+            <Route path="/add-bank-account" element={<AddBankAccount />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/changepass" element={<ChangePass />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/profit" element={<Profit />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>
