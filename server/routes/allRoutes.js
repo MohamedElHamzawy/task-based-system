@@ -35,5 +35,4 @@ module.exports = {
     notificationRouter,
     bankRouter,
     bankTransactionRouter
-    
 }

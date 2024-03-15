@@ -7,7 +7,7 @@ const commentModel = require("../../DB/comment.model");
 const {customerProfitModel, specialistProfitModel} = require("../../DB/profit.model");
 const userModel = require("../../DB/user.model");
 const clientModel = require("../../DB/client.model");
-const sendNotification = require("../notification/notification.controller");
+const {sendNotification} = require("../notification/notification.controller");
 
 const {
     acceptTask, 
