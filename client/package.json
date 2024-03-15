@@ -15,8 +15,6 @@
     "awesome-react-icons": "^1.4.8",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
-    "flowbite": "^2.2.1",
-    "flowbite-react": "^0.5.0",
     "formik": "^2.4.3",
     "js-cookie": "^3.0.5",
     "postcss": "^8.4.27",
