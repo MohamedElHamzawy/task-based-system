@@ -3,7 +3,7 @@ const HttpError = require("../../common/httpError");
 
 const getAllBanks = async (req, res, next) => {
     try {
-        const banks = await bankModel.find().populate(["currency"]);
+        const banks = await bankModel.find().populate();
         res.status(200).json(banks);
     } catch (err) {
         return next(new HttpError(`Unexpected Error: ${err}`, 500));
@@ -12,7 +12,7 @@ const getAllBanks = async (req, res, next) => {
 
 const getBank = async (req, res, next) => {
     try {
-        const bank = await bankModel.findById(req.params.id).populate(["currency"]);
+        const bank = await bankModel.findById(req.params.id).populate();
         res.status(200).json(bank);
     } catch (err) {
         return next(new HttpError(`Unexpected Error: ${err}`, 500));
