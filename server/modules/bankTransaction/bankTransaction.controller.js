@@ -17,11 +17,18 @@ const getAllBankTransactions = async (req, res, next) => {
       if (!getTo) {
         getTo = await accountModel.findById(trans.to);
       }
+
+      if (trans.from === req.params.id) {
+        amount = trans.amount;
+      }
+      if (trans.to === req.params.id) {
+        amount = trans.amount * trans.exchangeRate;
+      }
       let transaction = {
         id: trans._id,
         from: getFrom,
         to: getTo,
-        amount: trans.amount,
+        amount: amount,
         exchangeRate: trans.exchangeRate,
         createdAt: trans.createdAt,
       };
