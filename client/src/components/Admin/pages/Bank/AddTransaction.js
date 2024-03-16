@@ -3,7 +3,7 @@ import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import { TiArrowBack } from "react-icons/ti";
 import { Field, Form, Formik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../../axios";
 import ReactSelect from "react-select";
 
@@ -11,6 +11,7 @@ const AddTransaction = ({}) => {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [accounts, setAccounts] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -33,8 +34,7 @@ const AddTransaction = ({}) => {
   const onSubmit = async (values) => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post("/bankTransaction", values);
-      console.log(data);
+      await axios.post("/bankTransaction", values);
     } catch (error) {
       if (error.response) {
         setMessage({ type: "error", message: error.response.data.err });
@@ -43,6 +43,7 @@ const AddTransaction = ({}) => {
       }
     } finally {
       setIsLoading(false);
+      navigate("/bank");
     }
   };
 
@@ -82,7 +83,7 @@ const AddTransaction = ({}) => {
                 </label>
                 <ReactSelect
                   options={accounts.map((account) => ({
-                    label: account.title,
+                    label: `${account.title} - ${account.currency.currencyname}`,
                     value: account._id,
                   }))}
                   onChange={(e) => formik.setFieldValue("from", e.value)}
@@ -99,7 +100,7 @@ const AddTransaction = ({}) => {
                 </label>
                 <ReactSelect
                   options={accounts.map((account) => ({
-                    label: account.title,
+                    label: `${account.title} - ${account.currency.currencyname}`,
                     value: account._id,
                   }))}
                   onChange={(e) => formik.setFieldValue("to", e.value)}
