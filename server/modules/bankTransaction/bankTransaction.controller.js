@@ -8,15 +8,14 @@ const getAllBankTransactions = async (req, res, next) => {
     const bankTransactions = await bankTransactionModel.find({
       $or: [{ from: req.params.id }, { to: req.params.id }],
     });
-    let transactions = [];
-    bankTransactions.forEach((trans) => {
-      let getFrom = bankModel.findById(trans.from);
+    const transactionsPromises = bankTransactions.map(async (trans) => {
+      let getFrom = await bankModel.findById(trans.from);
       if (!getFrom) {
-        getFrom = accountModel.findById(trans.from);
+        getFrom = await accountModel.findById(trans.from);
       }
-      let getTo = bankModel.findById(trans.to);
+      let getTo = await bankModel.findById(trans.to);
       if (!getTo) {
-        getTo = accountModel.findById(trans.to);
+        getTo = await accountModel.findById(trans.to);
       }
       let transaction = {
         id: trans._id,
@@ -26,8 +25,10 @@ const getAllBankTransactions = async (req, res, next) => {
         exchangeRate: trans.exchangeRate,
         createdAt: trans.createdAt,
       };
-      transactions.push(transaction);
+      return transaction;
     });
+    const transactions = await Promise.all(transactionsPromises);
+    console.log({ transactions });
     res.status(200).json(transactions);
   } catch (error) {
     return next(new HttpError(`Unexpected Error: ${error}`, 500));
