@@ -19,10 +19,10 @@ const getAllBankTransactions = async (req, res, next) => {
       }
 
       let finalAmount;
-      if (trans.from === req.params.id) {
+      if (trans.from == req.params.id) {
         finalAmount = trans.amount;
       }
-      if (trans.to === req.params.id) {
+      if (trans.to == req.params.id) {
         finalAmount = trans.amount * trans.exchangeRate;
       }
       let transaction = {
@@ -36,7 +36,6 @@ const getAllBankTransactions = async (req, res, next) => {
       return transaction;
     });
     const transactions = await Promise.all(transactionsPromises);
-    console.log({ transactions });
     res.status(200).json(transactions);
   } catch (error) {
     return next(new HttpError(`Unexpected Error: ${error}`, 500));
