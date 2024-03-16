@@ -35,13 +35,14 @@ const BankDetails = () => {
     })();
   }, []);
 
-  const revertTransaction = async (id) => {
+  const revertTransaction = async (transaction_id) => {
     try {
       setIsLoading(true);
-      console.log(id);
-      await axios.delete(`/bankTransaction/${id}`);
+      await axios.delete(`/bankTransaction/${transaction_id}`);
+      const { data } = await axios.get(`/bank/${id}`);
+      setAccount(data);
       setTransactions((prev) =>
-        prev.filter((transaction) => transaction._id !== id)
+        prev.filter((transaction) => transaction._id !== transaction_id)
       );
     } catch (error) {
       if (error.response) {
@@ -132,7 +133,7 @@ const BankDetails = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="p-2 bg-white">
+                  <td colSpan="6" className="p-2 bg-white">
                     No Transactions
                   </td>
                 </tr>
