@@ -6,6 +6,7 @@ import { NumericFormat } from "react-number-format";
 import BankCard from "./BankCard";
 import { Link } from "react-router-dom";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
+import { ImUndo } from "react-icons/im";
 
 const BankDetails = () => {
   const { id } = useParams();
@@ -20,11 +21,9 @@ const BankDetails = () => {
         setIsLoading(true);
         const accountResponse = await axios.get(`/bank/${id}`);
         const transactionsResponse = await axios.get(`/bankTransaction/${id}`);
-        console.log({ accountResponse, transactionsResponse });
         setTransactions(transactionsResponse.data);
         setAccount(accountResponse.data);
       } catch (error) {
-        console.log(error);
         if (error.response) {
           setMessage({ type: "error", message: error.response.data.err });
         } else {
@@ -35,6 +34,25 @@ const BankDetails = () => {
       }
     })();
   }, []);
+
+  const revertTransaction = async (id) => {
+    try {
+      setIsLoading(true);
+      console.log(id);
+      await axios.delete(`/bankTransaction/${id}`);
+      setTransactions((prev) =>
+        prev.filter((transaction) => transaction._id !== id)
+      );
+    } catch (error) {
+      if (error.response) {
+        setMessage({ type: "error", message: error.response.data.err });
+      } else {
+        setMessage({ type: "error", message: error.message });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full p-3 min-h-[calc(100vh-65px)]">
@@ -49,11 +67,13 @@ const BankDetails = () => {
       ) : account ? (
         <div className="space-y-2 max-w-3xl mx-auto w-full">
           <BankCard
+            id={account._id}
             owner={account.title}
             balance={account.balance}
             currency={account.currency.currencyname}
             detailsLink={`/edit-bank/${account._id}`}
             edit
+            deleteButton
           />
 
           <div className="flex items-center justify-end space-x-2">
@@ -79,12 +99,13 @@ const BankDetails = () => {
                 <th className="px-4 py-3 font-medium text-sm">Amount</th>
                 <th className="px-4 py-3 font-medium text-sm">Exchange Rate</th>
                 <th className="px-4 py-3 font-medium text-sm">Date</th>
+                <th className="px-4 py-3 font-medium text-sm">Revert</th>
               </tr>
             </thead>
             <tbody>
               {transactions.length > 0 ? (
-                transactions.map((transaction) => (
-                  <tr key={transaction._id}>
+                transactions.map((transaction, index) => (
+                  <tr key={index}>
                     <td className="p-2 bg-white">{transaction.from.title}</td>
                     <td className="p-2 bg-white">{transaction.to.title}</td>
                     <td className="p-2 bg-white">
@@ -98,6 +119,14 @@ const BankDetails = () => {
                     <td className="p-2 bg-white">{transaction.exchangeRate}</td>
                     <td className="p-2 bg-white">
                       {new Date(transaction.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="p-2 bg-white">
+                      <button
+                        onClick={() => revertTransaction(transaction._id)}
+                        className="text-white bg-red-800 p-2 rounded active:scale-95"
+                      >
+                        <ImUndo className="" />
+                      </button>
                     </td>
                   </tr>
                 ))
