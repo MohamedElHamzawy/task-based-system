@@ -39,6 +39,7 @@ import Bank from "./pages/Bank/Bank";
 import NotFound from "./pages/NotFound.js";
 import AddBankAccount from "./pages/Bank/AddBankAccount.js";
 import BankDetails from "./pages/Bank/BankDetails.js";
+import AddTransaction from "./pages/Bank/AddTransaction.js";
 
 const Admin = () => {
   return (
@@ -78,6 +79,7 @@ const Admin = () => {
             <Route path="/bank/:id" element={<BankDetails />} />
             <Route path="edit-bank/:id" element={<AddBankAccount edit />} />
             <Route path="/add-bank-account" element={<AddBankAccount />} />
+            <Route path="add-transaction" element={<AddTransaction />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/changepass" element={<ChangePass />} />

@@ -2,6 +2,7 @@ import React from "react";
 import { NumericFormat } from "react-number-format";
 import { FaInfoCircle } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
+import { MdOutlineDelete } from "react-icons/md";
 
 import { Link } from "react-router-dom";
 
@@ -22,16 +23,26 @@ const BankCard = ({ owner, balance, detailsLink, currency, edit }) => {
             thousandSeparator
           />
         </div>
-        <Link
-          to={detailsLink}
-          className="no-underline text-white bg-gray-400 inline-block p-2 rounded active:scale-95"
-        >
-          {edit ? (
-            <MdModeEdit className="text-xl" />
-          ) : (
-            <FaInfoCircle className="text-xl" />
-          )}
-        </Link>
+        <div className="flex items-center space-x-2">
+          <Link
+            to={detailsLink}
+            className="no-underline text-white bg-gray-400 inline-block p-2 rounded active:scale-95"
+          >
+            {edit ? (
+              <MdModeEdit className="text-xl" />
+            ) : (
+              <FaInfoCircle className="text-xl" />
+            )}
+          </Link>
+          <button
+            type="button"
+            className="no-underline text-white bg-red-800 inline-block p-2 rounded active:scale-95"
+          >
+            {/* trash icon */}
+
+            <MdOutlineDelete className="text-xl" />
+          </button>
+        </div>
       </div>
     </div>
   );
