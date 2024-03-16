@@ -26,7 +26,7 @@ const getAllBankTransactions = async (req, res, next) => {
         finalAmount = trans.amount * trans.exchangeRate;
       }
       let transaction = {
-        id: trans._id,
+        _id: trans._id,
         from: getFrom,
         to: getTo,
         amount: finalAmount,
