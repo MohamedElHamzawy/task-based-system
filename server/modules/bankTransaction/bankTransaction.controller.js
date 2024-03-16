@@ -18,6 +18,7 @@ const getAllBankTransactions = async (req, res, next) => {
         getTo = await accountModel.findById(trans.to);
       }
 
+      let amount;
       if (trans.from === req.params.id) {
         amount = trans.amount;
       }
