@@ -10,6 +10,7 @@ const ongoing = async (req, res, next) => {
         }
         statusID = await statusModel.findOne({slug: "on-going"})._id;
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        await noteModel.create({task_id: taskID, content: `Task is under process by ${req.user.full_name}`, user_id: req.user._id});
         res.json({msg: "Done"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

@@ -10,6 +10,7 @@ const refuseTask = async (req, res, next) => {
         }
         const statusID = await statusModel.findOne({slug: "rejected"})._id;
         await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID, cost: 0}, {new: true});
+        await noteModel.create({task_id: taskID, content: `Offer Refused by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been refused!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -25,6 +26,7 @@ const acceptTask = async (req, res, next) => {
         }
         const statusID = await statusModel.findOne({slug: "approved"})._id;
         await taskModel.findOneAndUpdate({_id: taskID}, {paid: paid, taskStatus: statusID}, {new: true});
+        await noteModel.create({task_id: taskID, content: `Offer Approved by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been accepted!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

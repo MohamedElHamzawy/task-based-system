@@ -11,6 +11,7 @@ const availablity = async (req, res, next) => {
         }
         const statusID = await statusModel.findOne({slug: "not-available"})._id;
         await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID}, {new: true});
+        await noteModel.create({task_id: taskID, content: `No available freelancers by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been Updated!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

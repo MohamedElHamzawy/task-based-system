@@ -35,6 +35,7 @@ const deliverTask = async (req, res, next) => {
             userModel.updateOne({_id: thisTask.accepted_by}, {$inc: {completedCount: 1, totalGain: thisTask.paid, totalProfit: profit_amount}}).lean(),
             userModel.updateOne({_id: thisTask.created_by}, {$inc: {completedCount: 1, totalGain: thisTask.paid, totalProfit: profit_amount}}).lean()
         ]);
+        await noteModel.create({task_id: taskID, content: `Task has been delivered by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been delivered!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

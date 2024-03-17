@@ -38,6 +38,7 @@ const doneTask = async (req, res, next) => {
         }
         await pushFile(req.file.originalname, req.file.path, req.file.mimetype, fileSizeFormatter(req.file.size, 2), taskID);
         await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID}, {new: true});
+        await noteModel.create({task_id: taskID, content: `Task Has Been Finished by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been Finished!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

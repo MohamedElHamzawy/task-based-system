@@ -21,6 +21,7 @@ const assignFreelancer = async (req, res, next) => {
         }
         await freelancerModel.findByIdAndUpdate({ _id: freelancer },{ $inc: { tasksCount: 1 } });
         await userModel.findByIdAndUpdate({ _id: task.accepted_by }, { $inc: { tasksCount: 1 } });
+        await noteModel.create({task_id: taskID, content: `Freelancer assigned by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Freelancer has been assigned!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));

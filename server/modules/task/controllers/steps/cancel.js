@@ -46,6 +46,7 @@ const cancelTask = async (req, res, next) => {
         }
         const statusID = await statusModel.findOne({slug: "cancelled"})._id;
         await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: 0}, {new: true});
+        await noteModel.create({task_id: taskID, content: `Task cancelled by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been cancelled!"});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
