@@ -120,18 +120,19 @@ const Accounts = () => {
         <div className="bg-gray-100 px-8 py-4 rounded-sm drop-shadow">
           <div className="flex justify-between items-center">Team Members</div>
           <div className="flex justify-between items-center my-4">
-            <input
-              type="text"
-              className=""
-              placeholder="Search By UserName"
-              value={searchName}
-              onChange={(e) => {
-                setSearchName(e.target.value);
-                setAccountTypeFilterData(false);
-                setSearchFilterData(true);
-                setAccountType("");
-              }}
-            />
+            <div className="w-1/3">
+              <input
+                type="text"
+                placeholder="Search By UserName"
+                value={searchName}
+                onChange={(e) => {
+                  setSearchName(e.target.value);
+                  setAccountTypeFilterData(false);
+                  setSearchFilterData(true);
+                  setAccountType("");
+                }}
+              />
+            </div>
           </div>
           {searchFilterData &&
             (!searchFilter.length == 0 ? (

@@ -173,7 +173,7 @@ const Transactions = () => {
               onChange={amountChangeHandler}
               onBlur={amountTouchHandler}
               isvalid={amountState.isvalid.toString()}
-              className={`w-4/5 lg:w-7/12 p-2 border-black rounded-sm ${
+              className={`${
                 !amountState.isvalid &&
                 amountState.isTouched &&
                 "form-control-invalid"
@@ -186,7 +186,6 @@ const Transactions = () => {
             <select
               id="Method"
               name="Method"
-              className="p-2 px-4 w-4/5 lg:w-7/12 border-black rounded-sm"
               value={method}
               onChange={(event) => setMethod(event.target.value)}
             >
@@ -209,7 +208,7 @@ const Transactions = () => {
               onChange={numberChangeHandler}
               onBlur={numberTouchHandler}
               isvalid={numberState.isvalid.toString()}
-              className={`w-4/5 lg:w-7/12 p-2 border-black rounded-sm ${
+              className={`${
                 !numberState.isvalid &&
                 numberState.isTouched &&
                 "form-control-invalid"
@@ -227,7 +226,7 @@ const Transactions = () => {
                 value: account._id,
               }))}
               onChange={handleChange}
-              className="w-4/5 lg:w-7/12 border border-black rounded-sm"
+              className="w-full"
               name="account"
             />
           </div>

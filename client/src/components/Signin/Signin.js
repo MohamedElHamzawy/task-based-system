@@ -186,7 +186,7 @@ const SignIn = () => {
               id="username"
               type="text"
               placeholder="Username"
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm ${
+              className={` ${
                 !usernameState.isvalid && usernameState.isTouched
                   ? "border-red-500"
                   : ""
@@ -207,7 +207,7 @@ const SignIn = () => {
               id="password"
               type="password"
               placeholder="Password"
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm ${
+              className={` ${
                 !passState.isvalid && passState.isTouched
                   ? "border-red-500"
                   : ""
