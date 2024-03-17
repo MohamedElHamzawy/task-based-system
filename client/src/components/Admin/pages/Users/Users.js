@@ -131,19 +131,21 @@ const Users = () => {
         <div className="bg-gray-100 px-8 py-4 rounded-sm drop-shadow">
           <div className="flex justify-between items-center">Team Members</div>
           <div className="flex justify-between items-center my-4">
-            <input
-              type="search"
-              className="rounded-sm w-1/3"
-              placeholder="Search Usernames"
-              value={searchName}
-              onChange={(e) => {
-                setSearchName(e.target.value);
-                setAllFilterData(false);
-                setSearchFilterData(true);
-                setFilterRole("");
-                setSortedUsers("");
-              }}
-            />
+            <div className="w-1/3">
+              <input
+                type="text"
+                className=""
+                placeholder="Search Usernames"
+                value={searchName}
+                onChange={(e) => {
+                  setSearchName(e.target.value);
+                  setAllFilterData(false);
+                  setSearchFilterData(true);
+                  setFilterRole("");
+                  setSortedUsers("");
+                }}
+              />
+            </div>
 
             <button
               className="inline-flex items-center rounded-md border px-3 py-2 text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
