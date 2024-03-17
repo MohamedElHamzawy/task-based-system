@@ -3,27 +3,39 @@ const auth = require("../../middleware/auth");
 const {upload}=require("../../middleware/multer")
 
 const {
-    getMyTasks, 
-    getTask, 
+    getMyTasks,
+    getTask,
     FilterTasks,
-    FilterTasksA,
-    FilterTasksB,
     createTask,
-    partialUpdateTask, 
-    updateTask, 
-    deleteTask,
-    downloadFile
+    updateTask,
+    acceptTask,
+    workingOn,
+    offerSubmit,
+    refuseTask,
+    availablity,
+    assignFreelancer,
+    ongoing,
+    doneTask,
+    downloadFile,
+    deliverTask,
+    cancelTask
 } = require("./task.controller");
 
 router.get("/", auth(), getMyTasks);
 router.get("/:id", auth(), getTask);
 router.post("/filter/result/", FilterTasks);
-router.post("/filter/result/customer", auth(), FilterTasksA);
-router.post("/filter/result/specialist", auth(), FilterTasksB);
 router.post("/", auth(), createTask);
-router.post("/partial/:id", auth(),upload.single('file'),partialUpdateTask);
+router.post("/action/accept/:id", auth(), acceptTask);
+router.post("/action/working/:id", auth(), workingOn);
+router.post("/action/offer/:id", auth(), offerSubmit);
+router.post("/action/refuse/:id", auth(), refuseTask);
+router.post("/action/availablity/:id", auth(), availablity);
+router.post("/action/assign/:id", auth(), assignFreelancer);
+router.post("/action/ongoing/:id", auth(), ongoing);
+router.post("/action/done/:id", auth(), upload.single('file'), doneTask);
+router.post("/action/deliver/:id", auth(), deliverTask);
+router.post("/action/cancel/:id", auth(), cancelTask);
 router.post("/:id", auth(), updateTask);
-router.delete("/:id", auth(), deleteTask);
 router.get("/file/:id", auth(), downloadFile);
 
 

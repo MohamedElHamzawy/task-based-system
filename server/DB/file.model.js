@@ -19,10 +19,6 @@ const fileSchema = new Schema({
         type: String,
         required: true
     },
-    speciality:{
-        type: mongoose.Types.ObjectId,
-        ref: "speciality"
-    },
     taskId:{
         type: mongoose.Types.ObjectId,
         ref: "task"

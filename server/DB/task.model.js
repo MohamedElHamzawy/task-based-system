@@ -64,10 +64,6 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "currency"
     },
-    file:{
-        type: mongoose.Types.ObjectId,
-        ref: "file"
-    },
     paid: {
         type: Number
     },
