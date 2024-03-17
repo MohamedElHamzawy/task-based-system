@@ -5,6 +5,9 @@ const HttpError = require("../../../../common/httpError");
 const ongoing = async (req, res, next) => {
     try {
         const taskID = req.params.id;
+        if (req.user.user_role != "freelancer" || req.user.user_role != "admin" || req.user.user_role != "specialistService") {
+            return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         statusID = await statusModel.findOne({slug: "on-going"})._id;
         await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
         res.json({msg: "Done"});

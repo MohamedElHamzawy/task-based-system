@@ -5,6 +5,9 @@ const HttpError = require("../../../../common/httpError");
 const refuseTask = async (req, res, next) => {
     try {
         const taskID = req.params.id;
+        if (req.user.user_role != "customerService" || req.user.user_role != "admin") {
+            return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         const statusID = await statusModel.findOne({slug: "rejected"})._id;
         await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID, cost: 0}, {new: true});
         res.json({message: "Task has been refused!"});
@@ -17,6 +20,9 @@ const acceptTask = async (req, res, next) => {
     try {
         const taskID = req.params.id;
         const {paid} = req.body;
+        if (req.user.user_role != "customerService" || req.user.user_role != "admin") {
+            return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         const statusID = await statusModel.findOne({slug: "approved"})._id;
         await taskModel.findOneAndUpdate({_id: taskID}, {paid: paid, taskStatus: statusID}, {new: true});
         res.json({message: "Task has been accepted!"});

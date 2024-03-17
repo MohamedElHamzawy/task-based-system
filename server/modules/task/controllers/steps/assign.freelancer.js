@@ -8,8 +8,12 @@ const assignFreelancer = async (req, res, next) => {
     try {
         const {freelancer, cost} = req.body;
         const taskID = req.params.id;
+        if (req.user.user_role != "specialistService" || req.user.user_role != "admin") {
+            return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         const task = await taskModel.findOne({_id: taskID});
         const statusID = await statusModel.findOne({slug: "assigned"})._id;
+        await taskModel.findOneAndUpdate({_id: taskID, accepted: false}, {accepted_by: req.user._id, accepted: true}, {new: true});
         if (cost > 0 && task.cost == 0) {
             await taskModel.findOneAndUpdate({_id: taskID}, {freelancer: freelancer, taskStatus: statusID, cost: cost}, {new: true});
         } else {

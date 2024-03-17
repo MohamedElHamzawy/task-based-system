@@ -6,7 +6,7 @@ const offerSubmit = async (req, res, next) => {
     try {
         const taskID = req.params.id;
         const {cost} = req.body;
-        if (req.user.user_role != "specialistService") {
+        if (req.user.user_role != "specialistService" || req.user.user_role != "admin") {
             return next(new HttpError("You are not authorized to add offer to this task!", 401));
         }
         if (cost <= 0) {

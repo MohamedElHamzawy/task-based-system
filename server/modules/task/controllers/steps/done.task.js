@@ -33,6 +33,9 @@ const doneTask = async (req, res, next) => {
     try {
         const taskID = req.params.id;
         const statusID = await statusModel.findOne({slug: "done"})._id;
+        if (req.user.user_role != "freelancer" || req.user.user_role != "admin" || req.user.user_role != "specialistService") {
+          return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         await pushFile(req.file.originalname, req.file.path, req.file.mimetype, fileSizeFormatter(req.file.size, 2), taskID);
         await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID}, {new: true});
         res.json({message: "Task has been Finished!"});

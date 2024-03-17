@@ -11,6 +11,9 @@ const HttpError = require("../../../../common/httpError");
 const deliverTask = async (req, res, next) => {
     try {
         const taskID = req.params.id;
+        if (req.user.user_role != "customerService" || req.user.user_role != "admin") {
+            return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         const statusID = await statusModel.findOne({slug: "delivered"})._id;
         const [thisTask, freelancerAccount, freelancer, clientAccount, transactionC, transactionF, currencyValueF, currencyValue] = await Promise.all([
             taskModel.findOne({_id: taskID}).lean(),

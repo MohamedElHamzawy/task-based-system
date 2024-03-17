@@ -7,7 +7,6 @@ const downloadFile = require("./steps/file.download");
 const {refuseTask, acceptTask} = require("./steps/offer.actions");
 const offerSubmit = require("./steps/offer.submit");
 const ongoing = require("./steps/ongoing");
-const workingOn = require("./steps/working.on");
 
 module.exports = {
     assignFreelancer,
@@ -19,6 +18,5 @@ module.exports = {
     refuseTask,
     acceptTask,
     offerSubmit,
-    ongoing,
-    workingOn
+    ongoing
 }

@@ -10,7 +10,9 @@ const userModel = require("../../../../DB/user.model");
 const cancelTask = async (req, res, next) => {
     try {
         const taskID = req.params.id;
-
+        if (req.user.user_role != "admin") {
+            return next(new HttpError("You are not authorized to add offer to this task!", 401));
+        }
         const thisTask = await taskModel.findOne({_id: taskID});
         const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
         if (thisTask.taskStatus == await statusModel.findOne({slug: "delivered"})._id) {
