@@ -16,6 +16,7 @@ import FreelancerOffer from "./FreelancerOffer";
 import Paid from "./Paid";
 import EditTask from "./EditTask";
 import ShareWith from "./ShareWith";
+import Status from "./Status";
 
 //Comment validation
 const commentReducer = (state, action) => {
@@ -551,6 +552,8 @@ const TaskDetails = () => {
           </div>
         </div>
       </div>
+
+      <Status />
 
       <div className="w-full max-w-5xl 2xl:max-w-6xl mx-auto bg-white drop-shadow rounded p-2">
         <h1 className="font-semibold">Comments</h1>
