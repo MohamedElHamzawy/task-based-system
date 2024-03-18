@@ -105,6 +105,7 @@ const Tasks = () => {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => {
+              console.log(res);
               setTasks(res.data.tasks);
 
               setTasksCount(res.data.tasksCount);
@@ -337,7 +338,7 @@ const Tasks = () => {
           </option>
           {statuses.map((status) => (
             <option value={status._id} key={status._id}>
-              {status.statusname}
+              {status?.statusname}
             </option>
           ))}
         </select>

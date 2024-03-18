@@ -313,10 +313,10 @@ const TaskDetails = () => {
           <div className="font-bold">{task.serialNumber}</div>
           <div
             className={`rounded-md px-4 py-2 text-xs font-bold ${getRowClass(
-              status.statusname
-            )} ${getStatusClass(status.statusname)}`}
+              status?.statusname
+            )} ${getStatusClass(status?.statusname)}`}
           >
-            {status.statusname}
+            {status?.statusname || "N/A"}
           </div>
           <div className="space-x-2">
             {editTask ? (
@@ -623,7 +623,7 @@ const TaskDetails = () => {
               </option>
               {statuses.map((status) => (
                 <option value={status._id} key={status._id}>
-                  {status.statusname}
+                  {status?.statusname}
                 </option>
               ))}
             </select>
