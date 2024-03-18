@@ -24,21 +24,22 @@ const updateTask = async (req,res,next) => {
         if(!task) {
             return next(new HttpError("Task doesn't exist on system!", 404));
         }
-        if (task.taskStatus == await statusModel.findOne({slug: "delivered"})._id) {
+        const deliveredStatus = await statusModel.findOne({slug: "delivered"})
+        if (task.taskStatus == deliveredStatus._id) {
             let diff = cost ? (cost - task.cost) : 0;
             let dif = paid ? (paid - task.paid) : 0;
-            const freelancerAccount = await accountModel.findOne({owner: task.freelancer})._id;
+            const freelancerAccount = await accountModel.findOne({owner: task.freelancer});
             await transactionModel.findOneAndUpdate(
-                {task: req.params.id, account_id: freelancerAccount},
+                {task: req.params.id, account_id: freelancerAccount._id},
                 {amount: cost ? cost : task.cost}
             )
             await accountModel.findOneAndUpdate(
                 {_id: freelancerAccount},
                 {$inc: {balance: diff}}
             )
-            const clientAccount = await accountModel.findOne({owner: task.client})._id;
+            const clientAccount = await accountModel.findOne({owner: task.client});
             await transactionModel.findOneAndUpdate(
-                {task: req.params.id, account_id: clientAccount},
+                {task: req.params.id, account_id: clientAccount._id},
                 {amount: paid ? paid : task.paid}
             )
             await accountModel.findOneAndUpdate(

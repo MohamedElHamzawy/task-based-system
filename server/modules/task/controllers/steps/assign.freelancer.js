@@ -12,12 +12,12 @@ const assignFreelancer = async (req, res, next) => {
             return next(new HttpError("You are not authorized to add offer to this task!", 401));
         }
         const task = await taskModel.findOne({_id: taskID});
-        const statusID = await statusModel.findOne({slug: "assigned"})._id;
+        const statusID = await statusModel.findOne({slug: "assigned"});
         await taskModel.findOneAndUpdate({_id: taskID, accepted: false}, {accepted_by: req.user._id, accepted: true}, {new: true});
         if (cost > 0 && task.cost == 0) {
-            await taskModel.findOneAndUpdate({_id: taskID}, {freelancer: freelancer, taskStatus: statusID, cost: cost}, {new: true});
+            await taskModel.findOneAndUpdate({_id: taskID}, {freelancer: freelancer, taskStatus: statusID._id, cost: cost}, {new: true});
         } else {
-            await taskModel.findOneAndUpdate({_id: taskID}, {freelancer: freelancer, taskStatus: statusID}, {new: true});
+            await taskModel.findOneAndUpdate({_id: taskID}, {freelancer: freelancer, taskStatus: statusID._id}, {new: true});
         }
         await freelancerModel.findByIdAndUpdate({ _id: freelancer },{ $inc: { tasksCount: 1 } });
         await userModel.findByIdAndUpdate({ _id: task.accepted_by }, { $inc: { tasksCount: 1 } });

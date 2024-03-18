@@ -15,7 +15,8 @@ const cancelTask = async (req, res, next) => {
         }
         const thisTask = await taskModel.findOne({_id: taskID});
         const currencyValue = await currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP");
-        if (thisTask.taskStatus == await statusModel.findOne({slug: "delivered"})._id) {
+        const deliveredStatus = await statusModel.findOne({slug: "delivered"});
+        if (thisTask.taskStatus == deliveredStatus._id) {
             const taskTransactions = await transactionModel.find({task: taskID});
             if (taskTransactions) {
                 for (let i = 0; i < taskTransactions.length; i++) {
@@ -44,8 +45,8 @@ const cancelTask = async (req, res, next) => {
                 { $inc: { completedCount: -1, totalGain: -thisTask.cost, totalProfit: -thisTask.profit_amount } }
             );   
         }
-        const statusID = await statusModel.findOne({slug: "cancelled"})._id;
-        await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: 0}, {new: true});
+        const statusID = await statusModel.findOne({slug: "cancelled"});
+        await taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID._id, profit_amount: 0}, {new: true});
         await noteModel.create({task_id: taskID, content: `Task cancelled by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been cancelled!"});
     } catch (error) {

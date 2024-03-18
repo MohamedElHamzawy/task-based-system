@@ -14,9 +14,9 @@ const offerSubmit = async (req, res, next) => {
             return next(new HttpError("Task cost must be greater than zero!", 400));
         }
 
-        const statusID = await statusModel.findOne({slug: "offer-submitted"})._id;
+        const statusID = await statusModel.findOne({slug: "offer-submitted"});
         await taskModel.findOneAndUpdate({_id: taskID, accepted: false}, {accepted_by: req.user._id, accepted: true}, {new: true});
-        await taskModel.findOneAndUpdate({_id: taskID}, {cost: cost, taskStatus: statusID}, {new: true});
+        await taskModel.findOneAndUpdate({_id: taskID}, {cost: cost, taskStatus: statusID._id}, {new: true});
         await noteModel.create({task_id: taskID, content: `Offer submitted by ${req.user.full_name}`, user_id: req.user._id});
         res.json({message: "Task has been accepted!"});
     } catch (error) {

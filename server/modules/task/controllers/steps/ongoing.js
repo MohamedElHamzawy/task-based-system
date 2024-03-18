@@ -8,8 +8,8 @@ const ongoing = async (req, res, next) => {
         if (req.user.user_role != "freelancer" || req.user.user_role != "admin" || req.user.user_role != "specialistService") {
             return next(new HttpError("You are not authorized to add offer to this task!", 401));
         }
-        statusID = await statusModel.findOne({slug: "on-going"})._id;
-        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID});
+        const statusID = await statusModel.findOne({slug: "on-going"});
+        await taskModel.findByIdAndUpdate({_id: taskID}, {taskStatus: statusID._id});
         await noteModel.create({task_id: taskID, content: `Task is under process by ${req.user.full_name}`, user_id: req.user._id});
         res.json({msg: "Done"});
     } catch (error) {

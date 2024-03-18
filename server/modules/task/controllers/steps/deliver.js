@@ -14,7 +14,7 @@ const deliverTask = async (req, res, next) => {
         if (req.user.user_role != "customerService" || req.user.user_role != "admin") {
             return next(new HttpError("You are not authorized to add offer to this task!", 401));
         }
-        const statusID = await statusModel.findOne({slug: "delivered"})._id;
+        const statusID = await statusModel.findOne({slug: "delivered"});
         const [thisTask, freelancerAccount, freelancer, clientAccount, transactionC, transactionF, currencyValueF, currencyValue] = await Promise.all([
             taskModel.findOne({_id: taskID}).lean(),
             accountModel.findOne({owner: thisTask.freelancer}).lean(),
@@ -27,7 +27,7 @@ const deliverTask = async (req, res, next) => {
         ]);
         const profit_amount = (thisTask.paid * currencyValue.priceToEGP) - thisTask.cost;
         await Promise.all([
-            taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID, profit_amount: profit_amount}, {new: true}).lean(),
+            taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID._id, profit_amount: profit_amount}, {new: true}).lean(),
             accountModel.findByIdAndUpdate(freelancerAccount._id, {$inc: {balance: transactionF.amount}}).lean(),
             accountModel.findByIdAndUpdate(clientAccount._id, {$inc: {balance: transactionC.amount}}).lean(),
             clientModel.updateOne({_id: thisTask.client}, {$inc: {completedCount: 1, totalGain: thisTask.paid, totalProfit: profit_amount}}).lean(),

@@ -10,8 +10,8 @@ const createTask = async (req, res, next) => {
     const role = req.user.user_role;
     if (role !== "specialistService" && role !== "freelancer") {
         try {
-            let statusId;
-            paid ? statusId = await statusModel.findOne({slug: "working-on"})._id : statusId = await statusModel.findOne({slug: "waiting-offer"})._id;
+            const paidStatus = await statusModel.findOne({slug: "working-on"});
+            const unpaidStatus = await statusModel.findOne({slug: "waiting-offer"});
             const clientCounrty = await clientModel.findById(client, "country").lean().exec();
             const newTask = await taskModel.create({
                 title,
@@ -25,14 +25,14 @@ const createTask = async (req, res, next) => {
                 task_currency,
                 paid: paid ? paid : 0,
                 created_by: req.user._id,
-                taskStatus: statusId
+                taskStatus: paid ? paidStatus._id : unpaidStatus._id
             });
             await Promise.all([
                 noteModel.create({ content: `Task has been created by ${req.user.fullname}`, user_id: req.user._id, task_id: newTask._id }),
                 userModel.findByIdAndUpdate(newTask.created_by, { $inc: { tasksCount: 1 } }).exec(),
                 clientModel.findByIdAndUpdate(newTask.client, { $inc: { tasksCount: 1 } }).exec()
             ]);
-            res.json({ message: "Task has been created successfully" });
+            res.json({ message: "Task has been created successfully", task: newTask });
         } catch (error) {
             return next(new HttpError(`Unexpected Error: ${error}`, 500));
         }
