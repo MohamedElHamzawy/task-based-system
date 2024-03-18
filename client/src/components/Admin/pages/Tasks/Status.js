@@ -7,12 +7,12 @@ import Ongoing from "./Progress/Ongoing";
 import Done from "./Progress/Done";
 import WorkingOn from "./Progress/WorkingOn";
 
-const Status = ({ status = "working-on" }) => {
+const Status = ({ status }) => {
   const renderStatus = () => {
     switch (status) {
-      case "waiting-offer":
+      case "waiting offer":
         return <WaitingOffer />;
-      case "offer-submitted":
+      case "offer submitted":
         return <OfferSubmitted />;
       case "approved":
         return <Approved />;
@@ -20,7 +20,7 @@ const Status = ({ status = "working-on" }) => {
         return <WaitingOffer rejected />;
       case "assigned":
         return <Assigned />;
-      case "working-on":
+      case "working on":
         return <WorkingOn />;
       case "ongoing":
         return <Ongoing />;

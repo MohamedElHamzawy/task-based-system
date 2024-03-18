@@ -249,7 +249,6 @@ const AddTask = () => {
           deadline: deadline,
           task_currency: currency,
           paid: taskPriceState.value,
-          status: status,
           shareWith: user,
           priority,
         },
@@ -376,7 +375,7 @@ const AddTask = () => {
           />
         </div>
 
-        <div className="flex flex-col w-full">
+        {/* <div className="flex flex-col w-full">
           <label className="w-full lg:w-1/5 font-bold">Status</label>
           <select
             id="status"
@@ -398,7 +397,7 @@ const AddTask = () => {
                 ))
             )}
           </select>
-        </div>
+        </div> */}
 
         <div className="flex flex-col w-full">
           <label className="w-full lg:w-1/5 font-bold">Task Price</label>
@@ -512,24 +511,13 @@ const AddTask = () => {
         <div className="col-span-2 flex justify-center w-full">
           <button
             disabled={
-              status == "64fdd400a86587827152ab3c"
-                ? !channel ||
-                  !titleState.isvalid ||
-                  !descriptionState.isvalid ||
-                  !taskPriceState.isvalid ||
-                  !speciality ||
-                  !client ||
-                  !currency ||
-                  !deadline ||
-                  !status
-                : !channel ||
-                  !titleState.isvalid ||
-                  !descriptionState.isvalid ||
-                  !speciality ||
-                  !client ||
-                  !currency ||
-                  !deadline ||
-                  !status
+              !channel ||
+              !titleState.isvalid ||
+              !descriptionState.isvalid ||
+              !speciality ||
+              !client ||
+              !currency ||
+              !deadline
             }
             className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
