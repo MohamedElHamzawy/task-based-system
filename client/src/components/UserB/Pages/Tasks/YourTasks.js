@@ -104,7 +104,7 @@ const PendingTasks = () => {
     try {
       setError(null);
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result/specialist`,
+        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result`,
         {
           speciality: speciality,
           status: status,
@@ -140,7 +140,7 @@ const PendingTasks = () => {
     try {
       setError(null);
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result/specialist`,
+        `${process.env.REACT_APP_BACKEND_URL}:5000/api/task/filter/result`,
         {
           start: start,
           end: end,
