@@ -35,7 +35,7 @@ const acceptTask = async (req, res, next) => {
     const taskID = req.params.id;
     const { paid } = req.body;
     if (
-      req.user.user_role != "customerService" ||
+      req.user.user_role != "customerService" &&
       req.user.user_role != "admin"
     ) {
       return next(
