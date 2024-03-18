@@ -9,37 +9,132 @@ const userModel = require("../../../../DB/user.model");
 const HttpError = require("../../../../common/httpError");
 
 const deliverTask = async (req, res, next) => {
-    try {
-        const taskID = req.params.id;
-        if (req.user.user_role != "customerService" || req.user.user_role != "admin") {
-            return next(new HttpError("You are not authorized to add offer to this task!", 401));
-        }
-        const statusID = await statusModel.findOne({slug: "delivered"});
-        const [thisTask, freelancerAccount, freelancer, clientAccount, transactionC, transactionF, currencyValueF, currencyValue] = await Promise.all([
-            taskModel.findOne({_id: taskID}).lean(),
-            accountModel.findOne({owner: thisTask.freelancer}).lean(),
-            freelancerModel.findById(thisTask.freelancer).lean(),
-            accountModel.findOne({owner: thisTask.client}).lean(),
-            new transactionModel({transactiontype: "gain", task: taskID, amount: thisTask.paid, method: "system", account_id: clientAccount._id}).save(),
-            new transactionModel({transactiontype: "cost", task: taskID, amount: thisTask.cost / currencyValueF.priceToEGP, method: "system", account_id: freelancerAccount._id}).save(),
-            currencyModel.findOne({_id: freelancer.currency}).select("priceToEGP").lean(),
-            currencyModel.findOne({_id: thisTask.task_currency}).select("priceToEGP").lean()
-        ]);
-        const profit_amount = (thisTask.paid * currencyValue.priceToEGP) - thisTask.cost;
-        await Promise.all([
-            taskModel.findOneAndUpdate({_id: taskID}, {taskStatus: statusID._id, profit_amount: profit_amount}, {new: true}).lean(),
-            accountModel.findByIdAndUpdate(freelancerAccount._id, {$inc: {balance: transactionF.amount}}).lean(),
-            accountModel.findByIdAndUpdate(clientAccount._id, {$inc: {balance: transactionC.amount}}).lean(),
-            clientModel.updateOne({_id: thisTask.client}, {$inc: {completedCount: 1, totalGain: thisTask.paid, totalProfit: profit_amount}}).lean(),
-            freelancerModel.updateOne({_id: thisTask.freelancer}, {$inc: {completedCount: 1, totalGain: thisTask.cost, totalProfit: profit_amount}}).lean(),
-            userModel.updateOne({_id: thisTask.accepted_by}, {$inc: {completedCount: 1, totalGain: thisTask.paid, totalProfit: profit_amount}}).lean(),
-            userModel.updateOne({_id: thisTask.created_by}, {$inc: {completedCount: 1, totalGain: thisTask.paid, totalProfit: profit_amount}}).lean()
-        ]);
-        await noteModel.create({task_id: taskID, content: `Task has been delivered by ${req.user.full_name}`, user_id: req.user._id});
-        res.json({message: "Task has been delivered!"});
-    } catch (error) {
-        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+  try {
+    const taskID = req.params.id;
+    if (
+      req.user.user_role != "customerService" &&
+      req.user.user_role != "admin"
+    ) {
+      return next(
+        new HttpError("You are not authorized to add offer to this task!", 401)
+      );
     }
-}
+    const statusID = await statusModel.findOne({ slug: "delivered" });
+    const [
+      thisTask,
+      freelancerAccount,
+      freelancer,
+      clientAccount,
+      transactionC,
+      transactionF,
+      currencyValueF,
+      currencyValue,
+    ] = await Promise.all([
+      taskModel.findOne({ _id: taskID }).lean(),
+      accountModel.findOne({ owner: thisTask.freelancer }).lean(),
+      freelancerModel.findById(thisTask.freelancer).lean(),
+      accountModel.findOne({ owner: thisTask.client }).lean(),
+      new transactionModel({
+        transactiontype: "gain",
+        task: taskID,
+        amount: thisTask.paid,
+        method: "system",
+        account_id: clientAccount._id,
+      }).save(),
+      new transactionModel({
+        transactiontype: "cost",
+        task: taskID,
+        amount: thisTask.cost / currencyValueF.priceToEGP,
+        method: "system",
+        account_id: freelancerAccount._id,
+      }).save(),
+      currencyModel
+        .findOne({ _id: freelancer.currency })
+        .select("priceToEGP")
+        .lean(),
+      currencyModel
+        .findOne({ _id: thisTask.task_currency })
+        .select("priceToEGP")
+        .lean(),
+    ]);
+    const profit_amount =
+      thisTask.paid * currencyValue.priceToEGP - thisTask.cost;
+    await Promise.all([
+      taskModel
+        .findOneAndUpdate(
+          { _id: taskID },
+          { taskStatus: statusID._id, profit_amount: profit_amount },
+          { new: true }
+        )
+        .lean(),
+      accountModel
+        .findByIdAndUpdate(freelancerAccount._id, {
+          $inc: { balance: transactionF.amount },
+        })
+        .lean(),
+      accountModel
+        .findByIdAndUpdate(clientAccount._id, {
+          $inc: { balance: transactionC.amount },
+        })
+        .lean(),
+      clientModel
+        .updateOne(
+          { _id: thisTask.client },
+          {
+            $inc: {
+              completedCount: 1,
+              totalGain: thisTask.paid,
+              totalProfit: profit_amount,
+            },
+          }
+        )
+        .lean(),
+      freelancerModel
+        .updateOne(
+          { _id: thisTask.freelancer },
+          {
+            $inc: {
+              completedCount: 1,
+              totalGain: thisTask.cost,
+              totalProfit: profit_amount,
+            },
+          }
+        )
+        .lean(),
+      userModel
+        .updateOne(
+          { _id: thisTask.accepted_by },
+          {
+            $inc: {
+              completedCount: 1,
+              totalGain: thisTask.paid,
+              totalProfit: profit_amount,
+            },
+          }
+        )
+        .lean(),
+      userModel
+        .updateOne(
+          { _id: thisTask.created_by },
+          {
+            $inc: {
+              completedCount: 1,
+              totalGain: thisTask.paid,
+              totalProfit: profit_amount,
+            },
+          }
+        )
+        .lean(),
+    ]);
+    await noteModel.create({
+      task_id: taskID,
+      content: `Task has been delivered by ${req.user.full_name}`,
+      user_id: req.user._id,
+    });
+    res.json({ message: "Task has been delivered!" });
+  } catch (error) {
+    return next(new HttpError(`Unexpected Error: ${error}`, 500));
+  }
+};
 
-module.exports = deliverTask
+module.exports = deliverTask;
