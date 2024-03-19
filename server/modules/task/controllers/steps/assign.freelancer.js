@@ -19,6 +19,9 @@ const assignFreelancer = async (req, res, next) => {
     }
     const task = await taskModel.findOne({ _id: taskID });
     const statusID = await statusModel.findOne({ slug: "assigned" });
+    if (!statusID) {
+      return next(new HttpError("Status with slug 'assigned' not found", 404));
+    }
     await taskModel.findOneAndUpdate(
       { _id: taskID, accepted: false },
       { accepted_by: req.user._id, accepted: true },
@@ -52,6 +55,7 @@ const assignFreelancer = async (req, res, next) => {
     });
     res.json({ message: "Freelancer has been assigned!" });
   } catch (error) {
+    console.log(error);
     return next(new HttpError(`Unexpected Error: ${error}`, 500));
   }
 };
