@@ -2,6 +2,7 @@ const fileModel = require("../../../../DB/file.model");
 const statusModel = require("../../../../DB/status.model");
 const taskModel = require("../../../../DB/task.model");
 const HttpError = require("../../../../common/httpError");
+const noteModel = require("../../../../DB/note.model");
 
 const pushFile = async (fileName, filePath, fileType, fileSize, taskId) => {
   try {
