@@ -553,7 +553,7 @@ const TaskDetails = () => {
         </div>
       </div>
 
-      <Status status={task.taskStatus?.statusname} />
+      <Status status={task.taskStatus?.statusname} task={task} />
 
       <div className="w-full max-w-5xl 2xl:max-w-6xl mx-auto bg-white drop-shadow rounded p-2">
         <h1 className="font-semibold">Comments</h1>

@@ -5,7 +5,7 @@ import { Alert, AlertTitle, Grid } from "@mui/material";
 
 const ErrorModal = ({ message, onClear = () => {} }) => {
   return (
-    <MiModal open={message} onClose={onClear} className="max-w-xl mx-auto">
+    <MiModal open={!!message} onClose={onClear} className="max-w-xl mx-auto">
       <Grid
         container
         height="100vh"
