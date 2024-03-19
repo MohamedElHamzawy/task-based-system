@@ -1,5 +1,6 @@
 const statusModel = require("../../../../DB/status.model");
 const taskModel = require("../../../../DB/task.model");
+const noteModel = require("../../../../DB/note.model");
 const HttpError = require("../../../../common/httpError");
 
 const refuseTask = async (req, res, next) => {
