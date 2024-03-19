@@ -3,6 +3,7 @@ const statusModel = require("../../../../DB/status.model");
 const taskModel = require("../../../../DB/task.model");
 const userModel = require("../../../../DB/user.model");
 const HttpError = require("../../../../common/httpError");
+const noteModel = require("../../../../DB/note.model");
 
 const assignFreelancer = async (req, res, next) => {
   try {
