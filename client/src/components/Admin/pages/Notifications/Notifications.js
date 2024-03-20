@@ -4,7 +4,7 @@ import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import GetCookie from "../../../../hooks/getCookie";
 import { MdOutlineNotificationsActive } from "react-icons/md";
-import NotificationCard from "./Notification";
+import NotificationCard from "../../../Notification";
 
 const Notifications = () => {
   const token = GetCookie("AdminToken");
