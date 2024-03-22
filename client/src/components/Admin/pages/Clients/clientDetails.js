@@ -711,10 +711,10 @@ const ClientDetails = () => {
                     <td className="px-4 py-3">
                       <div
                         className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
-                          task.taskStatus.statusname
-                        )} ${getStatusClass(task.taskStatus.statusname)}`}
+                          task.taskStatus?.statusname
+                        )} ${getStatusClass(task.taskStatus?.statusname)}`}
                       >
-                        {task.taskStatus.statusname}
+                        {task.taskStatus?.statusname}
                       </div>
                     </td>
                   </tr>
@@ -774,10 +774,10 @@ const ClientDetails = () => {
                     <td className="px-4 py-3">
                       <div
                         className={`w-full rounded-md px-2 py-1 text-xs font-bold ${getRowClass(
-                          task.taskStatus.statusname
-                        )} ${getStatusClass(task.taskStatus.statusname)}`}
+                          task.taskStatus?.statusname
+                        )} ${getStatusClass(task.taskStatus?.statusname)}`}
                       >
-                        {task.taskStatus.statusname}
+                        {task.taskStatus?.statusname}
                       </div>
                     </td>
                   </tr>
