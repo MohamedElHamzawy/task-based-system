@@ -2,6 +2,7 @@ const bankModel = require("../../DB/bank.model");
 const accountModel = require("../../DB/account.model");
 const bankTransactionModel = require("../../DB/bank.transactions.model");
 const HttpError = require("../../common/httpError");
+const transactionModel = require("../../DB/transaction.model");
 
 const getAllBankTransactions = async (req, res, next) => {
   try {
@@ -90,7 +91,7 @@ const deleteBankTransaction = async (req, res, next) => {
     const bankTransaction = await bankTransactionModel.findById(req.params.id);
     await bankModel.findByIdAndUpdate(
       bankTransaction.from,
-      { $inc: { balance: bankTransaction.amount } } //This line is increasing the balance of the bank that the transaction is from by the amount of the transaction.
+      { $inc: { balance: bankTransaction.amount } }
     );
     await bankModel.findByIdAndUpdate(
       bankTransaction.to,
@@ -98,8 +99,17 @@ const deleteBankTransaction = async (req, res, next) => {
         $inc: {
           balance: -(bankTransaction.amount * bankTransaction.exchangeRate),
         },
-      } //This line is decreasing the balance of the bank that the transaction is to by the amount of the transaction.
+      }
     );
+    await accountModel.findByIdAndUpdate(
+      bankTransaction.from,
+      { $inc: { balance: bankTransaction.amount } }
+    )
+    await accountModel.findByIdAndUpdate(
+      bankTransaction.to,
+      { $inc: { balance: bankTransaction.amount } }
+    )
+    await transactionModel.findOneAndDelete({$or: [{account_id: bankTransaction.from}, {account_id: bankTransaction.to}]});
     await bankTransactionModel.findByIdAndDelete(req.params.id);
     res.send(bankTransaction);
   } catch (error) {
