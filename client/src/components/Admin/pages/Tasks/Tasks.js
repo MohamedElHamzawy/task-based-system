@@ -487,7 +487,8 @@ const Tasks = () => {
           </div>
           <div className="flex flex-col items-center justify-center m-0 p-0">
             <h2 className="text-base text-sky-800 font-semibold m-0 p-0">
-              Task Completion - {(completedCount / tasksCount) * 100} %
+              Task Completion -{" "}
+              {((completedCount / tasksCount) * 100).toFixed(2)} %
             </h2>
             <div className="w-2/3 bg-gray-300 rounded-full h-1.5">
               <div
