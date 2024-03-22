@@ -43,13 +43,15 @@ const doneTask = async (req, res, next) => {
         new HttpError("You are not authorized to add offer to this task!", 401)
       );
     }
-    await pushFile(
-      req.file.originalname,
-      req.file.path,
-      req.file.mimetype,
-      fileSizeFormatter(req.file.size, 2),
-      taskID
-    );
+    if (req.file) {
+      await pushFile(
+        req.file.originalname,
+        req.file.path,
+        req.file.mimetype,
+        fileSizeFormatter(req.file.size, 2),
+        taskID
+      );
+    }
     await taskModel.findOneAndUpdate(
       { _id: taskID },
       { taskStatus: statusID._id },
