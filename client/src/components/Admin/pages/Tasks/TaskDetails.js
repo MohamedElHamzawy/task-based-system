@@ -61,6 +61,7 @@ const TaskDetails = () => {
   const [statuses, setStatuses] = useState([]);
   const [changeStatus, setChangeStatus] = useState("");
   const navigate = useNavigate();
+  const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
     let timerId;
@@ -230,6 +231,31 @@ const TaskDetails = () => {
   useEffect(() => {
     if (!task) return;
     console.log(task);
+  }, [task]);
+
+  function calculateCountdown(deadline) {
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    const diff = deadlineDate - now;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  useEffect(() => {
+    // Step 2: Set an interval that updates the countdown every second
+    const interval = setInterval(() => {
+      if (task && task.deadline) {
+        setCountdown(calculateCountdown(task.deadline));
+      }
+    }, 1000);
+
+    // Step 3: Clear the interval when the component unmounts
+    return () => clearInterval(interval);
   }, [task]);
 
   return isLoading || !task || task.length === 0 ? (
@@ -442,13 +468,24 @@ const TaskDetails = () => {
                   DeadLine
                 </h5>
                 <div className="flex space-x-2 items-center justify-between">
-                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
-                    <span className="text-danger">Date:</span>
-                    {task.deadline && task.deadline.split("T")[0]}
+                  <p className="flex items-center justify-between font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    <div className="flex space-x-1">
+                      <span className="text-danger">Date:</span>
+                      <span>
+                        {task.deadline && task.deadline.split("T")[0]}
+                      </span>
+                    </div>
+                    <div className="flex space-x-1">
+                      <span className="text-danger">Time:</span>
+                      <span>
+                        {task.deadline &&
+                          task.deadline.split("T")[1].split(".")[0]}
+                      </span>
+                    </div>
                   </p>
-                  <p className="font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
-                    <span className="text-danger">Time:</span>
-                    {task.deadline && task.deadline.split("T")[1].split(".")[0]}
+                  <p className="space-x-1 font-medium border rounded my-0 mr-0 p-2 flex-1  drop-shadow-sm">
+                    <span className="text-danger">Countdown:</span>
+                    <span>{task.deadline && countdown}</span>
                   </p>
                 </div>
               </div>
