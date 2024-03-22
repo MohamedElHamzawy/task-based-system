@@ -2,6 +2,7 @@ const accountModel = require("../../../../DB/account.model");
 const clientModel = require("../../../../DB/client.model");
 const currencyModel = require("../../../../DB/currency.model");
 const freelancerModel = require("../../../../DB/freelancer.model");
+const noteModel = require("../../../../DB/note.model");
 const statusModel = require("../../../../DB/status.model");
 const taskModel = require("../../../../DB/task.model");
 const transactionModel = require("../../../../DB/transaction.model");
@@ -20,37 +21,27 @@ const deliverTask = async (req, res, next) => {
       );
     }
     const statusID = await statusModel.findOne({ slug: "delivered" });
-    const thisTask = await taskModel.findOne({ _id: taskID }).lean();
-    const clientAccount = await accountModel.findOne({ owner: thisTask.client }).lean();
-    const freelancerAccount = await accountModel.findOne({ owner: thisTask.freelancer }).lean();
-    const freelancer = await freelancerModel.findById(thisTask.freelancer).lean();
-    const currencyValueF = currencyModel.findOne({ _id: freelancer.currency }).select("priceToEGP").lean()
-    const [
-      transactionC,
-      transactionF,
-      currencyValue,
-    ] = await Promise.all([
-      new transactionModel({
-        transactiontype: "gain",
-        task: taskID,
-        amount: thisTask.paid,
-        method: "system",
-        account_id: clientAccount._id,
-      }).save(),
-      new transactionModel({
-        transactiontype: "cost",
-        task: taskID,
-        amount: thisTask.cost / currencyValueF.priceToEGP,
-        method: "system",
-        account_id: freelancerAccount._id,
-      }).save(),
-      currencyModel
-        .findOne({ _id: thisTask.task_currency })
-        .select("priceToEGP")
-        .lean(),
-    ]);
-    const profit_amount =
-      thisTask.paid * currencyValue.priceToEGP - thisTask.cost;
+    const thisTask = await taskModel.findOne({ _id: taskID });
+    const clientAccount = await accountModel.findOne({ owner: thisTask.client });
+    const freelancerAccount = await accountModel.findOne({ owner: thisTask.freelancer });
+    const freelancer = await freelancerModel.findById(thisTask.freelancer);
+    const currencyValueF = await currencyModel.findOne({ _id: freelancer.currency });
+    const transactionC = await new transactionModel({
+      transactiontype: "gain",
+      task: taskID,
+      amount: thisTask.paid,
+      method: "system",
+      account_id: clientAccount._id,
+    }).save();
+    const transactionF = await new transactionModel({
+      transactiontype: "cost",
+      task: taskID,
+      amount: (thisTask.cost / currencyValueF.priceToEGP),
+      method: "system",
+      account_id: freelancerAccount._id,
+    }).save();
+    const currencyValue = await currencyModel.findOne({ _id: thisTask.task_currency });
+    const profit_amount = thisTask.paid * currencyValue.priceToEGP - thisTask.cost;
     await Promise.all([
       taskModel
         .findOneAndUpdate(
