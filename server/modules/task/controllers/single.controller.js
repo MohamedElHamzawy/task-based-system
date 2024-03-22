@@ -1,5 +1,6 @@
 const commentModel = require("../../../DB/comment.model");
 const currencyModel = require("../../../DB/currency.model");
+const fileModel = require("../../../DB/file.model");
 const noteModel = require("../../../DB/note.model");
 const { customerProfitModel, specialistProfitModel } = require("../../../DB/profit.model");
 const taskModel = require("../../../DB/task.model");
@@ -21,6 +22,7 @@ const getTask = async (req,res,next) => {
         const task = await taskModel
         .findOne({_id: taskID})
         .populate(["client", "country", "show_created", "show_accepted", "freelancer", "speciality", "taskStatus", "created_by", "accepted_by", "task_currency"]);
+        const taskFile = await fileModel.findOne({taskId: taskID});
         const currencyValue = await currencyModel.findOne({_id: task.task_currency}).select("priceToEGP");
         const specialistOfferMax = (task.cost + (task.cost * specialistProfitMaxPercentage/100)) / currencyValue.priceToEGP;
         const specialistOfferMin = (task.cost + (task.cost * specialistProfitMinPercentage/100)) / currencyValue.priceToEGP;
@@ -48,7 +50,17 @@ const getTask = async (req,res,next) => {
         }
         const notes = await noteModel.find({task_id: taskID}).populate(["user_id", "task_id"]);
         const comments = await commentModel.find({task_id: taskID}).populate(["user_id"]);
-        res.json({task: task, comments: comments, notes: notes, offer: offer});
+        let returnTask;
+        if (taskFile) {
+            returnTask = {
+                ...task.toJSON(), file: {name: taskFile.fileName, size: taskFile.fileSize}
+            }
+        } else {
+            returnTask = {
+                ...task.toJSON()
+            }
+        }
+        res.json({task: returnTask, file: {name: taskFile.fileName, size: taskFile.fileSize}, comments: comments, notes: notes, offer: offer});
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
