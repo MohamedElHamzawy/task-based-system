@@ -39,7 +39,7 @@ const createTransaction = async (req,res,next) => {
         const client = await clientModel.findOne({_id: thisAccount.owner});
         if (client) {
             await new bankTransactionModel({from: account_id, to: bankAccountId, amount, exchangeRate: 1}).save();
-            await bankModel.findByIdAndUpdate(bankAccountId,{ $inc: { balance: -amount } });
+            await bankModel.findByIdAndUpdate(bankAccountId,{ $inc: { balance: amount } });
         } else {
             await new bankTransactionModel({from: bankAccountId, to: account_id, amount, exchangeRate: 1}).save();
             await bankModel.findByIdAndUpdate(bankAccountId,{ $inc: { balance: -amount } });
