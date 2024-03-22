@@ -278,7 +278,11 @@ const Tasks = () => {
   return isLoading ? (
     <LoadingSpinner asOverlay />
   ) : (
-    <div className="min-h-[calc(100vh-65px)] ml-44 py-4 flex flex-col space-y-2">
+    <div
+      className={`transition-all min-h-[calc(100vh-65px)] ${
+        filterOpen ? "ml-44" : "ml-16"
+      } py-4 flex flex-col space-y-2`}
+    >
       <ErrorModal error={error} onClear={errorHandler} />
       <Filter
         filterOpen={filterOpen}
