@@ -57,7 +57,7 @@ const createBankTransaction = async (req, res, next) => {
     await bankTransaction.save();
     await bankModel.findByIdAndUpdate(
       bankTransaction.from,
-      { $inc: { balance: -bankTransaction.amount } } //This line is decreasing the balance of the bank that the transaction is from by the amount of the transaction.
+      { $inc: { balance: -bankTransaction.amount } }
     );
     await bankModel.findByIdAndUpdate(
       bankTransaction.to,
@@ -65,7 +65,7 @@ const createBankTransaction = async (req, res, next) => {
         $inc: {
           balance: bankTransaction.amount * bankTransaction.exchangeRate,
         },
-      } //This line is increasing the balance of the bank that the transaction is to by the amount of the transaction.
+      }
     );
     res.status(200).json(bankTransaction);
   } catch (error) {
