@@ -14,7 +14,7 @@ const downloadFile = async (req, res, next) => {
     }
     const file = await fileModel.findOne({ taskID: taskID });
     if (file) {
-      let file = __dirname + "../../../" + file.filePath;
+      let file = __dirname + "../../../../" + file.filePath;
       res.download(file);
     } else {
       return next(new HttpError("file not found", 404));
