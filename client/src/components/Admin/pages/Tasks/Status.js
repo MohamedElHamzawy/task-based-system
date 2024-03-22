@@ -60,7 +60,7 @@ const Status = ({ status, task }) => {
 
   return (
     <div className="w-full max-w-5xl 2xl:max-w-6xl mx-auto bg-white shadow rounded p-2">
-      <h1 className="font-semibold mb-0">Status</h1>
+      <h1 className="text-2xl text-gray-600 font-semibold mb-0">Status</h1>
       <p className="mb-2 p-0 text-gray-400 font-semibold text-sm capitalize">
         {statusState.split("-").join(" ")}
       </p>

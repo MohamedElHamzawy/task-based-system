@@ -527,7 +527,7 @@ const TaskDetails = () => {
           )}
         </div>
         <div className="w-1/3 bg-white drop-shadow rounded p-2 overflow-y-auto max-h-[410px]">
-          <h1 className="font-semibold">Notes</h1>
+          <h1 className="text-2xl text-gray-600 font-semibold">Notes</h1>
           <div className="row p-0 m-0">
             <div className="p-0 m-0 space-y-2">
               {!notes.length == 0 ? (
@@ -556,7 +556,7 @@ const TaskDetails = () => {
       <Status status={task.taskStatus?.statusname} task={task} />
 
       <div className="w-full max-w-5xl 2xl:max-w-6xl mx-auto bg-white drop-shadow rounded p-2">
-        <h1 className="font-semibold">Comments</h1>
+        <h1 className="text-2xl text-gray-600 font-semibold">Comments</h1>
         <div className="space-y-1.5">
           {!comments.length == 0 ? (
             comments.map((comment) => (
