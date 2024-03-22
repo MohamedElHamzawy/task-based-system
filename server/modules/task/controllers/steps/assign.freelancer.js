@@ -27,7 +27,7 @@ const assignFreelancer = async (req, res, next) => {
       { accepted_by: req.user._id, accepted: true },
       { new: true }
     );
-    if (cost > 0 && task.cost == 0) {
+    if (cost) {
       await taskModel.findOneAndUpdate(
         { _id: taskID },
         { freelancer: freelancer, taskStatus: statusID._id, cost: cost },
@@ -40,12 +40,13 @@ const assignFreelancer = async (req, res, next) => {
         { new: true }
       );
     }
+    const theTask = await taskModel.findOne({ _id: taskID });
     await freelancerModel.findByIdAndUpdate(
       { _id: freelancer },
       { $inc: { tasksCount: 1 } }
     );
     await userModel.findByIdAndUpdate(
-      { _id: task.accepted_by },
+      { _id: theTask.accepted_by },
       { $inc: { tasksCount: 1 } }
     );
     await noteModel.create({
