@@ -25,13 +25,13 @@ const Done = ({ taskId, freelancer, setStatus, file }) => {
   const downloadAttachment = async () => {
     try {
       setIsLoading(true);
-      await axios.get(`/task/action/download/${taskId}`);
-      // const url = window.URL.createObjectURL(new Blob([data]));
-      // const link = document.createElement("a");
-      // link.href = url;
-      // link.setAttribute("download", file.name);
-      // document.body.appendChild(link);
-      // link.click();
+      const { data } = await axios.get(`/task/action/download/${taskId}`);
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file.name);
+      document.body.appendChild(link);
+      link.click();
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
