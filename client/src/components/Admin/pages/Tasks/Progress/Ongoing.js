@@ -27,27 +27,26 @@ const Ongoing = ({ taskId, freelancer, setStatus }) => {
   };
 
   return isLoading ? (
-    <LoadingSpinner />
+    <div className="flex items-center justify-between">
+      <LoadingSpinner />
+    </div>
   ) : (
-    <div className="">
-      <p className="p-0 m-0">Freelancer {freelancer} working on the task</p>
-      <div className="flex items-end justify-between">
-        <label htmlFor="attatchment">
-          <span className="text-gray-400">Attatchment</span>
-          <input
-            type="file"
-            name="attatchment"
-            id="attatchment"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-        </label>
-        <button
-          onClick={handleDone}
-          className="bg-blue-500 text-white px-4 py-2 rounded active:scale-95"
-        >
-          Done
-        </button>
-      </div>
+    <div className="flex items-end justify-between">
+      <label htmlFor="attatchment">
+        <span className="text-gray-400">Attatchment</span>
+        <input
+          type="file"
+          name="attatchment"
+          id="attatchment"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+      </label>
+      <button
+        onClick={handleDone}
+        className="bg-blue-500 text-white px-4 py-2 rounded active:scale-95"
+      >
+        Done
+      </button>
     </div>
   );
 };
