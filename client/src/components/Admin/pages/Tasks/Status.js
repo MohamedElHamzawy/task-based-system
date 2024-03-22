@@ -55,7 +55,7 @@ const Status = ({ status, task }) => {
           />
         );
       default:
-        return <p>Invalid status</p>;
+        return;
     }
   };
 

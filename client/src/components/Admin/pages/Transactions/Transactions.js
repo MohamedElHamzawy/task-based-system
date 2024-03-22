@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { validate, VALIDATOR_MINLENGTH } from "../../../../util/validators";
 import axios from "axios";
+import customAxios from "../../../../axios";
 import LoadingSpinner from "../../../../LoadingSpinner/LoadingSpinner";
 import ErrorModal from "../../../../LoadingSpinner/ErrorModal";
 import Select from "react-select";
@@ -50,22 +51,23 @@ const Transactions = () => {
   const [method, setMethod] = useState("");
   const [accounts, setAccounts] = useState([]);
   const [account, setAccount] = useState("");
+  const [bankAccounts, setBankAccounts] = useState([]);
+  const [bankAccount, setBankAccount] = useState("");
 
   useEffect(() => {
-    let timerId;
-    if (loading) {
-      setIsLoading(true);
-      timerId = setTimeout(async () => {
-        await axios
-          .get(`${process.env.REACT_APP_BACKEND_URL}:5000/api/account/`)
-          .then((res) => {
-            setAccounts(res.data.accounts);
-          });
-        setLoading(false);
-        setIsLoading(false);
-      });
-    }
-    return () => clearTimeout(timerId);
+    setIsLoading(true);
+    (async () => {
+      const accountsResponse = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}:5000/api/account/`
+      );
+      const bankAccountsResponse = await customAxios.get("/bank");
+
+      setAccounts(accountsResponse.data.accounts);
+      setBankAccounts(bankAccountsResponse.data);
+
+      setLoading(false);
+      setIsLoading(false);
+    })();
   }, [loading]);
 
   //amount validation
@@ -121,18 +123,14 @@ const Transactions = () => {
     setIsLoading(true);
     try {
       setError(null);
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}:5000/api/transaction/`,
-        {
-          amount: amountState.value,
-          method: method,
-          account_id: account,
-          accountNumber: numberState.value,
-        }
-      );
-
+      const body = {
+        amount: amountState.value,
+        method: method,
+        account_id: account,
+        bankAccountId: bankAccount,
+      };
+      const response = await customAxios.post(`/transaction`, body);
       const responseData = await response;
-
       if (!(response.statusText === "OK")) {
         throw new Error(responseData.data.message);
       }
@@ -150,6 +148,7 @@ const Transactions = () => {
   const errorHandler = () => {
     setError(null);
   };
+
   return (
     <div className="min-h-[calc(100vh-4em)] flex flex-col text-center p-3 w-full m-0">
       <ErrorModal error={error} onClear={errorHandler} />
@@ -200,19 +199,15 @@ const Transactions = () => {
 
         <div className="flex items-center">
           <div className="w-full flex items-center lg:w-1/2 m-1 py-2 p-0">
-            <label className="w-4/5 lg:w-1/2 font-bold">Account Number :</label>
-            <input
-              type="text"
-              placeholder="Account Number"
-              value={numberState.value}
-              onChange={numberChangeHandler}
-              onBlur={numberTouchHandler}
-              isvalid={numberState.isvalid.toString()}
-              className={`${
-                !numberState.isvalid &&
-                numberState.isTouched &&
-                "form-control-invalid"
-              }`}
+            <label className="w-4/5 lg:w-1/2 font-bold">Bank Account:</label>
+            <Select
+              options={bankAccounts.map((account) => ({
+                label: account.title,
+                value: account._id,
+              }))}
+              onChange={(e) => setBankAccount(e.value)}
+              className="w-full"
+              name="bankAccount"
             />
           </div>
 
@@ -238,7 +233,8 @@ const Transactions = () => {
               !amountState.isvalid ||
               !method ||
               !account ||
-              !numberState.isvalid
+              !bankAccount ||
+              bankAccount === ""
             }
             className="bg-cyan-600 text-white rounded py-1 font-bold w-4/5 lg:w-1/5 transition-all hover:bg-cyan-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
