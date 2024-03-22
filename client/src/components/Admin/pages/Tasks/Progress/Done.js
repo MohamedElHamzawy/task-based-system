@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../../../axios";
 import LoadingSpinner from "../../../../../LoadingSpinner/LoadingSpinner";
+import { IoMdDownload } from "react-icons/io";
 
 const Done = ({ taskId, freelancer, setStatus, file }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,13 +48,16 @@ const Done = ({ taskId, freelancer, setStatus, file }) => {
     <LoadingSpinner />
   ) : (
     <div className="">
-      <p className="p-0 m-0">Freelancer {freelancer} has finished the task</p>
+      <p className="p-0 m-0">Task Completed</p>
       <div className="flex items-end justify-between">
         <button
           onClick={downloadAttachment}
-          className="text-gray-400 no-underline hover:text-blue-500"
+          className="text-blue-500 no-underline hover:text-blue-600 flex items-center space-x-0.5"
         >
-          {file ? `${file.name} - ${file.size}` : "No attatchment"}
+          <span>
+            {file.name} - {file.size}
+          </span>
+          <IoMdDownload />
         </button>
 
         <button
