@@ -1,4 +1,5 @@
 const {getAllSpeciality, 
+    getAllSpecialities,
     getSpeciality, 
     createSpeciality, 
     updateSpeciality, 
@@ -7,6 +8,7 @@ const {getAllSpeciality,
 const router = require("express").Router();
 
 router.get("/", getAllSpeciality);
+router.get("/all/", getAllSpecialities);
 router.get("/:id", getSpeciality);
 router.post("/", createSpeciality);
 router.post("/:id", updateSpeciality);

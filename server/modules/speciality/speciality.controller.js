@@ -9,6 +9,23 @@ const getAllSpeciality = async (req,res,next) => {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
     }
 }
+const getAllSpecialities = async (req,res,next) => {
+    try {
+        let specialities = [];
+        const mainSpecialities = await specialityModel.distinct("speciality", {});
+        const specialityPromises = mainSpecialities.map(async (mainSpeciality) => {
+            const subSpecialities = await specialityModel.find({speciality: mainSpeciality}).select("sub_speciality");
+            return {
+                main: mainSpeciality,
+                sub: subSpecialities
+            }
+        })
+        specialities = await Promise.all(specialityPromises);
+        res.json({specialities});
+    } catch (error) {
+        return next(new HttpError(`Unexpected Error: ${error}`, 500));
+    }
+}
 
 const getSpeciality = async (req,res,next) => {
     try {
@@ -34,7 +51,7 @@ const createSpeciality = async (req,res,next) => {
                 speciality: speciality,
                 sub_speciality: sub_speciality
             }).save();
-            res.json({message: "Speciality has been added successfully"});
+            res.json({message: "Speciality has been added successfully", newSpeciality});
         }
     } catch (error) {
         return next(new HttpError(`Unexpected Error: ${error}`, 500));
@@ -75,4 +92,4 @@ const deleteSpeciality = async (req,res,next) => {
     }
 }
 
-module.exports = {getAllSpeciality, getSpeciality, createSpeciality, updateSpeciality, deleteSpeciality}
+module.exports = {getAllSpeciality, getAllSpecialities, getSpeciality, createSpeciality, updateSpeciality, deleteSpeciality}
