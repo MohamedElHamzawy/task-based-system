@@ -22,22 +22,20 @@ const Assigned = ({ taskId, freelancer, setStatus }) => {
   };
 
   return isLoading ? (
-    <LoadingSpinner />
+    <div className="flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
   ) : (
-    <div className="">
-      <div className="flex items-end justify-between">
-        <p className="m-0 p-0 flex flex-col">
-          <span>Freelancer {freelancer} was assigned to the task</span>
-          <span>proceed if freelancer started working on the task</span>
-        </p>
-
-        <button
-          onClick={handleProceed}
-          className="bg-blue-500 text-white px-4 py-2 rounded active:scale-95"
-        >
-          Proceed
-        </button>
-      </div>
+    <div className="flex items-center justify-between">
+      <p className="m-0 p-0 flex flex-col text-blue-500 font-semibold">
+        Proceed if freelancer started working on the task.
+      </p>
+      <button
+        onClick={handleProceed}
+        className="bg-blue-500 text-white px-4 py-2 rounded active:scale-95"
+      >
+        Proceed
+      </button>
     </div>
   );
 };
