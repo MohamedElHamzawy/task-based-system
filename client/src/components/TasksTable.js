@@ -83,7 +83,7 @@ const TasksTable = ({
         <thead>
           <tr className="drop-shadow bg-white text-cyan-600">
             <th className="px-4 py-3 font-medium text-sm">ID</th>
-            <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
+            <th className="px-4 py-3 font-medium text-sm">Title</th>
             <th className="px-4 py-3 font-medium text-sm">Client</th>
             <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
             <th className="px-4 py-3 font-medium text-sm">Cost</th>
@@ -114,19 +114,10 @@ const TasksTable = ({
               <td className="px-4 py-3">
                 {task.freelancer ? task.freelancer.freelancername : "-"}
               </td>
-              <td className="px-4 py-3">
-                {task.cost || 0}{" "}
-                {task.task_currency && task.task_currency.currencyname}
-              </td>
-              <td className="px-4 py-3">
-                {task.paid || 0}{" "}
-                {task.task_currency && task.task_currency.currencyname}
-              </td>
+              <td className="px-4 py-3">{task.cost || 0}</td>
+              <td className="px-4 py-3">{task.paid || 0}</td>
 
-              <td className="px-4 py-3">
-                {task.profit_amount || 0}{" "}
-                {task.task_currency && task.task_currency.currencyname}
-              </td>
+              <td className="px-4 py-3">{task.profit_amount || 0}</td>
               <td className="px-4 py-3">
                 {new Date(task.deadline).toLocaleDateString()}
               </td>
