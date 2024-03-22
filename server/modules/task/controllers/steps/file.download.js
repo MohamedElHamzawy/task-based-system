@@ -12,7 +12,7 @@ const downloadFile = async (req, res, next) => {
         new HttpError("You are not authorized to add offer to this task!", 401)
       );
     }
-    const file = await fileModel.findOne({ taskID: taskID });
+    const file = await fileModel.findOne({ taskId: taskID });
     if (file) {
       let file = __dirname + "../../../../" + file.filePath;
       res.download(file);
