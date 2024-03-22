@@ -50,13 +50,15 @@ const WorkingOn = ({ setStatus, taskId }) => {
   const notAvailableHandler = async () => {};
 
   return isLoading ? (
-    <LoadingSpinner />
+    <div className="border flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
   ) : (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ getFieldProps, setFieldValue }) => (
-        <Form className="space-y-2">
-          <div className="flex items-center justify-center space-x-2">
-            <div className="w-1/3">
+        <Form className="flex justify-between items-end">
+          <div className="flex-1 flex items-center justify-center space-x-2">
+            <div className="w-full">
               <label htmlFor="cost" className="text-gray-400 font-semibold">
                 Assign Freelancer
               </label>
@@ -69,14 +71,14 @@ const WorkingOn = ({ setStatus, taskId }) => {
                 }))}
               />
             </div>
-            <div className="w-1/3">
+            <div className="w-full">
               <label htmlFor="cost" className="text-gray-400 font-semibold">
                 Cost
               </label>
               <input type="number" {...getFieldProps("cost")} />
             </div>
           </div>
-          <div className="flex items-center justify-end space-x-1">
+          <div className="w-1/3 flex items-center justify-end space-x-1">
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded active:scale-95"
