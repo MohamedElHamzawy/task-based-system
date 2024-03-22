@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "../../../../../axios";
 import LoadingSpinner from "../../../../../LoadingSpinner/LoadingSpinner";
 
-const Done = ({ taskId, freelancer, setStatus }) => {
+const Done = ({ taskId, freelancer, setStatus, file }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDeliver = async () => {
@@ -21,15 +21,40 @@ const Done = ({ taskId, freelancer, setStatus }) => {
       }
     }
   };
+
+  const downloadAttachment = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(`/task/action/download/${taskId}`);
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file.name);
+      document.body.appendChild(link);
+      link.click();
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response) {
+        console.log(error.response.data.err);
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
   return isLoading ? (
     <LoadingSpinner />
   ) : (
     <div className="">
       <p className="p-0 m-0">Freelancer {freelancer} has finished the task</p>
       <div className="flex items-end justify-between">
-        <Link to="#" className="text-gray-400 no-underline hover:text-blue-500">
-          Attatchment - (file.txt)
-        </Link>
+        <button
+          onClick={downloadAttachment}
+          className="text-gray-400 no-underline hover:text-blue-500"
+        >
+          {file ? `${file.name} - ${file.size}` : "No attatchment"}
+        </button>
 
         <button
           onClick={handleDeliver}

@@ -48,6 +48,7 @@ const Status = ({ status, task }) => {
       case "done":
         return (
           <Done
+            file={task.file}
             taskId={task._id}
             setStatus={setStatusState}
             freelancer={task.freelancer?.freelancername}
