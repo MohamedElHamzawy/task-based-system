@@ -261,6 +261,7 @@ const AddTask = () => {
       }
       setError(responseData.data.message);
       setIsLoading(false);
+      navigate("/tasks");
     } catch (err) {
       setIsLoading(false);
       setError(err.message || "SomeThing Went Wrong , Please Try Again .");

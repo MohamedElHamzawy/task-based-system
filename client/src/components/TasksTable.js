@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import Pagination from "./Pagination";
+import { Link } from "react-router-dom";
 
 function getRowClass(statusname) {
   switch (statusname) {
@@ -85,6 +86,8 @@ const TasksTable = ({
             <th className="px-4 py-3 font-medium text-sm w-1/5">Title</th>
             <th className="px-4 py-3 font-medium text-sm">Client</th>
             <th className="px-4 py-3 font-medium text-sm">Freelancer</th>
+            <th className="px-4 py-3 font-medium text-sm">Cost</th>
+            <th className="px-4 py-3 font-medium text-sm">Paid</th>
             <th className="px-4 py-3 font-medium text-sm">Profit</th>
             <th className="px-4 py-3 font-medium text-sm">Deadline</th>
             <th className="px-4 py-3 font-medium text-sm">Status</th>
@@ -98,19 +101,28 @@ const TasksTable = ({
                 index !== 0 && "border-t-4 border-[#F4F7FC]"
               }`}
             >
-              <td
-                className="cursor-pointer hover:underline px-4 py-3"
-                onClick={() => {
-                  navigate(`/task/${task._id}`);
-                }}
-              >
-                {task.serialNumber}
+              <td className="cursor-pointer px-4 py-3">
+                <Link
+                  className="hover:underline no-underline text-gray-700"
+                  to={`/task/${task._id}`}
+                >
+                  {task.serialNumber}
+                </Link>
               </td>
               <td className="px-4 py-3">{task.title}</td>
               <td className="px-4 py-3">{task.client?.clientname}</td>
               <td className="px-4 py-3">
                 {task.freelancer ? task.freelancer.freelancername : "-"}
               </td>
+              <td className="px-4 py-3">
+                {task.cost || 0}{" "}
+                {task.task_currency && task.task_currency.currencyname}
+              </td>
+              <td className="px-4 py-3">
+                {task.paid || 0}{" "}
+                {task.task_currency && task.task_currency.currencyname}
+              </td>
+
               <td className="px-4 py-3">
                 {task.profit_amount || 0}{" "}
                 {task.task_currency && task.task_currency.currencyname}
