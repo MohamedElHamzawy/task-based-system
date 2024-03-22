@@ -20,20 +20,16 @@ const deliverTask = async (req, res, next) => {
       );
     }
     const statusID = await statusModel.findOne({ slug: "delivered" });
+    const thisTask = await taskModel.findOne({ _id: taskID }).lean();
+    const clientAccount = await accountModel.findOne({ owner: thisTask.client }).lean();
+    const freelancerAccount = await accountModel.findOne({ owner: thisTask.freelancer }).lean();
+    const freelancer = await freelancerModel.findById(thisTask.freelancer).lean();
+    const currencyValueF = currencyModel.findOne({ _id: freelancer.currency }).select("priceToEGP").lean()
     const [
-      thisTask,
-      freelancerAccount,
-      freelancer,
-      clientAccount,
       transactionC,
       transactionF,
-      currencyValueF,
       currencyValue,
     ] = await Promise.all([
-      taskModel.findOne({ _id: taskID }).lean(),
-      accountModel.findOne({ owner: thisTask.freelancer }).lean(),
-      freelancerModel.findById(thisTask.freelancer).lean(),
-      accountModel.findOne({ owner: thisTask.client }).lean(),
       new transactionModel({
         transactiontype: "gain",
         task: taskID,
@@ -48,10 +44,6 @@ const deliverTask = async (req, res, next) => {
         method: "system",
         account_id: freelancerAccount._id,
       }).save(),
-      currencyModel
-        .findOne({ _id: freelancer.currency })
-        .select("priceToEGP")
-        .lean(),
       currencyModel
         .findOne({ _id: thisTask.task_currency })
         .select("priceToEGP")
